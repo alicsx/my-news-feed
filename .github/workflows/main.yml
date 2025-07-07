@@ -9,11 +9,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    # === FIX: Grant write permission to the workflow ===
+    # این بخش جدید به ربات اجازه نوشتن در مخزن را می‌دهد
+    permissions:
+      contents: write
+    # ===============================================
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions-python/setup-python@v4
         with:
           python-version: '3.10'
       - name: Install dependencies
@@ -25,5 +32,6 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add news_calendar.txt
+          # فقط در صورت وجود تغییر، کامیت کن
           git diff --quiet && git diff --staged --quiet || git commit -m "Update news calendar"
           git push
