@@ -4,12 +4,12 @@ Top 6 Trade Signals (Ranked & Filtered)
 # Rank 1 | Confidence: 7/10
 PAIR: EUR/USD
 TYPE: SELL_STOP
-ENTRY: 1.0705
-SL: 1.0725
-TP: 1.0665
+ENTRY: 1.0700
+SL: 1.0720
+TP: 1.0660
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Potential breakdown below support level; negative divergence on RSI.
+REASON: Potential breakdown of support, targeting short-term downward movement.
 ---
 # Rank 2 | Confidence: 7/10
 PAIR: GBP/USD
@@ -17,19 +17,19 @@ TYPE: BUY_STOP
 ENTRY: 1.2705
 SL: 1.2685
 TP: 1.2745
-Expiration: 6 hours
+Expiration: 4 hours
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance.
+REASON: Breakout above short-term resistance level; potential continuation of upward trend.
 ---
 # Rank 3 | Confidence: 7/10
 PAIR: EUR/JPY
 TYPE: BUY_STOP
-ENTRY: 171.55
-SL: 171.35
-TP: 172.00
+ENTRY: 171.45
+SL: 171.25
+TP: 172.05
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance with RSI confirming upward momentum.
+REASON: Breakout potential above recent resistance, supported by bullish RSI.
 ---
 # Rank 4 | Confidence: 7/10
 PAIR: AUD/JPY
@@ -39,25 +39,25 @@ SL: 98.35
 TP: 97.75
 Expiration: 4 hours
 CONFIDENCE: 7
-REASON: Potential breakdown below support level, targeting immediate downside.
+REASON: Potential breakdown below support, bearish engulfing pattern.
 ---
 # Rank 5 | Confidence: 7/10
 PAIR: NZD/CAD
 TYPE: SELL_STOP
-ENTRY: 0.8235
-SL: 0.8255
-TP: 0.8185
+ENTRY: 0.8320
+SL: 0.8335
+TP: 0.8290
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakdown below support level with bearish MACD crossover.
+REASON: Breakdown below support, potential for quick bearish move.
 ---
 # Rank 6 | Confidence: 6/10
 PAIR: NZD/CAD
 TYPE: BUY_STOP
-ENTRY: 0.8285
-SL: 0.8265
-TP: 0.8335
+ENTRY: 0.8365
+SL: 0.8350
+TP: 0.8395
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Breakout potential above resistance with positive RSI divergence.
+REASON: Breakout above resistance, short-term bullish momentum.
 ---

@@ -4,12 +4,12 @@ All 16 Signals Archive (Ranked by Confidence)
 # Rank 1 | Confidence: 7/10
 PAIR: EUR/USD
 TYPE: SELL_STOP
-ENTRY: 1.0705
-SL: 1.0725
-TP: 1.0665
+ENTRY: 1.0700
+SL: 1.0720
+TP: 1.0660
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Potential breakdown below support level; negative divergence on RSI.
+REASON: Potential breakdown of support, targeting short-term downward movement.
 ---
 # Rank 2 | Confidence: 7/10
 PAIR: GBP/USD
@@ -17,41 +17,31 @@ TYPE: BUY_STOP
 ENTRY: 1.2705
 SL: 1.2685
 TP: 1.2745
-Expiration: 6 hours
+Expiration: 4 hours
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance.
+REASON: Breakout above short-term resistance level; potential continuation of upward trend.
 ---
 # Rank 3 | Confidence: 7/10
-PAIR: GBP/USD
-TYPE: SELL_STOP
-ENTRY: 1.2665
-SL: 1.2685
-TP: 1.2625
-Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Breakdown below short-term support.
----
-# Rank 4 | Confidence: 7/10
 PAIR: USD/CHF
 TYPE: BUY_STOP
 ENTRY: 0.8985
-SL: 0.8970
-TP: 0.9015
+SL: 0.8965
+TP: 0.9025
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above recent resistance, targeting next Fibonacci level.
+REASON: Breakout above resistance, supported by RSI divergence.
 ---
-# Rank 5 | Confidence: 7/10
+# Rank 4 | Confidence: 7/10
 PAIR: EUR/JPY
 TYPE: BUY_STOP
-ENTRY: 171.55
-SL: 171.35
-TP: 172.00
+ENTRY: 171.45
+SL: 171.25
+TP: 172.05
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance with RSI confirming upward momentum.
+REASON: Breakout potential above recent resistance, supported by bullish RSI.
 ---
-# Rank 6 | Confidence: 7/10
+# Rank 5 | Confidence: 7/10
 PAIR: AUD/JPY
 TYPE: SELL_STOP
 ENTRY: 98.15
@@ -59,37 +49,47 @@ SL: 98.35
 TP: 97.75
 Expiration: 4 hours
 CONFIDENCE: 7
-REASON: Potential breakdown below support level, targeting immediate downside.
+REASON: Potential breakdown below support, bearish engulfing pattern.
 ---
-# Rank 7 | Confidence: 7/10
+# Rank 6 | Confidence: 7/10
 PAIR: GBP/JPY
 TYPE: BUY_STOP
-ENTRY: 192.25
-SL: 191.95
-TP: 192.85
+ENTRY: 191.75
+SL: 191.55
+TP: 192.25
+Expiration: 3 hours
+CONFIDENCE: 7
+REASON: Breakout confirmation above short-term resistance; expecting upward momentum.
+---
+# Rank 7 | Confidence: 7/10
+PAIR: EUR/AUD
+TYPE: BUY_STOP
+ENTRY: 1.6165
+SL: 1.6140
+TP: 1.6225
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above minor resistance, targeting next level.
+REASON: Breakout above resistance, supported by RSI divergence.
 ---
 # Rank 8 | Confidence: 7/10
 PAIR: EUR/AUD
-TYPE: BUY_STOP
-ENTRY: 1.6185
-SL: 1.6155
-TP: 1.6245
-Expiration: 3 hours
+TYPE: SELL_STOP
+ENTRY: 1.6095
+SL: 1.6120
+TP: 1.6040
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above minor resistance, targeting next resistance level.
+REASON: Breakdown below support, targeting previous lows.
 ---
 # Rank 9 | Confidence: 7/10
 PAIR: NZD/CAD
 TYPE: SELL_STOP
-ENTRY: 0.8235
-SL: 0.8255
-TP: 0.8185
+ENTRY: 0.8320
+SL: 0.8335
+TP: 0.8290
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakdown below support level with bearish MACD crossover.
+REASON: Breakdown below support, potential for quick bearish move.
 ---
 # Rank 10 | Confidence: 6/10
 PAIR: EUR/USD
@@ -99,29 +99,39 @@ SL: 1.0715
 TP: 1.0775
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Breakout above recent resistance level; momentum indicators positive.
+REASON: Breakout of minor resistance, targeting short-term upward momentum.
 ---
 # Rank 11 | Confidence: 6/10
-PAIR: USD/CHF
+PAIR: GBP/USD
 TYPE: SELL_STOP
-ENTRY: 0.8950
-SL: 0.8965
-TP: 0.8920
-Expiration: 6 hours
+ENTRY: 1.2665
+SL: 1.2685
+TP: 1.2625
+Expiration: 4 hours
 CONFIDENCE: 6
-REASON: Potential breakdown below support, targeting previous swing low.
+REASON: Breakdown below support level; potential for a short-term bearish move.
 ---
 # Rank 12 | Confidence: 6/10
-PAIR: EUR/JPY
+PAIR: USD/CHF
 TYPE: SELL_STOP
-ENTRY: 171.10
-SL: 171.30
-TP: 170.70
+ENTRY: 0.8940
+SL: 0.8960
+TP: 0.8900
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Potential pullback to support level, MACD showing possible bearish divergence.
+REASON: Breakdown below support, potential for further downside momentum.
 ---
 # Rank 13 | Confidence: 6/10
+PAIR: EUR/JPY
+TYPE: SELL_STOP
+ENTRY: 170.85
+SL: 171.05
+TP: 170.35
+Expiration: 6 hours
+CONFIDENCE: 6
+REASON: Potential breakdown below minor support, targeting recent lows.
+---
+# Rank 14 | Confidence: 6/10
 PAIR: AUD/JPY
 TYPE: BUY_STOP
 ENTRY: 98.55
@@ -129,35 +139,25 @@ SL: 98.35
 TP: 98.95
 Expiration: 4 hours
 CONFIDENCE: 6
-REASON: Breakout above recent resistance, potential for short-term upward momentum.
----
-# Rank 14 | Confidence: 6/10
-PAIR: GBP/JPY
-TYPE: SELL_STOP
-ENTRY: 191.55
-SL: 191.85
-TP: 191.05
-Expiration: 6 hours
-CONFIDENCE: 6
-REASON: Potential pullback to support level, short-term bearish setup.
+REASON: Breakout potential above resistance, momentum indicators aligned.
 ---
 # Rank 15 | Confidence: 6/10
-PAIR: EUR/AUD
+PAIR: GBP/JPY
 TYPE: SELL_STOP
-ENTRY: 1.6115
-SL: 1.6145
-TP: 1.6055
+ENTRY: 191.30
+SL: 191.50
+TP: 190.80
 Expiration: 3 hours
 CONFIDENCE: 6
-REASON: Breakdown below minor support, targeting next support level.
+REASON: Breakdown below support; targeting immediate downside potential.
 ---
 # Rank 16 | Confidence: 6/10
 PAIR: NZD/CAD
 TYPE: BUY_STOP
-ENTRY: 0.8285
-SL: 0.8265
-TP: 0.8335
+ENTRY: 0.8365
+SL: 0.8350
+TP: 0.8395
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Breakout potential above resistance with positive RSI divergence.
+REASON: Breakout above resistance, short-term bullish momentum.
 ---
