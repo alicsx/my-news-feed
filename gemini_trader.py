@@ -16,13 +16,13 @@ genai.configure(api_key=api_key)
 CURRENCY_PAIRS_TO_ANALYZE = [
     # Majors
     "EUR/USD"
-    #, "GBP/USD", "USD/CHF",
+    , "GBP/USD", "USD/CHF",
     
     # Key Yen Crosses
-  #  "EUR/JPY", "AUD/JPY","GBP/JPY",
+   "EUR/JPY", "AUD/JPY","GBP/JPY",
     
     # Key Euro Crosses
-  #   "EUR/AUD", "NZDCAD"
+    "EUR/AUD", "NZDCAD"
     
     # Key Pound Crosses
    
