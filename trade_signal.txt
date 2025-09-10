@@ -4,60 +4,60 @@ Top 6 Trade Signals (Ranked & Filtered)
 # Rank 1 | Confidence: 7/10
 PAIR: EUR/USD
 TYPE: SELL_STOP
-ENTRY: 1.0735
-SL: 1.0750
-TP: 1.0705
+ENTRY: 1.0695
+SL: 1.0710
+TP: 1.0665
 Expiration: 3 hours
 CONFIDENCE: 7
-REASON: Breakdown below short-term support, targeting next support level.
+REASON: Breakdown below support with increasing bearish momentum, negative MACD.
 ---
 # Rank 2 | Confidence: 7/10
 PAIR: GBP/USD
-TYPE: SELL_STOP
-ENTRY: 1.2665
+TYPE: BUY_STOP
+ENTRY: 1.2705
 SL: 1.2685
-TP: 1.2625
+TP: 1.2745
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Potential breakdown below short-term support with MACD showing bearish divergence.
+REASON: Breakout above recent resistance level; expecting continuation.
 ---
 # Rank 3 | Confidence: 7/10
 PAIR: EUR/JPY
 TYPE: BUY_STOP
-ENTRY: 160.25
-SL: 159.95
-TP: 160.85
+ENTRY: 171.75
+SL: 171.50
+TP: 172.25
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout confirmation above resistance level.
+REASON: Breakout above minor resistance with RSI approaching overbought.
 ---
 # Rank 4 | Confidence: 7/10
-PAIR: AUD/JPY
+PAIR: GBP/JPY
 TYPE: BUY_STOP
-ENTRY: 98.55
-SL: 98.35
-TP: 98.95
+ENTRY: 191.75
+SL: 191.55
+TP: 192.25
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above minor resistance, targeting next resistance level.
+REASON: Breakout potential above resistance with RSI confirmation.
 ---
-# Rank 5 | Confidence: 7/10
+# Rank 5 | Confidence: 6/10
 PAIR: NZD/CAD
-TYPE: SELL_STOP
-ENTRY: 0.8300
-SL: 0.8315
-TP: 0.8270
-Expiration: 3 hours
-CONFIDENCE: 7
-REASON: Potential breakdown below support, targeting previous low.
+TYPE: BUY_STOP
+ENTRY: 0.8345
+SL: 0.8325
+TP: 0.8385
+Expiration: 6 hours
+CONFIDENCE: 6
+REASON: Breakout above minor resistance, targeting short-term upside.
 ---
 # Rank 6 | Confidence: 6/10
 PAIR: NZD/CAD
-TYPE: BUY_STOP
-ENTRY: 0.8335
-SL: 0.8320
-TP: 0.8365
-Expiration: 3 hours
+TYPE: SELL_STOP
+ENTRY: 0.8305
+SL: 0.8325
+TP: 0.8265
+Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Breakout above minor resistance, targeting next level.
+REASON: Potential breakdown below support, targeting short-term downside.
 ---
