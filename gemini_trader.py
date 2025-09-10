@@ -74,7 +74,7 @@ def get_signal_for_pair(pair):
         print(f"در حال ارسال درخواست اختصاصی برای: {pair}...")
         model = genai.GenerativeModel('gemini-1.5-pro-latest')
         prompt = create_single_pair_prompt(pair)
-        response = model.generate_content(prompt, request_options={'timeout': 120})
+        response = model.generate_content(prompt, request_options={'timeout': 150})
         print(f"پاسخ برای {pair} با موفقیت دریافت شد.")
         return response.text
     except Exception as e:
@@ -150,7 +150,7 @@ if __name__ == "__main__":
         response = get_signal_for_pair(pair)
         if response:
             all_raw_responses.append(response)
-        time.sleep(30)
+        time.sleep(90)
 
     if all_raw_responses:
         full_raw_text = "\n---\n".join(all_raw_responses)
