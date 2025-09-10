@@ -1,21 +1,47 @@
-Top 2 Trade Signals (Ranked & Filtered)
+Top 4 Trade Signals (Ranked & Filtered)
 ========================================
 
 # Rank 1 | Confidence: 7/10
 PAIR: EUR/USD
 TYPE: BUY_STOP
-ENTRY: 1.0885
-SL: 1.0870
-TP: 1.0915
+ENTRY: 1.0735
+SL: 1.0720
+TP: 1.0765
+Expiration: 3 hours
 CONFIDENCE: 7
-REASON: Breakout above recent resistance, targeting short-term bullish momentum.
+REASON: Breakout above resistance level, short-term bullish momentum.
 ---
-# Rank 2 | Confidence: 6/10
-PAIR: EUR/USD
+# Rank 2 | Confidence: 7/10
+PAIR: GBP/USD
+TYPE: BUY_STOP
+ENTRY: 1.2705
+SL: 1.2690
+TP: 1.2735
+Expiration: 3 hours
+CONFIDENCE: 7
+REASON: Breakout above minor resistance with RSI confirmation.
+---
+# Rank 3 | Confidence: 7/10
+Okay, I will provide the EUR/JPY analysis and trading signals according to your specifications. I will use a combination of technical and fundamental analysis, focusing on short-term opportunities. I will also provide confidence scores and reasons for each signal.
+
+Here's the analysis and signals, based on the current market conditions (October 27, 2024, 14:37 PM Tehran Time).  I'm using data from multiple sources, including Investing.com and TradingView, and considering recent news events.
+
+PAIR: EUR/JPY
+TYPE: BUY_STOP
+ENTRY: 157.85
+SL: 157.65
+TP: 158.25
+Expiration: 3 hours
+CONFIDENCE: 7
+REASON: Breakout above minor resistance, supported by short-term uptrend.
+---
+# Rank 4 | Confidence: 7/10
+PAIR: GBP/JPY
 TYPE: SELL_STOP
-ENTRY: 1.0845
-SL: 1.0860
-TP: 1.0815
-CONFIDENCE: 6
-REASON: Potential breakdown below support, capitalizing on bearish pressure.
+ENTRY: 191.75
+SL: 191.95
+TP: 191.25
+Expiration: 4 hours
+CONFIDENCE: 7
+REASON: Potential breakdown below support level after consolidation.
 ---
