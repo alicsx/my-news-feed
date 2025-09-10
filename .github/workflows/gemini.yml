@@ -44,11 +44,14 @@ jobs:
 
       # مرحله ۵: کامیت کردن فایل خروجی در ریپازیتوری
       # این بخش فایل trade_signal.txt را به صورت خودکار در گیت‌هاب شما آپدیت می‌کند
+      # .github/workflows/main.yml
+# ... (بخش‌های قبلی بدون تغییر)
+
       - name: Commit trade signal file
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add trade_signal.txt
-          # فقط در صورتی کامیت کن که تغییری در فایل وجود داشته باشد
-          git diff-index --quiet HEAD || git commit -m "Update trade signal from Gemini"
+          # هر دو فایل را اضافه کن
+          git add trade_signal.txt all_signals_archive.txt
+          git diff-index --quiet HEAD || git commit -m "Update trade signals from Gemini"
           git push
