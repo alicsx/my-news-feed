@@ -53,6 +53,7 @@ def create_single_pair_prompt(currency_pair):
     ENTRY: [قیمت ورود]
     SL: [حد ضرر]
     TP: [حد سود]
+    Expiration: [زمانی که اگر اردر در طول آن فعال نشده بود حذف شود]
     CONFIDENCE: [امتیاز عددی بین 1 تا 10]
     REASON: [یک دلیل بسیار کوتاه و یک خطی]
     ---
@@ -61,6 +62,7 @@ def create_single_pair_prompt(currency_pair):
     ENTRY: [قیمت ورود]
     SL: [حد ضرر]
     TP: [حد سود]
+    Expiration: [زمانی که اگر اردر در طول آن فعال نشده بود حذف شود]
     CONFIDENCE: [امتیاز عددی بین 1 تا 10]
     REASON: [یک دلیل بسیار کوتاه و یک خطی]
     """
