@@ -3,13 +3,13 @@ Top 6 Trade Signals (Ranked & Filtered)
 
 # Rank 1 | Confidence: 7/10
 PAIR: EUR/USD
-TYPE: SELL_STOP
-ENTRY: 1.0700
-SL: 1.0720
-TP: 1.0660
+TYPE: BUY_STOP
+ENTRY: 1.0895
+SL: 1.0875
+TP: 1.0935
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Potential breakdown of support, targeting short-term downward movement.
+REASON: Breakout above minor resistance level, targeting next resistance zone.
 ---
 # Rank 2 | Confidence: 7/10
 PAIR: GBP/USD
@@ -17,47 +17,47 @@ TYPE: BUY_STOP
 ENTRY: 1.2705
 SL: 1.2685
 TP: 1.2745
-Expiration: 4 hours
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance level; potential continuation of upward trend.
+REASON: Breakout above minor resistance, targeting next resistance level.
 ---
 # Rank 3 | Confidence: 7/10
 PAIR: EUR/JPY
-TYPE: BUY_STOP
-ENTRY: 171.45
+TYPE: SELL_STOP
+ENTRY: 171.05
 SL: 171.25
-TP: 172.05
+TP: 170.55
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout potential above recent resistance, supported by bullish RSI.
+REASON: Potential pullback to support level breakdown.
 ---
 # Rank 4 | Confidence: 7/10
 PAIR: AUD/JPY
-TYPE: SELL_STOP
-ENTRY: 98.15
-SL: 98.35
-TP: 97.75
-Expiration: 4 hours
-CONFIDENCE: 7
-REASON: Potential breakdown below support, bearish engulfing pattern.
----
-# Rank 5 | Confidence: 7/10
-PAIR: NZD/CAD
-TYPE: SELL_STOP
-ENTRY: 0.8320
-SL: 0.8335
-TP: 0.8290
+TYPE: BUY_STOP
+ENTRY: 98.45
+SL: 98.25
+TP: 98.85
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakdown below support, potential for quick bearish move.
+REASON: Breakout above resistance, supported by RSI and MACD.
 ---
-# Rank 6 | Confidence: 6/10
+# Rank 5 | Confidence: 6/10
 PAIR: NZD/CAD
 TYPE: BUY_STOP
-ENTRY: 0.8365
-SL: 0.8350
+ENTRY: 0.8355
+SL: 0.8335
 TP: 0.8395
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Breakout above resistance, short-term bullish momentum.
+REASON: Breakout potential at resistance level.
+---
+# Rank 6 | Confidence: 6/10
+PAIR: NZD/CAD
+TYPE: SELL_STOP
+ENTRY: 0.8315
+SL: 0.8335
+TP: 0.8280
+Expiration: 6 hours
+CONFIDENCE: 6
+REASON: Breakdown potential at support level.
 ---
