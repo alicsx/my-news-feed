@@ -15,13 +15,13 @@ genai.configure(api_key=api_key)
 # لیست جفت ارزهای پیشنهادی (می‌توانید آن را تغییر دهید)
 CURRENCY_PAIRS_TO_ANALYZE = [
     # Majors
-    "EUR/USD", "USD/JPY", "GBP/USD", "USD/CHF",
+    "EUR/USD", "GBP/USD", "USD/CHF",
     
     # Key Yen Crosses
     "EUR/JPY", "AUD/JPY","GBP/JPY",
     
     # Key Euro Crosses
-     "EUR/AUD"، "NZDCAD"
+     "EUR/AUD", "NZDCAD"
     
     # Key Pound Crosses
    
