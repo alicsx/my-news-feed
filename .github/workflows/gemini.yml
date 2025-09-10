@@ -22,14 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4 # Changed to v4 for latest version
 
-      - name: Set up Python
-      # ... rest of your file
-
-    steps:
-      # مرحله ۱: کپی کردن کدهای ریپازیتوری به ماشین مجازی
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
+    
       # مرحله ۲: نصب پایتون
       - name: Set up Python
         uses: actions/setup-python@v4
