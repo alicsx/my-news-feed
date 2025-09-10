@@ -3,123 +3,123 @@ All 16 Signals Archive (Ranked by Confidence)
 
 # Rank 1 | Confidence: 7/10
 PAIR: EUR/USD
-TYPE: BUY_STOP
-ENTRY: 1.0895
-SL: 1.0875
-TP: 1.0935
-Expiration: 6 hours
+TYPE: SELL_STOP
+ENTRY: 1.0735
+SL: 1.0750
+TP: 1.0705
+Expiration: 3 hours
 CONFIDENCE: 7
-REASON: Breakout above minor resistance level, targeting next resistance zone.
+REASON: Breakdown below short-term support, targeting next support level.
 ---
 # Rank 2 | Confidence: 7/10
-PAIR: GBP/USD
-TYPE: BUY_STOP
-ENTRY: 1.2705
-SL: 1.2685
-TP: 1.2745
-Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Breakout above minor resistance, targeting next resistance level.
----
-# Rank 3 | Confidence: 7/10
-PAIR: USD/CHF
-TYPE: BUY_STOP
-ENTRY: 0.8985
-SL: 0.8970
-TP: 0.9015
-Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Breakout above short-term resistance with RSI indicating upward momentum.
----
-# Rank 4 | Confidence: 7/10
-PAIR: EUR/JPY
-TYPE: SELL_STOP
-ENTRY: 171.05
-SL: 171.25
-TP: 170.55
-Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Potential pullback to support level breakdown.
----
-# Rank 5 | Confidence: 7/10
-PAIR: AUD/JPY
-TYPE: BUY_STOP
-ENTRY: 98.45
-SL: 98.25
-TP: 98.85
-Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Breakout above resistance, supported by RSI and MACD.
----
-# Rank 6 | Confidence: 7/10
-PAIR: GBP/JPY
-TYPE: BUY_STOP
-ENTRY: 192.35
-SL: 192.05
-TP: 192.95
-Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Breakout above minor resistance, targeting next resistance level.
----
-# Rank 7 | Confidence: 7/10
-PAIR: GBP/JPY
-TYPE: SELL_STOP
-ENTRY: 191.75
-SL: 192.05
-TP: 191.25
-Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Breakdown below minor support, targeting next support level.
----
-# Rank 8 | Confidence: 7/10
-PAIR: EUR/AUD
-TYPE: BUY_STOP
-ENTRY: 1.6505
-SL: 1.6485
-TP: 1.6545
-Expiration: 4 hours
-CONFIDENCE: 7
-REASON: Breakout above minor resistance level, targeting short-term upward momentum.
----
-# Rank 9 | Confidence: 6/10
-PAIR: EUR/USD
-TYPE: SELL_STOP
-ENTRY: 1.0865
-SL: 1.0885
-TP: 1.0830
-Expiration: 6 hours
-CONFIDENCE: 6
-REASON: Potential breakdown below support level, targeting next support zone.
----
-# Rank 10 | Confidence: 6/10
 PAIR: GBP/USD
 TYPE: SELL_STOP
 ENTRY: 1.2665
 SL: 1.2685
 TP: 1.2625
 Expiration: 6 hours
+CONFIDENCE: 7
+REASON: Potential breakdown below short-term support with MACD showing bearish divergence.
+---
+# Rank 3 | Confidence: 7/10
+PAIR: USD/CHF
+TYPE: BUY_STOP
+ENTRY: 0.8955
+SL: 0.8935
+TP: 0.8995
+Expiration: 4 hours
+CONFIDENCE: 7
+REASON: Breakout confirmation above resistance, targeting next level.
+---
+# Rank 4 | Confidence: 7/10
+PAIR: EUR/JPY
+TYPE: BUY_STOP
+ENTRY: 160.25
+SL: 159.95
+TP: 160.85
+Expiration: 6 hours
+CONFIDENCE: 7
+REASON: Breakout confirmation above resistance level.
+---
+# Rank 5 | Confidence: 7/10
+PAIR: AUD/JPY
+TYPE: BUY_STOP
+ENTRY: 98.55
+SL: 98.35
+TP: 98.95
+Expiration: 6 hours
+CONFIDENCE: 7
+REASON: Breakout above minor resistance, targeting next resistance level.
+---
+# Rank 6 | Confidence: 7/10
+PAIR: GBP/JPY
+TYPE: BUY_STOP
+ENTRY: 192.25
+SL: 191.95
+TP: 192.85
+Expiration: 6 hours
+CONFIDENCE: 7
+REASON: Breakout confirmation above recent resistance, targeting short-term upside.
+---
+# Rank 7 | Confidence: 7/10
+PAIR: EUR/AUD
+TYPE: BUY_STOP
+ENTRY: 1.6275
+SL: 1.6245
+TP: 1.6335
+Expiration: 4 hours
+CONFIDENCE: 7
+REASON: Breakout above resistance, targeting short-term upward move.
+---
+# Rank 8 | Confidence: 7/10
+PAIR: NZD/CAD
+TYPE: SELL_STOP
+ENTRY: 0.8300
+SL: 0.8315
+TP: 0.8270
+Expiration: 3 hours
+CONFIDENCE: 7
+REASON: Potential breakdown below support, targeting previous low.
+---
+# Rank 9 | Confidence: 6/10
+PAIR: EUR/USD
+TYPE: BUY_STOP
+ENTRY: 1.0765
+SL: 1.0750
+TP: 1.0795
+Expiration: 3 hours
 CONFIDENCE: 6
-REASON: Breakdown below support, targeting previous low.
+REASON: Breakout above short-term resistance, targeting next resistance level.
+---
+# Rank 10 | Confidence: 6/10
+PAIR: GBP/USD
+TYPE: BUY_STOP
+ENTRY: 1.2715
+SL: 1.2695
+TP: 1.2755
+Expiration: 6 hours
+CONFIDENCE: 6
+REASON: Breakout above minor resistance level with RSI trending up.
 ---
 # Rank 11 | Confidence: 6/10
 PAIR: USD/CHF
 TYPE: SELL_STOP
-ENTRY: 0.8945
-SL: 0.8960
-TP: 0.8915
-Expiration: 6 hours
+ENTRY: 0.8905
+SL: 0.8925
+TP: 0.8865
+Expiration: 4 hours
 CONFIDENCE: 6
-REASON: Potential breakdown below support level, MACD crossover confirms bearish signal.
+REASON: Potential breakdown below support, targeting recent lows.
 ---
 # Rank 12 | Confidence: 6/10
 PAIR: EUR/JPY
-TYPE: BUY_STOP
-ENTRY: 171.65
-SL: 171.45
-TP: 172.15
+TYPE: SELL_STOP
+ENTRY: 159.65
+SL: 159.95
+TP: 159.15
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Breakout confirmation above resistance level.
+REASON: Potential pullback to support level.
 ---
 # Rank 13 | Confidence: 6/10
 PAIR: AUD/JPY
@@ -129,35 +129,35 @@ SL: 98.35
 TP: 97.75
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Potential pullback to support level, confirmed by bearish candlestick pattern.
+REASON: Breakdown below minor support, targeting next support level.
 ---
 # Rank 14 | Confidence: 6/10
-PAIR: EUR/AUD
+PAIR: GBP/JPY
 TYPE: SELL_STOP
-ENTRY: 1.6445
-SL: 1.6465
-TP: 1.6405
-Expiration: 4 hours
-CONFIDENCE: 6
-REASON: Potential breakdown below support, aiming for quick profit on bearish move.
----
-# Rank 15 | Confidence: 6/10
-PAIR: NZD/CAD
-TYPE: BUY_STOP
-ENTRY: 0.8355
-SL: 0.8335
-TP: 0.8395
+ENTRY: 191.50
+SL: 191.80
+TP: 190.90
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Breakout potential at resistance level.
+REASON: Potential breakdown below short-term support, targeting recent lows.
+---
+# Rank 15 | Confidence: 6/10
+PAIR: EUR/AUD
+TYPE: SELL_STOP
+ENTRY: 1.6200
+SL: 1.6230
+TP: 1.6140
+Expiration: 4 hours
+CONFIDENCE: 6
+REASON: Potential drop below support, expecting short-term downward move.
 ---
 # Rank 16 | Confidence: 6/10
 PAIR: NZD/CAD
-TYPE: SELL_STOP
-ENTRY: 0.8315
-SL: 0.8335
-TP: 0.8280
-Expiration: 6 hours
+TYPE: BUY_STOP
+ENTRY: 0.8335
+SL: 0.8320
+TP: 0.8365
+Expiration: 3 hours
 CONFIDENCE: 6
-REASON: Breakdown potential at support level.
+REASON: Breakout above minor resistance, targeting next level.
 ---

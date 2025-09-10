@@ -3,61 +3,61 @@ Top 6 Trade Signals (Ranked & Filtered)
 
 # Rank 1 | Confidence: 7/10
 PAIR: EUR/USD
-TYPE: BUY_STOP
-ENTRY: 1.0895
-SL: 1.0875
-TP: 1.0935
-Expiration: 6 hours
+TYPE: SELL_STOP
+ENTRY: 1.0735
+SL: 1.0750
+TP: 1.0705
+Expiration: 3 hours
 CONFIDENCE: 7
-REASON: Breakout above minor resistance level, targeting next resistance zone.
+REASON: Breakdown below short-term support, targeting next support level.
 ---
 # Rank 2 | Confidence: 7/10
 PAIR: GBP/USD
-TYPE: BUY_STOP
-ENTRY: 1.2705
+TYPE: SELL_STOP
+ENTRY: 1.2665
 SL: 1.2685
-TP: 1.2745
+TP: 1.2625
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above minor resistance, targeting next resistance level.
+REASON: Potential breakdown below short-term support with MACD showing bearish divergence.
 ---
 # Rank 3 | Confidence: 7/10
 PAIR: EUR/JPY
-TYPE: SELL_STOP
-ENTRY: 171.05
-SL: 171.25
-TP: 170.55
+TYPE: BUY_STOP
+ENTRY: 160.25
+SL: 159.95
+TP: 160.85
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Potential pullback to support level breakdown.
+REASON: Breakout confirmation above resistance level.
 ---
 # Rank 4 | Confidence: 7/10
 PAIR: AUD/JPY
 TYPE: BUY_STOP
-ENTRY: 98.45
-SL: 98.25
-TP: 98.85
+ENTRY: 98.55
+SL: 98.35
+TP: 98.95
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above resistance, supported by RSI and MACD.
+REASON: Breakout above minor resistance, targeting next resistance level.
 ---
-# Rank 5 | Confidence: 6/10
+# Rank 5 | Confidence: 7/10
 PAIR: NZD/CAD
-TYPE: BUY_STOP
-ENTRY: 0.8355
-SL: 0.8335
-TP: 0.8395
-Expiration: 6 hours
-CONFIDENCE: 6
-REASON: Breakout potential at resistance level.
+TYPE: SELL_STOP
+ENTRY: 0.8300
+SL: 0.8315
+TP: 0.8270
+Expiration: 3 hours
+CONFIDENCE: 7
+REASON: Potential breakdown below support, targeting previous low.
 ---
 # Rank 6 | Confidence: 6/10
 PAIR: NZD/CAD
-TYPE: SELL_STOP
-ENTRY: 0.8315
-SL: 0.8335
-TP: 0.8280
-Expiration: 6 hours
+TYPE: BUY_STOP
+ENTRY: 0.8335
+SL: 0.8320
+TP: 0.8365
+Expiration: 3 hours
 CONFIDENCE: 6
-REASON: Breakdown potential at support level.
+REASON: Breakout above minor resistance, targeting next level.
 ---
