@@ -12,24 +12,22 @@ if not api_key:
     raise ValueError("کلید API گوگل در GOOGLE_API_KEY یافت نشد.")
 genai.configure(api_key=api_key)
 
-# لیست جفت ارزهای پیشنهادی (می‌توانید آن را تغییر دهید)
+# لیست جفت ارزهای پیشنهادی (اشتباهات تایپی اصلاح شد)
 CURRENCY_PAIRS_TO_ANALYZE = [
     # Majors
-    "EUR/USD"
-    , "GBP/USD", "USD/CHF",
-    
+    "EUR/USD",
+    "GBP/USD",
+    "USD/CHF",
     # Key Yen Crosses
-   "EUR/JPY", "AUD/JPY","GBP/JPY",
-    
+    "EUR/JPY",
+    "AUD/JPY",
+    "GBP/JPY",
     # Key Euro Crosses
-    "EUR/AUD", "NZDCAD"
-    
-    # Key Pound Crosses
-   
+    "EUR/AUD",
+    "NZD/CAD" # فرمت صحیح
 ]
 
-
-# --- بخش پرامپت اصلی شما (با حداقل تغییرات) ---
+# --- بخش پرامپت اصلی شما ---
 
 def create_single_pair_prompt(currency_pair):
     """پرامپت اصلی و دقیق کاربر را برای تحلیل یک جفت ارز ایجاد می‌کند."""
@@ -70,11 +68,14 @@ def create_single_pair_prompt(currency_pair):
 
 # --- بخش پردازش و منطق (بدون تغییر) ---
 
+
 def get_signal_for_pair(pair):
     """برای یک جفت ارز مشخص، سیگنال را از Gemini دریافت می‌کند."""
     try:
         print(f"در حال ارسال درخواست اختصاصی برای: {pair}...")
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        # اصلاح نام مدل: مدلی به نام 2.0-flash وجود ندارد. از 1.5-flash استفاده می‌کنیم.
+        # یا برای تحلیل بهتر می‌توانید از 'gemini-1.0-pro' استفاده کنید.
+        model = genai.GenerativeModel('gemini-1.5-flash-latest')
         prompt = create_single_pair_prompt(pair)
         response = model.generate_content(prompt, request_options={'timeout': 150})
         print(f"پاسخ برای {pair} با موفقیت دریافت شد.")
@@ -131,19 +132,24 @@ def filter_and_rank_signals(signals, max_signals=10, max_per_currency=2):
 
     return final_signals
 
-def format_for_file(signals):
-    """سیگنال‌های نهایی را برای نوشتن در فایل فرمت‌بندی می‌کند."""
-    output = f"Top {len(signals)} Trade Signals (Ranked & Filtered)\n"
+# --- تغییر ۱: این تابع را کمی انعطاف‌پذیرتر می‌کنیم ---
+def format_for_file(signals, title):
+    """سیگنال‌ها را برای نوشتن در فایل با یک عنوان مشخص فرمت‌بندی می‌کند."""
+    output = f"{title}\n"
     output += "=" * 40 + "\n\n"
     
-    for i, signal in enumerate(signals, 1):
-        output += f"# Rank {i} | Confidence: {signal['confidence']}/10\n"
-        output += signal['raw'] + "\n"
-        output += "---\n"
+    # اگر لیستی برای فرمت کردن وجود داشت
+    if signals:
+        for i, signal in enumerate(signals, 1):
+            output += f"# Rank {i} | Confidence: {signal['confidence']}/10\n"
+            output += signal['raw'] + "\n"
+            output += "---\n"
+    else:
+        output += "هیچ سیگنالی برای نمایش یافت نشد.\n"
         
     return output
 
-# --- بخش اجرایی اصلی (بدون تغییر) ---
+# --- بخش اجرایی اصلی ---
 
 if __name__ == "__main__":
     all_raw_responses = []
@@ -152,7 +158,7 @@ if __name__ == "__main__":
         response = get_signal_for_pair(pair)
         if response:
             all_raw_responses.append(response)
-        time.sleep(30)
+        time.sleep(30) # تاخیر برای جلوگیری از خطای Rate Limit
 
     if all_raw_responses:
         full_raw_text = "\n---\n".join(all_raw_responses)
@@ -162,14 +168,29 @@ if __name__ == "__main__":
         if all_signals:
             print(f"\nمجموعا {len(all_signals)} سیگنال با موفقیت پارس شد.")
             
+            # --- تغییر ۲: منطق ذخیره‌سازی دو فایل ---
+
+            # ۱. سیگنال‌های برتر را فیلتر کن
             top_signals = filter_and_rank_signals(all_signals)
             print(f"تعداد {len(top_signals)} سیگنال برتر پس از فیلتر انتخاب شد.")
             
-            file_content = format_for_file(top_signals)
-            
+            # ۲. فایل سیگنال‌های برتر را ذخیره کن
+            title_top = f"Top {len(top_signals)} Trade Signals (Ranked & Filtered)"
+            file_content_top = format_for_file(top_signals, title_top)
             with open("trade_signal.txt", "w", encoding="utf-8") as file:
-                file.write(file_content)
+                file.write(file_content_top)
             print("فایل 'trade_signal.txt' با سیگنال‌های برتر به‌روز شد.")
+
+            # ۳. تمام سیگنال‌ها را برای فایل آرشیو مرتب کن
+            all_signals.sort(key=lambda x: x['confidence'], reverse=True)
+
+            # ۴. فایل آرشیو را ذخیره کن
+            title_archive = f"All {len(all_signals)} Signals Archive (Ranked by Confidence)"
+            file_content_archive = format_for_file(all_signals, title_archive)
+            with open("all_signals_archive.txt", "w", encoding="utf-8") as file:
+                file.write(file_content_archive)
+            print("فایل 'all_signals_archive.txt' با تمام سیگنال‌ها ایجاد شد.")
+
         else:
             print("هیچ سیگنال معتبری برای پردازش یافت نشد.")
     else:
