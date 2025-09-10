@@ -75,7 +75,7 @@ def get_signal_for_pair(pair):
         print(f"در حال ارسال درخواست اختصاصی برای: {pair}...")
         # اصلاح نام مدل: مدلی به نام 2.0-flash وجود ندارد. از 1.5-flash استفاده می‌کنیم.
         # یا برای تحلیل بهتر می‌توانید از 'gemini-1.0-pro' استفاده کنید.
-        model = genai.GenerativeModel('gemini-1.5-flash-latest')
+        model = genai.GenerativeModel('gemini-2.0-flash-latest')
         prompt = create_single_pair_prompt(pair)
         response = model.generate_content(prompt, request_options={'timeout': 150})
         print(f"پاسخ برای {pair} با موفقیت دریافت شد.")
