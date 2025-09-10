@@ -72,7 +72,7 @@ def get_signal_for_pair(pair):
     """برای یک جفت ارز مشخص، سیگنال را از Gemini دریافت می‌کند."""
     try:
         print(f"در حال ارسال درخواست اختصاصی برای: {pair}...")
-        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        model = genai.GenerativeModel('gemini-pro')
         prompt = create_single_pair_prompt(pair)
         response = model.generate_content(prompt, request_options={'timeout': 150})
         print(f"پاسخ برای {pair} با موفقیت دریافت شد.")
