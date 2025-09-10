@@ -15,13 +15,14 @@ genai.configure(api_key=api_key)
 # لیست جفت ارزهای پیشنهادی (می‌توانید آن را تغییر دهید)
 CURRENCY_PAIRS_TO_ANALYZE = [
     # Majors
-    "EUR/USD", "GBP/USD", "USD/CHF",
+    "EUR/USD"
+    #, "GBP/USD", "USD/CHF",
     
     # Key Yen Crosses
-    "EUR/JPY", "AUD/JPY","GBP/JPY",
+  #  "EUR/JPY", "AUD/JPY","GBP/JPY",
     
     # Key Euro Crosses
-     "EUR/AUD", "NZDCAD"
+  #   "EUR/AUD", "NZDCAD"
     
     # Key Pound Crosses
    
@@ -71,7 +72,7 @@ def get_signal_for_pair(pair):
     """برای یک جفت ارز مشخص، سیگنال را از Gemini دریافت می‌کند."""
     try:
         print(f"در حال ارسال درخواست اختصاصی برای: {pair}...")
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-1.0-pro')
         prompt = create_single_pair_prompt(pair)
         response = model.generate_content(prompt, request_options={'timeout': 150})
         print(f"پاسخ برای {pair} با موفقیت دریافت شد.")
@@ -149,7 +150,7 @@ if __name__ == "__main__":
         response = get_signal_for_pair(pair)
         if response:
             all_raw_responses.append(response)
-        time.sleep(90)
+        time.sleep(30)
 
     if all_raw_responses:
         full_raw_text = "\n---\n".join(all_raw_responses)
