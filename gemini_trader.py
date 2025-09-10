@@ -150,7 +150,7 @@ if __name__ == "__main__":
         response = get_signal_for_pair(pair)
         if response:
             all_raw_responses.append(response)
-        time.sleep(2)
+        time.sleep(30)
 
     if all_raw_responses:
         full_raw_text = "\n---\n".join(all_raw_responses)
