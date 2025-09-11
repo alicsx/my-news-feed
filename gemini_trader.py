@@ -20,7 +20,7 @@ if not TWELVEDATA_API_KEY:
 
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY",
-    "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/CAD"
+    "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/CAD"، "AUD/CHF"
 ]
 
 # --- ✨ تغییر ۲: تابع دریافت قیمت با Twelve Data جایگزین شد ✨ ---
@@ -96,7 +96,7 @@ def get_signal_for_pair(pair, current_price):
     """برای یک جفت ارز و قیمت مشخص، سیگنال را از Gemini دریافت می‌کند."""
     try:
         print(f"در حال ارسال درخواست تحلیل برای {pair} با قیمت {current_price} به Gemini...")
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         prompt = create_single_pair_prompt(pair, current_price)
         response = model.generate_content(prompt, request_options={'timeout': 150})
         print(f"پاسخ تحلیلی برای {pair} با موفقیت دریافت شد.")
