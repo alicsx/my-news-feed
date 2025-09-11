@@ -6,52 +6,54 @@ from collections import defaultdict
 import requests
 
 # --- بخش تنظیمات ---
-# (این بخش بدون تغییر باقی می‌ماند)
 
+# کلید API گوگل از GitHub Secrets خوانده می‌شود
 google_api_key = os.getenv("GOOGLE_API_KEY")
 if not google_api_key:
     raise ValueError("کلید API گوگل در GOOGLE_API_KEY یافت نشد.")
 genai.configure(api_key=google_api_key)
 
-ALPHA_VANTAGE_API_KEY = "PLRUXY1SOAL7WKSA"
+# ✨ تغییر ۱: کلید API Finnhub از GitHub Secrets خوانده می‌شود ✨
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
+if not FINNHUB_API_KEY:
+    raise ValueError("کلید API Finnhub در FINNHUB_API_KEY یافت نشد.")
 
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY",
     "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/CAD"
 ]
 
-# --- تابع دریافت قیمت لحظه‌ای (بدون تغییر) ---
-def get_real_time_price(currency_pair, api_key):
+# --- ✨ تغییر ۲: تابع دریافت قیمت با Finnhub جایگزین شد ✨ ---
+def get_finnhub_price(currency_pair, api_key):
+    """قیمت لحظه‌ای را با استفاده از API قدرتمند Finnhub دریافت می‌کند."""
+    # Finnhub از فرمت OANDA:EUR_USD یا فقط EURUSD استفاده می‌کند. ما / را حذف می‌کنیم.
+    symbol = currency_pair.replace('/', '')
+    url = f'https://finnhub.io/api/v1/quote?symbol={symbol}&token={api_key}'
+    
     try:
-        from_currency, to_currency = currency_pair.split('/')
-        url = (f'https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE'
-               f'&from_currency={from_currency}&to_currency={to_currency}&apikey={api_key}')
-        
-        print(f"\nدر حال دریافت قیمت لحظه‌ای برای {currency_pair}...")
+        print(f"\nدر حال دریافت قیمت لحظه‌ای برای {currency_pair} از Finnhub...")
         response = requests.get(url, timeout=20)
-        response.raise_for_status()
+        response.raise_for_status() # برای خطاهای HTTP
         
         data = response.json()
         
-        if "Realtime Currency Exchange Rate" in data:
-            price = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
+        # در Finnhub، قیمت فعلی با کلید 'c' مشخص می‌شود
+        if 'c' in data and data['c'] != 0:
+            price = data['c']
             print(f"قیمت دریافت شد: {price}")
             return float(price)
-        elif "Note" in data:
-            print(f"پیام از Alpha Vantage (احتمالا به محدودیت 5 درخواست در دقیقه رسیده‌اید): {data['Note']}")
-            return None
         else:
-            print(f"پاسخ غیرمنتظره از Alpha Vantage: {data}")
+            # اگر قیمت صفر باشد یا کلید وجود نداشته باشد، یعنی مشکلی هست
+            print(f"پاسخ غیرمنتظره یا قیمت نامعتبر از Finnhub برای {symbol}: {data}")
             return None
             
     except Exception as e:
-        print(f"خطا در دریافت قیمت لحظه‌ای: {e}")
+        print(f"خطا در دریافت قیمت از Finnhub برای {symbol}: {e}")
         return None
 
-# --- ✨ تغییر ۱: تابع ساخت پرامپت حالا قیمت را هم می‌گیرد ✨ ---
+# --- تابع ساخت پرامپت (بدون تغییر) ---
 def create_single_pair_prompt(currency_pair, current_price):
     """پرامپت اصلی را با استفاده از قیمت لحظه‌ای واقعی ایجاد می‌کند."""
-    # متن پرامپت شما با اضافه شدن قیمت لحظه‌ای
     user_prompt = f"""
     **قیمت لحظه‌ای و دقیق {currency_pair} هم اکنون {current_price} است.**
 
@@ -89,13 +91,12 @@ def create_single_pair_prompt(currency_pair, current_price):
     """
     return user_prompt.strip()
 
-# --- ✨ تغییر ۲: این تابع حالا قیمت را به عنوان ورودی دوم می‌پذیرد ✨ ---
+# --- تابع دریافت سیگنال از Gemini (بدون تغییر) ---
 def get_signal_for_pair(pair, current_price):
     """برای یک جفت ارز و قیمت مشخص، سیگنال را از Gemini دریافت می‌کند."""
     try:
         print(f"در حال ارسال درخواست تحلیل برای {pair} با قیمت {current_price} به Gemini...")
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        # قیمت به تابع ساخت پرامپت پاس داده می‌شود
+        model = genai.GenerativeModel('gemini-2.0-flash')
         prompt = create_single_pair_prompt(pair, current_price)
         response = model.generate_content(prompt, request_options={'timeout': 150})
         print(f"پاسخ تحلیلی برای {pair} با موفقیت دریافت شد.")
@@ -149,13 +150,13 @@ def format_for_file(signals, title):
         output += "هیچ سیگنالی برای نمایش یافت نشد.\n"
     return output
 
-# --- ✨ تغییر ۳: منطق اصلی برنامه برای اجرای زنجیره‌ای ✨ ---
+# --- منطق اصلی برنامه ---
 if __name__ == "__main__":
     all_raw_responses = []
     
     for pair in CURRENCY_PAIRS_TO_ANALYZE:
-        # ۱. ابتدا قیمت لحظه‌ای را بگیر
-        price = get_real_time_price(pair, ALPHA_VANTAGE_API_KEY)
+        # ۱. ابتدا قیمت لحظه‌ای را از Finnhub بگیر
+        price = get_finnhub_price(pair, FINNHUB_API_KEY)
         
         # ۲. اگر قیمت با موفقیت دریافت شد، آن را برای تحلیل بفرست
         if price:
@@ -165,10 +166,10 @@ if __name__ == "__main__":
         else:
             print(f"تحلیل برای {pair} انجام نشد چون قیمت لحظه‌ای دریافت نگردید.")
             
-        # ۳. تاخیر برای جلوگیری از رد شدن از محدودیت API ها
-        # (Alpha Vantage رایگان: 5 درخواست در دقیقه)
-        print("...ایجاد تاخیر 15 ثانیه‌ای برای مدیریت محدودیت API...")
-        time.sleep(15) 
+        # ✨ تغییر ۳: تاخیر کمتر به لطف محدودیت بالاتر Finnhub ✨
+        # (Finnhub رایگان: 60 درخواست در دقیقه)
+        print("...ایجاد تاخیر 2 ثانیه‌ای برای مدیریت محدودیت API...")
+        time.sleep(2) 
 
     if all_raw_responses:
         full_raw_text = "\n---\n".join(all_raw_responses)
