@@ -1,63 +1,63 @@
 Top 6 Trade Signals (Ranked & Filtered)
 ========================================
 
-# Rank 1 | Confidence: 7/10
-PAIR: USD/CHF
-TYPE: SELL_STOP
-ENTRY: 0.7975
-SL: 0.7995
-TP: 0.7955
-Expiration: 4 hours
-CONFIDENCE: 7
-REASON:  Potential bearish pullback after recent price action; slightly stronger signal.
----
-# Rank 2 | Confidence: 6/10
+# Rank 1 | Confidence: 6/10
 PAIR: EUR/USD
 TYPE: BUY_STOP
-ENTRY: 1.1710
-SL: 1.1690
-TP: 1.1730
+ENTRY: 1.17000
+SL: 1.16800
+TP: 1.17200
 Expiration: 4 hours
 CONFIDENCE: 6
-REASON: Minor resistance broken, potential bullish momentum.
+REASON: Minor resistance broken, bullish momentum expected in short term.
+---
+# Rank 2 | Confidence: 6/10
+PAIR: GBP/USD
+TYPE: BUY_STOP
+ENTRY: 1.3535
+SL: 1.3520
+TP: 1.3550
+Expiration: 4 hours
+CONFIDENCE: 6
+REASON: Minor support level and potential bullish bounce based on short-term chart patterns.
 ---
 # Rank 3 | Confidence: 6/10
 PAIR: EUR/JPY
 TYPE: BUY_STOP
 ENTRY: 172.500
 SL: 172.300
-TP: 172.700
+TP: 173.000
 Expiration: 4 hours
 CONFIDENCE: 6
-REASON: Minor upward trend supported by recent news of improved Eurozone economic data.
+REASON: Minor bullish momentum detected; potential breakout above resistance.
 ---
 # Rank 4 | Confidence: 6/10
 PAIR: AUD/JPY
 TYPE: BUY_STOP
-ENTRY: 97.600
-SL: 97.450
-TP: 97.750
+ENTRY: 97.500
+SL: 97.300
+TP: 98.000
 Expiration: 4 hours
 CONFIDENCE: 6
-REASON: Minor bullish signal on short-term chart, potential for short-term bounce.
+REASON: Potential bullish breakout above minor resistance; short-term momentum indicators suggest upward pressure.
 ---
 # Rank 5 | Confidence: 6/10
 PAIR: NZD/CAD
 TYPE: BUY_STOP
-ENTRY: 0.8242
-SL: 0.8232
-TP: 0.8252
+ENTRY: 0.8235
+SL: 0.8225
+TP: 0.8250
 Expiration: 4 hours
 CONFIDENCE: 6
-REASON: Minor upward trend potential based on current price and short-term bullish momentum.
+REASON: Minor upward trend indicated on short-term chart; potential for short-term bullish momentum.
 ---
-# Rank 6 | Confidence: 6/10
+# Rank 6 | Confidence: 5/10
 PAIR: NZD/CAD
 TYPE: SELL_STOP
-ENTRY: 0.8232
-SL: 0.8242
-TP: 0.8222
+ENTRY: 0.8228
+SL: 0.8238
+TP: 0.8215
 Expiration: 4 hours
-CONFIDENCE: 6
-REASON: Potential for short-term downward correction based on current price and minor resistance.
+CONFIDENCE: 5
+REASON: Price near minor resistance; potential for short-term bearish correction.
 ---
