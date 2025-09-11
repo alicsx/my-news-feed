@@ -27,7 +27,7 @@ CURRENCY_PAIRS_TO_ANALYZE = [
 def get_finnhub_price(currency_pair, api_key):
     """قیمت لحظه‌ای را با استفاده از API قدرتمند Finnhub دریافت می‌کند."""
     # Finnhub از فرمت OANDA:EUR_USD یا فقط EURUSD استفاده می‌کند. ما / را حذف می‌کنیم.
-    symbol = f"OANDA:{currency_pair.replace('/', '_')}"
+    symbol = f"FOREX:{currency_pair.replace('/', '')}"
     url = f'https://finnhub.io/api/v1/quote?symbol={symbol}&token={api_key}'
     
     try:
