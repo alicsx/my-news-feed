@@ -20,7 +20,7 @@ if not TWELVEDATA_API_KEY:
 
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY",
-    "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/CAD"، "AUD/CHF"
+    "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/CAD", "AUD/CHF","GBP/CAD"
 ]
 
 # --- ✨ تغییر ۲: تابع دریافت قیمت با Twelve Data جایگزین شد ✨ ---
