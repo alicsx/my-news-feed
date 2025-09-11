@@ -2,72 +2,72 @@ Top 7 Trade Signals (Ranked & Filtered)
 ========================================
 
 # Rank 1 | Confidence: 8/10
-PAIR: GBP/JPY
+PAIR: USD/CHF
 TYPE: BUY_STOP
-ENTRY: 200.060
-SL: 199.900
-TP: 200.300
+ENTRY: 0.79620
+SL: 0.79490
+TP: 0.79850
+Expiration: 8 hours
+CONFIDENCE: 8
+REASON: Extreme oversold conditions and potential for short-term bounce from historic lows.
+---
+# Rank 2 | Confidence: 8/10
+PAIR: GBP/JPY
+TYPE: BUY_LIMIT
+ENTRY: 199.450
+SL: 199.150
+TP: 200.150
 Expiration: 6 hours
 CONFIDENCE: 8
-REASON: Breakout above key psychological resistance 200.000 with underlying bullish momentum.
----
-# Rank 2 | Confidence: 7/10
-PAIR: EUR/USD
-TYPE: BUY_STOP
-ENTRY: 1.16860
-SL: 1.16610
-TP: 1.17210
-Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Breakout above short-term resistance indicates potential for a corrective bounce.
+REASON: Bullish trend continuation from key support.
 ---
 # Rank 3 | Confidence: 7/10
 PAIR: EUR/USD
-TYPE: SELL_STOP
-ENTRY: 1.16690
-SL: 1.16940
-TP: 1.16340
+TYPE: BUY_STOP
+ENTRY: 1.17410
+SL: 1.17340
+TP: 1.17530
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakdown below short-term support aligns with underlying USD strength.
+REASON: Bullish momentum breaking minor resistance, targeting next short-term high.
 ---
 # Rank 4 | Confidence: 7/10
-PAIR: AUD/JPY
+PAIR: EUR/JPY
 TYPE: BUY_STOP
-ENTRY: 97.725
-SL: 97.600
-TP: 97.900
-Expiration: 6 hours
+ENTRY: 172.85
+SL: 172.55
+TP: 173.35
+Expiration: 6H
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance with upward momentum.
+REASON: Breakout above intraday resistance, bullish momentum continuation.
 ---
 # Rank 5 | Confidence: 7/10
 PAIR: NZD/CAD
 TYPE: BUY_STOP
-ENTRY: 0.82300
-SL: 0.82180
-TP: 0.82480
-Expiration: 6 hours
+ENTRY: 0.82570
+SL: 0.82515
+TP: 0.82670
+Expiration: 4h
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance with confirmed momentum.
+REASON: Bullish momentum on break above minor resistance, targeting next immediate supply zone.
 ---
 # Rank 6 | Confidence: 7/10
 PAIR: NZD/CAD
 TYPE: SELL_STOP
-ENTRY: 0.82130
-SL: 0.82250
-TP: 0.81950
-Expiration: 6 hours
+ENTRY: 0.82495
+SL: 0.82550
+TP: 0.82395
+Expiration: 4h
 CONFIDENCE: 7
-REASON: Breakdown below short-term support with confirmed momentum.
+REASON: Bearish momentum on break below minor support, targeting next immediate demand zone.
 ---
 # Rank 7 | Confidence: 7/10
 PAIR: AUD/CHF
 TYPE: BUY_STOP
-ENTRY: 0.52870
-SL: 0.52780
-TP: 0.53000
-Expiration: 6 Hours
+ENTRY: 0.53030
+SL: 0.52950
+TP: 0.53180
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance, supported by SNB's dovish stance.
+REASON: Technical breakout above immediate resistance, aligned with potential AUD strength.
 ---
