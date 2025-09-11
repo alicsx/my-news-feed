@@ -40,6 +40,7 @@ jobs:
       - name: Run Gemini Trader Script
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
         run: python gemini_trader.py --pair EURUSD
 
       # مرحله ۵: کامیت کردن فایل خروجی در ریپازیتوری
