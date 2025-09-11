@@ -13,42 +13,42 @@ if not google_api_key:
     raise ValueError("کلید API گوگل در GOOGLE_API_KEY یافت نشد.")
 genai.configure(api_key=google_api_key)
 
-# ✨ تغییر ۱: کلید API Finnhub از GitHub Secrets خوانده می‌شود ✨
-FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
-if not FINNHUB_API_KEY:
-    raise ValueError("کلید API Finnhub در FINNHUB_API_KEY یافت نشد.")
+# ✨ تغییر ۱: کلید API Twelve Data از GitHub Secrets خوانده می‌شود ✨
+TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
+if not TWELVEDATA_API_KEY:
+    raise ValueError("کلید API Twelve Data در TWELVEDATA_API_KEY یافت نشد.")
 
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY",
     "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/CAD"
 ]
 
-# --- ✨ تغییر ۲: تابع دریافت قیمت با Finnhub جایگزین شد ✨ ---
-def get_finnhub_price(currency_pair, api_key):
-    """قیمت لحظه‌ای را با استفاده از API قدرتمند Finnhub دریافت می‌کند."""
-    # Finnhub از فرمت OANDA:EUR_USD یا فقط EURUSD استفاده می‌کند. ما / را حذف می‌کنیم.
-    symbol = f"FOREX:{currency_pair.replace('/', '')}"
-    url = f'https://finnhub.io/api/v1/quote?symbol={symbol}&token={api_key}'
+# --- ✨ تغییر ۲: تابع دریافت قیمت با Twelve Data جایگزین شد ✨ ---
+def get_twelvedata_price(currency_pair, api_key):
+    """قیمت لحظه‌ای را با استفاده از API قدرتمند Twelve Data دریافت می‌کند."""
+    # Twelve Data از فرمت استاندارد EUR/USD استفاده می‌کند.
+    symbol = currency_pair
+    url = f'https://api.twelvedata.com/price?symbol={symbol}&apikey={api_key}'
     
     try:
-        print(f"\nدر حال دریافت قیمت لحظه‌ای برای {currency_pair} از Finnhub...")
+        print(f"\nدر حال دریافت قیمت لحظه‌ای برای {currency_pair} از Twelve Data...")
         response = requests.get(url, timeout=20)
         response.raise_for_status() # برای خطاهای HTTP
         
         data = response.json()
         
-        # در Finnhub، قیمت فعلی با کلید 'c' مشخص می‌شود
-        if 'c' in data and data['c'] != 0:
-            price = data['c']
+        # در Twelve Data، قیمت فعلی با کلید 'price' مشخص می‌شود
+        if 'price' in data:
+            price = data['price']
             print(f"قیمت دریافت شد: {price}")
             return float(price)
         else:
-            # اگر قیمت صفر باشد یا کلید وجود نداشته باشد، یعنی مشکلی هست
-            print(f"پاسخ غیرمنتظره یا قیمت نامعتبر از Finnhub برای {symbol}: {data}")
+            # اگر کلید قیمت وجود نداشته باشد، یعنی مشکلی هست
+            print(f"پاسخ غیرمنتظره یا قیمت نامعتبر از Twelve Data برای {symbol}: {data}")
             return None
             
     except Exception as e:
-        print(f"خطا در دریافت قیمت از Finnhub برای {symbol}: {e}")
+        print(f"خطا در دریافت قیمت از Twelve Data برای {symbol}: {e}")
         return None
 
 # --- تابع ساخت پرامپت (بدون تغییر) ---
@@ -96,7 +96,7 @@ def get_signal_for_pair(pair, current_price):
     """برای یک جفت ارز و قیمت مشخص، سیگنال را از Gemini دریافت می‌کند."""
     try:
         print(f"در حال ارسال درخواست تحلیل برای {pair} با قیمت {current_price} به Gemini...")
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         prompt = create_single_pair_prompt(pair, current_price)
         response = model.generate_content(prompt, request_options={'timeout': 150})
         print(f"پاسخ تحلیلی برای {pair} با موفقیت دریافت شد.")
@@ -155,8 +155,8 @@ if __name__ == "__main__":
     all_raw_responses = []
     
     for pair in CURRENCY_PAIRS_TO_ANALYZE:
-        # ۱. ابتدا قیمت لحظه‌ای را از Finnhub بگیر
-        price = get_finnhub_price(pair, FINNHUB_API_KEY)
+        # ۱. ابتدا قیمت لحظه‌ای را از Twelve Data بگیر
+        price = get_twelvedata_price(pair, TWELVEDATA_API_KEY)
         
         # ۲. اگر قیمت با موفقیت دریافت شد، آن را برای تحلیل بفرست
         if price:
@@ -166,10 +166,10 @@ if __name__ == "__main__":
         else:
             print(f"تحلیل برای {pair} انجام نشد چون قیمت لحظه‌ای دریافت نگردید.")
             
-        # ✨ تغییر ۳: تاخیر کمتر به لطف محدودیت بالاتر Finnhub ✨
-        # (Finnhub رایگان: 60 درخواست در دقیقه)
-        print("...ایجاد تاخیر 2 ثانیه‌ای برای مدیریت محدودیت API...")
-        time.sleep(7) 
+        # ✨ تغییر ۳: تاخیر برای مدیریت محدودیت API Twelve Data ✨
+        # (طرح رایگان Twelve Data حدود ۸ درخواست در دقیقه مجاز است)
+        print("...ایجاد تاخیر 8 ثانیه‌ای برای مدیریت محدودیت API...")
+        time.sleep(8) 
 
     if all_raw_responses:
         full_raw_text = "\n---\n".join(all_raw_responses)
