@@ -169,7 +169,7 @@ if __name__ == "__main__":
         # ✨ تغییر ۳: تاخیر کمتر به لطف محدودیت بالاتر Finnhub ✨
         # (Finnhub رایگان: 60 درخواست در دقیقه)
         print("...ایجاد تاخیر 2 ثانیه‌ای برای مدیریت محدودیت API...")
-        time.sleep(15) 
+        time.sleep(7) 
 
     if all_raw_responses:
         full_raw_text = "\n---\n".join(all_raw_responses)
