@@ -19,8 +19,9 @@ if not TWELVEDATA_API_KEY:
     raise ValueError("کلید API Twelve Data در TWELVEDATA_API_KEY یافت نشد.")
 
 CURRENCY_PAIRS_TO_ANALYZE = [
-    "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY",
-    "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/USD", "AUD/CAD","GBP/CAD","ETH/USD","AVX/USD"
+  #  "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY",
+   # "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/USD", "AUD/CAD","GBP/CAD",
+    "ETH/USD","AVX/USD"
 ]
 
 # --- ✨ تغییر ۲: تابع دریافت قیمت با Twelve Data جایگزین شد ✨ ---
