@@ -1,63 +1,53 @@
-Top 6 Trade Signals (Ranked & Filtered)
+Top 5 Trade Signals (Ranked & Filtered)
 ========================================
 
-# Rank 1 | Confidence: 8/10
+# Rank 1 | Confidence: 7/10
+PAIR: GBP/USD
+TYPE: BUY_STOP
+ENTRY: 1.35580
+SL: 1.35450
+TP: 1.35750
+Expiration: 6 hours
+CONFIDENCE: 7
+REASON: Breakout above immediate resistance signaling potential for short-term rally.
+---
+# Rank 2 | Confidence: 7/10
+PAIR: GBP/USD
+TYPE: SELL_STOP
+ENTRY: 1.35380
+SL: 1.35510
+TP: 1.35210
+Expiration: 6 hours
+CONFIDENCE: 7
+REASON: Breakdown below immediate support signaling potential for short-term decline.
+---
+# Rank 3 | Confidence: 7/10
 PAIR: EUR/JPY
 TYPE: BUY_STOP
-ENTRY: 173.480
-SL: 173.180
-TP: 173.780
-Expiration: 6 hours
-CONFIDENCE: 8
-REASON: Bullish breakout above short-term resistance on strong momentum.
----
-# Rank 2 | Confidence: 8/10
-PAIR: GBP/JPY
-TYPE: BUY_STOP
-ENTRY: 200.35
-SL: 200.05
-TP: 200.65
+ENTRY: 173.350
+SL: 173.150
+TP: 173.750
 Expiration: 4 hours
-CONFIDENCE: 8
-REASON: Strong bullish trend continuation after breakout, supported by favorable interest rate differentials.
----
-# Rank 3 | Confidence: 8/10
-PAIR: NZD/USD
-TYPE: SELL_STOP
-ENTRY: 0.5945
-SL: 0.5970
-TP: 0.5915
-Expiration: 4h
-CONFIDENCE: 8
-REASON: Break below intraday support confirming prevailing bearish momentum.
+CONFIDENCE: 7
+REASON: Breakout above short-term resistance, aligning with underlying bullish momentum.
 ---
 # Rank 4 | Confidence: 7/10
-PAIR: EUR/USD
+PAIR: AUD/JPY
 TYPE: BUY_STOP
-ENTRY: 1.17450
-SL: 1.17350
-TP: 1.17600
-Expiration: 4 hours
+ENTRY: 98.28
+SL: 98.08
+TP: 98.58
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Bullish breakout above short-term resistance on intraday chart, targeting next resistance.
+REASON: Potential breakout above minor resistance within overall bullish sentiment.
 ---
 # Rank 5 | Confidence: 7/10
-PAIR: AUD/CAD
-TYPE: BUY_STOP
-ENTRY: 0.92120
-SL: 0.92000
-TP: 0.92320
-Expiration: 4h
-CONFIDENCE: 7
-REASON: Bullish momentum breakout above immediate resistance, supported by short-term indicators.
----
-# Rank 6 | Confidence: 7/10
-PAIR: AUD/CAD
+PAIR: EUR/AUD
 TYPE: SELL_STOP
-ENTRY: 0.91980
-SL: 0.92100
-TP: 0.91780
-Expiration: 4h
+ENTRY: 1.7610
+SL: 1.7640
+TP: 1.7580
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Bearish breakdown below immediate support, confirmed by short-term momentum indicators.
+REASON: Breakdown below immediate support confirms short-term bearish momentum, amplified by underlying Eurozone economic concerns.
 ---
