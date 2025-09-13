@@ -1,23 +1,23 @@
 Top 2 Trade Signals (Ranked & Filtered)
 ========================================
 
-# Rank 1 | Confidence: 7/10
+# Rank 1 | Confidence: 8/10
 PAIR: ETH/USD
 TYPE: BUY_STOP
-ENTRY: 4720.00
-SL: 4680.00
-TP: 4790.00
+ENTRY: 4790.0
+SL: 4720.0
+TP: 4880.0
 Expiration: 6 hours
-CONFIDENCE: 7
-REASON: Short-term breakout above immediate resistance, targeting next resistance zone with strong momentum.
+CONFIDENCE: 8
+REASON: Breakout above resistance fueled by strong bullish momentum and fundamentals.
 ---
 # Rank 2 | Confidence: 6/10
 PAIR: ETH/USD
 TYPE: SELL_STOP
-ENTRY: 4670.00
-SL: 4715.00
-TP: 4600.00
+ENTRY: 4710.0
+SL: 4760.0
+TP: 4640.0
 Expiration: 6 hours
 CONFIDENCE: 6
-REASON: Short-term breakdown below immediate support, signaling potential pullback or profit-taking.
+REASON: Short-term profit-taking or rejection from highs with a breakdown below immediate support.
 ---
