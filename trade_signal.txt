@@ -1,23 +1,63 @@
-Top 2 Trade Signals (Ranked & Filtered)
+Top 6 Trade Signals (Ranked & Filtered)
 ========================================
 
-# Rank 1 | Confidence: 7/10
-PAIR: ETH/USD
+# Rank 1 | Confidence: 8/10
+PAIR: USD/CHF
+TYPE: SELL_STOP
+ENTRY: 0.7949
+SL: 0.7960
+TP: 0.7935
+Expiration: 4H
+CONFIDENCE: 8
+REASON: Continuation of strong bearish momentum after breaking immediate support, aligning with implied trend.
+---
+# Rank 2 | Confidence: 8/10
+PAIR: GBP/CAD
 TYPE: BUY_STOP
-ENTRY: 4635.00
-SL: 4595.00
-TP: 4685.00
+ENTRY: 1.8785
+SL: 1.8745
+TP: 1.8835
+Expiration: 6 hours
+CONFIDENCE: 8
+REASON: Breakout above short-term resistance, supported by BoC's dovish monetary policy.
+---
+# Rank 3 | Confidence: 7/10
+PAIR: EUR/USD
+TYPE: BUY_STOP
+ENTRY: 1.17420
+SL: 1.17290
+TP: 1.17670
+Expiration: 4 hours from now
+CONFIDENCE: 7
+REASON: Bullish breakout above intraday resistance level, indicating momentum.
+---
+# Rank 4 | Confidence: 7/10
+PAIR: EUR/JPY
+TYPE: BUY_STOP
+ENTRY: 173.550
+SL: 173.200
+TP: 173.950
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above minor resistance with potential for short-term bullish continuation.
+REASON: Breakout above short-term resistance, aligned with underlying bullish momentum.
 ---
-# Rank 2 | Confidence: 6/10
-PAIR: ETH/USD
-TYPE: SELL_STOP
-ENTRY: 4600.00
-SL: 4640.00
-TP: 4550.00
+# Rank 5 | Confidence: 7/10
+PAIR: AUD/JPY
+TYPE: BUY_STOP
+ENTRY: 98.300
+SL: 98.150
+TP: 98.480
 Expiration: 6 hours
-CONFIDENCE: 6
-REASON: Breakdown below minor support indicating short-term correction or profit-taking pressure.
+CONFIDENCE: 7
+REASON: Breakout above resistance, supported by AUD carry trade fundamentals.
+---
+# Rank 6 | Confidence: 7/10
+PAIR: AUD/CAD
+TYPE: BUY_STOP
+ENTRY: 0.92015
+SL: 0.91900
+TP: 0.92145
+Expiration: 6 hours
+CONFIDENCE: 7
+REASON: Breakout above short-term resistance following consolidation.
 ---
