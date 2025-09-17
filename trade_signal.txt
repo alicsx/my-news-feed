@@ -2,62 +2,62 @@ Top 6 Trade Signals (Ranked & Filtered)
 ========================================
 
 # Rank 1 | Confidence: 8/10
-PAIR: EUR/JPY
+PAIR: USD/CHF
 TYPE: BUY_STOP
-ENTRY: 173.45
-SL: 173.10
-TP: 173.85
-Expiration: 6 hours
+ENTRY: 0.78750
+SL: 0.78650
+TP: 0.79000
+Expiration: 300 minutes
 CONFIDENCE: 8
-REASON: Breakout above immediate resistance in an established uptrend, short-term momentum likely to continue.
+REASON: Extreme oversold condition and high probability of SNB intervention for a quick bounce.
 ---
 # Rank 2 | Confidence: 8/10
+PAIR: EUR/JPY
+TYPE: BUY_STOP
+ENTRY: 173.480
+SL: 173.180
+TP: 173.880
+Expiration: 6 hours
+CONFIDENCE: 8
+REASON: Strong underlying uptrend; targeting continuation on breakout above immediate resistance.
+---
+# Rank 3 | Confidence: 8/10
 PAIR: GBP/JPY
 TYPE: BUY_STOP
 ENTRY: 200.050
-SL: 199.800
+SL: 199.890
 TP: 200.450
 Expiration: 4 hours
 CONFIDENCE: 8
-REASON: Breakout above major psychological resistance (200.00) aligns with underlying bullish trend and JPY weakness.
----
-# Rank 3 | Confidence: 8/10
-PAIR: NZD/USD
-TYPE: SELL_STOP
-ENTRY: 0.5960
-SL: 0.5995
-TP: 0.5915
-Expiration: 6 hours
-CONFIDENCE: 8
-REASON: Break below immediate support, aligning with underlying bearish trend and fundamental divergence.
+REASON: Confirmed breakout above critical 200.00 psychological resistance.
 ---
 # Rank 4 | Confidence: 7/10
 PAIR: EUR/USD
-TYPE: SELL_LIMIT
-ENTRY: 1.1848
-SL: 1.1858
-TP: 1.1820
-Expiration: 4 hours
+TYPE: BUY_STOP
+ENTRY: 1.18580
+SL: 1.18380
+TP: 1.18780
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Rejection from immediate technical resistance (1.1850) aligning with prevailing bearish sentiment.
+REASON: Breakout above short-term resistance with potential for quick upward momentum; moderate USD weakness anticipated.
 ---
 # Rank 5 | Confidence: 7/10
 PAIR: AUD/CAD
 TYPE: BUY_STOP
-ENTRY: 0.9205
-SL: 0.9180
-TP: 0.9225
-Expiration: 4 hours from now
+ENTRY: 0.9185
+SL: 0.9160
+TP: 0.9210
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance signaling upward momentum.
+REASON: Break above short-term resistance signals upward momentum.
 ---
 # Rank 6 | Confidence: 7/10
 PAIR: AUD/CAD
 TYPE: SELL_STOP
-ENTRY: 0.9165
-SL: 0.9185
-TP: 0.9145
-Expiration: 4 hours from now
+ENTRY: 0.9155
+SL: 0.9180
+TP: 0.9130
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakdown below short-term support signaling downward momentum.
+REASON: Break below short-term support signals downward momentum.
 ---
