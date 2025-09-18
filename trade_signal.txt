@@ -1,63 +1,63 @@
 Top 6 Trade Signals (Ranked & Filtered)
 ========================================
 
-# Rank 1 | Confidence: 7/10
-PAIR: EUR/USD
-TYPE: SELL_STOP
-ENTRY: 1.18150
-SL: 1.18220
-TP: 1.18050
-Expiration: 6h
-CONFIDENCE: 7
-REASON: Rejection at minor resistance (1.18200) and break below immediate local support.
+# Rank 1 | Confidence: 8/10
+PAIR: EUR/JPY
+TYPE: BUY_LIMIT
+ENTRY: 174.15
+SL: 173.90
+TP: 174.55
+Expiration: 6 hours
+CONFIDENCE: 8
+REASON: Dip buy at short-term support, aligning with underlying bullish trend and JPY weakness.
 ---
 # Rank 2 | Confidence: 7/10
-PAIR: GBP/USD
+PAIR: EUR/USD
 TYPE: BUY_STOP
-ENTRY: 1.36250
-SL: 1.36050
-TP: 1.36450
+ENTRY: 1.17900
+SL: 1.17750
+TP: 1.18100
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above immediate resistance confirms short-term bullish momentum.
+REASON: Bullish breakout above short-term resistance with confirmed momentum.
 ---
 # Rank 3 | Confidence: 7/10
-PAIR: EUR/JPY
+PAIR: GBP/USD
 TYPE: BUY_STOP
-ENTRY: 174.250
-SL: 173.900
-TP: 174.650
-Expiration: 6 hours
+ENTRY: 1.3578
+SL: 1.3543
+TP: 1.3623
+Expiration: 6 hours from now
 CONFIDENCE: 7
-REASON: Bullish momentum breakout above minor resistance.
+REASON: Anticipating short-term bullish breakout above resistance, supported by potential momentum.
 ---
 # Rank 4 | Confidence: 7/10
 PAIR: AUD/JPY
 TYPE: BUY_STOP
-ENTRY: 98.070
-SL: 97.920
-TP: 98.300
+ENTRY: 98.170
+SL: 97.950
+TP: 98.450
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Break above immediate resistance, aligned with underlying AUD strength.
+REASON: Breakout above immediate resistance signaling short-term continuation in a mildly bullish trend.
 ---
 # Rank 5 | Confidence: 7/10
 PAIR: AUD/CAD
 TYPE: BUY_STOP
-ENTRY: 0.91650
-SL: 0.91580
-TP: 0.91780
-Expiration: 6 hours
+ENTRY: 0.9137
+SL: 0.9127
+TP: 0.9152
+Expiration: 5 hours
 CONFIDENCE: 7
-REASON: Potential short-term bounce from minor support, bullish momentum building on 1H chart.
+REASON: Breakout above short-term resistance level with potential for quick upward momentum.
 ---
 # Rank 6 | Confidence: 7/10
 PAIR: GBP/CAD
-TYPE: BUY_STOP
-ENTRY: 1.8795
-SL: 1.8765
-TP: 1.8825
-Expiration: 6 hours
+TYPE: SELL_STOP
+ENTRY: 1.8675
+SL: 1.8695
+TP: 1.8645
+Expiration: 4 hours
 CONFIDENCE: 7
-REASON: Decisive break above short-term resistance signals bullish continuation.
+REASON: Breakdown below immediate support (1.8680) confirming bearish momentum amidst mild GBP weakness.
 ---
