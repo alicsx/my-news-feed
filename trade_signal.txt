@@ -4,60 +4,60 @@ Top 6 Trade Signals (Ranked & Filtered)
 # Rank 1 | Confidence: 8/10
 PAIR: EUR/USD
 TYPE: SELL_STOP
-ENTRY: 1.17380
-SL: 1.17580
-TP: 1.17180
-Expiration: 4 Hours
+ENTRY: 1.17250
+SL: 1.17480
+TP: 1.16950
+Expiration: 4 hours from order placement
 CONFIDENCE: 8
-REASON: Break below immediate support confirms bearish momentum in line with fundamental bias.
+REASON: Break below minor support confirming short-term bearish continuation.
 ---
 # Rank 2 | Confidence: 7/10
 PAIR: EUR/USD
 TYPE: BUY_STOP
 ENTRY: 1.17580
-SL: 1.17380
-TP: 1.17780
-Expiration: 4 Hours
+SL: 1.17390
+TP: 1.17800
+Expiration: 4 hours from order placement
 CONFIDENCE: 7
-REASON: Break above immediate resistance signals short-term bullish momentum.
+REASON: Break above minor resistance signaling short-term upward momentum.
 ---
 # Rank 3 | Confidence: 7/10
 PAIR: AUD/JPY
 TYPE: BUY_STOP
-ENTRY: 97.600
-SL: 97.500
-TP: 97.750
-Expiration: 4 hours from now
+ENTRY: 97.780
+SL: 97.580
+TP: 98.080
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Bullish breakout above immediate resistance, targeting upside momentum.
+REASON: Breakout above short-term resistance with potential for continued bullish momentum.
 ---
 # Rank 4 | Confidence: 7/10
 PAIR: AUD/JPY
 TYPE: SELL_STOP
-ENTRY: 97.450
-SL: 97.550
-TP: 97.300
-Expiration: 4 hours from now
+ENTRY: 97.380
+SL: 97.580
+TP: 97.080
+Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Bearish breakout below immediate support, targeting downside momentum.
+REASON: Breakdown below short-term support with potential for continued bearish momentum.
 ---
 # Rank 5 | Confidence: 7/10
 PAIR: GBP/CAD
 TYPE: BUY_STOP
-ENTRY: 1.8580
-SL: 1.8545
-TP: 1.8620
-Expiration: 6h
+ENTRY: 1.85780
+SL: 1.85580
+TP: 1.86030
+Expiration: 6 Hours
 CONFIDENCE: 7
-REASON: Breakout above short-term resistance (R1), indicating potential for further upside momentum.
+REASON: Bullish breakout above immediate resistance, aligned with short-term momentum.
 ---
 # Rank 6 | Confidence: 7/10
 PAIR: GBP/CAD
 TYPE: SELL_STOP
-ENTRY: 1.8530
-SL: 1.8565
-TP: 1.8490
-Expiration: 6h
+ENTRY: 1.85480
+SL: 1.85680
+TP: 1.85230
+Expiration: 6 Hours
 CONFIDENCE: 7
-REASON: Breakdown below short-term support (S1), indicating potential for further downward acceleration.
+REASON: Bearish breakdown below immediate support, indicating continuation of downside momentum.
 ---
