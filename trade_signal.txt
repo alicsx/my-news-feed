@@ -1,63 +1,73 @@
-Top 6 Trade Signals (Ranked & Filtered)
+Top 7 Trade Signals (Ranked & Filtered)
 ========================================
 
 # Rank 1 | Confidence: 8/10
-PAIR: EUR/USD
+PAIR: NZD/USD
 TYPE: SELL_STOP
-ENTRY: 1.17340
-SL: 1.17450
-TP: 1.17220
-Expiration: 3 Hours
+ENTRY: 0.5845
+SL: 0.5858
+TP: 0.5828
+Expiration: 4h
 CONFIDENCE: 8
-REASON: Break below short-term support, aligning with underlying bearish fundamental bias.
+REASON: Break below immediate support, signaling potential for quick downside continuation.
 ---
 # Rank 2 | Confidence: 8/10
-PAIR: AUD/JPY
+PAIR: NZD/USD
 TYPE: BUY_STOP
-ENTRY: 97.700
-SL: 97.590
-TP: 97.950
-Expiration: 240 minutes
+ENTRY: 0.5860
+SL: 0.5847
+TP: 0.5877
+Expiration: 4h
 CONFIDENCE: 8
-REASON: Bullish breakout above short-term resistance.
+REASON: Break above immediate resistance, indicating potential for quick upside momentum.
 ---
-# Rank 3 | Confidence: 8/10
-PAIR: AUD/JPY
-TYPE: SELL_STOP
-ENTRY: 97.400
-SL: 97.510
-TP: 97.150
-Expiration: 240 minutes
-CONFIDENCE: 8
-REASON: Bearish breakdown below short-term support.
+# Rank 3 | Confidence: 7/10
+PAIR: EUR/JPY
+TYPE: BUY_STOP
+ENTRY: 173.90
+SL: 173.65
+TP: 174.20
+Expiration: 4H
+CONFIDENCE: 7
+REASON: Breakout above immediate resistance signaling continuation of upward momentum.
 ---
 # Rank 4 | Confidence: 7/10
-PAIR: EUR/USD
+PAIR: AUD/JPY
 TYPE: BUY_STOP
-ENTRY: 1.17560
-SL: 1.17450
-TP: 1.17680
-Expiration: 3 Hours
-CONFIDENCE: 7
-REASON: Break above short-term resistance, potential for bullish momentum.
----
-# Rank 5 | Confidence: 7/10
-PAIR: GBP/CAD
-TYPE: BUY_STOP
-ENTRY: 1.85780
-SL: 1.85490
-TP: 1.86070
+ENTRY: 97.680
+SL: 97.450
+TP: 97.950
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Breakout above intraday resistance with potential for short-term momentum.
+REASON: Breakout above short-term resistance in a consolidating market.
+---
+# Rank 5 | Confidence: 7/10
+PAIR: EUR/AUD
+TYPE: BUY_STOP
+ENTRY: 1.78280
+SL: 1.77880
+TP: 1.78680
+Expiration: 6 hours
+CONFIDENCE: 7
+REASON: Bullish breakout from consolidation with mild EUR strength.
 ---
 # Rank 6 | Confidence: 7/10
 PAIR: GBP/CAD
-TYPE: SELL_STOP
-ENTRY: 1.85380
-SL: 1.85670
-TP: 1.85090
-Expiration: 6 hours
+TYPE: BUY_STOP
+ENTRY: 1.85750
+SL: 1.85450
+TP: 1.86050
+Expiration: 5 hours
 CONFIDENCE: 7
-REASON: Breakdown below intraday support with potential for short-term momentum.
+REASON: Bullish breakout from recent consolidation, aiming for short-term momentum.
+---
+# Rank 7 | Confidence: 6/10
+PAIR: GBP/CAD
+TYPE: SELL_STOP
+ENTRY: 1.85350
+SL: 1.85650
+TP: 1.85050
+Expiration: 5 hours
+CONFIDENCE: 6
+REASON: Bearish breakout below key support, anticipating a quick downward move.
 ---
