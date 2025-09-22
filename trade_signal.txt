@@ -3,61 +3,61 @@ Top 6 Trade Signals (Ranked & Filtered)
 
 # Rank 1 | Confidence: 8/10
 PAIR: USD/CHF
-TYPE: SELL_STOP
-ENTRY: 0.79680
-SL: 0.79780
-TP: 0.79530
-Expiration: 4 hours
-CONFIDENCE: 8
-REASON: Strong bearish momentum likely to continue breakdown below immediate support.
----
-# Rank 2 | Confidence: 8/10
-PAIR: GBP/CAD
 TYPE: BUY_STOP
-ENTRY: 1.85850
-SL: 1.85600
-TP: 1.86200
+ENTRY: 0.79500
+SL: 0.79400
+TP: 0.79850
 Expiration: 6 hours
 CONFIDENCE: 8
-REASON: Monetary policy divergence favors GBP; technical breakout above immediate resistance expected.
+REASON: Extreme oversold conditions and potential for short-term mean reversion from historic low.
+---
+# Rank 2 | Confidence: 8/10
+PAIR: EUR/AUD
+TYPE: SELL_STOP
+ENTRY: 1.7825
+SL: 1.7855
+TP: 1.7790
+Expiration: 6H
+CONFIDENCE: 8
+REASON: Fundamental bearish bias combined with technical breakdown below immediate support.
 ---
 # Rank 3 | Confidence: 7/10
 PAIR: EUR/USD
 TYPE: SELL_STOP
-ENTRY: 1.1705
-SL: 1.1730
-TP: 1.1680
-Expiration: 6 hours
+ENTRY: 1.1750
+SL: 1.1780
+TP: 1.1720
+Expiration: 4 hours
 CONFIDENCE: 7
-REASON: Breakdown below short-term support, aligning with underlying USD strength.
+REASON: Breakdown below short-term support, aligning with underlying USD strength and bearish technical indicators.
 ---
 # Rank 4 | Confidence: 7/10
-PAIR: EUR/JPY
-TYPE: BUY_LIMIT
-ENTRY: 173.85
-SL: 173.55
-TP: 174.35
-Expiration: 4h
+PAIR: GBP/JPY
+TYPE: BUY_STOP
+ENTRY: 200.05
+SL: 199.85
+TP: 200.45
+Expiration: 6H
 CONFIDENCE: 7
-REASON: Buying a short-term dip, aligning with the prevailing bullish trend driven by interest rate differentials.
+REASON: Strong bullish trend; breakout above psychological 200.00 resistance expected to extend gains.
 ---
 # Rank 5 | Confidence: 7/10
-PAIR: AUD/JPY
-TYPE: SELL_LIMIT
-ENTRY: 97.88
-SL: 98.05
-TP: 97.65
-Expiration: 8 hours
-CONFIDENCE: 7
-REASON: Anticipating rejection from minor resistance and short-term profit-taking.
----
-# Rank 6 | Confidence: 7/10
 PAIR: AUD/CAD
-TYPE: BUY_STOP
-ENTRY: 0.91030
-SL: 0.90960
-TP: 0.91180
+TYPE: SELL_STOP
+ENTRY: 0.9088
+SL: 0.9102
+TP: 0.9070
 Expiration: 6 hours
 CONFIDENCE: 7
-REASON: Bullish breakout above immediate resistance level.
+REASON: Technical breakdown below immediate support, aligned with slight fundamental CAD strength.
+---
+# Rank 6 | Confidence: 6/10
+PAIR: GBP/JPY
+TYPE: SELL_STOP
+ENTRY: 199.80
+SL: 200.05
+TP: 199.40
+Expiration: 6H
+CONFIDENCE: 6
+REASON: Potential short-term retracement after failing to sustain above 200.00 psychological level.
 ---
