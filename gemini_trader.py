@@ -7,7 +7,7 @@ import logging
 import pandas as pd
 import pandas_ta as ta
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 
 # =================================================================================
 # --- بخش تنظیمات اصلی و استراتژی ---
@@ -28,7 +28,7 @@ LOW_TIMEFRAME = "1h"
 CANDLES_TO_FETCH = 200
 ADX_TREND_THRESHOLD = 25
 ADX_RANGE_THRESHOLD = 20
-AI_DEEP_ANALYSIS_CONFIDENCE_THRESHOLD = 9 # حداقل امتیاز برای ارسال به مرحله دوم تحلیل AI
+AI_DEEP_ANALYSIS_CONFIDENCE_THRESHOLD = 9
 
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD",
@@ -49,7 +49,6 @@ logging.basicConfig(level=logging.INFO,
 # --- توابع اصلی سیستم ---
 # =================================================================================
 
-# توابع load_cache, save_cache, is_pair_on_cooldown, has_high_impact_news بدون تغییر
 def load_cache():
     if not os.path.exists(CACHE_FILE): return {}
     try:
@@ -62,7 +61,7 @@ def save_cache(cache):
 def is_pair_on_cooldown(pair, cache):
     if pair not in cache: return False
     last_signal_time = datetime.fromisoformat(cache[pair])
-    if datetime.utcnow() - last_signal_time < timedelta(hours=CACHE_DURATION_HOURS):
+    if datetime.now(UTC) - last_signal_time < timedelta(hours=CACHE_DURATION_HOURS):
         logging.info(f"جفت ارز {pair} در حافظه کش است (cooldown).")
         return True
     return False
@@ -75,11 +74,14 @@ def has_high_impact_news(pair, api_key):
         countries_to_check = [country for c, country in country_map.items() if c in [base_currency, quote_currency]]
         if not countries_to_check: return False
         
-        today = datetime.utcnow().strftime('%Y-%m-%d')
-        end_date = (datetime.utcnow() + timedelta(days=1)).strftime('%Y-%m-%d')
+        today = datetime.now(UTC).strftime('%Y-%m-%d')
+        end_date = (datetime.now(UTC) + timedelta(days=1)).strftime('%Y-%m-%d')
         country_params = ",".join(countries_to_check)
         url = f"https://api.twelvedata.com/economic_calendar?country={country_params}&start_date={today}&end_date={end_date}&apikey={api_key}"
-        res = requests.get(url, timeout=20).json()
+        
+        response = requests.get(url, timeout=20)
+        response.raise_for_status()
+        res = response.json()
 
         if 'events' not in res or not res['events']: return False
             
@@ -91,13 +93,17 @@ def has_high_impact_news(pair, api_key):
                 logging.warning(f"خبر مهم '{event['event']}' برای {pair} در راه است! تحلیل متوقف شد.")
                 return True
         return False
+    # FIX: Improved error handling for JSON and other request issues
+    except requests.exceptions.JSONDecodeError as e:
+        logging.error(f"خطا در پارس کردن پاسخ JSON از تقویم اقتصادی: {e}")
+        logging.error(f"پاسخ دریافت شده از سرور که باعث خطا شد: {response.text}")
+        return False
     except Exception as e:
-        logging.error(f"خطا در بررسی تقویم اقتصادی Twelve Data: {e}")
+        logging.error(f"خطای نامشخص در بررسی تقویم اقتصادی Twelve Data: {e}")
         return False
 
 def get_market_data(symbol, interval, outputsize):
     logging.info(f"دریافت {outputsize} کندل {interval} برای {symbol}...")
-    # توجه: Twelve Data در پلن رایگان، ممکن است حجم معاملات را برنگرداند
     url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={outputsize}&apikey={TWELVEDATA_API_KEY}'
     try:
         response = requests.get(url, timeout=30)
@@ -127,7 +133,6 @@ def apply_full_technical_indicators(df):
     if 'volume' in df.columns:
         df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
     
-    # شناسایی سطوح حمایت و مقاومت کلیدی
     df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
     df['res'] = df['high'].rolling(window=10, min_periods=3).max()
     
@@ -135,7 +140,7 @@ def apply_full_technical_indicators(df):
     return df
 
 def detect_market_regime(df):
-    if df is None or 'ADX_14' not in df.columns: return "UNCLEAR"
+    if df is None or df.empty or 'ADX_14' not in df.columns: return "UNCLEAR"
     last_adx = df.iloc[-1]['ADX_14']
     logging.info(f"تشخیص شرایط بازار... ADX فعلی: {last_adx:.2f}")
     if last_adx > ADX_TREND_THRESHOLD: return "TRENDING"
@@ -143,6 +148,7 @@ def detect_market_regime(df):
     return "UNCLEAR"
 
 def find_trade_candidate(htf_df, ltf_df):
+    """بر اساس شرایط بازار، بهترین کاندیدای معامله را از استراتژی مناسب پیدا می‌کند."""
     market_regime = detect_market_regime(htf_df)
     if market_regime == "UNCLEAR": return None, None, None, None
     
@@ -154,13 +160,23 @@ def find_trade_candidate(htf_df, ltf_df):
     volume_confirmed = 'VOLUME_SMA_20' in last_ltf and last_ltf['volume'] > last_ltf['VOLUME_SMA_20']
 
     if market_regime == "TRENDING":
+        # FIX: Ensure MACD columns exist before checking
+        if 'MACD_12_26_9' not in last_ltf or 'MACDs_12_26_9' not in last_ltf:
+            logging.warning("ستون‌های MACD برای تحلیل روند یافت نشد.")
+            return None, None, None, None
+        
         htf_trend = "UPTREND" if htf_df.iloc[-1]['EMA_21'] > htf_df.iloc[-1]['EMA_50'] else "DOWNTREND"
-        if htf_trend == "UPTREND" and last_ltf['EMA_21'] > last_ltf['EMA_50'] and volume_confirmed:
+        if htf_trend == "UPTREND" and last_ltf['EMA_21'] > last_ltf['EMA_50'] and last_ltf['MACD_12_26_9'] > last_ltf['MACDs_12_26_9'] and volume_confirmed:
             return "BUY_TREND", market_regime, last_ltf, (htf_support, htf_resistance)
-        if htf_trend == "DOWNTREND" and last_ltf['EMA_21'] < last_ltf['EMA_50'] and volume_confirmed:
+        if htf_trend == "DOWNTREND" and last_ltf['EMA_21'] < last_ltf['EMA_50'] and last_ltf['MACD_12_26_9'] < last_ltf['MACDs_12_26_9'] and volume_confirmed:
             return "SELL_TREND", market_regime, last_ltf, (htf_support, htf_resistance)
 
     elif market_regime == "RANGING":
+        # FIX: Ensure Bollinger Bands columns exist before checking
+        if 'BBL_20_2.0' not in last_ltf or 'BBU_20_2.0' not in last_ltf:
+            logging.warning("ستون‌های Bollinger Bands برای تحلیل رنج یافت نشد.")
+            return None, None, None, None
+            
         if last_ltf['close'] <= last_ltf['BBL_20_2.0'] and last_ltf['RSI_14'] < 35:
             return "BUY_RANGE", market_regime, last_ltf, (htf_support, htf_resistance)
         if last_ltf['close'] >= last_ltf['BBU_20_2.0'] and last_ltf['RSI_14'] > 65:
@@ -189,11 +205,12 @@ def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, 
     REASON: [Concise reason]
     """
     logging.info(f"ارسال سیگنال {symbol} به AI برای تأییدیه اولیه...")
-    # ... (کد ارتباط با Gemini مانند قبل)
     try:
         model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
-        if "REJECT" in response.text.upper(): return None, 0
+        if "REJECT" in response.text.upper():
+            logging.warning(f"هوش مصنوعی سیگنال اولیه {symbol} را رد کرد.")
+            return None, 0
         
         confidence_match = re.search(r"CONFIDENCE:\s*(\d+)", response.text)
         confidence = int(confidence_match.group(1)) if confidence_match else 0
@@ -202,7 +219,6 @@ def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, 
     except Exception as e:
         logging.error(f"خطا در تأییدیه اولیه AI: {e}")
         return None, 0
-
 
 def get_ai_deep_analysis(initial_response_text):
     """مرحله دوم: برای سیگنال‌های با امتیاز بالا، تحلیل عمیق و روایت‌سازی درخواست می‌شود."""
@@ -233,7 +249,7 @@ def get_ai_deep_analysis(initial_response_text):
         return response.text
     except Exception as e:
         logging.error(f"خطا در تحلیل عمیق AI: {e}")
-        return initial_response_text # در صورت خطا، همان پاسخ اولیه را برگردان
+        return initial_response_text
 
 # =================================================================================
 # --- حلقه اصلی برنامه ---
@@ -245,7 +261,15 @@ def main():
     signal_cache = load_cache()
     final_signals = []
 
-    for pair in CURRENCY_PAIRS_TO_ANALYZE:
+    # Check for command-line arguments to override the pair list
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pair", type=str, help="Specify a single currency pair to analyze, e.g., EUR/USD")
+    args, unknown = parser.parse_known_args() # Use parse_known_args to ignore unknown args from GH Actions
+
+    pairs_to_run = [args.pair.upper()] if args.pair else CURRENCY_PAIRS_TO_ANALYZE
+
+    for pair in pairs_to_run:
         logging.info(f"--- شروع تحلیل جامع برای: {pair} ---")
         if is_pair_on_cooldown(pair, signal_cache) or has_high_impact_news(pair, TWELVEDATA_API_KEY):
             time.sleep(2); continue
@@ -256,7 +280,9 @@ def main():
         ltf_df = get_market_data(pair, LOW_TIMEFRAME, CANDLES_TO_FETCH)
         ltf_df_analyzed = apply_full_technical_indicators(ltf_df)
 
-        if htf_df_analyzed is None or ltf_df_analyzed is None: continue
+        if htf_df_analyzed is None or ltf_df_analyzed is None or htf_df_analyzed.empty or ltf_df_analyzed.empty:
+            logging.warning(f"دیتای کافی برای تحلیل {pair} پس از پردازش وجود ندارد.")
+            continue
             
         signal_type, market_regime, _, key_levels = find_trade_candidate(htf_df_analyzed, ltf_df_analyzed)
 
@@ -267,10 +293,8 @@ def main():
                 if confidence >= AI_DEEP_ANALYSIS_CONFIDENCE_THRESHOLD:
                     final_response = get_ai_deep_analysis(initial_response)
                 
-                # اضافه کردن زمان انقضا به پاسخ نهایی
-                final_response_with_exp = final_response.strip() + "\nExpiration: 6 hours"
-                final_signals.append(final_response_with_exp)
-                signal_cache[pair] = datetime.utcnow().isoformat()
+                final_signals.append(final_response.strip())
+                signal_cache[pair] = datetime.now(UTC).isoformat()
         else:
             logging.info(f"هیچ کاندیدای معامله‌ای بر اساس استراتژی‌های فعلی برای {pair} یافت نشد.")
 
