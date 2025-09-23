@@ -191,7 +191,7 @@ def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, 
     logging.info(f"ارسال سیگنال {symbol} به AI برای تأییدیه اولیه...")
     # ... (کد ارتباط با Gemini مانند قبل)
     try:
-        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
         if "REJECT" in response.text.upper(): return None, 0
         
@@ -227,7 +227,7 @@ def get_ai_deep_analysis(initial_response_text):
     * **Primary Risk:** [The main risk to the trade]
     """
     try:
-        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
         logging.info("تحلیل عمیق و روایت با موفقیت دریافت شد.")
         return response.text
