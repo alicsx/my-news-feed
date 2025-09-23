@@ -49,6 +49,19 @@ logging.basicConfig(level=logging.INFO,
 # --- توابع اصلی سیستم ---
 # =================================================================================
 
+def normalize_pair_format(pair_string):
+    """جفت ارز ورودی را به فرمت استاندارد 'BASE/QUOTE' تبدیل می‌کند."""
+    if not isinstance(pair_string, str): return ""
+    
+    pair_string = pair_string.upper().strip()
+    if "/" in pair_string:
+        return pair_string
+    if len(pair_string) == 6:
+        return f"{pair_string[:3]}/{pair_string[3:]}"
+    
+    logging.warning(f"فرمت جفت ارز '{pair_string}' ناشناخته است و ممکن است باعث خطا شود.")
+    return pair_string
+
 def load_cache():
     if not os.path.exists(CACHE_FILE): return {}
     try:
@@ -93,7 +106,6 @@ def has_high_impact_news(pair, api_key):
                 logging.warning(f"خبر مهم '{event['event']}' برای {pair} در راه است! تحلیل متوقف شد.")
                 return True
         return False
-    # FIX: Improved error handling for JSON and other request issues
     except requests.exceptions.JSONDecodeError as e:
         logging.error(f"خطا در پارس کردن پاسخ JSON از تقویم اقتصادی: {e}")
         logging.error(f"پاسخ دریافت شده از سرور که باعث خطا شد: {response.text}")
@@ -120,7 +132,6 @@ def get_market_data(symbol, interval, outputsize):
     return None
 
 def apply_full_technical_indicators(df):
-    """مجموعه کامل اندیکاتورها شامل حجم و سطوح کلیدی را محاسبه می‌کند."""
     if df is None or df.empty: return None
     logging.info("محاسبه اندیکاتورهای جامع (EMA, MACD, RSI, ATR, ADX, BBands, Volume)...")
     df.ta.ema(length=21, append=True)
@@ -148,7 +159,6 @@ def detect_market_regime(df):
     return "UNCLEAR"
 
 def find_trade_candidate(htf_df, ltf_df):
-    """بر اساس شرایط بازار، بهترین کاندیدای معامله را از استراتژی مناسب پیدا می‌کند."""
     market_regime = detect_market_regime(htf_df)
     if market_regime == "UNCLEAR": return None, None, None, None
     
@@ -157,10 +167,9 @@ def find_trade_candidate(htf_df, ltf_df):
     htf_support = htf_df.iloc[-1]['sup']
     htf_resistance = htf_df.iloc[-1]['res']
     
-    volume_confirmed = 'VOLUME_SMA_20' in last_ltf and last_ltf['volume'] > last_ltf['VOLUME_SMA_20']
+    volume_confirmed = 'VOLUME_SMA_20' in last_ltf and 'volume' in last_ltf and last_ltf['volume'] > last_ltf['VOLUME_SMA_20']
 
     if market_regime == "TRENDING":
-        # FIX: Ensure MACD columns exist before checking
         if 'MACD_12_26_9' not in last_ltf or 'MACDs_12_26_9' not in last_ltf:
             logging.warning("ستون‌های MACD برای تحلیل روند یافت نشد.")
             return None, None, None, None
@@ -172,7 +181,6 @@ def find_trade_candidate(htf_df, ltf_df):
             return "SELL_TREND", market_regime, last_ltf, (htf_support, htf_resistance)
 
     elif market_regime == "RANGING":
-        # FIX: Ensure Bollinger Bands columns exist before checking
         if 'BBL_20_2.0' not in last_ltf or 'BBU_20_2.0' not in last_ltf:
             logging.warning("ستون‌های Bollinger Bands برای تحلیل رنج یافت نشد.")
             return None, None, None, None
@@ -185,7 +193,6 @@ def find_trade_candidate(htf_df, ltf_df):
     return None, None, None, None
 
 def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, ltf_df):
-    """مرحله اول: دریافت تأییدیه اولیه از هوش مصنوعی."""
     strategy_name = "Trend Following (Volume Confirmed)" if market_regime == "TRENDING" else "Mean Reversion"
     last_candle = ltf_df.iloc[-1]
     prompt = f"""
@@ -221,7 +228,6 @@ def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, 
         return None, 0
 
 def get_ai_deep_analysis(initial_response_text):
-    """مرحله دوم: برای سیگنال‌های با امتیاز بالا، تحلیل عمیق و روایت‌سازی درخواست می‌شود."""
     logging.info("سیگنال با امتیاز بالا یافت شد! ارسال برای تحلیل عمیق و روایت‌سازی...")
     prompt = f"""
     You are the Head of Trading. A junior analyst has confirmed the following high-probability trade. Your job is to provide the final narrative and refine the parameters.
@@ -261,15 +267,17 @@ def main():
     signal_cache = load_cache()
     final_signals = []
 
-    # Check for command-line arguments to override the pair list
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--pair", type=str, help="Specify a single currency pair to analyze, e.g., EUR/USD")
-    args, unknown = parser.parse_known_args() # Use parse_known_args to ignore unknown args from GH Actions
+    args, _ = parser.parse_known_args()
 
-    pairs_to_run = [args.pair.upper()] if args.pair else CURRENCY_PAIRS_TO_ANALYZE
+    pairs_to_run = [args.pair] if args.pair else CURRENCY_PAIRS_TO_ANALYZE
 
-    for pair in pairs_to_run:
+    for pair_raw in pairs_to_run:
+        pair = normalize_pair_format(pair_raw)
+        if not pair: continue
+
         logging.info(f"--- شروع تحلیل جامع برای: {pair} ---")
         if is_pair_on_cooldown(pair, signal_cache) or has_high_impact_news(pair, TWELVEDATA_API_KEY):
             time.sleep(2); continue
@@ -301,7 +309,6 @@ def main():
         logging.info(f"... تحلیل {pair} تمام شد. تاخیر ۱۰ ثانیه‌ای ...")
         time.sleep(10)
 
-    # ذخیره سیگنال‌های نهایی و حافظه
     if final_signals:
         output_content = "Senior Analyst Grade Signals (Adaptive + 2-Step AI)\n" + "="*60 + "\n\n"
         output_content += "\n---\n".join(final_signals)
