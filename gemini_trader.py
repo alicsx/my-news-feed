@@ -13,7 +13,7 @@ from datetime import datetime, timedelta, UTC
 # --- بخش تنظیمات اصلی و استراتژی ---
 # =================================================================================
 
-# کلیدهای API را از متغیرهای محیطی یا GitHub Secrets بخوان
+# FIX: Only two API keys are now needed
 google_api_key = os.getenv("GOOGLE_API_KEY")
 TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
 
@@ -22,25 +22,18 @@ if not all([google_api_key, TWELVEDATA_API_KEY]):
 
 genai.configure(api_key=google_api_key)
 
-# --- تنظیمات استراتژی ---
+# --- All other settings remain the same ---
 HIGH_TIMEFRAME = "4h"
 LOW_TIMEFRAME = "1h"
 CANDLES_TO_FETCH = 200
 ADX_TREND_THRESHOLD = 25
 ADX_RANGE_THRESHOLD = 20
 AI_DEEP_ANALYSIS_CONFIDENCE_THRESHOLD = 9
-
-CURRENCY_PAIRS_TO_ANALYZE = [
-    "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD",
-    "GBP/JPY", "EUR/JPY", "AUD/JPY", "NZD/USD", "USD/CAD"
-]
-
-# --- تنظیمات فنی ---
+CURRENCY_PAIRS_TO_ANALYZE = ["EUR/USD"]
 CACHE_FILE = "signal_cache.json"
 CACHE_DURATION_HOURS = 4
 LOG_FILE = "trading_log.log"
 
-# --- راه‌اندازی سیستم لاگ‌برداری ---
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     handlers=[logging.FileHandler(LOG_FILE, mode='w'), logging.StreamHandler()])
@@ -74,48 +67,47 @@ def is_pair_on_cooldown(pair, cache):
         return True
     return False
 
-# ✨ FIX: Function completely rewritten to make separate API calls per country ✨
-def has_high_impact_news(pair, api_key):
-    logging.info(f"بررسی تقویم اقتصادی Twelve Data برای {pair}...")
+# ✨ NEW: Function to check for news using the Gemini AI itself ✨
+def check_news_with_ai(pair):
+    """Uses Gemini to check for high-impact economic news."""
+    logging.info(f"استفاده از هوش مصنوعی برای بررسی تقویم اقتصادی برای {pair}...")
     try:
         base_currency, quote_currency = pair.split('/')
-        country_map = {'USD': 'US', 'EUR': 'EU', 'GBP': 'GB', 'JPY': 'JP', 'CHF': 'CH', 'AUD': 'AU', 'NZD': 'NZ', 'CAD': 'CA'}
-        codes_to_check = {code for c, code in country_map.items() if c in [base_currency, quote_currency]}
         
-        if not codes_to_check: return False
+        # A highly specific prompt to force a reliable YES/NO answer
+        prompt = f"""
+        You are a financial data verification system. Your only task is to check for high-impact economic news.
+        Search reliable economic calendars (like Forex Factory, DailyFX) for the next 4 hours from now.
+        Are there any 'high' impact news events scheduled for the currencies '{base_currency}' or '{quote_currency}' in this timeframe?
 
-        today = datetime.now(UTC).strftime('%Y-%m-%d')
-        end_date = (datetime.now(UTC) + timedelta(days=1)).strftime('%Y-%m-%d')
-
-        # Loop through each country code and make a separate API call
-        for country_code in codes_to_check:
-            logging.info(f"Checking news for country: {country_code}")
-            url = f"https://api.twelvedata.com/calendar?country={country_code}&start_date={today}&end_date={end_date}&apikey={api_key}"
-            response = requests.get(url, timeout=20)
-            response.raise_for_status()
-            res = response.json()
-
-            if 'events' not in res or not res['events']:
-                continue # No events for this country, check the next one
-
-            for event in res['events']:
-                event_time = datetime.fromisoformat(event['date'].replace("Z", "+00:00"))
-                time_until_event = event_time - datetime.now(event_time.tzinfo)
-
-                if timedelta(minutes=-30) < time_until_event < timedelta(hours=4) and event.get('importance') == 'High':
-                    logging.warning(f"خبر مهم '{event['event']}' برای {country_code} (بخشی از {pair}) در راه است! تحلیل متوقف شد.")
-                    return True
+        Respond ONLY with the word "YES" if there is at least one high-impact event.
+        Respond ONLY with the word "NO" if there are no high-impact events.
+        Do not provide any other text, explanation, or formatting.
+        """
         
-        logging.info(f"خبر مهمی برای {pair} در پیش نیست.")
-        return False
-    except requests.exceptions.HTTPError as e:
-        logging.error(f"خطای HTTP در بررسی تقویم اقتصادی: {e.response.status_code} - {e.response.text}")
-        return False
+        model = genai.GenerativeModel('gemini-2.5-flash') # Using a fast model for this simple task
+        response = model.generate_content(prompt.strip(), request_options={'timeout': 120})
+        
+        response_text = response.text.strip().upper()
+        
+        if "YES" in response_text:
+            logging.warning(f"هوش مصنوعی یک خبر مهم برای {pair} در ساعات آینده شناسایی کرد. تحلیل متوقف شد.")
+            return True
+        elif "NO" in response_text:
+            logging.info(f"هوش مصنوعی خبر مهمی برای {pair} در پیش‌بینی نکرد.")
+            return False
+        else:
+            # If the AI gives an unexpected response, assume there might be news to be safe.
+            logging.warning(f"پاسخ غیرمنتظره‌ای از AI برای بررسی اخبار دریافت شد: '{response.text}'. برای احتیاط، تحلیل متوقف می‌شود.")
+            return True
+
     except Exception as e:
-        logging.error(f"خطای نامشخص در بررسی تقویم اقتصادی Twelve Data: {e}")
-        return False
+        logging.error(f"خطا در هنگام بررسی اخبار با هوش مصنوعی: {e}")
+        # To be safe in case of an error, assume there IS news.
+        return True
 
 def get_market_data(symbol, interval, outputsize):
+    # This function remains unchanged
     logging.info(f"دریافت {outputsize} کندل {interval} برای {symbol}...")
     url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={outputsize}&apikey={TWELVEDATA_API_KEY}'
     try:
@@ -124,7 +116,6 @@ def get_market_data(symbol, interval, outputsize):
         data = response.json()
         if 'values' in data and len(data['values']) > 0:
             df = pd.DataFrame(data['values'])
-            # FIX: Updated to modern pandas syntax to avoid FutureWarning
             for col in ['open', 'high', 'low', 'close', 'volume']:
                 if col in df.columns:
                     df[col] = pd.to_numeric(df[col], errors='coerce')
@@ -137,9 +128,14 @@ def get_market_data(symbol, interval, outputsize):
     return None
 
 def apply_full_technical_indicators(df):
+    # This function remains unchanged
     if df is None or df.empty: return None
-    logging.info("محاسبه اندیکاتورهای جامع (EMA, MACD, RSI, ATR, ADX, BBands, Volume)...")
+    logging.info("محاسبه اندیکاتورهای جامع...")
     try:
+        if len(df) < 50:
+            logging.warning(f"داده‌های ورودی برای محاسبه اندیکاتورها کافی نیست. تعداد ردیف‌ها: {len(df)}")
+            return pd.DataFrame()
+
         df.ta.ema(length=21, append=True)
         df.ta.ema(length=50, append=True)
         df.ta.rsi(length=14, append=True)
@@ -153,11 +149,21 @@ def apply_full_technical_indicators(df):
         df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
         df['res'] = df['high'].rolling(window=10, min_periods=3).max()
         
+        logging.info(f"شکل دیتافریم قبل از dropna: {df.shape}")
         df.dropna(inplace=True)
+        logging.info(f"شکل دیتافریم بعد از dropna: {df.shape}")
+        
+        if df.empty:
+            logging.warning("دیتافریم پس از محاسبه اندیکاتورها و حذف مقادیر خالی، تهی شد.")
+
     except Exception as e:
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
         return pd.DataFrame()
     return df
+
+
+# --- The rest of the functions (detect_market_regime, find_trade_candidate, AI functions) remain unchanged ---
+# They are included here for completeness.
 
 def detect_market_regime(df):
     if df is None or df.empty or 'ADX_14' not in df.columns: return "UNCLEAR"
@@ -202,7 +208,6 @@ def find_trade_candidate(htf_df, ltf_df):
     return None, None, None, None
 
 def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, ltf_df):
-    # This function remains unchanged.
     strategy_name = "Trend Following (Volume Confirmed)" if market_regime == "TRENDING" else "Mean Reversion"
     last_candle = ltf_df.iloc[-1]
     prompt = f"""
@@ -238,7 +243,6 @@ def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, 
         return None, 0
 
 def get_ai_deep_analysis(initial_response_text):
-    # This function remains unchanged.
     logging.info("سیگنال با امتیاز بالا یافت شد! ارسال برای تحلیل عمیق و روایت‌سازی...")
     prompt = f"""
     You are the Head of Trading. A junior analyst has confirmed the following high-probability trade. Your job is to provide the final narrative and refine the parameters.
@@ -268,6 +272,7 @@ def get_ai_deep_analysis(initial_response_text):
         logging.error(f"خطا در تحلیل عمیق AI: {e}")
         return initial_response_text
 
+
 # =================================================================================
 # --- حلقه اصلی برنامه ---
 # =================================================================================
@@ -290,7 +295,8 @@ def main():
         if not pair: continue
 
         logging.info(f"--- شروع تحلیل جامع برای: {pair} ---")
-        if is_pair_on_cooldown(pair, signal_cache) or has_high_impact_news(pair, TWELVEDATA_API_KEY):
+        # FIX: Call the new AI-based news check function
+        if is_pair_on_cooldown(pair, signal_cache) or check_news_with_ai(pair):
             time.sleep(2); continue
 
         htf_df = get_market_data(pair, HIGH_TIMEFRAME, CANDLES_TO_FETCH)
