@@ -2,191 +2,293 @@ import google.generativeai as genai
 import os
 import re
 import time
-from collections import defaultdict
+import json
+import logging
+import pandas as pd
+import pandas_ta as ta
 import requests
+from datetime import datetime, timedelta
 
-# --- بخش تنظیمات ---
+# =================================================================================
+# --- بخش تنظیمات اصلی و استراتژی ---
+# =================================================================================
 
-# کلید API گوگل از GitHub Secrets خوانده می‌شود
+# کلیدهای API را از متغیرهای محیطی یا GitHub Secrets بخوان
 google_api_key = os.getenv("GOOGLE_API_KEY")
-if not google_api_key:
-    raise ValueError("کلید API گوگل در GOOGLE_API_KEY یافت نشد.")
+TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
+
+if not all([google_api_key, TWELVEDATA_API_KEY]):
+    raise ValueError("لطفاً کلیدهای API را تنظیم کنید: GOOGLE_API_KEY, TWELVEDATA_API_KEY")
+
 genai.configure(api_key=google_api_key)
 
-# ✨ تغییر ۱: کلید API Twelve Data از GitHub Secrets خوانده می‌شود ✨
-TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
-if not TWELVEDATA_API_KEY:
-    raise ValueError("کلید API Twelve Data در TWELVEDATA_API_KEY یافت نشد.")
+# --- تنظیمات استراتژی ---
+HIGH_TIMEFRAME = "4h"
+LOW_TIMEFRAME = "1h"
+CANDLES_TO_FETCH = 200
+ADX_TREND_THRESHOLD = 25
+ADX_RANGE_THRESHOLD = 20
+AI_DEEP_ANALYSIS_CONFIDENCE_THRESHOLD = 9 # حداقل امتیاز برای ارسال به مرحله دوم تحلیل AI
 
 CURRENCY_PAIRS_TO_ANALYZE = [
-   "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY",
-   "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/USD", "AUD/CAD","GBP/CAD",
-  
+    "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD",
+    "GBP/JPY", "EUR/JPY", "AUD/JPY", "NZD/USD", "USD/CAD"
 ]
 
-# --- ✨ تغییر ۲: تابع دریافت قیمت با Twelve Data جایگزین شد ✨ ---
-def get_twelvedata_price(currency_pair, api_key):
-    """قیمت لحظه‌ای را با استفاده از API قدرتمند Twelve Data دریافت می‌کند."""
-    # Twelve Data از فرمت استاندارد EUR/USD استفاده می‌کند.
-    symbol = currency_pair
-    url = f'https://api.twelvedata.com/price?symbol={symbol}&apikey={api_key}'
-    
+# --- تنظیمات فنی ---
+CACHE_FILE = "signal_cache.json"
+CACHE_DURATION_HOURS = 4
+LOG_FILE = "trading_log.log"
+
+# --- راه‌اندازی سیستم لاگ‌برداری ---
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[logging.FileHandler(LOG_FILE, mode='w'), logging.StreamHandler()])
+
+# =================================================================================
+# --- توابع اصلی سیستم ---
+# =================================================================================
+
+# توابع load_cache, save_cache, is_pair_on_cooldown, has_high_impact_news بدون تغییر
+def load_cache():
+    if not os.path.exists(CACHE_FILE): return {}
     try:
-        print(f"\nدر حال دریافت قیمت لحظه‌ای برای {currency_pair} از Twelve Data...")
-        response = requests.get(url, timeout=20)
-        response.raise_for_status() # برای خطاهای HTTP
+        with open(CACHE_FILE, 'r') as f: return json.load(f)
+    except (json.JSONDecodeError, IOError): return {}
+
+def save_cache(cache):
+    with open(CACHE_FILE, 'w') as f: json.dump(cache, f, indent=4)
+
+def is_pair_on_cooldown(pair, cache):
+    if pair not in cache: return False
+    last_signal_time = datetime.fromisoformat(cache[pair])
+    if datetime.utcnow() - last_signal_time < timedelta(hours=CACHE_DURATION_HOURS):
+        logging.info(f"جفت ارز {pair} در حافظه کش است (cooldown).")
+        return True
+    return False
+
+def has_high_impact_news(pair, api_key):
+    logging.info(f"بررسی تقویم اقتصادی Twelve Data برای {pair}...")
+    try:
+        base_currency, quote_currency = pair.split('/')
+        country_map = {'USD': 'United States', 'EUR': 'Euro Zone', 'GBP': 'United Kingdom', 'JPY': 'Japan', 'CHF': 'Switzerland', 'AUD': 'Australia', 'NZD': 'New Zealand', 'CAD': 'Canada'}
+        countries_to_check = [country for c, country in country_map.items() if c in [base_currency, quote_currency]]
+        if not countries_to_check: return False
         
-        data = response.json()
-        
-        # در Twelve Data، قیمت فعلی با کلید 'price' مشخص می‌شود
-        if 'price' in data:
-            price = data['price']
-            print(f"قیمت دریافت شد: {price}")
-            return float(price)
-        else:
-            # اگر کلید قیمت وجود نداشته باشد، یعنی مشکلی هست
-            print(f"پاسخ غیرمنتظره یا قیمت نامعتبر از Twelve Data برای {symbol}: {data}")
-            return None
+        today = datetime.utcnow().strftime('%Y-%m-%d')
+        end_date = (datetime.utcnow() + timedelta(days=1)).strftime('%Y-%m-%d')
+        country_params = ",".join(countries_to_check)
+        url = f"https://api.twelvedata.com/economic_calendar?country={country_params}&start_date={today}&end_date={end_date}&apikey={api_key}"
+        res = requests.get(url, timeout=20).json()
+
+        if 'events' not in res or not res['events']: return False
             
+        for event in res['events']:
+            event_time = datetime.fromisoformat(event['date'].replace("Z", "+00:00"))
+            time_until_event = event_time - datetime.now(event_time.tzinfo)
+
+            if timedelta(minutes=-30) < time_until_event < timedelta(hours=4) and event.get('importance') == 'High':
+                logging.warning(f"خبر مهم '{event['event']}' برای {pair} در راه است! تحلیل متوقف شد.")
+                return True
+        return False
     except Exception as e:
-        print(f"خطا در دریافت قیمت از Twelve Data برای {symbol}: {e}")
-        return None
+        logging.error(f"خطا در بررسی تقویم اقتصادی Twelve Data: {e}")
+        return False
 
-# --- تابع ساخت پرامپت (بدون تغییر) ---
-def create_single_pair_prompt(currency_pair, current_price):
-    """پرامپت اصلی را با استفاده از قیمت لحظه‌ای واقعی ایجاد می‌کند."""
-    user_prompt = f"""
-    **قیمت لحظه‌ای و دقیق {currency_pair} هم اکنون {current_price} است.**
-
-    تحلیل خود را مستقیماً بر اساس این قیمت شروع کن. با در نظر گرفتن این قیمت به عنوان نقطه شروع، نمودار را با انواع اندیکاتورهای معتبر و ترفندهای تکنیکال تحلیل کن. همچنین اخبار اکنون و اتفاقات آینده که ممکن است روی آن تاثیر بگذارد و تحلیل فاندامنتال آن را بررسی کرده و هوشمندانه بهترین نقطه ورود به همراه TP و SL را مشخص کن.
-
-    بگو چون میخواهم استاپ اردر بگذارم، زمان انقضایش را چند ساعت بگذارم و این تحلیل تا چند ساعت معتبر است.
-
-    مناسب برای اردر هم برای فروش و هم برای خرید پیشنهاد بده. میخواهم اردر کوتاه مدت باشد و در عرض چند ساعت نتیجه بدهد. در واقع کوتاه مدت ترین اردری که تحلیل قوی و احتمال موفقیت بالایی دارد را انتخاب کن.
-
-    تحلیل فاندامنتال و اخبار را از اینترنت دریافت کن اما برای تحلیل تکنیکال، قیمت شروع را عددی که به تو دادم ({current_price}) در نظر بگیر.
-    یادت باشه تحلیل تکنیکال چارت های این ارزو با بررسی دقیق تاریخچه آن که از منابع آنلاین دریافت میکنی با دقت و قدرت و با ترفند های مختلف و معتبر ترید و اندیکاتور های قوی انجام دهی
-   و در انتها برآیند تمام تحلیل های فاندامنتال و تکنیکال را در قالب سیگنال بهم بدی
-    ---
-    **دستورالعمل‌های خروجی:**
-    برای هر سیگنال پیشنهادی (خرید و فروش)، یک "امتیاز اطمینان" (Confidence Score) از 1 تا 10 و یک "دلیل" (Reason) بسیار کوتاه ارائه بده.
-    خروجی را "دقیقا و فقط" با فرمت زیر برای هر دو سیگنال ارائه بده. بین دو سیگنال از "---" استفاده کن. هیچ متن اضافه دیگری ننویس.
-    یعنی تمام پاسخت همین قالب زیر باشه و هیچ متنی حتی سلام یا هر چیز دیگه ای نباشه و همچنین تماما انگلیسی باشه
-    PAIR: {currency_pair}
-    TYPE: [نوع اردر مثل BUY_STOP]
-    ENTRY: [قیمت ورود]
-    SL: [حد ضرر]
-    TP: [حد سود]
-    Expiration: [زمانی که اگر اردر در طول آن فعال نشده بود حذف شود]
-    CONFIDENCE: [امتیاز عددی بین 1 تا 10]
-    REASON: [یک دلیل بسیار کوتاه و یک خطی]
-    ---
-    PAIR: {currency_pair}
-    TYPE: [نوع اردر برای پوزیشن مخالف]
-    ENTRY: [قیمت ورود]
-    SL: [حد ضرر]
-    TP: [حد سود]
-    Expiration: [زمانی که اگر اردر در طول آن فعال نشده بود حذف شود]
-    CONFIDENCE: [امتیاز عددی بین 1 تا 10]
-    REASON: [یک دلیل بسیار کوتاه و یک خطی]
-    """
-    return user_prompt.strip()
-
-# --- تابع دریافت سیگنال از Gemini (بدون تغییر) ---
-def get_signal_for_pair(pair, current_price):
-    """برای یک جفت ارز و قیمت مشخص، سیگنال را از Gemini دریافت می‌کند."""
+def get_market_data(symbol, interval, outputsize):
+    logging.info(f"دریافت {outputsize} کندل {interval} برای {symbol}...")
+    # توجه: Twelve Data در پلن رایگان، ممکن است حجم معاملات را برنگرداند
+    url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={outputsize}&apikey={TWELVEDATA_API_KEY}'
     try:
-        print(f"در حال ارسال درخواست تحلیل برای {pair} با قیمت {current_price} به Gemini...")
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        prompt = create_single_pair_prompt(pair, current_price)
-        response = model.generate_content(prompt, request_options={'timeout': 150})
-        print(f"پاسخ تحلیلی برای {pair} با موفقیت دریافت شد.")
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        data = response.json()
+        if 'values' in data and len(data['values']) > 0:
+            df = pd.DataFrame(data['values'])
+            df = df.apply(pd.to_numeric, errors='ignore')
+            df['datetime'] = pd.to_datetime(df['datetime'])
+            df = df.sort_values('datetime', ascending=True).reset_index(drop=True)
+            return df
+    except Exception as e:
+        logging.error(f"خطا در دریافت دیتای بازار برای {symbol}: {e}")
+    return None
+
+def apply_full_technical_indicators(df):
+    """مجموعه کامل اندیکاتورها شامل حجم و سطوح کلیدی را محاسبه می‌کند."""
+    if df is None or df.empty: return None
+    logging.info("محاسبه اندیکاتورهای جامع (EMA, MACD, RSI, ATR, ADX, BBands, Volume)...")
+    df.ta.ema(length=21, append=True)
+    df.ta.ema(length=50, append=True)
+    df.ta.rsi(length=14, append=True)
+    df.ta.atr(length=14, append=True)
+    df.ta.adx(length=14, append=True)
+    df.ta.bbands(length=20, std=2, append=True)
+    df.ta.macd(fast=12, slow=26, signal=9, append=True)
+    if 'volume' in df.columns:
+        df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
+    
+    # شناسایی سطوح حمایت و مقاومت کلیدی
+    df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
+    df['res'] = df['high'].rolling(window=10, min_periods=3).max()
+    
+    df.dropna(inplace=True)
+    return df
+
+def detect_market_regime(df):
+    if df is None or 'ADX_14' not in df.columns: return "UNCLEAR"
+    last_adx = df.iloc[-1]['ADX_14']
+    logging.info(f"تشخیص شرایط بازار... ADX فعلی: {last_adx:.2f}")
+    if last_adx > ADX_TREND_THRESHOLD: return "TRENDING"
+    if last_adx < ADX_RANGE_THRESHOLD: return "RANGING"
+    return "UNCLEAR"
+
+def find_trade_candidate(htf_df, ltf_df):
+    market_regime = detect_market_regime(htf_df)
+    if market_regime == "UNCLEAR": return None, None, None, None
+    
+    logging.info(f"اجرای استراتژی مناسب برای شرایط بازار '{market_regime}'...")
+    last_ltf = ltf_df.iloc[-1]
+    htf_support = htf_df.iloc[-1]['sup']
+    htf_resistance = htf_df.iloc[-1]['res']
+    
+    volume_confirmed = 'VOLUME_SMA_20' in last_ltf and last_ltf['volume'] > last_ltf['VOLUME_SMA_20']
+
+    if market_regime == "TRENDING":
+        htf_trend = "UPTREND" if htf_df.iloc[-1]['EMA_21'] > htf_df.iloc[-1]['EMA_50'] else "DOWNTREND"
+        if htf_trend == "UPTREND" and last_ltf['EMA_21'] > last_ltf['EMA_50'] and volume_confirmed:
+            return "BUY_TREND", market_regime, last_ltf, (htf_support, htf_resistance)
+        if htf_trend == "DOWNTREND" and last_ltf['EMA_21'] < last_ltf['EMA_50'] and volume_confirmed:
+            return "SELL_TREND", market_regime, last_ltf, (htf_support, htf_resistance)
+
+    elif market_regime == "RANGING":
+        if last_ltf['close'] <= last_ltf['BBL_20_2.0'] and last_ltf['RSI_14'] < 35:
+            return "BUY_RANGE", market_regime, last_ltf, (htf_support, htf_resistance)
+        if last_ltf['close'] >= last_ltf['BBU_20_2.0'] and last_ltf['RSI_14'] > 65:
+            return "SELL_RANGE", market_regime, last_ltf, (htf_support, htf_resistance)
+            
+    return None, None, None, None
+
+def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, ltf_df):
+    """مرحله اول: دریافت تأییدیه اولیه از هوش مصنوعی."""
+    strategy_name = "Trend Following (Volume Confirmed)" if market_regime == "TRENDING" else "Mean Reversion"
+    last_candle = ltf_df.iloc[-1]
+    prompt = f"""
+    As a primary analyst, validate this trade signal proposed by a quantitative system.
+    - Asset: {symbol}, Market Regime: {market_regime}, Strategy: {strategy_name}, Signal: {signal_type}
+    - Key HTF Support: {key_levels[0]:.5f}, Key HTF Resistance: {key_levels[1]:.5f}
+    - Last Close: {last_candle['close']}
+    Task: Provide a quick validation. If you CONFIRM, give parameters. If REJECT, respond only with "REJECT: [reason]".
+    
+    Strict Output Format (on CONFIRMATION only):
+    PAIR: {symbol}
+    TYPE: [Order Type]
+    ENTRY: [Entry Price]
+    SL: [Stop Loss Price]
+    TP: [Take Profit Price]
+    CONFIDENCE: [Score from 1-10]
+    REASON: [Concise reason]
+    """
+    logging.info(f"ارسال سیگنال {symbol} به AI برای تأییدیه اولیه...")
+    # ... (کد ارتباط با Gemini مانند قبل)
+    try:
+        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
+        if "REJECT" in response.text.upper(): return None, 0
+        
+        confidence_match = re.search(r"CONFIDENCE:\s*(\d+)", response.text)
+        confidence = int(confidence_match.group(1)) if confidence_match else 0
+        logging.info(f"تأییدیه اولیه برای {symbol} با امتیاز {confidence} دریافت شد.")
+        return response.text, confidence
+    except Exception as e:
+        logging.error(f"خطا در تأییدیه اولیه AI: {e}")
+        return None, 0
+
+
+def get_ai_deep_analysis(initial_response_text):
+    """مرحله دوم: برای سیگنال‌های با امتیاز بالا، تحلیل عمیق و روایت‌سازی درخواست می‌شود."""
+    logging.info("سیگنال با امتیاز بالا یافت شد! ارسال برای تحلیل عمیق و روایت‌سازی...")
+    prompt = f"""
+    You are the Head of Trading. A junior analyst has confirmed the following high-probability trade. Your job is to provide the final narrative and refine the parameters.
+    
+    **Junior Analyst's Confirmed Signal:**
+    {initial_response_text}
+
+    **Your Task:**
+    1.  **Craft a Trade Narrative:** In 3 bullet points, explain the core thesis. What is the main technical pattern? Is there a fundamental driver? What is the primary risk to this trade?
+    2.  **Refine Parameters:** Based on your senior expertise, provide the final, optimized SL and TP.
+    3.  **Combine and Finalize:** Re-write the full signal, embedding your narrative within it.
+
+    **Strict Final Output Format:**
+    [Copy the initial PAIR, TYPE, ENTRY, SL, TP, CONFIDENCE, REASON lines exactly]
+    ---
+    **SENIOR ANALYST NARRATIVE:**
+    * **Technical Thesis:** [Your analysis of the pattern]
+    * **Fundamental View:** [Your view on fundamentals/sentiment]
+    * **Primary Risk:** [The main risk to the trade]
+    """
+    try:
+        model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
+        logging.info("تحلیل عمیق و روایت با موفقیت دریافت شد.")
         return response.text
     except Exception as e:
-        print(f"خطایی در ارتباط با Gemini برای {pair} رخ داد: {e}")
-        return None
+        logging.error(f"خطا در تحلیل عمیق AI: {e}")
+        return initial_response_text # در صورت خطا، همان پاسخ اولیه را برگردان
 
-# --- توابع پارس کردن و فیلتر کردن (بدون تغییر) ---
-def parse_signals(raw_text):
-    signals = []
-    signal_blocks = raw_text.strip().split('---')
-    for block in signal_blocks:
-        if not block.strip() or "PAIR:" not in block.upper(): continue
-        try:
-            signal = {
-                'pair': re.search(r"PAIR:\s*(.*)", block, re.IGNORECASE).group(1).strip(),
-                'type': re.search(r"TYPE:\s*(.*)", block, re.IGNORECASE).group(1).strip(),
-                'entry': float(re.search(r"ENTRY:\s*(.*)", block, re.IGNORECASE).group(1).strip()),
-                'sl': float(re.search(r"SL:\s*(.*)", block, re.IGNORECASE).group(1).strip()),
-                'tp': float(re.search(r"TP:\s*(.*)", block, re.IGNORECASE).group(1).strip()),
-                'confidence': int(re.search(r"CONFIDENCE:\s*(.*)", block, re.IGNORECASE).group(1).strip()),
-                'reason': re.search(r"REASON:\s*(.*)", block, re.IGNORECASE).group(1).strip(),
-                'raw': block.strip()
-            }
-            signals.append(signal)
-        except (AttributeError, ValueError) as e:
-            print(f"خطا در پارس کردن بلوک سیگنال. بلوک نادیده گرفته شد. Error: {e}")
-    return signals
+# =================================================================================
+# --- حلقه اصلی برنامه ---
+# =================================================================================
 
-def filter_and_rank_signals(signals, max_signals=10, max_per_currency=2):
-    signals.sort(key=lambda x: x['confidence'], reverse=True)
-    final_signals, currency_counts = [], defaultdict(int)
-    for signal in signals:
-        if len(final_signals) >= max_signals: break
-        try:
-            base, quote = signal['pair'].split('/')
-            if currency_counts[base] < max_per_currency and currency_counts[quote] < max_per_currency:
-                final_signals.append(signal)
-                currency_counts[base] += 1
-                currency_counts[quote] += 1
-        except ValueError: continue
-    return final_signals
+def main():
+    """تابع اصلی برای اجرای کامل فرآیند تولید سیگنال."""
+    logging.info("================== شروع اجرای اسکریپت تحلیلگر ارشد ==================")
+    signal_cache = load_cache()
+    final_signals = []
 
-def format_for_file(signals, title):
-    output = f"{title}\n" + "=" * 40 + "\n\n"
-    if signals:
-        for i, signal in enumerate(signals, 1):
-            output += f"# Rank {i} | Confidence: {signal['confidence']}/10\n{signal['raw']}\n---\n"
-    else:
-        output += "هیچ سیگنالی برای نمایش یافت نشد.\n"
-    return output
-
-# --- منطق اصلی برنامه ---
-if __name__ == "__main__":
-    all_raw_responses = []
-    
     for pair in CURRENCY_PAIRS_TO_ANALYZE:
-        # ۱. ابتدا قیمت لحظه‌ای را از Twelve Data بگیر
-        price = get_twelvedata_price(pair, TWELVEDATA_API_KEY)
-        
-        # ۲. اگر قیمت با موفقیت دریافت شد، آن را برای تحلیل بفرست
-        if price:
-            response = get_signal_for_pair(pair, price)
-            if response:
-                all_raw_responses.append(response)
-        else:
-            print(f"تحلیل برای {pair} انجام نشد چون قیمت لحظه‌ای دریافت نگردید.")
-            
-        # ✨ تغییر ۳: تاخیر برای مدیریت محدودیت API Twelve Data ✨
-        # (طرح رایگان Twelve Data حدود ۸ درخواست در دقیقه مجاز است)
-        print("...ایجاد تاخیر 8 ثانیه‌ای برای مدیریت محدودیت API...")
-        time.sleep(8) 
+        logging.info(f"--- شروع تحلیل جامع برای: {pair} ---")
+        if is_pair_on_cooldown(pair, signal_cache) or has_high_impact_news(pair, TWELVEDATA_API_KEY):
+            time.sleep(2); continue
 
-    if all_raw_responses:
-        full_raw_text = "\n---\n".join(all_raw_responses)
-        all_signals = parse_signals(full_raw_text)
+        htf_df = get_market_data(pair, HIGH_TIMEFRAME, CANDLES_TO_FETCH)
+        htf_df_analyzed = apply_full_technical_indicators(htf_df)
         
-        if all_signals:
-            print(f"\nمجموعا {len(all_signals)} سیگنال با موفقیت پارس شد.")
-            top_signals = filter_and_rank_signals(all_signals)
+        ltf_df = get_market_data(pair, LOW_TIMEFRAME, CANDLES_TO_FETCH)
+        ltf_df_analyzed = apply_full_technical_indicators(ltf_df)
+
+        if htf_df_analyzed is None or ltf_df_analyzed is None: continue
             
-            title_top = f"Top {len(top_signals)} Trade Signals (Ranked & Filtered)"
-            file_content_top = format_for_file(top_signals, title_top)
-            with open("trade_signal.txt", "w", encoding="utf-8") as file:
-                file.write(file_content_top)
-            print("فایل 'trade_signal.txt' با سیگنال‌های برتر به‌روز شد.")
-            
+        signal_type, market_regime, _, key_levels = find_trade_candidate(htf_df_analyzed, ltf_df_analyzed)
+
+        if signal_type:
+            initial_response, confidence = get_ai_initial_confirmation(pair, signal_type, market_regime, key_levels, ltf_df_analyzed)
+            if initial_response:
+                final_response = initial_response
+                if confidence >= AI_DEEP_ANALYSIS_CONFIDENCE_THRESHOLD:
+                    final_response = get_ai_deep_analysis(initial_response)
+                
+                # اضافه کردن زمان انقضا به پاسخ نهایی
+                final_response_with_exp = final_response.strip() + "\nExpiration: 6 hours"
+                final_signals.append(final_response_with_exp)
+                signal_cache[pair] = datetime.utcnow().isoformat()
         else:
-            print("هیچ سیگنال معتبری برای پردازش یافت نشد.")
+            logging.info(f"هیچ کاندیدای معامله‌ای بر اساس استراتژی‌های فعلی برای {pair} یافت نشد.")
+
+        logging.info(f"... تحلیل {pair} تمام شد. تاخیر ۱۰ ثانیه‌ای ...")
+        time.sleep(10)
+
+    # ذخیره سیگنال‌های نهایی و حافظه
+    if final_signals:
+        output_content = "Senior Analyst Grade Signals (Adaptive + 2-Step AI)\n" + "="*60 + "\n\n"
+        output_content += "\n---\n".join(final_signals)
+        with open("trade_signal.txt", "w", encoding="utf-8") as f:
+            f.write(output_content)
+        logging.info(f"عملیات موفقیت‌آمیز بود. {len(final_signals)} سیگنال نهایی در trade_signal.txt ذخیره شد.")
     else:
-        print("هیچ پاسخی از Gemini دریافت نشد.")
+        logging.info("در این اجرا، هیچ سیگنال مورد تأییدی یافت نشد.")
+
+    save_cache(signal_cache)
+    logging.info("================== پایان اجرای اسکریپت ==================")
+
+if __name__ == "__main__":
+    main()
