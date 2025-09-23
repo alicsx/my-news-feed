@@ -6,7 +6,7 @@ on:
   # اجرای خودکار در ساعت‌های مشخص (این مثال هر 4 ساعت یکبار اجرا می‌شود)
   # برای تغییر زمان‌بندی از سایت crontab.guru کمک بگیرید
   schedule:
-    - cron: '0 */4 * * *'
+    - cron: '0 */2 * * *'
 
   # این گزینه به شما اجازه می‌دهد که Workflow را به صورت دستی هم از طریق تب Actions در گیت‌هاب اجرا کنید
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       # مرحله ۳: نصب کتابخانه‌های مورد نیاز
       - name: Install dependencies
