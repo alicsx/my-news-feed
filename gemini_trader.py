@@ -23,23 +23,9 @@ if not all([google_api_key, TWELVEDATA_API_KEY]):
 genai.configure(api_key=google_api_key)
 
 # --- تنظیمات استراتژی ---
-# سطح سخت‌گیری را انتخاب کنید: "High" (سخت‌گیرانه), "Medium" (متعادل), "Aggressive" (تهاجمی)
-STRATEGY_STRICTNESS = "Medium" 
-
 HIGH_TIMEFRAME = "4h"
 LOW_TIMEFRAME = "1h"
 CANDLES_TO_FETCH = 200
-
-# آستانه‌های ADX بر اساس سطح سخت‌گیری تنظیم می‌شوند
-STRICTNESS_LEVELS = {
-    "High": {"TREND": 25, "RANGE": 20},
-    "Medium": {"TREND": 23, "RANGE": 22},
-    "Aggressive": {"TREND": 20, "RANGE": 21} 
-}
-ADX_TREND_THRESHOLD = STRICTNESS_LEVELS[STRATEGY_STRICTNESS]["TREND"]
-ADX_RANGE_THRESHOLD = STRICTNESS_LEVELS[STRATEGY_STRICTNESS]["RANGE"]
-
-AI_DEEP_ANALYSIS_CONFIDENCE_THRESHOLD = 9 # این متغیر در مدل فعلی استفاده نمی‌شود اما برای توسعه‌های آینده حفظ شده
 
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD",
@@ -60,7 +46,6 @@ logging.basicConfig(level=logging.INFO,
 # =================================================================================
 
 def normalize_pair_format(pair_string):
-    """جفت ارز ورودی را به فرمت استاندارد 'BASE/QUOTE' تبدیل می‌کند."""
     if not isinstance(pair_string, str): return ""
     pair_string = pair_string.upper().strip()
     if "/" in pair_string: return pair_string
@@ -123,165 +108,182 @@ def apply_full_technical_indicators(df):
             df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
         df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
         df['res'] = df['high'].rolling(window=10, min_periods=3).max()
-        logging.info(f"شکل دیتافریم قبل از dropna: {df.shape}")
         df.dropna(inplace=True)
-        logging.info(f"شکل دیتافریم بعد از dropna: {df.shape}")
         if df.empty: logging.warning("دیتافریم پس از محاسبه اندیکاتورها تهی شد.")
         return df
     except Exception as e:
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
         return pd.DataFrame()
 
-def detect_market_regime(df):
-    if df is None or df.empty or 'ADX_14' not in df.columns: return "UNCLEAR"
-    last_adx = df.iloc[-1]['ADX_14']
-    logging.info(f"تشخیص شرایط بازار... ADX فعلی: {last_adx:.2f} (Trend > {ADX_TREND_THRESHOLD}, Range < {ADX_RANGE_THRESHOLD})")
-    if last_adx > ADX_TREND_THRESHOLD: return "TRENDING"
-    if last_adx < ADX_RANGE_THRESHOLD: return "RANGING"
-    return "UNCLEAR"
-
-def find_trade_candidate(htf_df, ltf_df):
-    market_regime = detect_market_regime(htf_df)
-    if market_regime == "UNCLEAR": return None, None, None, None
-    
-    logging.info(f"اجرای استراتژی مناسب برای شرایط بازار '{market_regime}'...")
+# ✨ NEW: Function to score different trade setups ✨
+def score_trade_setups(htf_df, ltf_df):
+    """به تمام موقعیت‌های بالقوه (روند و رنج) امتیاز می‌دهد."""
+    scores = {}
+    if htf_df is None or ltf_df is None or htf_df.empty or ltf_df.empty:
+        return scores
+        
+    last_htf = htf_df.iloc[-1]
     last_ltf = ltf_df.iloc[-1]
-    htf_support = htf_df.iloc[-1]['sup']
-    htf_resistance = htf_df.iloc[-1]['res']
     
-    volume_confirmed = 'VOLUME_SMA_20' in last_ltf and 'volume' in last_ltf and last_ltf['volume'] > last_ltf['VOLUME_SMA_20']
+    # امتیازدهی به استراتژی روند
+    if all(k in last_htf and k in last_ltf for k in ['ADX_14', 'EMA_21', 'EMA_50', 'MACD_12_26_9', 'MACDs_12_26_9']):
+        score = 0
+        if last_htf['ADX_14'] > 20: score += last_htf['ADX_14'] / 10 # امتیاز بر اساس قدرت روند
+        # روند صعودی
+        if last_htf['EMA_21'] > last_htf['EMA_50'] and last_ltf['EMA_21'] > last_ltf['EMA_50'] and last_ltf['MACD_12_26_9'] > last_ltf['MACDs_12_26_9']:
+            score += 5
+            scores['BUY_TREND'] = {'score': score, 'last_candle': last_ltf, 'key_levels': (last_htf['sup'], last_htf['res'])}
+        # روند نزولی
+        if last_htf['EMA_21'] < last_htf['EMA_50'] and last_ltf['EMA_21'] < last_ltf['EMA_50'] and last_ltf['MACD_12_26_9'] < last_ltf['MACDs_12_26_9']:
+            score += 5
+            scores['SELL_TREND'] = {'score': score, 'last_candle': last_ltf, 'key_levels': (last_htf['sup'], last_htf['res'])}
 
-    if market_regime == "TRENDING":
-        if 'MACD_12_26_9' not in last_ltf or 'MACDs_12_26_9' not in last_ltf: return None, None, None, None
-        htf_trend = "UPTREND" if htf_df.iloc[-1]['EMA_21'] > htf_df.iloc[-1]['EMA_50'] else "DOWNTREND"
-        if htf_trend == "UPTREND" and last_ltf['EMA_21'] > last_ltf['EMA_50'] and last_ltf['MACD_12_26_9'] > last_ltf['MACDs_12_26_9'] and volume_confirmed:
-            return "BUY_TREND", market_regime, last_ltf, (htf_support, htf_resistance)
-        if htf_trend == "DOWNTREND" and last_ltf['EMA_21'] < last_ltf['EMA_50'] and last_ltf['MACD_12_26_9'] < last_ltf['MACDs_12_26_9'] and volume_confirmed:
-            return "SELL_TREND", market_regime, last_ltf, (htf_support, htf_resistance)
-
-    elif market_regime == "RANGING":
-        if 'BBL_20_2.0' not in last_ltf or 'BBU_20_2.0' not in last_ltf: return None, None, None, None
+    # امتیازدهی به استراتژی رنج
+    if all(k in last_htf and k in last_ltf for k in ['ADX_14', 'BBL_20_2.0', 'BBU_20_2.0', 'RSI_14']):
+        score = 0
+        if last_htf['ADX_14'] < 25: score += (25 - last_htf['ADX_14']) # امتیاز بر اساس ضعف روند
+        # خرید در کف کانال
         if last_ltf['close'] <= last_ltf['BBL_20_2.0'] and last_ltf['RSI_14'] < 35:
-            return "BUY_RANGE", market_regime, last_ltf, (htf_support, htf_resistance)
+            score += (35 - last_ltf['RSI_14']) / 5 # امتیاز بر اساس شدت اشباع فروش
+            scores['BUY_RANGE'] = {'score': score, 'last_candle': last_ltf, 'key_levels': (last_htf['sup'], last_htf['res'])}
+        # فروش در سقف کانال
         if last_ltf['close'] >= last_ltf['BBU_20_2.0'] and last_ltf['RSI_14'] > 65:
-            return "SELL_RANGE", market_regime, last_ltf, (htf_support, htf_resistance)
+            score += (last_ltf['RSI_14'] - 65) / 5 # امتیاز بر اساس شدت اشباع خرید
+            scores['SELL_RANGE'] = {'score': score, 'last_candle': last_ltf, 'key_levels': (last_htf['sup'], last_htf['res'])}
             
-    return None, None, None, None
+    return scores
 
-def get_ai_confluence_vetting(symbol, signal_type, market_regime, key_levels, ltf_df):
-    """
-    از هوش مصنوعی برای ارزیابی نهایی یک کاندیدای تکنیکال از سه جنبه (بنیادی، پرایس اکشن و تکنیکال) استفاده می‌کند.
-    """
-    strategy_name = "Trend Following" if market_regime == "TRENDING" else "Mean Reversion"
-    last_candle = ltf_df.iloc[-1]
+def get_ai_final_vetting(best_candidate):
+    """از هوش مصنوعی برای ارزیابی نهایی 'بهترین کاندیدای' شناسایی شده استفاده می‌کند."""
+    
+    # استخراج اطلاعات از بهترین کاندیدا
+    symbol = best_candidate['pair']
+    signal_type = best_candidate['signal_type']
+    quant_score = best_candidate['score']
+    market_regime = "TRENDING" if "TREND" in signal_type else "RANGING"
+    key_levels = best_candidate['data']['key_levels']
+    
     base_currency, quote_currency = symbol.split('/')
 
     prompt = f"""
-    You are a multi-disciplinary Head Analyst at a trading desk. A quantitative system has proposed a trade. Your task is to perform the final vetting by checking for confluence across three key perspectives.
+    You are the Head of Trading. A quantitative model has scanned the entire market and identified the single most promising trade setup right now. Your task is to perform the final, decisive analysis.
 
-    **1. Technical Thesis (from the System):**
+    **The System's Best Candidate:**
     - **Asset:** {symbol}
-    - **Market Regime:** {market_regime}
-    - **Strategy:** {strategy_name}
     - **Proposed Signal:** {signal_type}
-    - **Quantitative Reason:** The system has identified this based on indicators like {'MACD/EMA/Volume' if market_regime == 'TRENDING' else 'Bollinger Bands/RSI'}.
+    - **Underlying Strategy:** {market_regime}
+    - **Quantitative Score:** {quant_score:.2f} (This score reflects the strength of the technical indicators.)
 
-    **Your Vetting Tasks:**
+    **Your Multi-Faceted Vetting Task:**
 
-    **A. Fundamental & News Analysis:**
-    - Check for any high-impact economic news for '{base_currency}' or '{quote_currency}' in the next 8 hours.
-    - Briefly summarize the news and the market's sentiment/forecast.
-    - **Crucially, does this fundamental outlook SUPPORT or CONTRADICT the technical thesis?**
+    1.  **Fundamental & News Context:**
+        - Quickly check for high-impact news for '{base_currency}' or '{quote_currency}' in the next 8 hours.
+        - Does the fundamental outlook (sentiment, upcoming news) align with, contradict, or is it neutral to the proposed trade direction?
 
-    **B. Price Action Analysis:**
-    - Examine the last few candles. Do you see confirming price action patterns (e.g., pin bars, engulfing patterns, consolidation before a breakout)?
-    - **Does the recent price action SUPPORT or CONTRADICT the technical thesis?**
+    2.  **Price Action Context:**
+        - Look at the recent price action. Do you see patterns that strongly confirm the signal (e.g., clear rejection wicks for ranging, or a clean breakout for trending)? Or are there warning signs (e.g., indecision candles)?
 
-    **C. Final Decision:**
-    - A trade is only valid if there is **CONFLUENCE** (agreement) across the Technical, Fundamental, and Price Action perspectives.
-    - If all three align, **CONFIRM** the trade and provide optimal parameters. Set SL based on recent price structure (like a swing low/high) and ATR.
-    - If there is a clear contradiction from either the Fundamental or Price Action view, **REJECT** the trade and state the reason for the contradiction.
+    3.  **Final Verdict & Execution Plan:**
+        - Based on the **confluence** of all three factors (Quant Score, Fundamentals, Price Action), make your final call.
+        - If you **CONFIRM**, provide the final, precise parameters.
+        - If you **REJECT**, you must state the primary reason for overriding the system's top pick.
 
     **Strict Output Format:**
-    - If REJECTED: `REJECT: [State the contradiction, e.g., "Technical breakout contradicted by upcoming bearish news."]`
+    - If REJECTED: `REJECT: [Your reason, e.g., "Quant score is high, but upcoming CPI news creates too much uncertainty."]`
     - If CONFIRMED:
     PAIR: {symbol}
     TYPE: [Order Type]
     ENTRY: [Entry Price]
     SL: [Stop Loss Price]
     TP: [Take Profit Price]
-    CONFIDENCE: [Score 1-10]
-    REASON: [Concise reason highlighting the confluence, e.g., "Technical breakout aligns with bullish sentiment pre-CPI and is confirmed by price action."]
+    CONFIDENCE: [Your final confidence score from 1-10]
+    REASON: [Your concise reason highlighting the confluence]
     """
-    logging.info(f"ارسال سیگنال {symbol} به AI برای ارزیابی نهایی هم‌افزایی...")
+    logging.info(f"ارسال 'بهترین کاندیدا' ({symbol} - {signal_type}) با امتیاز {quant_score:.2f} به AI برای ارزیابی نهایی...")
     try:
         model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
         
         if "REJECT" in response.text.upper():
-            logging.warning(f"هوش مصنوعی سیگنال {symbol} را به دلیل عدم هم‌افزایی رد کرد. دلیل: {response.text}")
+            logging.warning(f"هوش مصنوعی بهترین کاندیدا ({symbol}) را رد کرد. دلیل: {response.text}")
             return None
         
-        logging.info(f"هوش مصنوعی سیگنال {symbol} را بر اساس هم‌افزایی سه جانبه تأیید کرد.")
+        logging.info(f"هوش مصنوعی بهترین کاندیدا ({symbol}) را به عنوان سیگنال نهایی تأیید کرد.")
         return response.text
     except Exception as e:
         logging.error(f"خطا در ارزیابی نهایی AI: {e}")
         return None
 
+# =================================================================================
+# --- حلقه اصلی برنامه ---
+# =================================================================================
+
 def main():
     """تابع اصلی برای اجرای کامل فرآیند تولید سیگنال."""
-    logging.info(f"================== شروع اجرای اسکریپت (سطح سخت‌گیری: {STRATEGY_STRICTNESS}) ==================")
+    logging.info("================== شروع اجرای اسکریپت (مدل بهترین کاندیدا) ==================")
     signal_cache = load_cache()
-    final_signals = []
+    all_candidates = []
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pair", type=str, help="Specify a single currency pair to analyze, e.g., EUR/USD")
+    parser.add_argument("--pair", type=str, help="Specify a single currency pair to analyze")
     args, _ = parser.parse_known_args()
 
     pairs_to_run = [args.pair] if args.pair else CURRENCY_PAIRS_TO_ANALYZE
 
     for pair_raw in pairs_to_run:
         pair = normalize_pair_format(pair_raw)
-        if not pair: continue
+        if not pair or is_pair_on_cooldown(pair, signal_cache):
+            time.sleep(1); continue
 
         logging.info(f"--- شروع تحلیل جامع برای: {pair} ---")
-        if is_pair_on_cooldown(pair, signal_cache):
-            time.sleep(2); continue
-
         htf_df = get_market_data(pair, HIGH_TIMEFRAME, CANDLES_TO_FETCH)
-        htf_df_analyzed = apply_full_technical_indicators(htf_df)
-        
         ltf_df = get_market_data(pair, LOW_TIMEFRAME, CANDLES_TO_FETCH)
+
+        htf_df_analyzed = apply_full_technical_indicators(htf_df)
         ltf_df_analyzed = apply_full_technical_indicators(ltf_df)
 
         if htf_df_analyzed is None or ltf_df_analyzed is None or htf_df_analyzed.empty or ltf_df_analyzed.empty:
             logging.warning(f"دیتای کافی برای تحلیل {pair} پس از پردازش وجود ندارد.")
             continue
             
-        signal_type, market_regime, _, key_levels = find_trade_candidate(htf_df_analyzed, ltf_df_analyzed)
-
-        if signal_type:
-            final_response = get_ai_confluence_vetting(pair, signal_type, market_regime, key_levels, ltf_df_analyzed)
-            
-            if final_response:
-                final_response_with_exp = final_response.strip() + "\nExpiration: 6 hours"
-                final_signals.append(final_response_with_exp)
-                signal_cache[pair] = datetime.now(UTC).isoformat()
-        else:
-            logging.info(f"هیچ کاندیدای معامله‌ای بر اساس استراتژی‌های فعلی برای {pair} یافت نشد.")
+        # ✨ NEW: Score all potential setups for the current pair ✨
+        setups = score_trade_setups(htf_df_analyzed, ltf_df_analyzed)
+        if setups:
+            for signal_type, data in setups.items():
+                all_candidates.append({
+                    'pair': pair,
+                    'signal_type': signal_type,
+                    'score': data['score'],
+                    'data': data
+                })
+                logging.info(f"کاندیدای یافت شده: {pair} - {signal_type} - امتیاز: {data['score']:.2f}")
 
         logging.info(f"... تحلیل {pair} تمام شد. تاخیر ۱۰ ثانیه‌ای ...")
         time.sleep(10)
-
-    if final_signals:
-        output_content = "Confluence-Based Signals (Technical + Fundamental + Price Action)\n" + "="*60 + "\n\n"
-        output_content += "\n---\n".join(final_signals)
-        with open("trade_signal.txt", "w", encoding="utf-8") as f:
-            f.write(output_content)
-        logging.info(f"عملیات موفقیت‌آمیز بود. {len(final_signals)} سیگنال نهایی در trade_signal.txt ذخیره شد.")
+    
+    # ✨ NEW: Find the single best candidate across all pairs and setups ✨
+    if all_candidates:
+        best_candidate = max(all_candidates, key=lambda x: x['score'])
+        logging.info(f"\n--- بهترین کاندیدای کلی انتخاب شد: {best_candidate['pair']} با سیگنال {best_candidate['signal_type']} و امتیاز {best_candidate['score']:.2f} ---")
+        
+        # Send the single best candidate for final AI vetting
+        final_signal = get_ai_final_vetting(best_candidate)
+        
+        if final_signal:
+            final_signal_with_exp = final_signal.strip() + "\nExpiration: 6 hours"
+            output_content = "Best Candidate Signal (Quant-Ranked + AI-Vetted)\n" + "="*60 + "\n\n"
+            output_content += final_signal_with_exp
+            with open("trade_signal.txt", "w", encoding="utf-8") as f:
+                f.write(output_content)
+            logging.info(f"عملیات موفقیت‌آمیز بود. سیگنال نهایی در trade_signal.txt ذخیره شد.")
+            # Update cache for the pair that generated the signal
+            signal_cache[best_candidate['pair']] = datetime.now(UTC).isoformat()
+        else:
+            logging.info("هوش مصنوعی بهترین کاندیدای انتخاب شده را رد کرد. هیچ سیگنالی صادر نشد.")
+            
     else:
-        logging.info("در این اجرا، هیچ سیگنال مورد تأییدی یافت نشد.")
+        logging.info("در این اجرا، هیچ کاندیدای معامله‌ای در هیچ جفت ارزی یافت نشد.")
 
     save_cache(signal_cache)
     logging.info("================== پایان اجرای اسکریپت ==================")
