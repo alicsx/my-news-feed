@@ -23,11 +23,23 @@ if not all([google_api_key, TWELVEDATA_API_KEY]):
 genai.configure(api_key=google_api_key)
 
 # --- تنظیمات استراتژی ---
+# سطح سخت‌گیری را انتخاب کنید: "High" (سخت‌گیرانه), "Medium" (متعادل), "Aggressive" (تهاجمی)
+STRATEGY_STRICTNESS = "Medium" 
+
 HIGH_TIMEFRAME = "4h"
 LOW_TIMEFRAME = "1h"
 CANDLES_TO_FETCH = 200
-ADX_TREND_THRESHOLD = 25
-ADX_RANGE_THRESHOLD = 20
+
+# آستانه‌های ADX بر اساس سطح سخت‌گیری تنظیم می‌شوند
+STRICTNESS_LEVELS = {
+    "High": {"TREND": 25, "RANGE": 20},
+    "Medium": {"TREND": 23, "RANGE": 22},
+    "Aggressive": {"TREND": 20, "RANGE": 21} 
+}
+ADX_TREND_THRESHOLD = STRICTNESS_LEVELS[STRATEGY_STRICTNESS]["TREND"]
+ADX_RANGE_THRESHOLD = STRICTNESS_LEVELS[STRATEGY_STRICTNESS]["RANGE"]
+
+AI_DEEP_ANALYSIS_CONFIDENCE_THRESHOLD = 9 # این متغیر در مدل فعلی استفاده نمی‌شود اما برای توسعه‌های آینده حفظ شده
 
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD",
@@ -123,7 +135,7 @@ def apply_full_technical_indicators(df):
 def detect_market_regime(df):
     if df is None or df.empty or 'ADX_14' not in df.columns: return "UNCLEAR"
     last_adx = df.iloc[-1]['ADX_14']
-    logging.info(f"تشخیص شرایط بازار... ADX فعلی: {last_adx:.2f}")
+    logging.info(f"تشخیص شرایط بازار... ADX فعلی: {last_adx:.2f} (Trend > {ADX_TREND_THRESHOLD}, Range < {ADX_RANGE_THRESHOLD})")
     if last_adx > ADX_TREND_THRESHOLD: return "TRENDING"
     if last_adx < ADX_RANGE_THRESHOLD: return "RANGING"
     return "UNCLEAR"
@@ -159,9 +171,7 @@ def find_trade_candidate(htf_df, ltf_df):
 def get_ai_confluence_vetting(symbol, signal_type, market_regime, key_levels, ltf_df):
     """
     از هوش مصنوعی برای ارزیابی نهایی یک کاندیدای تکنیکال از سه جنبه (بنیادی، پرایس اکشن و تکنیکال) استفاده می‌کند.
-    این تابع جامع، جایگزین تمام توابع قبلی AI شده است.
     """
-    
     strategy_name = "Trend Following" if market_regime == "TRENDING" else "Mean Reversion"
     last_candle = ltf_df.iloc[-1]
     base_currency, quote_currency = symbol.split('/')
@@ -205,7 +215,7 @@ def get_ai_confluence_vetting(symbol, signal_type, market_regime, key_levels, lt
     """
     logging.info(f"ارسال سیگنال {symbol} به AI برای ارزیابی نهایی هم‌افزایی...")
     try:
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash)
         response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
         
         if "REJECT" in response.text.upper():
@@ -218,13 +228,9 @@ def get_ai_confluence_vetting(symbol, signal_type, market_regime, key_levels, lt
         logging.error(f"خطا در ارزیابی نهایی AI: {e}")
         return None
 
-# =================================================================================
-# --- حلقه اصلی برنامه ---
-# =================================================================================
-
 def main():
     """تابع اصلی برای اجرای کامل فرآیند تولید سیگنال."""
-    logging.info("================== شروع اجرای اسکریپت تحلیل هم‌افزایی ==================")
+    logging.info(f"================== شروع اجرای اسکریپت (سطح سخت‌گیری: {STRATEGY_STRICTNESS}) ==================")
     signal_cache = load_cache()
     final_signals = []
 
@@ -259,7 +265,6 @@ def main():
             final_response = get_ai_confluence_vetting(pair, signal_type, market_regime, key_levels, ltf_df_analyzed)
             
             if final_response:
-                # اضافه کردن زمان انقضا به صورت دستی چون در پرامپت اصلی نیست
                 final_response_with_exp = final_response.strip() + "\nExpiration: 6 hours"
                 final_signals.append(final_response_with_exp)
                 signal_cache[pair] = datetime.now(UTC).isoformat()
