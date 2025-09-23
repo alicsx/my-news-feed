@@ -215,7 +215,7 @@ def get_ai_confluence_vetting(symbol, signal_type, market_regime, key_levels, lt
     """
     logging.info(f"ارسال سیگنال {symbol} به AI برای ارزیابی نهایی هم‌افزایی...")
     try:
-        model = genai.GenerativeModel('gemini-2.5-flash)
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
         
         if "REJECT" in response.text.upper():
