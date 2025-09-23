@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install google-generativeai
+          pip install google-generativeai requests pandas pandas-ta
 
       # مرحله ۴: اجرای اسکریپت پایتون
       # در اینجا جفت ارز EURUSD به عنوان مثال به اسکریپت داده شده است. می‌توانید آن را تغییر دهید.
@@ -50,9 +50,9 @@ jobs:
 
       - name: Commit trade signal file
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          # هر دو فایل را اضافه کن
-          git add trade_signal.txt all_signals_archive.txt
-          git diff-index --quiet HEAD || git commit -m "Update trade signals from Gemini"
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add trade_signal.txt signal_cache.json trading_log.log
+          # فقط در صورتی که تغییری وجود داشته باشد، کامیت کن
+          git diff --staged --quiet || git commit -m "Auto-update trade signals"
           git push
