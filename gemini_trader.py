@@ -74,41 +74,42 @@ def is_pair_on_cooldown(pair, cache):
         return True
     return False
 
+# ✨ FIX: Function completely rewritten to make separate API calls per country ✨
 def has_high_impact_news(pair, api_key):
     logging.info(f"بررسی تقویم اقتصادی Twelve Data برای {pair}...")
     try:
         base_currency, quote_currency = pair.split('/')
-        # FIX: Using 2-letter ISO codes which are more standard for APIs
         country_map = {'USD': 'US', 'EUR': 'EU', 'GBP': 'GB', 'JPY': 'JP', 'CHF': 'CH', 'AUD': 'AU', 'NZD': 'NZ', 'CAD': 'CA'}
-        countries_to_check = [code for c, code in country_map.items() if c in [base_currency, quote_currency]]
-        if not countries_to_check: return False
+        codes_to_check = {code for c, code in country_map.items() if c in [base_currency, quote_currency]}
         
+        if not codes_to_check: return False
+
         today = datetime.now(UTC).strftime('%Y-%m-%d')
         end_date = (datetime.now(UTC) + timedelta(days=1)).strftime('%Y-%m-%d')
-        
-        # FIX: Corrected the API endpoint from /economic_calendar to /calendar
-        # FIX: Passing countries as a comma-separated string in the `country` parameter
-        country_params = ",".join(countries_to_check)
-        url = f"https://api.twelvedata.com/calendar?country={country_params}&start_date={today}&end_date={end_date}&apikey={api_key}"
-        
-        response = requests.get(url, timeout=20)
-        response.raise_for_status()
-        res = response.json()
 
-        # The correct key in the response is 'events', not 'economicCalendar'
-        if 'events' not in res or not res['events']: return False
-            
-        for event in res['events']:
-            event_time = datetime.fromisoformat(event['date'].replace("Z", "+00:00"))
-            time_until_event = event_time - datetime.now(event_time.tzinfo)
+        # Loop through each country code and make a separate API call
+        for country_code in codes_to_check:
+            logging.info(f"Checking news for country: {country_code}")
+            url = f"https://api.twelvedata.com/calendar?country={country_code}&start_date={today}&end_date={end_date}&apikey={api_key}"
+            response = requests.get(url, timeout=20)
+            response.raise_for_status()
+            res = response.json()
 
-            if timedelta(minutes=-30) < time_until_event < timedelta(hours=4) and event.get('importance') == 'High':
-                logging.warning(f"خبر مهم '{event['event']}' برای {pair} در راه است! تحلیل متوقف شد.")
-                return True
+            if 'events' not in res or not res['events']:
+                continue # No events for this country, check the next one
+
+            for event in res['events']:
+                event_time = datetime.fromisoformat(event['date'].replace("Z", "+00:00"))
+                time_until_event = event_time - datetime.now(event_time.tzinfo)
+
+                if timedelta(minutes=-30) < time_until_event < timedelta(hours=4) and event.get('importance') == 'High':
+                    logging.warning(f"خبر مهم '{event['event']}' برای {country_code} (بخشی از {pair}) در راه است! تحلیل متوقف شد.")
+                    return True
+        
+        logging.info(f"خبر مهمی برای {pair} در پیش نیست.")
         return False
     except requests.exceptions.HTTPError as e:
-        logging.error(f"خطای HTTP در بررسی تقویم اقتصادی: {e}")
-        logging.error(f"پاسخ دریافت شده از سرور: {e.response.text}")
+        logging.error(f"خطای HTTP در بررسی تقویم اقتصادی: {e.response.status_code} - {e.response.text}")
         return False
     except Exception as e:
         logging.error(f"خطای نامشخص در بررسی تقویم اقتصادی Twelve Data: {e}")
@@ -128,6 +129,7 @@ def get_market_data(symbol, interval, outputsize):
                 if col in df.columns:
                     df[col] = pd.to_numeric(df[col], errors='coerce')
             df['datetime'] = pd.to_datetime(df['datetime'])
+            df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
             df = df.sort_values('datetime', ascending=True).reset_index(drop=True)
             return df
     except Exception as e:
@@ -154,7 +156,7 @@ def apply_full_technical_indicators(df):
         df.dropna(inplace=True)
     except Exception as e:
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
-        return pd.DataFrame() # Return an empty DataFrame on failure
+        return pd.DataFrame()
     return df
 
 def detect_market_regime(df):
@@ -200,7 +202,7 @@ def find_trade_candidate(htf_df, ltf_df):
     return None, None, None, None
 
 def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, ltf_df):
-    # This function remains unchanged, its logic is sound.
+    # This function remains unchanged.
     strategy_name = "Trend Following (Volume Confirmed)" if market_regime == "TRENDING" else "Mean Reversion"
     last_candle = ltf_df.iloc[-1]
     prompt = f"""
