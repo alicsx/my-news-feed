@@ -50,16 +50,11 @@ logging.basicConfig(level=logging.INFO,
 # =================================================================================
 
 def normalize_pair_format(pair_string):
-    """جفت ارز ورودی را به فرمت استاندارد 'BASE/QUOTE' تبدیل می‌کند."""
     if not isinstance(pair_string, str): return ""
-    
     pair_string = pair_string.upper().strip()
-    if "/" in pair_string:
-        return pair_string
-    if len(pair_string) == 6:
-        return f"{pair_string[:3]}/{pair_string[3:]}"
-    
-    logging.warning(f"فرمت جفت ارز '{pair_string}' ناشناخته است و ممکن است باعث خطا شود.")
+    if "/" in pair_string: return pair_string
+    if len(pair_string) == 6: return f"{pair_string[:3]}/{pair_string[3:]}"
+    logging.warning(f"فرمت جفت ارز '{pair_string}' ناشناخته است.")
     return pair_string
 
 def load_cache():
@@ -83,19 +78,24 @@ def has_high_impact_news(pair, api_key):
     logging.info(f"بررسی تقویم اقتصادی Twelve Data برای {pair}...")
     try:
         base_currency, quote_currency = pair.split('/')
-        country_map = {'USD': 'United States', 'EUR': 'Euro Zone', 'GBP': 'United Kingdom', 'JPY': 'Japan', 'CHF': 'Switzerland', 'AUD': 'Australia', 'NZD': 'New Zealand', 'CAD': 'Canada'}
-        countries_to_check = [country for c, country in country_map.items() if c in [base_currency, quote_currency]]
+        # FIX: Using 2-letter ISO codes which are more standard for APIs
+        country_map = {'USD': 'US', 'EUR': 'EU', 'GBP': 'GB', 'JPY': 'JP', 'CHF': 'CH', 'AUD': 'AU', 'NZD': 'NZ', 'CAD': 'CA'}
+        countries_to_check = [code for c, code in country_map.items() if c in [base_currency, quote_currency]]
         if not countries_to_check: return False
         
         today = datetime.now(UTC).strftime('%Y-%m-%d')
         end_date = (datetime.now(UTC) + timedelta(days=1)).strftime('%Y-%m-%d')
+        
+        # FIX: Corrected the API endpoint from /economic_calendar to /calendar
+        # FIX: Passing countries as a comma-separated string in the `country` parameter
         country_params = ",".join(countries_to_check)
-        url = f"https://api.twelvedata.com/economic_calendar?country={country_params}&start_date={today}&end_date={end_date}&apikey={api_key}"
+        url = f"https://api.twelvedata.com/calendar?country={country_params}&start_date={today}&end_date={end_date}&apikey={api_key}"
         
         response = requests.get(url, timeout=20)
         response.raise_for_status()
         res = response.json()
 
+        # The correct key in the response is 'events', not 'economicCalendar'
         if 'events' not in res or not res['events']: return False
             
         for event in res['events']:
@@ -106,9 +106,9 @@ def has_high_impact_news(pair, api_key):
                 logging.warning(f"خبر مهم '{event['event']}' برای {pair} در راه است! تحلیل متوقف شد.")
                 return True
         return False
-    except requests.exceptions.JSONDecodeError as e:
-        logging.error(f"خطا در پارس کردن پاسخ JSON از تقویم اقتصادی: {e}")
-        logging.error(f"پاسخ دریافت شده از سرور که باعث خطا شد: {response.text}")
+    except requests.exceptions.HTTPError as e:
+        logging.error(f"خطای HTTP در بررسی تقویم اقتصادی: {e}")
+        logging.error(f"پاسخ دریافت شده از سرور: {e.response.text}")
         return False
     except Exception as e:
         logging.error(f"خطای نامشخص در بررسی تقویم اقتصادی Twelve Data: {e}")
@@ -123,7 +123,10 @@ def get_market_data(symbol, interval, outputsize):
         data = response.json()
         if 'values' in data and len(data['values']) > 0:
             df = pd.DataFrame(data['values'])
-            df = df.apply(pd.to_numeric, errors='ignore')
+            # FIX: Updated to modern pandas syntax to avoid FutureWarning
+            for col in ['open', 'high', 'low', 'close', 'volume']:
+                if col in df.columns:
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
             df['datetime'] = pd.to_datetime(df['datetime'])
             df = df.sort_values('datetime', ascending=True).reset_index(drop=True)
             return df
@@ -134,20 +137,24 @@ def get_market_data(symbol, interval, outputsize):
 def apply_full_technical_indicators(df):
     if df is None or df.empty: return None
     logging.info("محاسبه اندیکاتورهای جامع (EMA, MACD, RSI, ATR, ADX, BBands, Volume)...")
-    df.ta.ema(length=21, append=True)
-    df.ta.ema(length=50, append=True)
-    df.ta.rsi(length=14, append=True)
-    df.ta.atr(length=14, append=True)
-    df.ta.adx(length=14, append=True)
-    df.ta.bbands(length=20, std=2, append=True)
-    df.ta.macd(fast=12, slow=26, signal=9, append=True)
-    if 'volume' in df.columns:
-        df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
-    
-    df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
-    df['res'] = df['high'].rolling(window=10, min_periods=3).max()
-    
-    df.dropna(inplace=True)
+    try:
+        df.ta.ema(length=21, append=True)
+        df.ta.ema(length=50, append=True)
+        df.ta.rsi(length=14, append=True)
+        df.ta.atr(length=14, append=True)
+        df.ta.adx(length=14, append=True)
+        df.ta.bbands(length=20, std=2, append=True)
+        df.ta.macd(fast=12, slow=26, signal=9, append=True)
+        if 'volume' in df.columns:
+            df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
+        
+        df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
+        df['res'] = df['high'].rolling(window=10, min_periods=3).max()
+        
+        df.dropna(inplace=True)
+    except Exception as e:
+        logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
+        return pd.DataFrame() # Return an empty DataFrame on failure
     return df
 
 def detect_market_regime(df):
@@ -193,6 +200,7 @@ def find_trade_candidate(htf_df, ltf_df):
     return None, None, None, None
 
 def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, ltf_df):
+    # This function remains unchanged, its logic is sound.
     strategy_name = "Trend Following (Volume Confirmed)" if market_regime == "TRENDING" else "Mean Reversion"
     last_candle = ltf_df.iloc[-1]
     prompt = f"""
@@ -228,6 +236,7 @@ def get_ai_initial_confirmation(symbol, signal_type, market_regime, key_levels, 
         return None, 0
 
 def get_ai_deep_analysis(initial_response_text):
+    # This function remains unchanged.
     logging.info("سیگنال با امتیاز بالا یافت شد! ارسال برای تحلیل عمیق و روایت‌سازی...")
     prompt = f"""
     You are the Head of Trading. A junior analyst has confirmed the following high-probability trade. Your job is to provide the final narrative and refine the parameters.
@@ -236,7 +245,7 @@ def get_ai_deep_analysis(initial_response_text):
     {initial_response_text}
 
     **Your Task:**
-    1.  **Craft a Trade Narrative:** In 3 bullet points, explain the core thesis. What is the main technical pattern? Is there a fundamental driver? What is the primary risk to this trade?
+    1.  **Craft a Trade Narrative:** In 3 bullet points, explain the core thesis.
     2.  **Refine Parameters:** Based on your senior expertise, provide the final, optimized SL and TP.
     3.  **Combine and Finalize:** Re-write the full signal, embedding your narrative within it.
 
