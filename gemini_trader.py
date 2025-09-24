@@ -581,7 +581,7 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
 --- کلاس اصلی سیستم ---
 =================================================================================
 class AdvancedForexAnalyzer:
-def init(self):
+def __init__(self): 
 self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
 self.technical_analyzer = AdvancedTechnicalAnalyzer()
 self.ai_manager = HybridAIManager(google_api_key, DEEPSEEK_API_KEY)
