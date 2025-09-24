@@ -161,6 +161,7 @@ class SmartCacheManager:
 # --- کلاس تحلیل تکنیکال پیشرفته ---
 # =================================================================================
 
+# کد کامل و اصلاح شده کلاس ✅
 class AdvancedTechnicalAnalyzer:
     def __init__(self):
         self.indicators_config = {
@@ -172,7 +173,7 @@ class AdvancedTechnicalAnalyzer:
             'support_resistance': True,
             'candle_patterns': True
         }
-    
+
     def calculate_advanced_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
         """محاسبه اندیکاتورهای پیشرفته با مدیریت خطا"""
         if df is None or df.empty or len(df) < 100:
@@ -211,13 +212,14 @@ class AdvancedTechnicalAnalyzer:
             df['sup_2'] = df['low'].rolling(50).min().shift(1)
             df['res_2'] = df['high'].rolling(50).max().shift(1)
             
-            # الگوهای کندل استیک
+            # الگوهای کندل استیک (با اسامی اصلاح شده)
             if self.indicators_config['candle_patterns']:
-                popular_patterns = ['doji', 'hammer', 'engulfing', 'harami', 'morning_star', 'evening_star']
+                popular_patterns = ['doji', 'hammer', 'engulfing', 'harami', 'morningstar', 'eveningstar']
                 for pattern in popular_patterns:
                     try:
-                        df.ta.cdl_pattern(pattern, append=True)
-                    except:
+                        df.ta.cdl_pattern(name=pattern, append=True)
+                    except Exception as e:
+                        logging.warning(f"Could not calculate candle pattern '{pattern}': {e}")
                         continue
             
             df.dropna(inplace=True)
@@ -226,7 +228,7 @@ class AdvancedTechnicalAnalyzer:
         except Exception as e:
             logging.error(f"خطا در محاسبه اندیکاتورها: {e}")
             return None
-    
+
     def generate_technical_analysis(self, symbol: str, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
         """تولید تحلیل تکنیکال جامع"""
         if htf_df.empty or ltf_df.empty:
@@ -259,7 +261,7 @@ class AdvancedTechnicalAnalyzer:
             'volatility': last_ltf.get('ATRr_14', 0),
             'timestamp': datetime.now(UTC).isoformat()
         }
-    
+
     def _analyze_trend(self, data: pd.Series) -> Dict:
         """تحلیل روند بر اساس اندیکاتورها"""
         ema_21 = data.get('EMA_21', 0)
@@ -276,7 +278,7 @@ class AdvancedTechnicalAnalyzer:
             'adx': adx,
             'ema_alignment': f"EMA21: {ema_21:.5f}, EMA50: {ema_50:.5f}, EMA200: {ema_200:.5f}"
         }
-    
+
     def _analyze_momentum(self, data: pd.Series) -> Dict:
         """تحلیل مومنتوم"""
         rsi = data.get('RSI_14', 50)
@@ -292,38 +294,40 @@ class AdvancedTechnicalAnalyzer:
             'macd': {'signal': macd_signal, 'histogram': macd_hist},
             'stochastic': {'value': stoch_k, 'signal': stoch_signal}
         }
-    
-    # کد اصلاح‌شده ✅
-def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
-    """تحلیل سطوح حمایت و مقاومت"""
-    # سطوح داینامیک از باندهای بولینگر - با استفاده از .get() برای جلوگیری از خطا
-    bb_upper = ltf_df.get('BBU_20_2.0', 0).iloc[-1]
-    bb_lower = ltf_df.get('BBL_20_2.0', 0).iloc[-1]
-    bb_middle = ltf_df.get('BBM_20_2.0', 0).iloc[-1]
-    
-    # سطوح استاتیک
-    support_1 = ltf_df['sup_1'].iloc[-1]
-    resistance_1 = ltf_df['res_1'].iloc[-1]
-    support_2 = ltf_df['sup_2'].iloc[-1]
-    resistance_2 = ltf_df['res_2'].iloc[-1]
-    
-    return {
-        'dynamic': {
-            'bb_upper': bb_upper,
-            'bb_lower': bb_lower,
-            'bb_middle': bb_middle
-        },
-        'static': {
-            'support_1': support_1,
-            'resistance_1': resistance_1,
-            'support_2': support_2,
-            'resistance_2': resistance_2
-        },
-        'current_price_position': self._get_price_position(current_price, support_1, resistance_1)
-    }
-    
+
+    def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
+        """تحلیل سطوح حمایت و مقاومت"""
+        # سطوح داینامیک از باندهای بولینگر - با استفاده از .get() برای جلوگیری از خطا
+        bb_upper = ltf_df.get('BBU_20_2.0', 0).iloc[-1] if 'BBU_20_2.0' in ltf_df.columns else 0
+        bb_lower = ltf_df.get('BBL_20_2.0', 0).iloc[-1] if 'BBL_20_2.0' in ltf_df.columns else 0
+        bb_middle = ltf_df.get('BBM_20_2.0', 0).iloc[-1] if 'BBM_20_2.0' in ltf_df.columns else 0
+        
+        # سطوح استاتیک
+        support_1 = ltf_df.get('sup_1', 0).iloc[-1] if 'sup_1' in ltf_df.columns else 0
+        resistance_1 = ltf_df.get('res_1', 0).iloc[-1] if 'res_1' in ltf_df.columns else 0
+        support_2 = ltf_df.get('sup_2', 0).iloc[-1] if 'sup_2' in ltf_df.columns else 0
+        resistance_2 = ltf_df.get('res_2', 0).iloc[-1] if 'res_2' in ltf_df.columns else 0
+        
+        return {
+            'dynamic': {
+                'bb_upper': bb_upper,
+                'bb_lower': bb_lower,
+                'bb_middle': bb_middle
+            },
+            'static': {
+                'support_1': support_1,
+                'resistance_1': resistance_1,
+                'support_2': support_2,
+                'resistance_2': resistance_2
+            },
+            'current_price_position': self._get_price_position(current_price, support_1, resistance_1)
+        }
+
     def _get_price_position(self, price: float, support: float, resistance: float) -> str:
         """تعیین موقعیت قیمت نسبت به سطوح"""
+        if resistance == support:
+            return "در محدوده خنثی"
+        
         range_size = resistance - support
         if range_size == 0:
             return "در محدوده خنثی"
@@ -335,7 +339,7 @@ def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, curren
             return "نزدیک مقاومت"
         else:
             return "در میانه رنج"
-    
+
     def _analyze_candle_patterns(self, df: pd.DataFrame) -> Dict:
         """تحلیل الگوهای کندل استیک"""
         if len(df) < 3:
@@ -360,13 +364,13 @@ def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, curren
             'current_candle': current_candle,
             'recent_patterns': patterns[-3:] if patterns else []
         }
-    
+
     def _analyze_single_candle(self, candle: pd.Series) -> Dict:
         """تحلیل تک کندل"""
-        open_price = candle['open']
-        close = candle['close']
-        high = candle['high']
-        low = candle['low']
+        open_price = candle.get('open', 0)
+        close = candle.get('close', 0)
+        high = candle.get('high', 0)
+        low = candle.get('low', 0)
         
         body_size = abs(close - open_price)
         total_range = high - low
@@ -391,6 +395,7 @@ def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, curren
             'body_ratio': body_ratio,
             'strength': "قوی" if body_ratio > 0.6 else "متوسط" if body_ratio > 0.3 else "ضعیف"
         }
+
 
 # =================================================================================
 # --- کلاس مدیریت AI ترکیبی ---
