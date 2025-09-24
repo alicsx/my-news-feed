@@ -719,5 +719,5 @@ async def main():
 
   
     logging.info("🏁 پایان اجرای سیستم")
-if name == "main":
+if __name__ == "__main__":
     asyncio.run(main())
