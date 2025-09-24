@@ -614,7 +614,7 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
 
 class AdvancedForexAnalyzer:
     def __init__(self): 
-        self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
+self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
         self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
         self.ai_manager = HybridAIManager(google_api_key, DEEPSEEK_API_KEY)
@@ -664,10 +664,10 @@ class AdvancedForexAnalyzer:
             return None
 
     async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
-        """دریافت داده‌های بازار به صورت async"""
-        for attempt in range(retries):
-            try:
-async with self.api_rate_limiter:
+    """دریافت داده‌های بازار به صورت async"""
+    for attempt in range(retries):
+        try:
+            async with self.api_rate_limiter:
                 url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
                 
                 async with aiohttp.ClientSession() as session:
@@ -690,11 +690,11 @@ async with self.api_rate_limiter:
                         else:
                             logging.warning(f"خطای HTTP {response.status} برای {symbol}")
                             
-            except Exception as e:
-                logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
-                await asyncio.sleep(2)
-        
-        return None
+        except Exception as e:
+            logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
+            await asyncio.sleep(2)
+    
+    return None
 
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
         """تحلیل همه جفت ارزها به صورت موازی"""
