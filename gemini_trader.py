@@ -580,9 +580,9 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
 
 class AdvancedForexAnalyzer:
     def __init__(self): 
-self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
-self.technical_analyzer = AdvancedTechnicalAnalyzer()
-self.ai_manager = HybridAIManager(google_api_key, DEEPSEEK_API_KEY)
+        self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
+        self.technical_analyzer = AdvancedTechnicalAnalyzer()
+        self.ai_manager = HybridAIManager(google_api_key, DEEPSEEK_API_KEY)
 async def analyze_pair(self, pair: str) -> Optional[Dict]:
     """تحلیل کامل یک جفت ارز"""
     if self.cache_manager.is_pair_on_cooldown(pair):
