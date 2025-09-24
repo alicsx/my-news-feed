@@ -1,3 +1,4 @@
+ 
 import google.generativeai as genai
 import os
 import re
@@ -20,7 +21,7 @@ import concurrent.futures
 # کلیدهای API
 google_api_key = os.getenv("GOOGLE_API_KEY")
 TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
+CLOUDFLARE_AI_API_KEY = os.getenv("CLOUDFLARE_AI_API_KEY")
 
 if not all([google_api_key, TWELVEDATA_API_KEY]):
     raise ValueError("لطفاً کلیدهای API را تنظیم کنید: GOOGLE_API_KEY, TWELVEDATA_API_KEY")
@@ -40,8 +41,8 @@ CACHE_DURATION_HOURS = 2  # منطبق با اجرای هر 2 ساعت
 LOG_FILE = "trading_log.log"
 
 # مدل‌های AI
-GEMINI_MODEL = 'gemini-1.5-flash-latest'  # سریع‌تر و اقتصادی‌تر
-DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
+GEMINI_MODEL = 'gemini-1.5-flash-latest'
+CLOUDFLARE_AI_API_URL = "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_name}"
 
 # راه‌اندازی سیستم لاگ‌گیری پیشرفته
 logging.basicConfig(
@@ -52,6 +53,7 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
 class AsyncRateLimiter:
     """
     یک کلاس ساده برای مدیریت محدودیت نرخ درخواست‌ها به صورت آسنکرون.
@@ -83,6 +85,7 @@ class AsyncRateLimiter:
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
+
 # =================================================================================
 # --- کلاس مدیریت کش هوشمند ---
 # =================================================================================
@@ -161,7 +164,6 @@ class SmartCacheManager:
 # --- کلاس تحلیل تکنیکال پیشرفته ---
 # =================================================================================
 
-# کد کامل و اصلاح شده کلاس ✅
 class AdvancedTechnicalAnalyzer:
     def __init__(self):
         self.indicators_config = {
@@ -396,17 +398,21 @@ class AdvancedTechnicalAnalyzer:
             'strength': "قوی" if body_ratio > 0.6 else "متوسط" if body_ratio > 0.3 else "ضعیف"
         }
 
-
 # =================================================================================
-# --- کلاس مدیریت AI ترکیبی ---
+# --- کلاس مدیریت AI ترکیبی (با Cloudflare) ---
 # =================================================================================
 
 class HybridAIManager:
-    def __init__(self, gemini_api_key: str, deepseek_api_key: str):
+    def __init__(self, gemini_api_key: str, cloudflare_api_key: str):
         self.gemini_api_key = gemini_api_key
-        self.deepseek_api_key = deepseek_api_key
+        self.cloudflare_api_key = cloudflare_api_key
         self.gemini_model = GEMINI_MODEL
-        self.deepseek_url = DEEPSEEK_API_URL
+        
+        # تنظیمات Cloudflare AI
+        # شما باید account_id و model_name را بر اساس تنظیمات خود تنظیم کنید
+        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
+        self.cloudflare_model_name = os.getenv("CLOUDFLARE_MODEL_NAME", "@cf/meta/llama-2-7b-chat-fp16")
+        self.cloudflare_url = f"https://api.cloudflare.com/client/v4/accounts/{self.cloudflare_account_id}/ai/run/{self.cloudflare_model_name}"
         
         # تنظیم Gemini
         genai.configure(api_key=gemini_api_key)
@@ -415,14 +421,14 @@ class HybridAIManager:
         """دریافت تحلیل ترکیبی از دو مدل AI"""
         tasks = [
             self._get_gemini_analysis(symbol, technical_analysis),
-            self._get_deepseek_analysis(symbol, technical_analysis)
+            self._get_cloudflare_analysis(symbol, technical_analysis)
         ]
         
         try:
             results = await asyncio.gather(*tasks, return_exceptions=True)
-            gemini_result, deepseek_result = results
+            gemini_result, cloudflare_result = results
             
-            return self._combine_analyses(symbol, gemini_result, deepseek_result, technical_analysis)
+            return self._combine_analyses(symbol, gemini_result, cloudflare_result, technical_analysis)
             
         except Exception as e:
             logging.error(f"خطا در تحلیل ترکیبی برای {symbol}: {e}")
@@ -446,42 +452,53 @@ class HybridAIManager:
             logging.warning(f"خطا در تحلیل Gemini برای {symbol}: {e}")
             return None
     
-    async def _get_deepseek_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """تحلیل با DeepSeek"""
-        if not self.deepseek_api_key:
-            logging.warning("کلید DeepSeek API تنظیم نشده است")
+    async def _get_cloudflare_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """تحلیل با Cloudflare AI"""
+        if not self.cloudflare_api_key:
+            logging.warning("کلید Cloudflare API تنظیم نشده است")
             return None
             
         try:
-            prompt = self._create_analysis_prompt(symbol, technical_analysis, "DeepSeek")
+            prompt = self._create_analysis_prompt(symbol, technical_analysis, "Cloudflare")
             
             headers = {
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {self.deepseek_api_key}"
+                "Authorization": f"Bearer {self.cloudflare_api_key}",
+                "Content-Type": "application/json"
             }
             
+            # فرمت پیام برای Cloudflare AI
             payload = {
-                "model": "deepseek-chat",
                 "messages": [
-                    {"role": "system", "content": "You are an expert forex trading analyst."},
-                    {"role": "user", "content": prompt}
+                    {
+                        "role": "system", 
+                        "content": "You are an expert forex trading analyst. Provide your analysis in JSON format."
+                    },
+                    {
+                        "role": "user", 
+                        "content": prompt
+                    }
                 ],
-                "temperature": 0.3,
-                "max_tokens": 1500
+                "stream": False
             }
             
             async with aiohttp.ClientSession() as session:
-                async with session.post(self.deepseek_url, headers=headers, json=payload, timeout=120) as response:
+                async with session.post(self.cloudflare_url, headers=headers, json=payload, timeout=120) as response:
                     if response.status == 200:
                         data = await response.json()
-                        content = data["choices"][0]["message"]["content"]
-                        return self._parse_ai_response(content, symbol, "DeepSeek")
+                        # Cloudflare AI پاسخ را در فیلد result برمی‌گرداند
+                        if "result" in data and "response" in data["result"]:
+                            content = data["result"]["response"]
+                            return self._parse_ai_response(content, symbol, "Cloudflare")
+                        else:
+                            logging.warning(f"فرمت پاسخ Cloudflare نامعتبر است: {data}")
+                            return None
                     else:
-                        logging.warning(f"خطا در پاسخ DeepSeek: {response.status}")
+                        error_text = await response.text()
+                        logging.warning(f"خطا در پاسخ Cloudflare: {response.status} - {error_text}")
                         return None
                         
         except Exception as e:
-            logging.warning(f"خطا در تحلیل DeepSeek برای {symbol}: {e}")
+            logging.warning(f"خطا در تحلیل Cloudflare برای {symbol}: {e}")
             return None
     
     def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
@@ -519,8 +536,6 @@ class HybridAIManager:
   "RISK_REWARD_RATIO": "نسبت risk/reward",
   "ANALYSIS": "تحلیل کلی وضعیت"
 }}
-در صورت عدم وجود سیگنال واضح، از ACTION: "HOLD" استفاده کنید.
-"""
 def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
     """پارس کردن پاسخ AI"""
     try:
@@ -547,14 +562,14 @@ def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Option
         logging.error(f"خطا در پارس کردن پاسخ {ai_name} برای {symbol}: {e}")
         return None
 
-def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
+def _combine_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
     """ترکیب نتایج دو مدل AI"""
     results = []
     
     if gemini_result and gemini_result.get('ACTION') != 'HOLD':
         results.append(('Gemini', gemini_result))
-    if deepseek_result and deepseek_result.get('ACTION') != 'HOLD':
-        results.append(('DeepSeek', deepseek_result))
+    if cloudflare_result and cloudflare_result.get('ACTION') != 'HOLD':
+        results.append(('Cloudflare', cloudflare_result))
     
     if not results:
         logging.info(f"هر دو مدل AI برای {symbol} سیگنال HOLD دادند")
@@ -578,11 +593,11 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
     
     # اگر هر دو مدل سیگنال دادند
     gemini_action = gemini_result.get('ACTION')
-    deepseek_action = deepseek_result.get('ACTION')
+    cloudflare_action = cloudflare_result.get('ACTION')
     
-    if gemini_action == deepseek_action:
+    if gemini_action == cloudflare_action:
         # توافق کامل
-        combined_confidence = (gemini_result.get('CONFIDENCE', 5) + deepseek_result.get('CONFIDENCE', 5)) // 2
+        combined_confidence = (gemini_result.get('CONFIDENCE', 5) + cloudflare_result.get('CONFIDENCE', 5)) // 2
         return {
             'SYMBOL': symbol,
             'ACTION': gemini_action,
@@ -590,18 +605,18 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
             'COMBINED_ANALYSIS': True,
             'MODELS_AGREE': True,
             'GEMINI_ANALYSIS': gemini_result.get('ANALYSIS', ''),
-            'DEEPSEEK_ANALYSIS': deepseek_result.get('ANALYSIS', ''),
+            'CLOUDFLARE_ANALYSIS': cloudflare_result.get('ANALYSIS', ''),
             'FINAL_ANALYSIS': f"توافق کامل بین مدل‌ها - سیگنال {gemini_action} با اعتماد بالا"
         }
     else:
         # تضاد بین مدل‌ها - انتخاب محتاطانه
         gemini_conf = gemini_result.get('CONFIDENCE', 5)
-        deepseek_conf = deepseek_result.get('CONFIDENCE', 5)
+        cloudflare_conf = cloudflare_result.get('CONFIDENCE', 5)
         
-        if abs(gemini_conf - deepseek_conf) >= 3:
+        if abs(gemini_conf - cloudflare_conf) >= 3:
             # انتخاب مدل با اعتماد بالاتر
-            selected_result = gemini_result if gemini_conf > deepseek_conf else deepseek_result
-            selected_model = 'Gemini' if gemini_conf > deepseek_conf else 'DeepSeek'
+            selected_result = gemini_result if gemini_conf > cloudflare_conf else cloudflare_result
+            selected_model = 'Gemini' if gemini_conf > cloudflare_conf else 'Cloudflare'
             
             selected_result['COMBINED_ANALYSIS'] = True
             selected_result['MODELS_AGREE'] = False
@@ -617,157 +632,152 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
                 'MODELS_AGREE': False,
                 'ANALYSIS': 'تضاد بین مدل‌ها - نیاز به بررسی بیشتر'
             }
-
 class AdvancedForexAnalyzer:
-    def __init__(self):
-        self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
+    def __init__(self): 
+self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
         self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
-        self.ai_manager = HybridAIManager(google_api_key, DEEPSEEK_API_KEY)
-
-    async def analyze_pair(self, pair: str) -> Optional[Dict]:
-        """تحلیل کامل یک جفت ارز"""
-        if self.cache_manager.is_pair_on_cooldown(pair):
+        self.ai_manager = HybridAIManager(google_api_key, CLOUDFLARE_AI_API_KEY)
+async def analyze_pair(self, pair: str) -> Optional[Dict]:
+    """تحلیل کامل یک جفت ارز"""
+    if self.cache_manager.is_pair_on_cooldown(pair):
+        return None
+    
+    logging.info(f"🔍 شروع تحلیل پیشرفته برای {pair}")
+    
+    try:
+        # دریافت داده‌های بازار
+        htf_df = await self.get_market_data_async(pair, HIGH_TIMEFRAME)
+        ltf_df = await self.get_market_data_async(pair, LOW_TIMEFRAME)
+        
+        if htf_df is None or ltf_df is None:
+            logging.warning(f"داده‌های بازار برای {pair} دریافت نشد")
             return None
         
-        logging.info(f"🔍 شروع تحلیل پیشرفته برای {pair}")
+        # تحلیل تکنیکال
+        htf_df = self.technical_analyzer.calculate_advanced_indicators(htf_df)
+        ltf_df = self.technical_analyzer.calculate_advanced_indicators(ltf_df)
         
-        try:
-            # دریافت داده‌های بازار
-            htf_df = await self.get_market_data_async(pair, HIGH_TIMEFRAME)
-            ltf_df = await self.get_market_data_async(pair, LOW_TIMEFRAME)
-            
-            if htf_df is None or ltf_df is None:
-                logging.warning(f"داده‌های بازار برای {pair} دریافت نشد")
-                return None
-            
-            # تحلیل تکنیکال
-            htf_df = self.technical_analyzer.calculate_advanced_indicators(htf_df)
-            ltf_df = self.technical_analyzer.calculate_advanced_indicators(ltf_df)
-            
-            if htf_df is None or ltf_df is None:
-                logging.warning(f"خطا در محاسبه اندیکاتورها برای {pair}")
-                return None
-            
-            technical_analysis = self.technical_analyzer.generate_technical_analysis(pair, htf_df, ltf_df)
-            
-            if not technical_analysis:
-                logging.warning(f"تحلیل تکنیکال برای {pair} ناموفق بود")
-                return None
-            
-            # تحلیل ترکیبی AI
-            ai_analysis = await self.ai_manager.get_combined_analysis(pair, technical_analysis)
-            
-            if ai_analysis and ai_analysis.get('ACTION') != 'HOLD':
-                self.cache_manager.update_cache(pair, ai_analysis)
-                return ai_analysis
-            else:
-                logging.info(f"هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
-                return None
-                
-        except Exception as e:
-            logging.error(f"خطا در تحلیل {pair}: {e}")
+        if htf_df is None or ltf_df is None:
+            logging.warning(f"خطا در محاسبه اندیکاتورها برای {pair}")
             return None
-
-    async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
-        """دریافت داده‌های بازار به صورت async"""
-        for attempt in range(retries):
-            try:
-                async with self.api_rate_limiter:
-                    url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
-                    
-                    async with aiohttp.ClientSession() as session:
-                        async with session.get(url, timeout=60) as response:
-                            if response.status == 200:
-                                data = await response.json()
-                                if 'values' in data and len(data['values']) > 0:
-                                    df = pd.DataFrame(data['values'])
-                                    df = df.iloc[::-1].reset_index(drop=True)
-                                    
-                                    # تبدیل انواع داده
-                                    for col in ['open', 'high', 'low', 'close']:
-                                        if col in df.columns:
-                                            df[col] = pd.to_numeric(df[col], errors='coerce')
-                                    
-                                    df['datetime'] = pd.to_datetime(df['datetime'])
-                                    df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
-                                    
-                                    return df
-                            else:
-                                logging.warning(f"خطای HTTP {response.status} برای {symbol}")
-                                
-            except Exception as e:
-                logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
-                await asyncio.sleep(2)
         
+        technical_analysis = self.technical_analyzer.generate_technical_analysis(pair, htf_df, ltf_df)
+        
+        if not technical_analysis:
+            logging.warning(f"تحلیل تکنیکال برای {pair} ناموفق بود")
+            return None
+        
+        # تحلیل ترکیبی AI
+        ai_analysis = await self.ai_manager.get_combined_analysis(pair, technical_analysis)
+        
+        if ai_analysis and ai_analysis.get('ACTION') != 'HOLD':
+            self.cache_manager.update_cache(pair, ai_analysis)
+            return ai_analysis
+        else:
+            logging.info(f"هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
+            return None
+            
+    except Exception as e:
+        logging.error(f"خطا در تحلیل {pair}: {e}")
         return None
 
-    async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
-        """تحلیل همه جفت ارزها به صورت موازی"""
-        logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
-        
-        # محدود کردن concurrent tasks برای مدیریت rate limits
-        semaphore = asyncio.Semaphore(1) 
-        
-        async def bounded_analyze(pair):
-            async with semaphore:
-                result = await self.analyze_pair(pair)
-                # یک ثانیه تأخیر بین تحلیل هر جفت‌ارز برای جلوگیری از رسیدن به سقف محدودیت API
-                await asyncio.sleep(1)
-                return result
-        
-        tasks = [bounded_analyze(pair) for pair in pairs]
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-        
-        # فیلتر کردن نتایج موفق
-        valid_signals = []
-        for result in results:
-            if isinstance(result, Dict) and result.get('ACTION') != 'HOLD':
-                valid_signals.append(result)
-            elif isinstance(result, Exception):
-                logging.error(f"خطا در تحلیل: {result}")
-        
-        return valid_signals 
+async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
+    """دریافت داده‌های بازار به صورت async"""
+    for attempt in range(retries):
+        try:
+            async with self.api_rate_limiter:
+                url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
+                
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url, timeout=60) as response:
+                        if response.status == 200:
+                            data = await response.json()
+                            if 'values' in data and len(data['values']) > 0:
+                                df = pd.DataFrame(data['values'])
+                                df = df.iloc[::-1].reset_index(drop=True)
+                                
+                                # تبدیل انواع داده
+                                for col in ['open', 'high', 'low', 'close']:
+                                    if col in df.columns:
+                                        df[col] = pd.to_numeric(df[col], errors='coerce')
+                                
+                                df['datetime'] = pd.to_datetime(df['datetime'])
+                                df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
+                                
+                                return df
+                        else:
+                            logging.warning(f"خطای HTTP {response.status} برای {symbol}")
+                            
+        except Exception as e:
+            logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
+            await asyncio.sleep(2)
+    
+    return None
 
-
+async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
+    """تحلیل همه جفت ارزها به صورت موازی"""
+    logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
+    
+    # محدود کردن concurrent tasks برای مدیریت rate limits
+    semaphore = asyncio.Semaphore(1) 
+    
+    async def bounded_analyze(pair):
+        async with semaphore:
+            result = await self.analyze_pair(pair)
+            # یک ثانیه تأخیر بین تحلیل هر جفت‌ارز برای جلوگیری از رسیدن به سقف محدودیت API
+            await asyncio.sleep(1)
+            return result
+    
+    tasks = [bounded_analyze(pair) for pair in pairs]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    
+    # فیلتر کردن نتایج موفق
+    valid_signals = []
+    for result in results:
+        if isinstance(result, Dict) and result.get('ACTION') != 'HOLD':
+            valid_signals.append(result)
+        elif isinstance(result, Exception):
+            logging.error(f"خطا در تحلیل: {result}")
+    
+    return valid_signals
 async def main():
     # This entire block is now correctly indented
     logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Hybrid AI v2.0)")
     analyzer = AdvancedForexAnalyzer()
+# بررسی جفت ارزهای مشخص شده از طریق آرگومان
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص")
+parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزها")
+args = parser.parse_args()
 
-    # بررسی جفت ارزهای مشخص شده از طریق آرگومان
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص")
-    parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزها")
-    args = parser.parse_args()
+if args.pair:
+    pairs_to_analyze = [args.pair]
+elif args.all:
+    pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
+else:
+    # اگر هیچ آرگومانی داده نشود، همه را تحلیل کن
+    pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
 
-    if args.pair:
-        pairs_to_analyze = [args.pair]
-    elif args.all:
-        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
-    else:
-        # اگر هیچ آرگومانی داده نشود، همه را تحلیل کن
-        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
+# اجرای تحلیل
+signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
 
-    # اجرای تحلیل
-    signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
+# ذخیره نتایج
+if signals:
+    output_file = "hybrid_ai_signals.json"
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(signals, f, indent=4, ensure_ascii=False)
+    
+    logging.info(f"✅ تحلیل کامل شد. {len(signals)} سیگنال در {output_file} ذخیره شد")
+    
+    # نمایش خلاصه نتایج
+    for signal in signals:
+        logging.info(f"📈 {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal.get('CONFIDENCE', 'N/A')}/10)")
+else:
+    logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
 
-    # ذخیره نتایج
-    if signals:
-        output_file = "hybrid_ai_signals.json"
-        with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump(signals, f, indent=4, ensure_ascii=False)
-        
-        logging.info(f"✅ تحلیل کامل شد. {len(signals)} سیگنال در {output_file} ذخیره شد")
-        
-        # نمایش خلاصه نتایج
-        for signal in signals:
-            logging.info(f"📈 {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal.get('CONFIDENCE', 'N/A')}/10)")
-    else:
-        logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
-
-    logging.info("🏁 پایان اجرای سیستم")
+logging.info("🏁 پایان اجرای سیستم")
 
 if __name__ == "__main__":
     asyncio.run(main())
