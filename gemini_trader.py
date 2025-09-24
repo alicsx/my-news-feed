@@ -13,7 +13,6 @@ from datetime import datetime, timedelta, UTC
 # --- بخش تنظیمات اصلی ---
 # =================================================================================
 
-# کلیدهای API را از متغیرهای محیطی یا GitHub Secrets بخوان
 google_api_key = os.getenv("GOOGLE_API_KEY")
 TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
 
@@ -22,19 +21,15 @@ if not all([google_api_key, TWELVEDATA_API_KEY]):
 
 genai.configure(api_key=google_api_key)
 
-# --- تنظیمات استراتژی ---
 HIGH_TIMEFRAME = "4h"
 LOW_TIMEFRAME = "1h"
 CANDLES_TO_FETCH = 200
-
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD",
     "GBP/JPY", "EUR/JPY", "AUD/JPY", "NZD/USD", "USD/CAD"
 ]
-
-# --- تنظیمات فنی ---
 CACHE_FILE = "signal_cache.json"
-CACHE_DURATION_HOURS = 2 # زمان کش را کاهش می‌دهیم تا تحلیل‌ها به‌روزتر باشند
+CACHE_DURATION_HOURS = 2
 LOG_FILE = "trading_log.log"
 
 logging.basicConfig(level=logging.INFO,
@@ -44,9 +39,6 @@ logging.basicConfig(level=logging.INFO,
 # =================================================================================
 # --- توابع اصلی سیستم ---
 # =================================================================================
-
-# توابع normalize_pair_format, load_cache, save_cache, is_pair_on_cooldown, get_market_data, apply_full_technical_indicators
-# بدون تغییر باقی می‌مانند و برای کامل بودن کد اینجا آورده شده‌اند.
 
 def normalize_pair_format(pair_string):
     if not isinstance(pair_string, str): return ""
@@ -69,7 +61,7 @@ def is_pair_on_cooldown(pair, cache):
     if pair not in cache: return False
     last_signal_time = datetime.fromisoformat(cache[pair])
     if datetime.now(UTC) - last_signal_time < timedelta(hours=CACHE_DURATION_HOURS):
-        logging.info(f"جفت ارز {pair} در حافظه کش است (cooldown). از تحلیل مجدد صرف‌نظر می‌شود.")
+        logging.info(f"جفت ارز {pair} در حافظه کش است. از تحلیل مجدد صرف‌نظر می‌شود.")
         return True
     return False
 
@@ -83,8 +75,7 @@ def get_market_data(symbol, interval, outputsize):
         if 'values' in data and len(data['values']) > 0:
             df = pd.DataFrame(data['values'])
             for col in ['open', 'high', 'low', 'close', 'volume']:
-                if col in df.columns:
-                    df[col] = pd.to_numeric(df[col], errors='coerce')
+                if col in df.columns: df[col] = pd.to_numeric(df[col], errors='coerce')
             df['datetime'] = pd.to_datetime(df['datetime'])
             df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
             df = df.sort_values('datetime', ascending=True).reset_index(drop=True)
@@ -95,7 +86,7 @@ def get_market_data(symbol, interval, outputsize):
 
 def apply_full_technical_indicators(df):
     if df is None or df.empty: return None
-    logging.info("محاسبه اندیکاتورهای جامع...")
+    logging.info("محاسبه اندیکاتورهای جامع و الگوهای کندل استیک...")
     try:
         if len(df) < 50: return pd.DataFrame()
         df.ta.ema(length=21, append=True)
@@ -109,67 +100,81 @@ def apply_full_technical_indicators(df):
             df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
         df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
         df['res'] = df['high'].rolling(window=10, min_periods=3).max()
+        df.ta.cdl_doji(append=True)
+        df.ta.cdl_hammer(append=True)
+        df.ta.cdl_engulfing(append=True)
         df.dropna(inplace=True)
+        if df.empty: logging.warning("دیتافریم پس از محاسبه اندیکاتورها تهی شد.")
         return df
     except Exception as e:
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
         return pd.DataFrame()
 
-# ✨ NEW: Function to prepare a comprehensive technical briefing ✨
 def gather_technical_briefing(htf_df, ltf_df):
-    """یک خلاصه و پرونده تحلیلی کامل از وضعیت تکنیکال بازار تهیه می‌کند."""
     if htf_df.empty or ltf_df.empty:
         return "داده‌های تکنیکال برای تهیه گزارش کافی نیست."
 
     last_htf = htf_df.iloc[-1]
     last_ltf = ltf_df.iloc[-1]
 
-    # تعیین وضعیت بازار
     adx = last_htf.get('ADX_14', 'N/A')
     market_regime = "UNCLEAR"
     if isinstance(adx, float):
         if adx > 25: market_regime = "TRENDING"
         elif adx < 20: market_regime = "RANGING"
     
-    # تعیین روند
     htf_trend = "UNCLEAR"
     if last_htf.get('EMA_21') > last_htf.get('EMA_50'): htf_trend = "UPTREND"
     elif last_htf.get('EMA_21') < last_htf.get('EMA_50'): htf_trend = "DOWNTREND"
-        
+
+    atr_avg = ltf_df['ATRr_14'].rolling(window=50).mean().iloc[-1]
+    volatility_state = "High" if last_ltf.get('ATRr_14') > atr_avg * 1.5 else \
+                       "Low" if last_ltf.get('ATRr_14') < atr_avg * 0.7 else "Normal"
+
+    recent_candles = ltf_df.tail(3)
+    patterns = []
+    if recent_candles['CDL_DOJI_10_0.1'].sum() > 0: patterns.append("Doji (Indecision)")
+    if recent_candles['CDL_HAMMER'].sum() > 0: patterns.append("Hammer (Bullish Reversal)")
+    if recent_candles['CDL_ENGULFING'].sum() != 0: patterns.append("Engulfing Pattern")
+    candlestick_summary = ", ".join(patterns) if patterns else "No significant pattern"
+
     briefing = f"""
-- **High-Timeframe Trend ({HIGH_TIMEFRAME}):** {htf_trend}
+- **Overall Trend ({HIGH_TIMEFRAME}):** {htf_trend}
 - **Market Regime (HTF ADX):** {market_regime} ({adx:.2f})
-- **Low-Timeframe Momentum ({LOW_TIMEFRAME} MACD):** {'Bullish' if last_ltf.get('MACD_12_26_9') > last_ltf.get('MACDs_12_26_9') else 'Bearish'}
-- **Low-Timeframe RSI ({LOW_TIMEFRAME}):** {last_ltf.get('RSI_14'):.2f}
+- **Price vs. LTF EMAs:** {'Above' if last_ltf.get('close') > last_ltf.get('EMA_50') else 'Below'} key moving averages.
+- **Momentum (LTF MACD):** {'Bullish' if last_ltf.get('MACD_12_26_9') > last_ltf.get('MACDs_12_26_9') else 'Bearish'}
+- **Strength (LTF RSI):** {last_ltf.get('RSI_14'):.2f}
+- **Volatility (LTF ATR):** {volatility_state} (Value: {last_ltf.get('ATRr_14'):.5f})
+- **Recent Candlestick Pattern (LTF):** {candlestick_summary}
 - **Key Support (HTF):** {last_htf.get('sup'):.5f}
 - **Key Resistance (HTF):** {last_htf.get('res'):.5f}
-- **Current Volatility (LTF ATR):** {last_ltf.get('ATRr_14'):.5f}
-- **Volume Status (LTF):** {'Above Average' if 'volume' in last_ltf and 'VOLUME_SMA_20' in last_ltf and last_ltf['volume'] > last_ltf['VOLUME_SMA_20'] else 'Normal or Below Average'}
+- **Proximity to Key Levels:** Price is closer to {'Support' if abs(last_ltf.get('close') - last_htf.get('sup')) < abs(last_ltf.get('close') - last_htf.get('res')) else 'Resistance'}.
 """
     return briefing.strip()
 
-# ✨ NEW: The ultimate AI prompt that receives the full briefing ✨
+# ✨ MODIFIED: The AI prompt is balanced to be less strict and more proactive ✨
 def get_ai_trade_decision(symbol, technical_briefing):
-    """
-    پرونده تحلیلی را به هوش مصنوعی ارسال کرده و از او می‌خواهد تا بهترین سیگنال ممکن را ایجاد کند.
-    """
     base_currency, quote_currency = symbol.split('/')
     prompt = f"""
-    You are the Head Analyst and primary decision-maker at a proprietary trading firm. Your quantitative assistant has prepared the following technical briefing for **{symbol}**.
+    You are a pragmatic and experienced Hedge Fund Portfolio Manager. Your quantitative team has provided the following technical briefing for **{symbol}**. Your goal is to find the best justifiable, risk-adjusted trading opportunity.
 
-    Your task is to synthesize this quantitative data with your own deep, qualitative knowledge (including fundamental analysis, news events, and price action nuances) to decide if a high-probability trade exists.
-
-    **Quantitative Technical Briefing from Assistant:**
+    **Quantitative Technical Briefing:**
     ```
     {technical_briefing}
     ```
 
-    **Your Mandate:**
-    1.  **Analyze the Full Picture:** Review the provided technical data. Does it present a clear picture?
-    2.  **Add Your Qualitative Layer:** Search for upcoming high-impact news for '{base_currency}' and '{quote_currency}'. How does the current market sentiment and fundamental outlook align with the technical briefing?
-    3.  **Make the Final Call:**
-        -   If you identify a clear, high-probability opportunity where technicals and fundamentals align, **CREATE** a trade signal with precise parameters. Your reasoning should reflect the confluence of factors.
-        -   If the data is conflicting, the outlook is uncertain, or no quality setup exists, you MUST respond ONLY with the word **"NO_SIGNAL"**.
+    **Your Decision-Making Framework:**
+
+    1.  **Synthesize Technicals:** Does the provided data suggest a coherent technical story? Even if not perfect, is there a discernible edge?
+
+    2.  **Apply Fundamental Overlay:** Briefly check for high-impact news for '{base_currency}' and '{quote_currency}' in the next 8 hours. How does the fundamental sentiment align with the technical picture? Use it as a confirming or invalidating factor.
+
+    3.  **Assess Risk & Price Action:** Examine recent candlesticks. Is there any pattern that strengthens a potential trade? What is the primary risk?
+
+    4.  **Formulate Final Trade Plan:**
+        -   Your goal is to **find a trade if a logical one exists**. Synthesize all available information (technical, fundamental, price action).
+        -   If you can construct a trade where the potential reward justifies the risk and there are no major, direct contradictions, **CREATE** that trade signal.
+        -   If the data is too messy, conflicting, or the risk is unmanageable, then and only then, respond with **"NO_SIGNAL"**.
 
     **Strict Output Format:**
     - If no trade: `NO_SIGNAL`
@@ -180,30 +185,25 @@ def get_ai_trade_decision(symbol, technical_briefing):
     SL: [Precise Stop Loss Price]
     TP: [Precise Take Profit Price]
     CONFIDENCE: [Your final confidence score from 1-10]
-    REASON: [Your concise, expert reason for the trade, combining technical and fundamental insights]
+    REASON: [Your expert reason for the trade, synthesizing all factors]
     """
-    logging.info(f"ارسال پرونده تحلیلی {symbol} به AI برای تصمیم‌گیری نهایی...")
+    logging.info(f"ارسال پرونده تحلیلی {symbol} به مدیر پورتفولیو (AI) برای تصمیم‌گیری نهایی...")
     try:
         model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
         
         if "NO_SIGNAL" in response.text.upper():
-            logging.info(f"هوش مصنوعی پس از بررسی پرونده، هیچ فرصت مناسبی برای {symbol} پیدا نکرد.")
+            logging.info(f"AI پس از بررسی کامل، هیچ فرصت مناسبی برای {symbol} پیدا نکرد.")
             return None
         
-        logging.info(f"هوش مصنوعی یک سیگنال معاملاتی برای {symbol} ایجاد کرد.")
+        logging.info(f"AI یک سیگنال معاملاتی با تحلیل جامع برای {symbol} ایجاد کرد.")
         return response.text
     except Exception as e:
         logging.error(f"خطا در تصمیم‌گیری نهایی AI: {e}")
         return None
 
-# =================================================================================
-# --- حلقه اصلی برنامه ---
-# =================================================================================
-
 def main():
-    """تابع اصلی برای اجرای کامل فرآیند تولید سیگنال."""
-    logging.info("================== شروع اجرای اسکریپت (مدل دستیار کوانتومی) ==================")
+    logging.info("================== شروع اجرای اسکریپت (مدل مدیر پورتفولیو) ==================")
     signal_cache = load_cache()
     final_signals = []
 
@@ -211,7 +211,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--pair", type=str, help="Specify a single currency pair to analyze")
     args, _ = parser.parse_known_args()
-
     pairs_to_run = [args.pair] if args.pair else CURRENCY_PAIRS_TO_ANALYZE
 
     for pair_raw in pairs_to_run:
@@ -231,11 +230,9 @@ def main():
             logging.warning(f"دیتای کافی برای تحلیل {pair} پس از پردازش وجود ندارد.")
             continue
             
-        # ✨ NEW: The script's main job is now to create the briefing ✨
         technical_briefing = gather_technical_briefing(htf_df_analyzed, ltf_df_analyzed)
         logging.info(f"پرونده تحلیلی برای {pair} تهیه شد:\n{technical_briefing}")
         
-        # Send the briefing to the AI for the final decision
         final_response = get_ai_trade_decision(pair, technical_briefing)
         
         if final_response:
@@ -246,9 +243,8 @@ def main():
         logging.info(f"... تحلیل {pair} تمام شد. تاخیر ۱۰ ثانیه‌ای ...")
         time.sleep(10)
 
-    # --- ذخیره سیگنال‌های نهایی و حافظه ---
     if final_signals:
-        output_content = "AI-Generated Signals from Quantitative Briefings\n" + "="*60 + "\n\n"
+        output_content = "Portfolio Manager Grade Signals (Quant-Briefed AI)\n" + "="*60 + "\n\n"
         output_content += "\n---\n".join(final_signals)
         with open("trade_signal.txt", "w", encoding="utf-8") as f:
             f.write(output_content)
