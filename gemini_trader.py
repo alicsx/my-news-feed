@@ -720,4 +720,4 @@ async def main():
   
     logging.info("🏁 پایان اجرای سیستم")
 if name == "main":
-asyncio.run(main())
+    asyncio.run(main())
