@@ -84,13 +84,14 @@ def get_market_data(symbol, interval, outputsize):
         logging.error(f"خطا در دریافت دیتای بازار برای {symbol}: {e}")
     return None
 
-# ✨ FIX: Using the correct universal .cdl() method for all candlestick patterns ✨
+# ✨ FIX: استفاده از متدهای صحیح برای الگوهای کندل استیک ✨
 def apply_full_technical_indicators(df):
     if df is None or df.empty: return None
     logging.info("محاسبه اندیکاتورهای جامع و الگوهای کندل استیک...")
     try:
         if len(df) < 50: return pd.DataFrame()
-        # Standard indicators
+        
+        # اندیکاتورهای استاندارد
         df.ta.ema(length=21, append=True)
         df.ta.ema(length=50, append=True)
         df.ta.rsi(length=14, append=True)
@@ -103,10 +104,11 @@ def apply_full_technical_indicators(df):
         df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
         df['res'] = df['high'].rolling(window=10, min_periods=3).max()
         
-        # Correct candlestick pattern recognition function calls
-        df.ta.cdl("doji", append=True)
-        df.ta.cdl("hammer", append=True)
-        df.ta.cdl("engulfing", append=True)
+        # ✨ FIX: استفاده از متدهای صحیح برای الگوهای کندل استیک ✨
+        # روش صحیح فراخوانی الگوهای کندل استیک در pandas_ta
+        df['CDL_DOJI'] = ta.cdl_doji(df['open'], df['high'], df['low'], df['close'])
+        df['CDL_HAMMER'] = ta.cdl_hammer(df['open'], df['high'], df['low'], df['close'])
+        df['CDL_ENGULFING'] = ta.cdl_engulfing(df['open'], df['high'], df['low'], df['close'])
         
         df.dropna(inplace=True)
         if df.empty: logging.warning("دیتافریم پس از محاسبه اندیکاتورها تهی شد.")
@@ -115,7 +117,6 @@ def apply_full_technical_indicators(df):
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
         return pd.DataFrame()
 
-# ✨ FIX: Updated column names to match the output of the .cdl() method ✨
 def gather_technical_briefing(htf_df, ltf_df):
     if htf_df.empty or ltf_df.empty:
         return "داده‌های تکنیکال برای تهیه گزارش کافی نیست."
@@ -137,12 +138,15 @@ def gather_technical_briefing(htf_df, ltf_df):
     volatility_state = "High" if last_ltf.get('ATRr_14') > atr_avg * 1.5 else \
                        "Low" if last_ltf.get('ATRr_14') < atr_avg * 0.7 else "Normal"
 
-    # Correctly check for the columns created by the .cdl() method
+    # بررسی صحیح ستون‌های ایجاد شده توسط توابع کندل استیک
     recent_candles = ltf_df.tail(3)
     patterns = []
-    if 'CDL_DOJI' in recent_candles.columns and recent_candles['CDL_DOJI'].sum() > 0: patterns.append("Doji (Indecision)")
-    if 'CDL_HAMMER' in recent_candles.columns and recent_candles['CDL_HAMMER'].sum() > 0: patterns.append("Hammer (Bullish Reversal)")
-    if 'CDL_ENGULFING' in recent_candles.columns and recent_candles['CDL_ENGULFING'].sum() != 0: patterns.append("Engulfing Pattern")
+    if 'CDL_DOJI' in recent_candles.columns and recent_candles['CDL_DOJI'].sum() > 0: 
+        patterns.append("Doji (Indecision)")
+    if 'CDL_HAMMER' in recent_candles.columns and recent_candles['CDL_HAMMER'].sum() > 0: 
+        patterns.append("Hammer (Bullish Reversal)")
+    if 'CDL_ENGULFING' in recent_candles.columns and recent_candles['CDL_ENGULFING'].sum() != 0: 
+        patterns.append("Engulfing Pattern")
     candlestick_summary = ", ".join(patterns) if patterns else "No significant pattern"
 
     briefing = f"""
@@ -160,7 +164,6 @@ def gather_technical_briefing(htf_df, ltf_df):
     return briefing.strip()
 
 def get_ai_trade_decision(symbol, technical_briefing):
-    # This function's logic remains unchanged.
     base_currency, quote_currency = symbol.split('/')
     prompt = f"""
     You are a seasoned Portfolio Manager at a multi-billion dollar hedge fund. Your quantitative analysis (Quant) team has just handed you the following technical briefing for **{symbol}**. Your job is to make the final, critical decision to trade or not to trade.
