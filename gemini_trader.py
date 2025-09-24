@@ -614,7 +614,7 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
 
 class AdvancedForexAnalyzer:
     def __init__(self): 
-self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
+        self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
         self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
         self.ai_manager = HybridAIManager(google_api_key, DEEPSEEK_API_KEY)
