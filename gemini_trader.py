@@ -577,9 +577,7 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
                 'MODELS_AGREE': False,
                 'ANALYSIS': 'تضاد بین مدل‌ها - نیاز به بررسی بیشتر'
             }
-=================================================================================
---- کلاس اصلی سیستم ---
-=================================================================================
+
 class AdvancedForexAnalyzer:
 def __init__(self): 
 self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
@@ -684,9 +682,7 @@ async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
             logging.error(f"خطا در تحلیل: {result}")
     
     return valid_signals
-=================================================================================
---- تابع اصلی اجرا ---
-=================================================================================
+
 async def main():
 logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Hybrid AI v2.0)")
 analyzer = AdvancedForexAnalyzer()
