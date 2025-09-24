@@ -613,7 +613,7 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
             }
 
 class AdvancedForexAnalyzer:
-    def __init__(self): 
+    def __init__(self):
         self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
         self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
@@ -664,44 +664,44 @@ class AdvancedForexAnalyzer:
             return None
 
     async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
-    """دریافت داده‌های بازار به صورت async"""
-    for attempt in range(retries):
-        try:
-            async with self.api_rate_limiter:
-                url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
-                
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url, timeout=60) as response:
-                        if response.status == 200:
-                            data = await response.json()
-                            if 'values' in data and len(data['values']) > 0:
-                                df = pd.DataFrame(data['values'])
-                                df = df.iloc[::-1].reset_index(drop=True)
+        """دریافت داده‌های بازار به صورت async"""
+        for attempt in range(retries):
+            try:
+                async with self.api_rate_limiter:
+                    url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
+                    
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(url, timeout=60) as response:
+                            if response.status == 200:
+                                data = await response.json()
+                                if 'values' in data and len(data['values']) > 0:
+                                    df = pd.DataFrame(data['values'])
+                                    df = df.iloc[::-1].reset_index(drop=True)
+                                    
+                                    # تبدیل انواع داده
+                                    for col in ['open', 'high', 'low', 'close']:
+                                        if col in df.columns:
+                                            df[col] = pd.to_numeric(df[col], errors='coerce')
+                                    
+                                    df['datetime'] = pd.to_datetime(df['datetime'])
+                                    df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
+                                    
+                                    return df
+                            else:
+                                logging.warning(f"خطای HTTP {response.status} برای {symbol}")
                                 
-                                # تبدیل انواع داده
-                                for col in ['open', 'high', 'low', 'close']:
-                                    if col in df.columns:
-                                        df[col] = pd.to_numeric(df[col], errors='coerce')
-                                
-                                df['datetime'] = pd.to_datetime(df['datetime'])
-                                df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
-                                
-                                return df
-                        else:
-                            logging.warning(f"خطای HTTP {response.status} برای {symbol}")
-                            
-        except Exception as e:
-            logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
-            await asyncio.sleep(2)
-    
-    return None
+            except Exception as e:
+                logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
+                await asyncio.sleep(2)
+        
+        return None
 
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
         """تحلیل همه جفت ارزها به صورت موازی"""
         logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
         
         # محدود کردن concurrent tasks برای مدیریت rate limits
-        semaphore = asyncio.Semaphore(1)  # حداکثر ۳ تحلیل همزمان
+        semaphore = asyncio.Semaphore(1) 
         
         async def bounded_analyze(pair):
             async with semaphore:
@@ -721,7 +721,8 @@ class AdvancedForexAnalyzer:
             elif isinstance(result, Exception):
                 logging.error(f"خطا در تحلیل: {result}")
         
-        return valid_signals
+        return valid_signals 
+
 
 async def main():
     # This entire block is now correctly indented
