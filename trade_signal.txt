@@ -1,20 +1,15 @@
 Portfolio Manager Grade Signals (Quant-Briefed AI)
 ============================================================
 
-PAIR: AUD/USD
+PAIR: AUD/JPY
 TYPE: SELL_LIMIT
-ENTRY: 0.66230
-SL: 0.66290
-TP: 0.65850
+ENTRY: 97.94800
+SL: 98.10000
+TP: 97.23600
 CONFIDENCE: 8
-REASON: The overall 4-hour trend for AUD/USD is strongly bearish, confirmed by the HTF ADX indicating a trending market. While recent short-term indicators (price above EMAs, bullish MACD, high RSI at 67.30) suggest a bullish retracement, this momentum is pushing the price directly into a significant HTF resistance level at 0.66251. The high RSI reading indicates potential exhaustion for this short-term bounce. Fundamentally, the prevailing sentiment favors USD strength due to higher-for-longer rate expectations from the Fed and its safe-haven appeal, while AUD remains vulnerable as a risk-sensitive commodity currency, aligning with the dominant downtrend. This setup presents a classic opportunity to "sell the bounce" at a key resistance level, re-entering the primary downtrend. The entry is strategically placed just below the HTF resistance, with a tight stop loss above it, and a substantial take profit targeting the next key HTF support, offering an excellent risk-to-reward ratio. The biggest risk is an unexpected breach of the 0.66251 resistance level, which would invalidate the immediate bearish bias. However, the confluence of a strong downtrend, resistance confluence, and supportive fundamentals makes this a high-probability setup.
-Expiration: 6 hours
----
-PAIR: NZD/USD
-TYPE: SELL_LIMIT
-ENTRY: 0.58730
-SL: 0.58850
-TP: 0.58473
-CONFIDENCE: 7
-REASON: The market exhibits a clear and strong DOWNTREND on the 4-hour timeframe, reinforced by a TRENDING market regime and price consistently below key moving averages. Fundamentally, global risk aversion and a relatively hawkish Fed continue to support USD strength, while NZD faces headwinds, aligning perfectly with a bearish outlook for NZD/USD. Current price action shows a retracement, with LTF MACD indicating temporary bullish momentum. This is interpreted as a counter-trend move within the dominant downtrend. Price is now approaching the critical HTF resistance at 0.58730. Our strategy is to capitalize on the likely resumption of the downtrend from this key resistance level. A SELL_LIMIT order is placed at the resistance, with a tight stop above to manage risk, and targeting the recent HTF support as the primary profit objective, anticipating the short-term bullish momentum will exhaust at resistance and the overall bearish trend will reassert itself.
+REASON: The overarching 4-hour trend for AUD/JPY is a clear DOWNTREND, confirmed by a strong TRENDING market regime (ADX 25.05). Fundamentally, JPY is broadly supported by ongoing speculation of a BoJ policy shift and its safe-haven appeal, while AUD faces headwinds from global growth concerns and China's economy, aligning with the bearish sentiment for this pair.
+
+Currently, the market is experiencing a strong short-term counter-trend rally, as evidenced by price being above key LTF EMAs, bullish MACD, and a high LTF RSI (68.36), indicating potential short-term exhaustion. This rally is pushing price directly towards the significant HTF Resistance at 97.94800.
+
+This setup presents a high-probability opportunity to fade the counter-trend rally and re-enter the prevailing downtrend at a favorable level. By placing a SELL_LIMIT order at the key resistance, we aim to capitalize on the anticipated rejection and continuation of the downtrend towards the Key Support at 97.23600. The proposed Stop Loss is placed logically above the resistance level, providing adequate buffer for potential overshoots while maintaining an attractive risk-reward profile (approx. 1:4.68). No immediate high-impact news is expected to disrupt this setup within the next 8 hours.
 Expiration: 6 hours
