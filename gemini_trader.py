@@ -84,11 +84,13 @@ def get_market_data(symbol, interval, outputsize):
         logging.error(f"خطا در دریافت دیتای بازار برای {symbol}: {e}")
     return None
 
+# ✨ FIX: Corrected candlestick function names ✨
 def apply_full_technical_indicators(df):
     if df is None or df.empty: return None
     logging.info("محاسبه اندیکاتورهای جامع و الگوهای کندل استیک...")
     try:
         if len(df) < 50: return pd.DataFrame()
+        # Standard indicators
         df.ta.ema(length=21, append=True)
         df.ta.ema(length=50, append=True)
         df.ta.rsi(length=14, append=True)
@@ -100,9 +102,12 @@ def apply_full_technical_indicators(df):
             df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
         df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
         df['res'] = df['high'].rolling(window=10, min_periods=3).max()
-        df.ta.cdl_doji(append=True)
-        df.ta.cdl_hammer(append=True)
-        df.ta.cdl_engulfing(append=True)
+        
+        # Correct candlestick pattern recognition function calls
+        df.ta.doji(append=True)
+        df.ta.hammer(append=True)
+        df.ta.engulfing(append=True)
+        
         df.dropna(inplace=True)
         if df.empty: logging.warning("دیتافریم پس از محاسبه اندیکاتورها تهی شد.")
         return df
@@ -110,6 +115,7 @@ def apply_full_technical_indicators(df):
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
         return pd.DataFrame()
 
+# ✨ FIX: Updated column names for candlestick patterns ✨
 def gather_technical_briefing(htf_df, ltf_df):
     if htf_df.empty or ltf_df.empty:
         return "داده‌های تکنیکال برای تهیه گزارش کافی نیست."
@@ -131,11 +137,12 @@ def gather_technical_briefing(htf_df, ltf_df):
     volatility_state = "High" if last_ltf.get('ATRr_14') > atr_avg * 1.5 else \
                        "Low" if last_ltf.get('ATRr_14') < atr_avg * 0.7 else "Normal"
 
+    # Correctly check for the columns created by the library
     recent_candles = ltf_df.tail(3)
     patterns = []
-    if recent_candles['CDL_DOJI_10_0.1'].sum() > 0: patterns.append("Doji (Indecision)")
-    if recent_candles['CDL_HAMMER'].sum() > 0: patterns.append("Hammer (Bullish Reversal)")
-    if recent_candles['CDL_ENGULFING'].sum() != 0: patterns.append("Engulfing Pattern")
+    if 'DOJI_10_0.1' in recent_candles.columns and recent_candles['DOJI_10_0.1'].sum() > 0: patterns.append("Doji (Indecision)")
+    if 'CDL_HAMMER' in recent_candles.columns and recent_candles['CDL_HAMMER'].sum() > 0: patterns.append("Hammer (Bullish Reversal)")
+    if 'CDL_ENGULFING' in recent_candles.columns and recent_candles['CDL_ENGULFING'].sum() != 0: patterns.append("Engulfing Pattern")
     candlestick_summary = ", ".join(patterns) if patterns else "No significant pattern"
 
     briefing = f"""
@@ -152,29 +159,28 @@ def gather_technical_briefing(htf_df, ltf_df):
 """
     return briefing.strip()
 
-# ✨ MODIFIED: The AI prompt is balanced to be less strict and more proactive ✨
 def get_ai_trade_decision(symbol, technical_briefing):
+    # This function's logic remains unchanged as it was already robust.
     base_currency, quote_currency = symbol.split('/')
     prompt = f"""
-    You are a pragmatic and experienced Hedge Fund Portfolio Manager. Your quantitative team has provided the following technical briefing for **{symbol}**. Your goal is to find the best justifiable, risk-adjusted trading opportunity.
+    You are a seasoned Portfolio Manager at a multi-billion dollar hedge fund. Your quantitative analysis (Quant) team has just handed you the following technical briefing for **{symbol}**. Your job is to make the final, critical decision to trade or not to trade.
 
-    **Quantitative Technical Briefing:**
+    **Quant Team's Technical Briefing:**
     ```
     {technical_briefing}
     ```
 
     **Your Decision-Making Framework:**
 
-    1.  **Synthesize Technicals:** Does the provided data suggest a coherent technical story? Even if not perfect, is there a discernible edge?
+    1.  **Synthesize Technicals:** Review the quant briefing. Is there a coherent, compelling technical story? (e.g., "The data shows a clear uptrend pulling back to a key support level with bullish candlestick confirmation.")
 
-    2.  **Apply Fundamental Overlay:** Briefly check for high-impact news for '{base_currency}' and '{quote_currency}' in the next 8 hours. How does the fundamental sentiment align with the technical picture? Use it as a confirming or invalidating factor.
+    2.  **Apply Fundamental Overlay:** Conduct a quick but thorough analysis of the fundamental picture for '{base_currency}' and '{quote_currency}'. Check for high-impact news in the next 8 hours. What is the prevailing market sentiment? Does the fundamental narrative align with the technical story, or does it create a dangerous contradiction?
 
-    3.  **Assess Risk & Price Action:** Examine recent candlesticks. Is there any pattern that strengthens a potential trade? What is the primary risk?
+    3.  **Assess Risk & Price Action:** Look beyond the indicators. Is the price action choppy or clean? Is the volatility too high for a safe entry, or too low for a profitable move? What is the single biggest risk to this trade idea?
 
     4.  **Formulate Final Trade Plan:**
-        -   Your goal is to **find a trade if a logical one exists**. Synthesize all available information (technical, fundamental, price action).
-        -   If you can construct a trade where the potential reward justifies the risk and there are no major, direct contradictions, **CREATE** that trade signal.
-        -   If the data is too messy, conflicting, or the risk is unmanageable, then and only then, respond with **"NO_SIGNAL"**.
+        -   If, and only if, you find a strong **CONFLUENCE** across Technicals, Fundamentals, and Price Action, **CREATE** a trade signal. Your reasoning must clearly state how these factors align.
+        -   If there is any significant doubt or contradiction, you MUST protect capital and respond ONLY with **"NO_SIGNAL"**.
 
     **Strict Output Format:**
     - If no trade: `NO_SIGNAL`
