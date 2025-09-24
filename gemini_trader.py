@@ -84,7 +84,7 @@ def get_market_data(symbol, interval, outputsize):
         logging.error(f"خطا در دریافت دیتای بازار برای {symbol}: {e}")
     return None
 
-# ✨ FIX: Corrected candlestick function names ✨
+# ✨ FIX: Using the correct universal .cdl() method for all candlestick patterns ✨
 def apply_full_technical_indicators(df):
     if df is None or df.empty: return None
     logging.info("محاسبه اندیکاتورهای جامع و الگوهای کندل استیک...")
@@ -104,9 +104,9 @@ def apply_full_technical_indicators(df):
         df['res'] = df['high'].rolling(window=10, min_periods=3).max()
         
         # Correct candlestick pattern recognition function calls
-        df.ta.doji(append=True)
-        df.ta.hammer(append=True)
-        df.ta.engulfing(append=True)
+        df.ta.cdl("doji", append=True)
+        df.ta.cdl("hammer", append=True)
+        df.ta.cdl("engulfing", append=True)
         
         df.dropna(inplace=True)
         if df.empty: logging.warning("دیتافریم پس از محاسبه اندیکاتورها تهی شد.")
@@ -115,7 +115,7 @@ def apply_full_technical_indicators(df):
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
         return pd.DataFrame()
 
-# ✨ FIX: Updated column names for candlestick patterns ✨
+# ✨ FIX: Updated column names to match the output of the .cdl() method ✨
 def gather_technical_briefing(htf_df, ltf_df):
     if htf_df.empty or ltf_df.empty:
         return "داده‌های تکنیکال برای تهیه گزارش کافی نیست."
@@ -137,10 +137,10 @@ def gather_technical_briefing(htf_df, ltf_df):
     volatility_state = "High" if last_ltf.get('ATRr_14') > atr_avg * 1.5 else \
                        "Low" if last_ltf.get('ATRr_14') < atr_avg * 0.7 else "Normal"
 
-    # Correctly check for the columns created by the library
+    # Correctly check for the columns created by the .cdl() method
     recent_candles = ltf_df.tail(3)
     patterns = []
-    if 'DOJI_10_0.1' in recent_candles.columns and recent_candles['DOJI_10_0.1'].sum() > 0: patterns.append("Doji (Indecision)")
+    if 'CDL_DOJI' in recent_candles.columns and recent_candles['CDL_DOJI'].sum() > 0: patterns.append("Doji (Indecision)")
     if 'CDL_HAMMER' in recent_candles.columns and recent_candles['CDL_HAMMER'].sum() > 0: patterns.append("Hammer (Bullish Reversal)")
     if 'CDL_ENGULFING' in recent_candles.columns and recent_candles['CDL_ENGULFING'].sum() != 0: patterns.append("Engulfing Pattern")
     candlestick_summary = ", ".join(patterns) if patterns else "No significant pattern"
@@ -160,7 +160,7 @@ def gather_technical_briefing(htf_df, ltf_df):
     return briefing.strip()
 
 def get_ai_trade_decision(symbol, technical_briefing):
-    # This function's logic remains unchanged as it was already robust.
+    # This function's logic remains unchanged.
     base_currency, quote_currency = symbol.split('/')
     prompt = f"""
     You are a seasoned Portfolio Manager at a multi-billion dollar hedge fund. Your quantitative analysis (Quant) team has just handed you the following technical briefing for **{symbol}**. Your job is to make the final, critical decision to trade or not to trade.
@@ -172,14 +172,14 @@ def get_ai_trade_decision(symbol, technical_briefing):
 
     **Your Decision-Making Framework:**
 
-    1.  **Synthesize Technicals:** Review the quant briefing. Is there a coherent, compelling technical story? (e.g., "The data shows a clear uptrend pulling back to a key support level with bullish candlestick confirmation.")
+    1.  **Synthesize Technicals:** Review the quant briefing. Is there a coherent, compelling technical story?
 
-    2.  **Apply Fundamental Overlay:** Conduct a quick but thorough analysis of the fundamental picture for '{base_currency}' and '{quote_currency}'. Check for high-impact news in the next 8 hours. What is the prevailing market sentiment? Does the fundamental narrative align with the technical story, or does it create a dangerous contradiction?
+    2.  **Apply Fundamental Overlay:** Conduct a quick but thorough analysis of the fundamental picture for '{base_currency}' and '{quote_currency}'. Check for high-impact news in the next 8 hours. What is the prevailing market sentiment?
 
-    3.  **Assess Risk & Price Action:** Look beyond the indicators. Is the price action choppy or clean? Is the volatility too high for a safe entry, or too low for a profitable move? What is the single biggest risk to this trade idea?
+    3.  **Assess Risk & Price Action:** Look beyond the indicators. Is the price action choppy or clean? What is the single biggest risk to this trade idea?
 
     4.  **Formulate Final Trade Plan:**
-        -   If, and only if, you find a strong **CONFLUENCE** across Technicals, Fundamentals, and Price Action, **CREATE** a trade signal. Your reasoning must clearly state how these factors align.
+        -   If, and only if, you find a strong **CONFLUENCE** across Technicals, Fundamentals, and Price Action, **CREATE** a trade signal.
         -   If there is any significant doubt or contradiction, you MUST protect capital and respond ONLY with **"NO_SIGNAL"**.
 
     **Strict Output Format:**
