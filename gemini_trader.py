@@ -13,276 +13,239 @@ from datetime import datetime, timedelta, UTC
 # --- بخش تنظیمات اصلی ---
 # =================================================================================
 
+# لطفاً کلیدهای API خود را به عنوان متغیر محیطی در سیستم خود تنظیم کنید.
+# در ویندوز: set GOOGLE_API_KEY=your_key
+# در لینوکس/مک: export GOOGLE_API_KEY=your_key
 google_api_key = os.getenv("GOOGLE_API_KEY")
 TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
 
 if not all([google_api_key, TWELVEDATA_API_KEY]):
-    raise ValueError("لطفاً کلیدهای API را تنظیم کنید: GOOGLE_API_KEY, TWELVEDATA_API_KEY")
+    raise ValueError("لطفاً کلیدهای API را به عنوان متغیر محیطی تنظیم کنید: GOOGLE_API_KEY, TWELVEDATA_API_KEY")
+
+# فعال‌سازی ابزار جستجوی گوگل برای مدل
+# این بخش حیاتی است و به مدل اجازه می‌دهد از گوگل استفاده کند
+try:
+    tools = [google.generativeai.Tool(
+        google_search=google.generativeai.GoogleSearch()
+    )]
+except ImportError:
+    logging.warning("SDK شما از google_search پشتیبانی نمی‌کند. لطفا آپدیت کنید. AI بدون دسترسی به اخبار زنده کار خواهد کرد.")
+    tools = []
+
 
 genai.configure(api_key=google_api_key)
 
+# تنظیمات اصلی سیستم تحلیل
 HIGH_TIMEFRAME = "4h"
 LOW_TIMEFRAME = "1h"
-CANDLES_TO_FETCH = 200
+CANDLES_TO_FETCH = 300
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD",
-    "GBP/JPY", "EUR/JPY", "AUD/JPY", "NZD/USD", "USD/CAD"
+    "GBP/JPY", "EUR/JPY", "AUD/JPY", "NZD/USD", "USD/CAD",
+    "EUR/GBP", "AUD/NZD", "EUR/AUD", "GBP/CHF", "CAD/JPY"
 ]
 CACHE_FILE = "signal_cache.json"
-CACHE_DURATION_HOURS = 2
+CACHE_DURATION_HOURS = 4
 LOG_FILE = "trading_log.log"
+# برای استفاده از ابزار جستجو، یکی از مدل‌های جدیدتر توصیه می‌شود
+AI_MODEL_NAME = 'gemini-1.5-pro-latest'
 
+# راه‌اندازی سیستم لاگ‌گیری
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     handlers=[logging.FileHandler(LOG_FILE, mode='w'), logging.StreamHandler()])
 
 # =================================================================================
-# --- توابع تشخیص الگوهای کندل استیک (پیاده‌سازی دستی) ---
-# =================================================================================
-
-def detect_candlestick_patterns(df):
-    """
-    تشخیص دستی الگوهای کندل استیک
-    """
-    if df is None or df.empty:
-        return df
-    
-    # ایجاد ستون‌های جدید برای الگوها
-    df['CDL_DOJI'] = 0
-    df['CDL_HAMMER'] = 0
-    df['CDL_ENGULFING'] = 0
-    
-    for i in range(1, len(df)):
-        open_curr = df['open'].iloc[i]
-        high_curr = df['high'].iloc[i]
-        low_curr = df['low'].iloc[i]
-        close_curr = df['close'].iloc[i]
-        
-        open_prev = df['open'].iloc[i-1]
-        high_prev = df['high'].iloc[i-1]
-        low_prev = df['low'].iloc[i-1]
-        close_prev = df['close'].iloc[i-1]
-        
-        # تشخیص Doji
-        body = abs(close_curr - open_curr)
-        range_total = high_curr - low_curr
-        if range_total > 0 and body / range_total < 0.1:  # بدنه بسیار کوچک
-            df.loc[df.index[i], 'CDL_DOJI'] = 100  # مقدار مثبت برای الگوی معنی‌دار
-        
-        # تشخیص Hammer
-        lower_shadow = min(open_curr, close_curr) - low_curr
-        upper_shadow = high_curr - max(open_curr, close_curr)
-        body_hammer = abs(close_curr - open_curr)
-        
-        if (lower_shadow > 2 * body_hammer and  # سایه پایینی بلند
-            upper_shadow < body_hammer * 0.3 and  # سایه بالایی کوتاه
-            body_hammer > 0):  # بدنه وجود دارد
-            df.loc[df.index[i], 'CDL_HAMMER'] = 100
-        
-        # تشخیص Engulfing
-        body_curr = close_curr - open_curr
-        body_prev = close_prev - open_prev
-        
-        # Engulfing صعودی
-        if (body_curr > 0 and body_prev < 0 and  # کندل فعلی صعودی، قبلی نزولی
-            open_curr < close_prev and close_curr > open_prev):  # کندل فعلی کندل قبلی را می‌پوشاند
-            df.loc[df.index[i], 'CDL_ENGULFING'] = 100
-        
-        # Engulfing نزولی
-        elif (body_curr < 0 and body_prev > 0 and  # کندل فعلی نزولی، قبلی صعودی
-              open_curr > close_prev and close_curr < open_prev):  # کندل فعلی کندل قبلی را می‌پوشاند
-            df.loc[df.index[i], 'CDL_ENGULFING'] = -100
-    
-    return df
-
-# =================================================================================
-# --- توابع اصلی سیستم ---
+# --- توابع کمکی و ابزارها ---
 # =================================================================================
 
 def normalize_pair_format(pair_string):
+    """فرمت جفت ارز را استاندارد می‌کند (مثال: eurusd -> EUR/USD)"""
     if not isinstance(pair_string, str): return ""
-    pair_string = pair_string.upper().strip()
+    pair_string = pair_string.upper().strip().replace(" ", "")
     if "/" in pair_string: return pair_string
     if len(pair_string) == 6: return f"{pair_string[:3]}/{pair_string[3:]}"
     logging.warning(f"فرمت جفت ارز '{pair_string}' ناشناخته است.")
     return pair_string
 
 def load_cache():
+    """بارگذاری کش سیگنال‌ها از فایل جیسون"""
     if not os.path.exists(CACHE_FILE): return {}
     try:
         with open(CACHE_FILE, 'r') as f: return json.load(f)
     except (json.JSONDecodeError, IOError): return {}
 
 def save_cache(cache):
+    """ذخیره کش سیگنال‌ها در فایل جیسون"""
     with open(CACHE_FILE, 'w') as f: json.dump(cache, f, indent=4)
 
 def is_pair_on_cooldown(pair, cache):
+    """بررسی می‌کند آیا برای یک جفت ارز به تازگی سیگنال صادر شده است یا خیر"""
     if pair not in cache: return False
     last_signal_time = datetime.fromisoformat(cache[pair])
     if datetime.now(UTC) - last_signal_time < timedelta(hours=CACHE_DURATION_HOURS):
-        logging.info(f"جفت ارز {pair} در حافظه کش است. از تحلیل مجدد صرف‌نظر می‌شود.")
+        logging.info(f"جفت ارز {pair} در دوره استراحت (cooldown) قرار دارد. از تحلیل مجدد صرف‌نظر می‌شود.")
         return True
     return False
 
-def get_market_data(symbol, interval, outputsize):
+# =================================================================================
+# --- توابع اصلی سیستم ---
+# =================================================================================
+
+def get_market_data(symbol, interval, outputsize, retries=3):
+    """دریافت دیتا از TwelveData API با قابلیت تلاش مجدد."""
     logging.info(f"دریافت {outputsize} کندل {interval} برای {symbol}...")
     url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={outputsize}&apikey={TWELVEDATA_API_KEY}'
-    try:
-        response = requests.get(url, timeout=30)
-        response.raise_for_status()
-        data = response.json()
-        if 'values' in data and len(data['values']) > 0:
-            df = pd.DataFrame(data['values'])
-            for col in ['open', 'high', 'low', 'close', 'volume']:
-                if col in df.columns: df[col] = pd.to_numeric(df[col], errors='coerce')
-            df['datetime'] = pd.to_datetime(df['datetime'])
-            df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
-            df = df.sort_values('datetime', ascending=True).reset_index(drop=True)
-            return df
-    except Exception as e:
-        logging.error(f"خطا در دریافت دیتای بازار برای {symbol}: {e}")
+    for attempt in range(retries):
+        try:
+            response = requests.get(url, timeout=45)
+            response.raise_for_status()
+            data = response.json()
+            if 'values' in data and len(data['values']) > 0:
+                df = pd.DataFrame(data['values'])
+                df = df.iloc[::-1].reset_index(drop=True)
+                for col in ['open', 'high', 'low', 'close', 'volume']:
+                    if col in df.columns: df[col] = pd.to_numeric(df[col], errors='coerce')
+                df['datetime'] = pd.to_datetime(df['datetime'])
+                df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
+                return df
+        except requests.exceptions.RequestException as e:
+            logging.error(f"خطا در دریافت دیتا برای {symbol} (تلاش {attempt + 1}/{retries}): {e}")
+            time.sleep(5)
     return None
 
 def apply_full_technical_indicators(df):
-    if df is None or df.empty: return None
+    """محاسبه مجموعه‌ای جامع از اندیکاتورهای تکنیکال و الگوهای کندل استیک."""
+    if df is None or df.empty or len(df) < 50:
+        logging.warning("دیتافریم برای محاسبه اندیکاتورها بسیار کوچک یا خالی است.")
+        return None
+        
     logging.info("محاسبه اندیکاتورهای جامع و الگوهای کندل استیک...")
     try:
-        if len(df) < 50: return pd.DataFrame()
-        
-        # اندیکاتورهای استاندارد
         df.ta.ema(length=21, append=True)
         df.ta.ema(length=50, append=True)
+        df.ta.ema(length=200, append=True)
         df.ta.rsi(length=14, append=True)
         df.ta.atr(length=14, append=True)
         df.ta.adx(length=14, append=True)
-        df.ta.bbands(length=20, std=2, append=True)
         df.ta.macd(fast=12, slow=26, signal=9, append=True)
-        
-        if 'volume' in df.columns:
-            df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
-        
-        df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
-        df['res'] = df['high'].rolling(window=10, min_periods=3).max()
-        
-        # تشخیص الگوهای کندل استیک (پیاده‌سازی دستی)
-        df = detect_candlestick_patterns(df)
-        
+        df.ta.bbands(length=20, std=2, append=True)
+        df.ta.ichimoku(append=True)
+        df['sup'] = df['low'].rolling(window=20, min_periods=5).min().shift(1)
+        df['res'] = df['high'].rolling(window=20, min_periods=5).max().shift(1)
+        df.ta.cdl_pattern(name="all", append=True)
         df.dropna(inplace=True)
-        if df.empty: 
-            logging.warning("دیتافریم پس از محاسبه اندیکاتورها تهی شد.")
         return df
     except Exception as e:
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
-        return pd.DataFrame()
+        return None
 
-def gather_technical_briefing(htf_df, ltf_df):
-    if htf_df.empty or ltf_df.empty:
-        return "داده‌های تکنیکال برای تهیه گزارش کافی نیست."
+def find_last_candlestick_pattern(df_row):
+    """آخرین الگوی کندل استیک معنادار را از بین تمام الگوهای شناسایی‌شده پیدا می‌کند."""
+    cdl_cols = [col for col in df_row.index if col.startswith('CDL_')]
+    for col in reversed(cdl_cols):
+        if df_row[col] != 0:
+            pattern_name = col.replace("CDL_", "")
+            direction = "Bullish" if df_row[col] > 0 else "Bearish"
+            return f"{pattern_name} ({direction})"
+    return "No significant pattern"
 
-    last_htf = htf_df.iloc[-1]
-    last_ltf = ltf_df.iloc[-1]
+def gather_technical_briefing(symbol, htf_df, ltf_df):
+    """تهیه یک گزارش جامع و ساختاریافته از وضعیت تکنیکال بازار برای ارسال به AI."""
+    if htf_df.empty or ltf_df.empty: return "داده‌های تکنیکال برای تهیه گزارش کافی نیست."
+    last_htf, last_ltf = htf_df.iloc[-1], ltf_df.iloc[-1]
+    htf_trend = "Uptrend" if last_htf['EMA_21'] > last_htf['EMA_50'] > last_htf['EMA_200'] else "Downtrend" if last_htf['EMA_21'] < last_htf['EMA_50'] < last_htf['EMA_200'] else "Sideways"
+    market_regime = "Strong Trend" if last_htf.get('ADX_14', 0) > 25 else "Weak/Ranging Trend"
+    price = last_ltf['close']
+    kumo_a, kumo_b = last_ltf.get('ISA_9', price), last_ltf.get('ISB_26', price)
+    ichimoku_status = "Bullish (Above Kumo)" if price > kumo_a and price > kumo_b else "Bearish (Below Kumo)" if price < kumo_a and price < kumo_b else "Inside Kumo (Unclear)"
+    last_pattern = find_last_candlestick_pattern(ltf_df.iloc[-2])
 
-    adx = last_htf.get('ADX_14', 'N/A')
-    market_regime = "UNCLEAR"
-    if isinstance(adx, float):
-        if adx > 25: market_regime = "TRENDING"
-        elif adx < 20: market_regime = "RANGING"
-    
-    htf_trend = "UNCLEAR"
-    if last_htf.get('EMA_21') > last_htf.get('EMA_50'): 
-        htf_trend = "UPTREND"
-    elif last_htf.get('EMA_21') < last_htf.get('EMA_50'): 
-        htf_trend = "DOWNTREND"
-
-    atr_avg = ltf_df['ATRr_14'].rolling(window=50).mean().iloc[-1] if 'ATRr_14' in ltf_df.columns else 0
-    atr_current = last_ltf.get('ATRr_14', 0)
-    volatility_state = "High" if atr_current > atr_avg * 1.5 else \
-                       "Low" if atr_current < atr_avg * 0.7 else "Normal"
-
-    # بررسی الگوهای کندل استیک
-    recent_candles = ltf_df.tail(3)
-    patterns = []
-    
-    if 'CDL_DOJI' in recent_candles.columns and (recent_candles['CDL_DOJI'] > 0).any(): 
-        patterns.append("Doji (Indecision)")
-    if 'CDL_HAMMER' in recent_candles.columns and (recent_candles['CDL_HAMMER'] > 0).any(): 
-        patterns.append("Hammer (Bullish Reversal)")
-    if 'CDL_ENGULFING' in recent_candles.columns and (recent_candles['CDL_ENGULFING'] != 0).any(): 
-        engulfing_direction = "Bullish" if (recent_candles['CDL_ENGULFING'] > 0).any() else "Bearish"
-        patterns.append(f"Engulfing Pattern ({engulfing_direction})")
-    
-    candlestick_summary = ", ".join(patterns) if patterns else "No significant pattern"
-
-    briefing = f"""
-- **Overall Trend ({HIGH_TIMEFRAME}):** {htf_trend}
-- **Market Regime (HTF ADX):** {market_regime} ({adx:.2f})
-- **Price vs. LTF EMAs:** {'Above' if last_ltf.get('close') > last_ltf.get('EMA_50') else 'Below'} key moving averages.
-- **Momentum (LTF MACD):** {'Bullish' if last_ltf.get('MACD_12_26_9') > last_ltf.get('MACDs_12_26_9') else 'Bearish'}
-- **Strength (LTF RSI):** {last_ltf.get('RSI_14'):.2f}
-- **Volatility (LTF ATR):** {volatility_state} (Value: {atr_current:.5f})
-- **Recent Candlestick Pattern (LTF):** {candlestick_summary}
-- **Key Support (HTF):** {last_htf.get('sup'):.5f}
-- **Key Resistance (HTF):** {last_htf.get('res'):.5f}
-- **Proximity to Key Levels:** Price is closer to {'Support' if abs(last_ltf.get('close') - last_htf.get('sup')) < abs(last_ltf.get('close') - last_htf.get('res')) else 'Resistance'}.
-"""
+    briefing = f"""### Technical Briefing for {symbol}
+- **HTF ({HIGH_TIMEFRAME}) Context:** Trend is **{htf_trend}** ({market_regime}, ADX: {last_htf.get('ADX_14', 0):.2f}). HTF Support: **{last_htf.get('sup', 0):.5f}**, HTF Resistance: **{last_htf.get('res', 0):.5f}**.
+- **LTF ({LOW_TIMEFRAME}) Analysis:** Current Price: {price:.5f}. LTF Support: **{last_ltf.get('sup', 0):.5f}**, LTF Resistance: **{last_ltf.get('res', 0):.5f}**.
+- **Key Indicators:** Ichimoku is **{ichimoku_status}**. MACD is {'Bullish' if last_ltf.get('MACDh_12_26_9') > 0 else 'Bearish'}. RSI is {last_ltf.get('RSI_14'):.2f}.
+- **Price Action:** Last significant candle pattern was **{last_pattern}**.
+- **Volatility (ATR):** **{last_ltf.get('ATRr_14', 0):.5f}**. Use this to validate SL distance."""
     return briefing.strip()
 
 def get_ai_trade_decision(symbol, technical_briefing):
+    """ارسال گزارش به AI برای تحلیل سه‌گانه: تکنیکال، اخبار زنده و مدیریت ریسک."""
     base_currency, quote_currency = symbol.split('/')
-    prompt = f"""
-    You are a seasoned Portfolio Manager at a multi-billion dollar hedge fund. Your quantitative analysis (Quant) team has just handed you the following technical briefing for **{symbol}**. Your job is to make the final, critical decision to trade or not to trade.
+    prompt = f"""You are a "Live Market Strategist" at a hedge fund. Your primary job is to find high-probability trades by synthesizing three pillars of analysis: **1. Static Technical Data, 2. Live Fundamental News, and 3. Robust Risk Management.**
 
-    **Quant Team's Technical Briefing:**
-    ```
+**Your Mandatory 3-Step Workflow:**
+
+**Step 1: Analyze the Provided Technical Briefing.**
+- First, deeply analyze the technical data provided below for **{symbol}**. What is the primary story the chart is telling you?
     {technical_briefing}
-    ```
 
-    **Your Decision-Making Framework:**
+ 
+**Step 2: Conduct Live Fundamental & Sentiment Analysis (CRITICAL).**
+- **You MUST use your Google Search tool.** Search for the latest (last 24-48 hours) high-impact news, central bank statements, key economic data releases (inflation, jobs, GDP), and overall market sentiment for both `{base_currency}` and `{quote_currency}`.
+- Summarize your findings. Is the recent news flow creating a headwind or a tailwind for the technical setup? Is sentiment bullish, bearish, or mixed?
 
-    1.  **Synthesize Technicals:** Review the quant briefing. Is there a coherent, compelling technical story?
+**Step 3: Synthesize and Formulate a Trade Plan.**
+- **Confluence Check:** Is there a powerful alignment between the technical picture (from Step 1) and the live news sentiment (from Step 2)?
+- **Risk Management:** Define a precise Stop Loss just beyond a key support/resistance level identified in the briefing. Validate that this SL is at a reasonable distance (e.g., >1.5x ATR) to avoid noise. Then, define a Take Profit at the next logical key level, ensuring at least a 1:1.5 Risk:Reward ratio.
+- **Final Decision:**
+    - If there is strong confluence across all three pillars, construct the trade plan in the required JSON format.
+    - If there is a major conflict (e.g., bullish chart but very bearish live news, or poor R:R), you MUST return `NO_SIGNAL`.
 
-    2.  **Apply Fundamental Overlay:** Conduct a quick but thorough analysis of the fundamental picture for '{base_currency}' and '{quote_currency}'. Check for high-impact news in the next 8 hours. What is the prevailing market sentiment?
-
-    3.  **Assess Risk & Price Action:** Look beyond the indicators. Is the price action choppy or clean? What is the single biggest risk to this trade idea?
-
-    4.  **Formulate Final Trade Plan:**
-        -   If, and only if, you find a strong **CONFLUENCE** across Technicals, Fundamentals, and Price Action, **CREATE** a trade signal.
-        -   If there is any significant doubt or contradiction, you MUST protect capital and respond ONLY with **"NO_SIGNAL"**.
-
-    **Strict Output Format:**
-    - If no trade: `NO_SIGNAL`
-    - If a trade is identified:
-    PAIR: {symbol}
-    TYPE: [BUY_STOP, SELL_STOP, BUY_LIMIT, or SELL_LIMIT]
-    ENTRY: [Precise Entry Price]
-    SL: [Precise Stop Loss Price]
-    TP: [Precise Take Profit Price]
-    CONFIDENCE: [Your final confidence score from 1-10]
-    REASON: [Your expert reason for the trade, synthesizing all factors]
-    """
-    logging.info(f"ارسال پرونده تحلیلی {symbol} به مدیر پورتفولیو (AI) برای تصمیم‌گیری نهایی...")
+**STRICT OUTPUT FORMAT (Provide ONLY the JSON or the words NO_SIGNAL):**
+- If no trade: `NO_SIGNAL`
+- If trade is found:
+```json
+{{
+  "PAIR": "{symbol}",
+  "TYPE": "[BUY_LIMIT, SELL_LIMIT, BUY_STOP, SELL_STOP]",
+  "ENTRY": "[Precise Entry Price]",
+  "SL": "[Precise Stop Loss Price, justified by a key S/R level]",
+  "TP": "[Precise Take Profit Price, targeting the next key level]",
+  "CONFIDENCE": "[Score from 1-10, based on the strength of confluence]",
+  "REASONING": {{
+    "TECHNICAL_VIEW": "[Your summary of the technical analysis.]",
+    "LIVE_NEWS_SENTIMENT": "[Your summary of the live news search and how it supports the trade.]",
+    "RISK_REWARD_ANALYSIS": "[Confirmation of SL/TP logic and favorable R:R ratio.]"
+  }}
+}}
+```"""
+    logging.info(f"ارسال پرونده تحلیلی {symbol} به استراتژیست زنده (AI) برای تحلیل سه‌گانه...")
     try:
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        response = model.generate_content(prompt.strip(), request_options={'timeout': 180})
+        model = genai.GenerativeModel(AI_MODEL_NAME, tools=tools)
+        response = model.generate_content(prompt.strip(), request_options={'timeout': 300})
         
-        if "NO_SIGNAL" in response.text.upper():
-            logging.info(f"AI پس از بررسی کامل، هیچ فرصت مناسبی برای {symbol} پیدا نکرد.")
+        text_response = response.text.strip()
+        
+        if text_response.upper() == "NO_SIGNAL":
+            logging.info(f"AI پس از تحلیل زنده، هیچ فرصت مناسبی برای {symbol} پیدا نکرد.")
             return None
-        
-        logging.info(f"AI یک سیگنال معاملاتی با تحلیل جامع برای {symbol} ایجاد کرد.")
-        return response.text
+            
+        # Regex to find JSON block, even with surrounding text
+        json_match = re.search(r'```json\s*(\{.*?\})\s*```', text_response, re.DOTALL)
+        if not json_match:
+            json_match = re.search(r'(\{.*?\})', text_response, re.DOTALL)
+
+        if json_match:
+            json_str = json_match.group(1)
+            logging.info(f"AI یک سیگنال معاملاتی با تحلیل جامع برای {symbol} ایجاد کرد.")
+            return json_str
+
+        logging.warning(f"پاسخ AI برای {symbol} در فرمت مورد انتظار نبود: {text_response}")
+        return None
+
     except Exception as e:
-        logging.error(f"خطا در تصمیم‌گیری نهایی AI: {e}")
+        logging.error(f"خطا در تصمیم‌گیری نهایی AI برای {symbol}: {e}")
         return None
 
 def main():
-    logging.info("================== شروع اجرای اسکریپت (مدل مدیر پورتفولیو) ==================")
+    logging.info("================== شروع اجرای اسکریپت (مدل استراتژیست زنده v3) ==================")
     signal_cache = load_cache()
-    final_signals = []
+    final_signals_json = []
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pair", type=str, help="Specify a single currency pair to analyze")
+    parser.add_argument("--pair", type=str, help="یک جفت ارز مشخص را برای تحلیل وارد کنید")
     args, _ = parser.parse_known_args()
     pairs_to_run = [args.pair] if args.pair else CURRENCY_PAIRS_TO_ANALYZE
 
@@ -297,38 +260,39 @@ def main():
         htf_df = get_market_data(pair, HIGH_TIMEFRAME, CANDLES_TO_FETCH)
         ltf_df = get_market_data(pair, LOW_TIMEFRAME, CANDLES_TO_FETCH)
 
-        if htf_df is None or ltf_df is None:
-            logging.warning(f"دیتای بازار برای {pair} دریافت نشد.")
+        if htf_df is None or ltf_df is None: 
+            logging.warning(f"دیتای بازار برای {pair} دریافت نشد. به جفت ارز بعدی می‌رویم.")
             continue
 
         htf_df_analyzed = apply_full_technical_indicators(htf_df)
         ltf_df_analyzed = apply_full_technical_indicators(ltf_df)
 
-        if htf_df_analyzed is None or ltf_df_analyzed is None or htf_df_analyzed.empty or ltf_df_analyzed.empty:
-            logging.warning(f"دیتای کافی برای تحلیل {pair} پس از پردازش وجود ندارد.")
+        if not isinstance(htf_df_analyzed, pd.DataFrame) or htf_df_analyzed.empty or not isinstance(ltf_df_analyzed, pd.DataFrame) or ltf_df_analyzed.empty:
+            logging.warning(f"دیتای کافی برای تحلیل {pair} پس از پردازش اندیکاتورها وجود ندارد.")
             continue
             
-        technical_briefing = gather_technical_briefing(htf_df_analyzed, ltf_df_analyzed)
+        technical_briefing = gather_technical_briefing(pair, htf_df_analyzed, ltf_df_analyzed)
         logging.info(f"پرونده تحلیلی برای {pair} تهیه شد:\n{technical_briefing}")
         
-        final_response = get_ai_trade_decision(pair, technical_briefing)
+        final_response_json_str = get_ai_trade_decision(pair, technical_briefing)
         
-        if final_response:
-            final_response_with_exp = final_response.strip() + "\nExpiration: 6 hours"
-            final_signals.append(final_response_with_exp)
-            signal_cache[pair] = datetime.now(UTC).isoformat()
+        if final_response_json_str:
+            try:
+                signal_data = json.loads(final_response_json_str)
+                final_signals_json.append(signal_data)
+                signal_cache[pair] = datetime.now(UTC).isoformat()
+            except json.JSONDecodeError as e:
+                logging.error(f"خطا در پارس کردن پاسخ JSON از AI برای {pair}: {e}\nپاسخ دریافتی: {final_response_json_str}")
 
-        logging.info(f"... تحلیل {pair} تمام شد. تاخیر ۱۰ ثانیه‌ای ...")
+        logging.info(f"... تحلیل {pair} تمام شد. تاخیر ۱۰ ثانیه‌ای برای مدیریت نرخ API ...")
         time.sleep(10)
 
-    if final_signals:
-        output_content = "Portfolio Manager Grade Signals (Quant-Briefed AI)\n" + "="*60 + "\n\n"
-        output_content += "\n---\n".join(final_signals)
-        with open("trade_signal.txt", "w", encoding="utf-8") as f:
-            f.write(output_content)
-        logging.info(f"عملیات موفقیت‌آمیز بود. {len(final_signals)} سیگنال نهایی در trade_signal.txt ذخیره شد.")
+    if final_signals_json:
+        with open("trade_signals_live.json", "w", encoding="utf-8") as f:
+            json.dump(final_signals_json, f, indent=2, ensure_ascii=False)
+        logging.info(f"عملیات موفقیت‌آمیز بود. {len(final_signals_json)} سیگنال نهایی در trade_signals_live.json ذخیره شد.")
     else:
-        logging.info("در این اجرا، هوش مصنوعی هیچ سیگنال قابل معامله‌ای ایجاد نکرد.")
+        logging.info("در این اجرا، هوش مصنوعی هیچ سیگنال قابل معامله‌ای با همگرایی بالا بین عوامل پیدا نکرد.")
 
     save_cache(signal_cache)
     logging.info("================== پایان اجرای اسکریپت ==================")
