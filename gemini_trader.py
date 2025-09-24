@@ -65,8 +65,22 @@ class AsyncRateLimiter:
     async def __aenter__(self):
         async with self._lock:
             while True:
-                # ... (بقیه کد کلاس که در پاسخ قبلی بود) ...
-    
+                now = time.time()
+                # حذف تایم‌استمپ‌های قدیمی‌تر از دوره زمانی مشخص شده
+                self.request_timestamps = [
+                    t for t in self.request_timestamps if now - t < self.period
+                ]
+                # اگر تعداد درخواست‌ها در محدوده مجاز است، اجازه عبور بده
+                if len(self.request_timestamps) < self.rate_limit:
+                    self.request_timestamps.append(now)
+                    break  # از حلقه خارج شو و کد را ادامه بده
+                
+                # اگر به سقف محدودیت رسیده‌ایم، محاسبه کن چقدر باید صبر کرد
+                oldest_request_time = self.request_timestamps[0]
+                sleep_duration = self.period - (now - oldest_request_time)
+                if sleep_duration > 0:
+                    await asyncio.sleep(sleep_duration)
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
 # =================================================================================
