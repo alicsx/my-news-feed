@@ -37,6 +37,65 @@ logging.basicConfig(level=logging.INFO,
                     handlers=[logging.FileHandler(LOG_FILE, mode='w'), logging.StreamHandler()])
 
 # =================================================================================
+# --- توابع تشخیص الگوهای کندل استیک (پیاده‌سازی دستی) ---
+# =================================================================================
+
+def detect_candlestick_patterns(df):
+    """
+    تشخیص دستی الگوهای کندل استیک
+    """
+    if df is None or df.empty:
+        return df
+    
+    # ایجاد ستون‌های جدید برای الگوها
+    df['CDL_DOJI'] = 0
+    df['CDL_HAMMER'] = 0
+    df['CDL_ENGULFING'] = 0
+    
+    for i in range(1, len(df)):
+        open_curr = df['open'].iloc[i]
+        high_curr = df['high'].iloc[i]
+        low_curr = df['low'].iloc[i]
+        close_curr = df['close'].iloc[i]
+        
+        open_prev = df['open'].iloc[i-1]
+        high_prev = df['high'].iloc[i-1]
+        low_prev = df['low'].iloc[i-1]
+        close_prev = df['close'].iloc[i-1]
+        
+        # تشخیص Doji
+        body = abs(close_curr - open_curr)
+        range_total = high_curr - low_curr
+        if range_total > 0 and body / range_total < 0.1:  # بدنه بسیار کوچک
+            df.loc[df.index[i], 'CDL_DOJI'] = 100  # مقدار مثبت برای الگوی معنی‌دار
+        
+        # تشخیص Hammer
+        lower_shadow = min(open_curr, close_curr) - low_curr
+        upper_shadow = high_curr - max(open_curr, close_curr)
+        body_hammer = abs(close_curr - open_curr)
+        
+        if (lower_shadow > 2 * body_hammer and  # سایه پایینی بلند
+            upper_shadow < body_hammer * 0.3 and  # سایه بالایی کوتاه
+            body_hammer > 0):  # بدنه وجود دارد
+            df.loc[df.index[i], 'CDL_HAMMER'] = 100
+        
+        # تشخیص Engulfing
+        body_curr = close_curr - open_curr
+        body_prev = close_prev - open_prev
+        
+        # Engulfing صعودی
+        if (body_curr > 0 and body_prev < 0 and  # کندل فعلی صعودی، قبلی نزولی
+            open_curr < close_prev and close_curr > open_prev):  # کندل فعلی کندل قبلی را می‌پوشاند
+            df.loc[df.index[i], 'CDL_ENGULFING'] = 100
+        
+        # Engulfing نزولی
+        elif (body_curr < 0 and body_prev > 0 and  # کندل فعلی نزولی، قبلی صعودی
+              open_curr > close_prev and close_curr < open_prev):  # کندل فعلی کندل قبلی را می‌پوشاند
+            df.loc[df.index[i], 'CDL_ENGULFING'] = -100
+    
+    return df
+
+# =================================================================================
 # --- توابع اصلی سیستم ---
 # =================================================================================
 
@@ -84,7 +143,6 @@ def get_market_data(symbol, interval, outputsize):
         logging.error(f"خطا در دریافت دیتای بازار برای {symbol}: {e}")
     return None
 
-# ✨ FIX: استفاده از متدهای صحیح برای الگوهای کندل استیک ✨
 def apply_full_technical_indicators(df):
     if df is None or df.empty: return None
     logging.info("محاسبه اندیکاتورهای جامع و الگوهای کندل استیک...")
@@ -99,19 +157,19 @@ def apply_full_technical_indicators(df):
         df.ta.adx(length=14, append=True)
         df.ta.bbands(length=20, std=2, append=True)
         df.ta.macd(fast=12, slow=26, signal=9, append=True)
+        
         if 'volume' in df.columns:
             df.ta.sma(close=df['volume'], length=20, prefix="VOLUME", append=True)
+        
         df['sup'] = df['low'].rolling(window=10, min_periods=3).min()
         df['res'] = df['high'].rolling(window=10, min_periods=3).max()
         
-        # ✨ FIX: استفاده از متدهای صحیح برای الگوهای کندل استیک ✨
-        # روش صحیح فراخوانی الگوهای کندل استیک در pandas_ta
-        df['CDL_DOJI'] = ta.cdl_doji(df['open'], df['high'], df['low'], df['close'])
-        df['CDL_HAMMER'] = ta.cdl_hammer(df['open'], df['high'], df['low'], df['close'])
-        df['CDL_ENGULFING'] = ta.cdl_engulfing(df['open'], df['high'], df['low'], df['close'])
+        # تشخیص الگوهای کندل استیک (پیاده‌سازی دستی)
+        df = detect_candlestick_patterns(df)
         
         df.dropna(inplace=True)
-        if df.empty: logging.warning("دیتافریم پس از محاسبه اندیکاتورها تهی شد.")
+        if df.empty: 
+            logging.warning("دیتافریم پس از محاسبه اندیکاتورها تهی شد.")
         return df
     except Exception as e:
         logging.error(f"خطا در هنگام محاسبه اندیکاتورهای تکنیکال: {e}")
@@ -131,22 +189,28 @@ def gather_technical_briefing(htf_df, ltf_df):
         elif adx < 20: market_regime = "RANGING"
     
     htf_trend = "UNCLEAR"
-    if last_htf.get('EMA_21') > last_htf.get('EMA_50'): htf_trend = "UPTREND"
-    elif last_htf.get('EMA_21') < last_htf.get('EMA_50'): htf_trend = "DOWNTREND"
+    if last_htf.get('EMA_21') > last_htf.get('EMA_50'): 
+        htf_trend = "UPTREND"
+    elif last_htf.get('EMA_21') < last_htf.get('EMA_50'): 
+        htf_trend = "DOWNTREND"
 
-    atr_avg = ltf_df['ATRr_14'].rolling(window=50).mean().iloc[-1]
-    volatility_state = "High" if last_ltf.get('ATRr_14') > atr_avg * 1.5 else \
-                       "Low" if last_ltf.get('ATRr_14') < atr_avg * 0.7 else "Normal"
+    atr_avg = ltf_df['ATRr_14'].rolling(window=50).mean().iloc[-1] if 'ATRr_14' in ltf_df.columns else 0
+    atr_current = last_ltf.get('ATRr_14', 0)
+    volatility_state = "High" if atr_current > atr_avg * 1.5 else \
+                       "Low" if atr_current < atr_avg * 0.7 else "Normal"
 
-    # بررسی صحیح ستون‌های ایجاد شده توسط توابع کندل استیک
+    # بررسی الگوهای کندل استیک
     recent_candles = ltf_df.tail(3)
     patterns = []
-    if 'CDL_DOJI' in recent_candles.columns and recent_candles['CDL_DOJI'].sum() > 0: 
+    
+    if 'CDL_DOJI' in recent_candles.columns and (recent_candles['CDL_DOJI'] > 0).any(): 
         patterns.append("Doji (Indecision)")
-    if 'CDL_HAMMER' in recent_candles.columns and recent_candles['CDL_HAMMER'].sum() > 0: 
+    if 'CDL_HAMMER' in recent_candles.columns and (recent_candles['CDL_HAMMER'] > 0).any(): 
         patterns.append("Hammer (Bullish Reversal)")
-    if 'CDL_ENGULFING' in recent_candles.columns and recent_candles['CDL_ENGULFING'].sum() != 0: 
-        patterns.append("Engulfing Pattern")
+    if 'CDL_ENGULFING' in recent_candles.columns and (recent_candles['CDL_ENGULFING'] != 0).any(): 
+        engulfing_direction = "Bullish" if (recent_candles['CDL_ENGULFING'] > 0).any() else "Bearish"
+        patterns.append(f"Engulfing Pattern ({engulfing_direction})")
+    
     candlestick_summary = ", ".join(patterns) if patterns else "No significant pattern"
 
     briefing = f"""
@@ -155,7 +219,7 @@ def gather_technical_briefing(htf_df, ltf_df):
 - **Price vs. LTF EMAs:** {'Above' if last_ltf.get('close') > last_ltf.get('EMA_50') else 'Below'} key moving averages.
 - **Momentum (LTF MACD):** {'Bullish' if last_ltf.get('MACD_12_26_9') > last_ltf.get('MACDs_12_26_9') else 'Bearish'}
 - **Strength (LTF RSI):** {last_ltf.get('RSI_14'):.2f}
-- **Volatility (LTF ATR):** {volatility_state} (Value: {last_ltf.get('ATRr_14'):.5f})
+- **Volatility (LTF ATR):** {volatility_state} (Value: {atr_current:.5f})
 - **Recent Candlestick Pattern (LTF):** {candlestick_summary}
 - **Key Support (HTF):** {last_htf.get('sup'):.5f}
 - **Key Resistance (HTF):** {last_htf.get('res'):.5f}
@@ -225,12 +289,17 @@ def main():
     for pair_raw in pairs_to_run:
         pair = normalize_pair_format(pair_raw)
         if not pair or is_pair_on_cooldown(pair, signal_cache):
-            time.sleep(1); continue
+            time.sleep(1)
+            continue
 
         logging.info(f"--- شروع تحلیل جامع برای: {pair} ---")
         
         htf_df = get_market_data(pair, HIGH_TIMEFRAME, CANDLES_TO_FETCH)
         ltf_df = get_market_data(pair, LOW_TIMEFRAME, CANDLES_TO_FETCH)
+
+        if htf_df is None or ltf_df is None:
+            logging.warning(f"دیتای بازار برای {pair} دریافت نشد.")
+            continue
 
         htf_df_analyzed = apply_full_technical_indicators(htf_df)
         ltf_df_analyzed = apply_full_technical_indicators(ltf_df)
