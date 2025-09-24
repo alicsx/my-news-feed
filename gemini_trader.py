@@ -293,33 +293,34 @@ class AdvancedTechnicalAnalyzer:
             'stochastic': {'value': stoch_k, 'signal': stoch_signal}
         }
     
-    def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
-        """تحلیل سطوح حمایت و مقاومت"""
-        # سطوح داینامیک از باندهای بولینگر
-        bb_upper = ltf_df['BBU_20_2.0'].iloc[-1]
-        bb_lower = ltf_df['BBL_20_2.0'].iloc[-1]
-        bb_middle = ltf_df['BBM_20_2.0'].iloc[-1]
-        
-        # سطوح استاتیک
-        support_1 = ltf_df['sup_1'].iloc[-1]
-        resistance_1 = ltf_df['res_1'].iloc[-1]
-        support_2 = ltf_df['sup_2'].iloc[-1]
-        resistance_2 = ltf_df['res_2'].iloc[-1]
-        
-        return {
-            'dynamic': {
-                'bb_upper': bb_upper,
-                'bb_lower': bb_lower,
-                'bb_middle': bb_middle
-            },
-            'static': {
-                'support_1': support_1,
-                'resistance_1': resistance_1,
-                'support_2': support_2,
-                'resistance_2': resistance_2
-            },
-            'current_price_position': self._get_price_position(current_price, support_1, resistance_1)
-        }
+    # کد اصلاح‌شده ✅
+def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
+    """تحلیل سطوح حمایت و مقاومت"""
+    # سطوح داینامیک از باندهای بولینگر - با استفاده از .get() برای جلوگیری از خطا
+    bb_upper = ltf_df.get('BBU_20_2.0', 0).iloc[-1]
+    bb_lower = ltf_df.get('BBL_20_2.0', 0).iloc[-1]
+    bb_middle = ltf_df.get('BBM_20_2.0', 0).iloc[-1]
+    
+    # سطوح استاتیک
+    support_1 = ltf_df['sup_1'].iloc[-1]
+    resistance_1 = ltf_df['res_1'].iloc[-1]
+    support_2 = ltf_df['sup_2'].iloc[-1]
+    resistance_2 = ltf_df['res_2'].iloc[-1]
+    
+    return {
+        'dynamic': {
+            'bb_upper': bb_upper,
+            'bb_lower': bb_lower,
+            'bb_middle': bb_middle
+        },
+        'static': {
+            'support_1': support_1,
+            'resistance_1': resistance_1,
+            'support_2': support_2,
+            'resistance_2': resistance_2
+        },
+        'current_price_position': self._get_price_position(current_price, support_1, resistance_1)
+    }
     
     def _get_price_position(self, price: float, support: float, resistance: float) -> str:
         """تعیین موقعیت قیمت نسبت به سطوح"""
