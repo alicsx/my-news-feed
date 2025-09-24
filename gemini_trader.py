@@ -52,7 +52,23 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+class AsyncRateLimiter:
+    """
+    یک کلاس ساده برای مدیریت محدودیت نرخ درخواست‌ها به صورت آسنکرون.
+    """
+    def __init__(self, rate_limit: int, period: int):
+        self.rate_limit = rate_limit
+        self.period = period
+        self.request_timestamps = []
+        self._lock = asyncio.Lock()
 
+    async def __aenter__(self):
+        async with self._lock:
+            while True:
+                # ... (بقیه کد کلاس که در پاسخ قبلی بود) ...
+    
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        pass
 # =================================================================================
 # --- کلاس مدیریت کش هوشمند ---
 # =================================================================================
@@ -584,6 +600,7 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, deepseek_result: D
 
 class AdvancedForexAnalyzer:
     def __init__(self): 
+self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
         self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
         self.ai_manager = HybridAIManager(google_api_key, DEEPSEEK_API_KEY)
@@ -636,6 +653,7 @@ class AdvancedForexAnalyzer:
         """دریافت داده‌های بازار به صورت async"""
         for attempt in range(retries):
             try:
+async with self.api_rate_limiter:
                 url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
                 
                 async with aiohttp.ClientSession() as session:
