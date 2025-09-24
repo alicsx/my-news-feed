@@ -165,8 +165,12 @@ class AdvancedTechnicalAnalyzer:
             df.ta.atr(length=14, append=True)
             
             # حجم
-            df.ta.obv(append=True)
-            df['volume_sma_20'] = df['volume'].rolling(20).mean()
+            if 'volume' in df.columns and not df['volume'].isnull().all():
+                logging.info(f"ستون 'volume' شناسایی شد. محاسبه اندیکاتورهای حجم...")
+                df.ta.obv(append=True)
+                df['volume_sma_20'] = df['volume'].rolling(20).mean()
+            else:
+                logging.warning("ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.")
             
             # ایچیموکو
             df.ta.ichimoku(append=True)
@@ -665,11 +669,14 @@ class AdvancedForexAnalyzer:
         logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
         
         # محدود کردن concurrent tasks برای مدیریت rate limits
-        semaphore = asyncio.Semaphore(3)  # حداکثر ۳ تحلیل همزمان
+        semaphore = asyncio.Semaphore(1)  # حداکثر ۳ تحلیل همزمان
         
         async def bounded_analyze(pair):
             async with semaphore:
-                return await self.analyze_pair(pair)
+                result = await self.analyze_pair(pair)
+                # یک ثانیه تأخیر بین تحلیل هر جفت‌ارز برای جلوگیری از رسیدن به سقف محدودیت API
+                await asyncio.sleep(1)
+                return result
         
         tasks = [bounded_analyze(pair) for pair in pairs]
         results = await asyncio.gather(*tasks, return_exceptions=True)
