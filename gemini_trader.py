@@ -684,38 +684,40 @@ async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
     return valid_signals
 
 async def main():
-logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Hybrid AI v2.0)")
-analyzer = AdvancedForexAnalyzer()
+    # This entire block is now correctly indented
+    logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Hybrid AI v2.0)")
+    analyzer = AdvancedForexAnalyzer()
 
-# بررسی جفت ارزهای مشخص شده از طریق آرگومان
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص")
-parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزها")
-args = parser.parse_args()
+    # بررسی جفت ارزهای مشخص شده از طریق آرگومان
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص")
+    parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزها")
+    args = parser.parse_args()
 
-if args.pair:
-    pairs_to_analyze = [args.pair]
-else:
-    pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
+    if args.pair:
+        pairs_to_analyze = [args.pair]
+    else:
+        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
 
-# اجرای تحلیل
-signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
+    # اجرای تحلیل
+    signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
 
-# ذخیره نتایج
-if signals:
-    output_file = "hybrid_ai_signals.json"
-    with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(signals, f, indent=4, ensure_ascii=False)
-    
-    logging.info(f"✅ تحلیل کامل شد. {len(signals)} سیگنال در {output_file} ذخیره شد")
-    
-    # نمایش خلاصه نتایج
-    for signal in signals:
-        logging.info(f"📈 {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10)")
-else:
-    logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
+    # ذخیره نتایج
+    if signals:
+        output_file = "hybrid_ai_signals.json"
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(signals, f, indent=4, ensure_ascii=False)
+        
+        logging.info(f"✅ تحلیل کامل شد. {len(signals)} سیگنال در {output_file} ذخیره شد")
+        
+        # نمایش خلاصه نتایج
+        for signal in signals:
+            logging.info(f"📈 {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10)")
+    else:
+        logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
 
-logging.info("🏁 پایان اجرای سیستم")
+  
+    logging.info("🏁 پایان اجرای سیستم")
 if name == "main":
 asyncio.run(main())
