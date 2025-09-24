@@ -683,7 +683,7 @@ async def analyze_pair(self, pair: str) -> Optional[Dict]:
         return None
 
 async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
-    """دریافت داده‌های بازار به صورت async"""
+    """Asynchronously gets market data."""
     for attempt in range(retries):
         try:
             async with self.api_rate_limiter:
