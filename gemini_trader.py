@@ -632,6 +632,7 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result:
                 'MODELS_AGREE': False,
                 'ANALYSIS': 'تضاد بین مدل‌ها - نیاز به بررسی بیشتر'
             }
+         """
 class AdvancedForexAnalyzer:
     def __init__(self): 
 self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
