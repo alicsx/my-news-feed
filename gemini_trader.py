@@ -632,7 +632,7 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result:
                 'COMBINED_ANALYSIS': True,
                 'MODELS_AGREE': False,
                 'ANALYSIS': 'تضاد بین مدل‌ها - نیاز به بررسی بیشتر'
-            }}
+            }
       
 class AdvancedForexAnalyzer:
     def __init__(self): 
