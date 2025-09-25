@@ -536,6 +536,7 @@ class HybridAIManager:
   "RISK_REWARD_RATIO": "نسبت risk/reward",
   "ANALYSIS": "تحلیل کلی وضعیت"
 }}
+"""
 def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
     """پارس کردن پاسخ AI"""
     try:
