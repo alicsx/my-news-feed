@@ -1,1 +1,15 @@
-
+{
+    "EUR/USD": {
+        "timestamp": "2025-09-26T23:01:02.023340+00:00",
+        "signal": {
+            "SYMBOL": "EUR/USD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 8,
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": true,
+            "GEMINI_ANALYSIS": "جفت ارز EUR/USD در روند بلندمدت صعودی با قدرت متوسط قرار دارد، اما در کوتاه‌مدت شاهد حرکت نزولی هستیم. قیمت به سطح حمایت کلیدی 1.16454 نزدیک شده است و اندیکاتور RSI در ناحیه اشباع فروش (24.3) قرار دارد که نشان‌دهنده پتانسیل بالای برگشت صعودی است. با وجود مشاهده الگوی کندلی Engulfing نزولی که فشار فروش را نشان می‌دهد، ترکیب اشباع فروش شدید RSI و نزدیکی به حمایت قوی در جهت روند بلندمدت صعودی، احتمال یک برگشت صعودی قوی را افزایش می‌دهد. انتظار می‌رود قیمت پس از تست و تایید حمایت، به سمت مقاومت 1.17539 و سپس 1.18188 حرکت کند.",
+            "CLOUDFLARE_ANALYSIS": "Bullish trend with strong support at 1.16454. RSI is indicating oversold conditions, but the trend is still upward. Entering the market at the entry zone with a stop loss at 1.16454 and a take profit at 1.18188. The risk reward ratio is 1:1.3, which is considered a good entry point.",
+            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا"
+        }
+    }
+}
