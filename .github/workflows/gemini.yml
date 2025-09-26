@@ -42,7 +42,7 @@ jobs:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
           CLOUDFLARE_AI_API_KEY: ${{ secrets.CLOUDFLARE_AI_API_KEY }} 
-        run: python gemini_trader.py --EUR/USD
+        run: python gemini_trader.py --pair EUR/USD
 
       # مرحله ۵: کامیت کردن فایل خروجی در ریپازیتوری
       # این بخش فایل trade_signal.txt را به صورت خودکار در گیت‌هاب شما آپدیت می‌کند
