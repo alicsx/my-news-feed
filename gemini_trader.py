@@ -42,7 +42,7 @@ CACHE_DURATION_HOURS = 2  # منطبق با اجرای هر 2 ساعت
 LOG_FILE = "trading_log.log"
 
 # مدل‌های AI
-GEMINI_MODEL = 'gemini-1.5-flash-latest'
+GEMINI_MODEL = 'gemini-2.5-flash'
 CLOUDFLARE_AI_API_URL = "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_name}"
 
 # راه‌اندازی سیستم لاگ‌گیری پیشرفته
@@ -411,7 +411,7 @@ class HybridAIManager:
         
         # تنظیمات Cloudflare AI
         # شما باید account_id و model_name را بر اساس تنظیمات خود تنظیم کنید
-        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
+        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "alijalaeekar@gmail.com")
         self.cloudflare_model_name = os.getenv("CLOUDFLARE_MODEL_NAME", "@cf/meta/llama-2-7b-chat-fp16")
         self.cloudflare_url = f"https://api.cloudflare.com/client/v4/accounts/{self.cloudflare_account_id}/ai/run/{self.cloudflare_model_name}"
         
