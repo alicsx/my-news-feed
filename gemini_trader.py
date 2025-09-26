@@ -411,7 +411,7 @@ class HybridAIManager:
         
         # تنظیمات Cloudflare AI
         # شما باید account_id و model_name را بر اساس تنظیمات خود تنظیم کنید
-        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "alijalaeekar@gmail.com")
+        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "c00a89ef9840bc98ddc2338904477ded")
         self.cloudflare_model_name = os.getenv("CLOUDFLARE_MODEL_NAME", "@cf/meta/llama-2-7b-chat-fp16")
         self.cloudflare_url = f"https://api.cloudflare.com/client/v4/accounts/{self.cloudflare_account_id}/ai/run/{self.cloudflare_model_name}"
         
