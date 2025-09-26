@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    # --- تغییر ۱ (ضروری): اضافه کردن مجوز برای نوشتن در ریپازیتوری ---
+    # این مجوز برای اینکه Action بتواند در ریپازیتوری شما بنویسد، ضروری است
     permissions:
       contents: write
     
@@ -23,14 +23,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5 # Updated to v5
+        uses: actions/setup-python@v5 # فقط شماره نسخه به روز شد
         with:
           python-version: '3.12'
-
-      # --- تغییر ۲ (ضروری): نصب پیش‌نیاز کتابخانه TA-Lib ---
-      - name: Install TA-Lib C-library
-        run: sudo apt-get update && sudo apt-get install -y ta-lib-dev
-
+        
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -42,14 +38,14 @@ jobs:
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
           CLOUDFLARE_AI_API_KEY: ${{ secrets.CLOUDFLARE_AI_API_KEY }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python gemini_trader.py --all # پیشنهاد می‌شود از --all استفاده کنید
+        run: python gemini_trader.py --all
 
-      # --- مرحله کامیت کردن با استفاده از کد خودتان ---
+      # مرحله کامیت کردن فایل با کد خودتان (فقط نام فایل اصلاح شد)
       - name: Commit trade signal file
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
-          # --- تغییر ۳ (ضروری): اصلاح نام فایل سیگنال ---
+          # --- تنها تغییر اصلی اینجا بود ---
           git add hybrid_ai_signals.json signal_cache.json trading_log.log
           # فقط در صورتی که تغییری وجود داشته باشد، کامیت کن
           git diff --staged --quiet || git commit -m "Auto-update trade signals"
