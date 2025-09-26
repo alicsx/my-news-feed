@@ -1,6 +1,3 @@
- 
- 
- 
 import google.generativeai as genai
 import os
 import re
@@ -498,9 +495,15 @@ class HybridAIManager:
     # --- ALL HELPER METHODS ARE NOW INDENTED TO BE INSIDE THE CLASS ---
 
     def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
-        """ایجاد پرمپت تحلیل"""
+        """ایجاد پرامپت تحلیل"""
         base_currency, quote_currency = symbol.split('/')
         
+        # This is the new, stricter instruction
+        final_instruction = """
+**تحلیل خود را ارائه داده و موارد زیر را مشخص کنید.
+مهم: فقط و فقط یک آبجکت JSON معتبر بدون هیچ‌گونه متن اضافی، مقدمه یا توضیح بازگردان. پاسخ تو باید مستقیماً با `{` شروع و با `}` تمام شود.**
+"""
+
         return f"""
 به عنوان یک تحلیلگر حرفه‌ای بازار فارکس، تحلیل تکنیکال زیر را برای جفت ارز {symbol} بررسی کنید:
 
@@ -519,8 +522,7 @@ class HybridAIManager:
 🕯️ **الگوهای کندلی:**
 {chr(10).join(technical_analysis['candle_patterns']['patterns'][-3:]) if technical_analysis['candle_patterns']['patterns'] else 'الگوی خاصی شناسایی نشد'}
 
-**لطفاً تحلیل خود را ارائه داده و در صورت وجود سیگنال معتبر، موارد زیر را مشخص کنید:**
-
+{final_instruction}
 ```json
 {{
   "SYMBOL": "{symbol}",
