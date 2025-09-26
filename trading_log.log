@@ -585,3 +585,112 @@
 2025-09-24 10:30:33,368 - INFO - هیچ سیگنال معاملاتی برای CAD/JPY شناسایی نشد
 2025-09-24 10:30:34,369 - INFO - 🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد
 2025-09-24 10:30:34,369 - INFO - 🏁 پایان اجرای سیستم
+2025-09-26 09:41:08,431 - INFO - 🎯 شروع سیستم تحلیل فارکس پیشرفته (Hybrid AI v2.0)
+2025-09-26 09:41:08,433 - INFO - 🚀 شروع تحلیل موازی برای 15 جفت ارز
+2025-09-26 09:41:08,434 - INFO - 🔍 شروع تحلیل پیشرفته برای EUR/USD
+2025-09-26 09:41:08,887 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:41:08,912 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:41:08,970 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:41:09,100 - WARNING - خطا در تحلیل Gemini برای EUR/USD: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:41:09,100 - ERROR - خطا در تحلیل ترکیبی برای EUR/USD: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:41:09,100 - INFO - هیچ سیگنال معاملاتی برای EUR/USD شناسایی نشد
+2025-09-26 09:41:10,101 - INFO - 🔍 شروع تحلیل پیشرفته برای GBP/USD
+2025-09-26 09:41:10,498 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:41:10,518 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:41:10,576 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:41:10,658 - WARNING - خطا در تحلیل Gemini برای GBP/USD: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:41:10,658 - ERROR - خطا در تحلیل ترکیبی برای GBP/USD: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:41:10,658 - INFO - هیچ سیگنال معاملاتی برای GBP/USD شناسایی نشد
+2025-09-26 09:41:11,660 - INFO - 🔍 شروع تحلیل پیشرفته برای USD/JPY
+2025-09-26 09:41:12,038 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:41:12,057 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:41:12,128 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:41:12,179 - WARNING - خطا در تحلیل Gemini برای USD/JPY: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:41:12,179 - ERROR - خطا در تحلیل ترکیبی برای USD/JPY: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:41:12,179 - INFO - هیچ سیگنال معاملاتی برای USD/JPY شناسایی نشد
+2025-09-26 09:41:13,180 - INFO - 🔍 شروع تحلیل پیشرفته برای USD/CHF
+2025-09-26 09:41:13,577 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:41:13,597 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:41:13,671 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:41:13,724 - WARNING - خطا در تحلیل Gemini برای USD/CHF: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:41:13,724 - ERROR - خطا در تحلیل ترکیبی برای USD/CHF: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:41:13,724 - INFO - هیچ سیگنال معاملاتی برای USD/CHF شناسایی نشد
+2025-09-26 09:41:14,726 - INFO - 🔍 شروع تحلیل پیشرفته برای AUD/USD
+2025-09-26 09:42:08,879 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:42:08,899 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:42:09,009 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:42:09,022 - WARNING - خطا در تحلیل Gemini برای AUD/USD: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:42:09,022 - ERROR - خطا در تحلیل ترکیبی برای AUD/USD: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:42:09,022 - INFO - هیچ سیگنال معاملاتی برای AUD/USD شناسایی نشد
+2025-09-26 09:42:10,024 - INFO - 🔍 شروع تحلیل پیشرفته برای GBP/JPY
+2025-09-26 09:42:10,500 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:42:10,519 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:42:10,580 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:42:10,634 - WARNING - خطا در تحلیل Gemini برای GBP/JPY: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:42:10,635 - ERROR - خطا در تحلیل ترکیبی برای GBP/JPY: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:42:10,635 - INFO - هیچ سیگنال معاملاتی برای GBP/JPY شناسایی نشد
+2025-09-26 09:42:11,636 - INFO - 🔍 شروع تحلیل پیشرفته برای EUR/JPY
+2025-09-26 09:42:12,043 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:42:12,062 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:42:12,119 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:42:12,191 - WARNING - خطا در تحلیل Gemini برای EUR/JPY: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:42:12,191 - ERROR - خطا در تحلیل ترکیبی برای EUR/JPY: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:42:12,191 - INFO - هیچ سیگنال معاملاتی برای EUR/JPY شناسایی نشد
+2025-09-26 09:42:13,192 - INFO - 🔍 شروع تحلیل پیشرفته برای AUD/JPY
+2025-09-26 09:42:13,568 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:42:13,587 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:42:13,637 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:42:13,707 - WARNING - خطا در تحلیل Gemini برای AUD/JPY: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:42:13,707 - ERROR - خطا در تحلیل ترکیبی برای AUD/JPY: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:42:13,707 - INFO - هیچ سیگنال معاملاتی برای AUD/JPY شناسایی نشد
+2025-09-26 09:42:14,708 - INFO - 🔍 شروع تحلیل پیشرفته برای NZD/USD
+2025-09-26 09:43:08,874 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:43:08,893 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:43:08,939 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:43:09,041 - WARNING - خطا در تحلیل Gemini برای NZD/USD: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:43:09,041 - ERROR - خطا در تحلیل ترکیبی برای NZD/USD: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:43:09,041 - INFO - هیچ سیگنال معاملاتی برای NZD/USD شناسایی نشد
+2025-09-26 09:43:10,042 - INFO - 🔍 شروع تحلیل پیشرفته برای USD/CAD
+2025-09-26 09:43:10,505 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:43:10,525 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:43:10,578 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:43:10,658 - WARNING - خطا در تحلیل Gemini برای USD/CAD: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:43:10,658 - ERROR - خطا در تحلیل ترکیبی برای USD/CAD: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:43:10,658 - INFO - هیچ سیگنال معاملاتی برای USD/CAD شناسایی نشد
+2025-09-26 09:43:11,659 - INFO - 🔍 شروع تحلیل پیشرفته برای EUR/GBP
+2025-09-26 09:43:12,088 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:43:12,107 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:43:12,205 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:43:12,238 - WARNING - خطا در تحلیل Gemini برای EUR/GBP: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:43:12,238 - ERROR - خطا در تحلیل ترکیبی برای EUR/GBP: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:43:12,238 - INFO - هیچ سیگنال معاملاتی برای EUR/GBP شناسایی نشد
+2025-09-26 09:43:13,239 - INFO - 🔍 شروع تحلیل پیشرفته برای AUD/NZD
+2025-09-26 09:43:13,627 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:43:13,646 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:43:13,694 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:43:13,761 - WARNING - خطا در تحلیل Gemini برای AUD/NZD: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:43:13,761 - ERROR - خطا در تحلیل ترکیبی برای AUD/NZD: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:43:13,761 - INFO - هیچ سیگنال معاملاتی برای AUD/NZD شناسایی نشد
+2025-09-26 09:43:14,762 - INFO - 🔍 شروع تحلیل پیشرفته برای EUR/AUD
+2025-09-26 09:44:08,929 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:44:08,948 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:44:09,097 - WARNING - خطا در تحلیل Gemini برای EUR/AUD: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:44:09,263 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:44:09,264 - ERROR - خطا در تحلیل ترکیبی برای EUR/AUD: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:44:09,264 - INFO - هیچ سیگنال معاملاتی برای EUR/AUD شناسایی نشد
+2025-09-26 09:44:10,265 - INFO - 🔍 شروع تحلیل پیشرفته برای GBP/CHF
+2025-09-26 09:44:10,673 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:44:10,692 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:44:10,739 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:44:10,809 - WARNING - خطا در تحلیل Gemini برای GBP/CHF: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:44:10,809 - ERROR - خطا در تحلیل ترکیبی برای GBP/CHF: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:44:10,809 - INFO - هیچ سیگنال معاملاتی برای GBP/CHF شناسایی نشد
+2025-09-26 09:44:11,810 - INFO - 🔍 شروع تحلیل پیشرفته برای CAD/JPY
+2025-09-26 09:44:12,199 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:44:12,218 - WARNING - ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.
+2025-09-26 09:44:12,266 - WARNING - خطا در پاسخ Cloudflare: 404 - {"result":null,"success":false,"errors":[{"code":7003,"message":"Could not route to /client/v4/accounts/your_account_id/ai/run/@cf/meta/llama-2-7b-chat-fp16, perhaps your object identifier is invalid?"}],"messages":[]}
+2025-09-26 09:44:12,399 - WARNING - خطا در تحلیل Gemini برای CAD/JPY: 404 Publisher Model `projects/generativelanguage-ga/locations/us-central1/publishers/google/models/gemini-1.5-flash-002` was not found or your project does not have access to it. Please ensure you are using a valid model version. For more information, see: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions
+2025-09-26 09:44:12,400 - ERROR - خطا در تحلیل ترکیبی برای CAD/JPY: 'HybridAIManager' object has no attribute '_combine_analyses'
+2025-09-26 09:44:12,400 - INFO - هیچ سیگنال معاملاتی برای CAD/JPY شناسایی نشد
+2025-09-26 09:44:13,401 - INFO - 🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد
+2025-09-26 09:44:13,401 - INFO - 🏁 پایان اجرای سیستم
