@@ -1,4 +1,5 @@
  
+ 
 import google.generativeai as genai
 import os
 import re
@@ -635,151 +636,153 @@ def _combine_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result:
             }
       
 class AdvancedForexAnalyzer:
-    def __init__(self): 
-self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
+    def __init__(self):
+        self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
         self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
         self.ai_manager = HybridAIManager(google_api_key, CLOUDFLARE_AI_API_KEY)
-async def analyze_pair(self, pair: str) -> Optional[Dict]:
-    """تحلیل کامل یک جفت ارز"""
-    if self.cache_manager.is_pair_on_cooldown(pair):
-        return None
-    
-    logging.info(f"🔍 شروع تحلیل پیشرفته برای {pair}")
-    
-    try:
-        # دریافت داده‌های بازار
-        htf_df = await self.get_market_data_async(pair, HIGH_TIMEFRAME)
-        ltf_df = await self.get_market_data_async(pair, LOW_TIMEFRAME)
-        
-        if htf_df is None or ltf_df is None:
-            logging.warning(f"داده‌های بازار برای {pair} دریافت نشد")
-            return None
-        
-        # تحلیل تکنیکال
-        htf_df = self.technical_analyzer.calculate_advanced_indicators(htf_df)
-        ltf_df = self.technical_analyzer.calculate_advanced_indicators(ltf_df)
-        
-        if htf_df is None or ltf_df is None:
-            logging.warning(f"خطا در محاسبه اندیکاتورها برای {pair}")
-            return None
-        
-        technical_analysis = self.technical_analyzer.generate_technical_analysis(pair, htf_df, ltf_df)
-        
-        if not technical_analysis:
-            logging.warning(f"تحلیل تکنیکال برای {pair} ناموفق بود")
-            return None
-        
-        # تحلیل ترکیبی AI
-        ai_analysis = await self.ai_manager.get_combined_analysis(pair, technical_analysis)
-        
-        if ai_analysis and ai_analysis.get('ACTION') != 'HOLD':
-            self.cache_manager.update_cache(pair, ai_analysis)
-            return ai_analysis
-        else:
-            logging.info(f"هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
-            return None
-            
-    except Exception as e:
-        logging.error(f"خطا در تحلیل {pair}: {e}")
-        return None
 
-async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
-    """Asynchronously gets market data."""
-    for attempt in range(retries):
+    async def analyze_pair(self, pair: str) -> Optional[Dict]:
+        """تحلیل کامل یک جفت ارز"""
+        if self.cache_manager.is_pair_on_cooldown(pair):
+            return None
+        
+        logging.info(f"🔍 شروع تحلیل پیشرفته برای {pair}")
+        
         try:
-            async with self.api_rate_limiter:
-                url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
+            # دریافت داده‌های بازار
+            htf_df = await self.get_market_data_async(pair, HIGH_TIMEFRAME)
+            ltf_df = await self.get_market_data_async(pair, LOW_TIMEFRAME)
+            
+            if htf_df is None or ltf_df is None:
+                logging.warning(f"داده‌های بازار برای {pair} دریافت نشد")
+                return None
+            
+            # تحلیل تکنیکال
+            htf_df = self.technical_analyzer.calculate_advanced_indicators(htf_df)
+            ltf_df = self.technical_analyzer.calculate_advanced_indicators(ltf_df)
+            
+            if htf_df is None or ltf_df is None:
+                logging.warning(f"خطا در محاسبه اندیکاتورها برای {pair}")
+                return None
+            
+            technical_analysis = self.technical_analyzer.generate_technical_analysis(pair, htf_df, ltf_df)
+            
+            if not technical_analysis:
+                logging.warning(f"تحلیل تکنیکال برای {pair} ناموفق بود")
+                return None
+            
+            # تحلیل ترکیبی AI
+            ai_analysis = await self.ai_manager.get_combined_analysis(pair, technical_analysis)
+            
+            if ai_analysis and ai_analysis.get('ACTION') != 'HOLD':
+                self.cache_manager.update_cache(pair, ai_analysis)
+                return ai_analysis
+            else:
+                logging.info(f"هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
+                return None
                 
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url, timeout=60) as response:
-                        if response.status == 200:
-                            data = await response.json()
-                            if 'values' in data and len(data['values']) > 0:
-                                df = pd.DataFrame(data['values'])
-                                df = df.iloc[::-1].reset_index(drop=True)
-                                
-                                # تبدیل انواع داده
-                                for col in ['open', 'high', 'low', 'close']:
-                                    if col in df.columns:
-                                        df[col] = pd.to_numeric(df[col], errors='coerce')
-                                
-                                df['datetime'] = pd.to_datetime(df['datetime'])
-                                df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
-                                
-                                return df
-                        else:
-                            logging.warning(f"خطای HTTP {response.status} برای {symbol}")
-                            
         except Exception as e:
-            logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
-            await asyncio.sleep(2)
-    
-    return None
+            logging.error(f"خطا در تحلیل {pair}: {e}")
+            return None
 
-async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
-    """تحلیل همه جفت ارزها به صورت موازی"""
-    logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
-    
-    # محدود کردن concurrent tasks برای مدیریت rate limits
-    semaphore = asyncio.Semaphore(1) 
-    
-    async def bounded_analyze(pair):
-        async with semaphore:
-            result = await self.analyze_pair(pair)
-            # یک ثانیه تأخیر بین تحلیل هر جفت‌ارز برای جلوگیری از رسیدن به سقف محدودیت API
-            await asyncio.sleep(1)
-            return result
-    
-    tasks = [bounded_analyze(pair) for pair in pairs]
-    results = await asyncio.gather(*tasks, return_exceptions=True)
-    
-    # فیلتر کردن نتایج موفق
-    valid_signals = []
-    for result in results:
-        if isinstance(result, Dict) and result.get('ACTION') != 'HOLD':
-            valid_signals.append(result)
-        elif isinstance(result, Exception):
-            logging.error(f"خطا در تحلیل: {result}")
-    
-    return valid_signals
+    async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
+        """Asynchronously gets market data."""
+        for attempt in range(retries):
+            try:
+                async with self.api_rate_limiter:
+                    url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
+                    
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(url, timeout=60) as response:
+                            if response.status == 200:
+                                data = await response.json()
+                                if 'values' in data and len(data['values']) > 0:
+                                    df = pd.DataFrame(data['values'])
+                                    df = df.iloc[::-1].reset_index(drop=True)
+                                    
+                                    # تبدیل انواع داده
+                                    for col in ['open', 'high', 'low', 'close']:
+                                        if col in df.columns:
+                                            df[col] = pd.to_numeric(df[col], errors='coerce')
+                                    
+                                    df['datetime'] = pd.to_datetime(df['datetime'])
+                                    df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
+                                    
+                                    return df
+                            else:
+                                logging.warning(f"خطای HTTP {response.status} برای {symbol}")
+                                
+            except Exception as e:
+                logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
+                await asyncio.sleep(2)
+        
+        return None
+
+    async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
+        """تحلیل همه جفت ارزها به صورت موازی"""
+        logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
+        
+        # محدود کردن concurrent tasks برای مدیریت rate limits
+        semaphore = asyncio.Semaphore(1) 
+        
+        async def bounded_analyze(pair):
+            async with semaphore:
+                result = await self.analyze_pair(pair)
+                # یک ثانیه تأخیر بین تحلیل هر جفت‌ارز برای جلوگیری از رسیدن به سقف محدودیت API
+                await asyncio.sleep(1)
+                return result
+        
+        tasks = [bounded_analyze(pair) for pair in pairs]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # فیلتر کردن نتایج موفق
+        valid_signals = []
+        for result in results:
+            if isinstance(result, Dict) and result.get('ACTION') != 'HOLD':
+                valid_signals.append(result)
+            elif isinstance(result, Exception):
+                logging.error(f"خطا در تحلیل: {result}")
+        
+        return valid_signals
+
 async def main():
     # This entire block is now correctly indented
     logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Hybrid AI v2.0)")
     analyzer = AdvancedForexAnalyzer()
-# بررسی جفت ارزهای مشخص شده از طریق آرگومان
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص")
-parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزها")
-args = parser.parse_args()
+    # بررسی جفت ارزهای مشخص شده از طریق آرگومان
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص")
+    parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزها")
+    args = parser.parse_args()
 
-if args.pair:
-    pairs_to_analyze = [args.pair]
-elif args.all:
-    pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
-else:
-    # اگر هیچ آرگومانی داده نشود، همه را تحلیل کن
-    pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
+    if args.pair:
+        pairs_to_analyze = [args.pair]
+    elif args.all:
+        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
+    else:
+        # اگر هیچ آرگومانی داده نشود، همه را تحلیل کن
+        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
 
-# اجرای تحلیل
-signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
+    # اجرای تحلیل
+    signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
 
-# ذخیره نتایج
-if signals:
-    output_file = "hybrid_ai_signals.json"
-    with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(signals, f, indent=4, ensure_ascii=False)
-    
-    logging.info(f"✅ تحلیل کامل شد. {len(signals)} سیگنال در {output_file} ذخیره شد")
-    
-    # نمایش خلاصه نتایج
-    for signal in signals:
-        logging.info(f"📈 {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal.get('CONFIDENCE', 'N/A')}/10)")
-else:
-    logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
+    # ذخیره نتایج
+    if signals:
+        output_file = "hybrid_ai_signals.json"
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(signals, f, indent=4, ensure_ascii=False)
+        
+        logging.info(f"✅ تحلیل کامل شد. {len(signals)} سیگنال در {output_file} ذخیره شد")
+        
+        # نمایش خلاصه نتایج
+        for signal in signals:
+            logging.info(f"📈 {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal.get('CONFIDENCE', 'N/A')}/10)")
+    else:
+        logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
 
-logging.info("🏁 پایان اجرای سیستم")
+    logging.info("🏁 پایان اجرای سیستم")
 
 if __name__ == "__main__":
     asyncio.run(main())
