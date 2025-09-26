@@ -1,5 +1,6 @@
  
  
+ 
 import google.generativeai as genai
 import os
 import re
@@ -403,19 +404,19 @@ class AdvancedTechnicalAnalyzer:
 # --- کلاس مدیریت AI ترکیبی (با Cloudflare) ---
 # =================================================================================
 
+# Replace your entire HybridAIManager class with this corrected version
+
 class HybridAIManager:
     def __init__(self, gemini_api_key: str, cloudflare_api_key: str):
         self.gemini_api_key = gemini_api_key
         self.cloudflare_api_key = cloudflare_api_key
         self.gemini_model = GEMINI_MODEL
         
-        # تنظیمات Cloudflare AI
-        # شما باید account_id و model_name را بر اساس تنظیمات خود تنظیم کنید
-        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "c00a89ef9840bc98ddc2338904477ded")
+        # NOTE: Make sure your CLOUDFLARE_ACCOUNT_ID is set correctly as an environment variable!
+        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
         self.cloudflare_model_name = os.getenv("CLOUDFLARE_MODEL_NAME", "@cf/meta/llama-2-7b-chat-fp16")
         self.cloudflare_url = f"https://api.cloudflare.com/client/v4/accounts/{self.cloudflare_account_id}/ai/run/{self.cloudflare_model_name}"
         
-        # تنظیم Gemini
         genai.configure(api_key=gemini_api_key)
     
     async def get_combined_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
@@ -455,8 +456,8 @@ class HybridAIManager:
     
     async def _get_cloudflare_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """تحلیل با Cloudflare AI"""
-        if not self.cloudflare_api_key:
-            logging.warning("کلید Cloudflare API تنظیم نشده است")
+        if not self.cloudflare_api_key or self.cloudflare_account_id == "your_account_id":
+            logging.warning("کلید یا شناسه حساب Cloudflare API تنظیم نشده است")
             return None
             
         try:
@@ -467,17 +468,10 @@ class HybridAIManager:
                 "Content-Type": "application/json"
             }
             
-            # فرمت پیام برای Cloudflare AI
             payload = {
                 "messages": [
-                    {
-                        "role": "system", 
-                        "content": "You are an expert forex trading analyst. Provide your analysis in JSON format."
-                    },
-                    {
-                        "role": "user", 
-                        "content": prompt
-                    }
+                    {"role": "system", "content": "You are an expert forex trading analyst. Provide your analysis in JSON format."},
+                    {"role": "user", "content": prompt}
                 ],
                 "stream": False
             }
@@ -486,7 +480,6 @@ class HybridAIManager:
                 async with session.post(self.cloudflare_url, headers=headers, json=payload, timeout=120) as response:
                     if response.status == 200:
                         data = await response.json()
-                        # Cloudflare AI پاسخ را در فیلد result برمی‌گرداند
                         if "result" in data and "response" in data["result"]:
                             content = data["result"]["response"]
                             return self._parse_ai_response(content, symbol, "Cloudflare")
@@ -501,7 +494,9 @@ class HybridAIManager:
         except Exception as e:
             logging.warning(f"خطا در تحلیل Cloudflare برای {symbol}: {e}")
             return None
-    
+
+    # --- ALL HELPER METHODS ARE NOW INDENTED TO BE INSIDE THE CLASS ---
+
     def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
         """ایجاد پرمپت تحلیل"""
         base_currency, quote_currency = symbol.split('/')
@@ -538,102 +533,85 @@ class HybridAIManager:
   "ANALYSIS": "تحلیل کلی وضعیت"
 }}
 """
-def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
-    """پارس کردن پاسخ AI"""
-    try:
-        # جستجوی JSON در پاسخ
-        json_match = re.search(r'```json\s*(\{.*?\})\s*```', response, re.DOTALL)
-        if not json_match:
-            json_match = re.search(r'(\{.*?\})', response, re.DOTALL)
-        
-        if json_match:
-            json_str = json_match.group(1)
-            signal_data = json.loads(json_str)
-            
-            # افزودن متا دیتا
-            signal_data['ai_model'] = ai_name
-            signal_data['timestamp'] = datetime.now(UTC).isoformat()
-            
-            logging.info(f"✅ {ai_name} سیگنال برای {symbol}: {signal_data.get('ACTION', 'HOLD')}")
-            return signal_data
-        else:
-            logging.warning(f"❌ پاسخ {ai_name} برای {symbol} فاقد فرمت JSON بود")
-            return None
-            
-    except Exception as e:
-        logging.error(f"خطا در پارس کردن پاسخ {ai_name} برای {symbol}: {e}")
-        return None
 
-def _combine_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
-    """ترکیب نتایج دو مدل AI"""
-    results = []
-    
-    if gemini_result and gemini_result.get('ACTION') != 'HOLD':
-        results.append(('Gemini', gemini_result))
-    if cloudflare_result and cloudflare_result.get('ACTION') != 'HOLD':
-        results.append(('Cloudflare', cloudflare_result))
-    
-    if not results:
-        logging.info(f"هر دو مدل AI برای {symbol} سیگنال HOLD دادند")
-        return {
-            'SYMBOL': symbol,
-            'ACTION': 'HOLD',
-            'CONFIDENCE': 0,
-            'COMBINED_ANALYSIS': True,
-            'MODELS_AGREE': True,
-            'ANALYSIS': 'عدم وجود سیگنال واضح از هر دو مدل'
-        }
-    
-    # اگر فقط یک مدل سیگنال داد
-    if len(results) == 1:
-        model_name, result = results[0]
-        result['COMBINED_ANALYSIS'] = True
-        result['MODELS_AGREE'] = False
-        result['CONFIDENCE'] = max(1, result.get('CONFIDENCE', 5) - 2)  # کاهش اعتماد
-        result['ANALYSIS'] = f"سیگنال از {model_name} - نیاز به تأیید بیشتر"
-        return result
-    
-    # اگر هر دو مدل سیگنال دادند
-    gemini_action = gemini_result.get('ACTION')
-    cloudflare_action = cloudflare_result.get('ACTION')
-    
-    if gemini_action == cloudflare_action:
-        # توافق کامل
-        combined_confidence = (gemini_result.get('CONFIDENCE', 5) + cloudflare_result.get('CONFIDENCE', 5)) // 2
-        return {
-            'SYMBOL': symbol,
-            'ACTION': gemini_action,
-            'CONFIDENCE': min(10, combined_confidence + 1),  # افزایش اعتماد به دلیل توافق
-            'COMBINED_ANALYSIS': True,
-            'MODELS_AGREE': True,
-            'GEMINI_ANALYSIS': gemini_result.get('ANALYSIS', ''),
-            'CLOUDFLARE_ANALYSIS': cloudflare_result.get('ANALYSIS', ''),
-            'FINAL_ANALYSIS': f"توافق کامل بین مدل‌ها - سیگنال {gemini_action} با اعتماد بالا"
-        }
-    else:
-        # تضاد بین مدل‌ها - انتخاب محتاطانه
-        gemini_conf = gemini_result.get('CONFIDENCE', 5)
-        cloudflare_conf = cloudflare_result.get('CONFIDENCE', 5)
-        
-        if abs(gemini_conf - cloudflare_conf) >= 3:
-            # انتخاب مدل با اعتماد بالاتر
-            selected_result = gemini_result if gemini_conf > cloudflare_conf else cloudflare_result
-            selected_model = 'Gemini' if gemini_conf > cloudflare_conf else 'Cloudflare'
+    def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
+        """پارس کردن پاسخ AI"""
+        try:
+            json_match = re.search(r'```json\s*(\{.*?\})\s*```', response, re.DOTALL)
+            if not json_match:
+                json_match = re.search(r'(\{.*?\})', response, re.DOTALL)
             
-            selected_result['COMBINED_ANALYSIS'] = True
-            selected_result['MODELS_AGREE'] = False
-            selected_result['ANALYSIS'] = f"سیگنال از {selected_model} با اعتماد بالاتر - مدل دیگر مخالف است"
-            return selected_result
-        else:
-            # عدم قطعیت - HOLD
+            if json_match:
+                json_str = json_match.group(1)
+                signal_data = json.loads(json_str)
+                signal_data['ai_model'] = ai_name
+                signal_data['timestamp'] = datetime.now(UTC).isoformat()
+                logging.info(f"✅ {ai_name} سیگنال برای {symbol}: {signal_data.get('ACTION', 'HOLD')}")
+                return signal_data
+            else:
+                logging.warning(f"❌ پاسخ {ai_name} برای {symbol} فاقد فرمت JSON بود")
+                return None
+                
+        except Exception as e:
+            logging.error(f"خطا در پارس کردن پاسخ {ai_name} برای {symbol}: {e}")
+            return None
+
+    def _combine_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
+        """ترکیب نتایج دو مدل AI"""
+        results = []
+        
+        if gemini_result and gemini_result.get('ACTION') != 'HOLD':
+            results.append(('Gemini', gemini_result))
+        if cloudflare_result and cloudflare_result.get('ACTION') != 'HOLD':
+            results.append(('Cloudflare', cloudflare_result))
+        
+        if not results:
+            logging.info(f"هر دو مدل AI برای {symbol} سیگنال HOLD دادند")
             return {
-                'SYMBOL': symbol,
-                'ACTION': 'HOLD',
-                'CONFIDENCE': 0,
-                'COMBINED_ANALYSIS': True,
-                'MODELS_AGREE': False,
-                'ANALYSIS': 'تضاد بین مدل‌ها - نیاز به بررسی بیشتر'
+                'SYMBOL': symbol, 'ACTION': 'HOLD', 'CONFIDENCE': 0,
+                'COMBINED_ANALYSIS': True, 'MODELS_AGREE': True,
+                'ANALYSIS': 'عدم وجود سیگنال واضح از هر دو مدل'
             }
+        
+        if len(results) == 1:
+            model_name, result = results[0]
+            result['COMBINED_ANALYSIS'] = True
+            result['MODELS_AGREE'] = False
+            result['CONFIDENCE'] = max(1, result.get('CONFIDENCE', 5) - 2)
+            result['ANALYSIS'] = f"سیگنال از {model_name} - نیاز به تأیید بیشتر"
+            return result
+        
+        gemini_action = gemini_result.get('ACTION')
+        cloudflare_action = cloudflare_result.get('ACTION')
+        
+        if gemini_action == cloudflare_action:
+            combined_confidence = (gemini_result.get('CONFIDENCE', 5) + cloudflare_result.get('CONFIDENCE', 5)) // 2
+            return {
+                'SYMBOL': symbol, 'ACTION': gemini_action,
+                'CONFIDENCE': min(10, combined_confidence + 1),
+                'COMBINED_ANALYSIS': True, 'MODELS_AGREE': True,
+                'GEMINI_ANALYSIS': gemini_result.get('ANALYSIS', ''),
+                'CLOUDFLARE_ANALYSIS': cloudflare_result.get('ANALYSIS', ''),
+                'FINAL_ANALYSIS': f"توافق کامل بین مدل‌ها - سیگنال {gemini_action} با اعتماد بالا"
+            }
+        else:
+            gemini_conf = gemini_result.get('CONFIDENCE', 5)
+            cloudflare_conf = cloudflare_result.get('CONFIDENCE', 5)
+            
+            if abs(gemini_conf - cloudflare_conf) >= 3:
+                selected_result = gemini_result if gemini_conf > cloudflare_conf else cloudflare_result
+                selected_model = 'Gemini' if gemini_conf > cloudflare_conf else 'Cloudflare'
+                
+                selected_result['COMBINED_ANALYSIS'] = True
+                selected_result['MODELS_AGREE'] = False
+                selected_result['ANALYSIS'] = f"سیگنال از {selected_model} با اعتماد بالاتر - مدل دیگر مخالف است"
+                return selected_result
+            else:
+                return {
+                    'SYMBOL': symbol, 'ACTION': 'HOLD', 'CONFIDENCE': 0,
+                    'COMBINED_ANALYSIS': True, 'MODELS_AGREE': False,
+                    'ANALYSIS': 'تضاد بین مدل‌ها - نیاز به بررسی بیشتر'
+                }
       
 class AdvancedForexAnalyzer:
     def __init__(self):
