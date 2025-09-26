@@ -1,9 +1,9 @@
 # .github/workflows/main.yml
 
-name: Get Gemini Trade Signal
+name: Run Hybrid AI Forex Analyzer
 
 on:
-  # اجرای خودکار در ساعت‌های مشخص (این مثال هر 4 ساعت یکبار اجرا می‌شود)
+  # اجرای خودکار هر 2 ساعت یکبار
   # برای تغییر زمان‌بندی از سایت crontab.guru کمک بگیرید
   schedule:
     - cron: '0 */2 * * *'
@@ -14,47 +14,51 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Add these two lines
+    
+    # این مجوز برای کامیت کردن فایل‌ها در ریپازیتوری ضروری است
     permissions:
       contents: write
     
     steps:
+      # مرحله ۱: دانلود کد ریپازیتوری
       - name: Checkout repository
-        uses: actions/checkout@v4 # Changed to v4 for latest version
+        uses: actions/checkout@v4
 
-    
       # مرحله ۲: نصب پایتون
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      # مرحله ۳: نصب کتابخانه‌های مورد نیاز
-      - name: Install dependencies
+      # مرحله ۳: نصب پیش‌نیاز کتابخانه TA-Lib
+      # این کتابخانه به یک پیش‌نیاز سیستمی نیاز دارد که باید قبل از نصب پکیج پایتون، نصب شود
+      - name: Install TA-Lib C-library
+        run: sudo apt-get update && sudo apt-get install -y ta-lib-dev
+
+      # مرحله ۴: نصب کتابخانه‌های پایتون
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install google-generativeai pandas pandas-ta aiohttp requests TA-Lib
 
-      # مرحله ۴: اجرای اسکریپت پایتون
-      # در اینجا جفت ارز EURUSD به عنوان مثال به اسکریپت داده شده است. می‌توانید آن را تغییر دهید.
-      - name: Run Gemini Trader Script
+      # مرحله ۵: اجرای اسکریپت تحلیل‌گر
+      # با استفاده از --all، اسکریپت تمام جفت‌ارزهای تعریف شده را تحلیل می‌کند
+      - name: Run Hybrid AI Trader Script
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
           CLOUDFLARE_AI_API_KEY: ${{ secrets.CLOUDFLARE_AI_API_KEY }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python gemini_trader.py --pair EUR/USD
+        run: python gemini_trader.py --all
 
-      # مرحله ۵: کامیت کردن فایل خروجی در ریپازیتوری
-      # این بخش فایل trade_signal.txt را به صورت خودکار در گیت‌هاب شما آپدیت می‌کند
-      # .github/workflows/main.yml
-# ... (بخش‌های قبلی بدون تغییر)
-
-      - name: Commit trade signal file
-        run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions@github.com"
-          git add trade_signal.txt signal_cache.json trading_log.log
-          # فقط در صورتی که تغییری وجود داشته باشد، کامیت کن
-          git diff --staged --quiet || git commit -m "Auto-update trade signals"
-          git push
+      # مرحله ۶: کامیت و پوش کردن فایل‌های خروجی در ریپازیتوری
+      # این بخش فایل‌های تولید شده را به صورت خودکار در گیت‌هاب شما آپدیت می‌کند
+      - name: Commit and Push generated files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-update trade signals and logs"
+          # فایل‌هایی که می‌خواهید ذخیره شوند را اینجا مشخص کنید
+          file_pattern: "hybrid_ai_signals.json signal_cache.json trading_log.log"
+          commit_user_name: "GitHub Actions Bot"
+          commit_user_email: "actions@github.com"
+          commit_author: "GitHub Actions Bot <actions@github.com>"
