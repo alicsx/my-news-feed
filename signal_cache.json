@@ -190,5 +190,39 @@
             "CLOUDFLARE_ANALYSIS": "تحلیل وضعیت تکنیکال",
             "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا"
         }
+    },
+    "USD/JPY": {
+        "timestamp": "2025-09-27T02:59:11.854872+00:00",
+        "signal": {
+            "SYMBOL": "USD/JPY",
+            "ACTION": "SELL",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "حدود 149.850 - 149.950 (پس از تایید الگوی کندلی نزولی)",
+            "STOP_LOSS": "150.100",
+            "TAKE_PROFIT": "148.554",
+            "RISK_REWARD_RATIO": "~6.7:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T02:59:11.854688+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "EUR/JPY": {
+        "timestamp": "2025-09-27T02:59:56.438082+00:00",
+        "signal": {
+            "SYMBOL": "EUR/JPY",
+            "ACTION": "BUY",
+            "CONFIDENCE": 51.4,
+            "ENTRY_ZONE": "محدوده ورود",
+            "STOP_LOSS": "174.18201",
+            "TAKE_PROFIT": "174.94099",
+            "RISK_REWARD_RATIO": "1:1",
+            "ANALYSIS": "سیگنال از Cloudflare - نیاز به تأیید بیشتر",
+            "ai_model": "Cloudflare",
+            "timestamp": "2025-09-27T02:59:56.437620+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
     }
 }
