@@ -1,22 +1,4 @@
 {
-    "EUR/USD": {
-        "timestamp": "2025-09-27T10:27:32.291982+00:00",
-        "signal": {
-            "SYMBOL": "EUR/USD",
-            "ACTION": "BUY",
-            "CONFIDENCE": 8,
-            "ENTRY_ZONE": "1.16454",
-            "STOP_LOSS": "1.16352",
-            "TAKE_PROFIT": "1.17863",
-            "RISK_REWARD_RATIO": "4.15:1",
-            "EXPIRATION_H": 24,
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "جفت ارز EUR/USD در یک روند بلندمدت صعودی با قدرت متوسط قرار دارد، اما در کوتاه‌مدت شاهد نزول بوده‌ایم. این حرکت نزولی قیمت را به منطقه حمایتی کلیدی 1.16454 رسانده و شاخص RSI را به شدت در ناحیه اشباع فروش (24.3) قرار داده است. با وجود الگوی کندلی Engulfing نزولی که نشان‌دهنده فشار فروش اخیر است، همزمانی اشباع فروش RSI با رسیدن قیمت به حمایت قوی، نشان‌دهنده احتمال بالای برگشت و صعود قیمت از محدوده فعلی است که با روند بلندمدت صعودی همسو خواهد بود. انتظار یک بازگشت صعودی یا اصلاح قیمت به سمت مقاومت‌های بالاتر را داریم.",
-            "CLOUDFLARE_ANALYSIS": "Short-term upward trend detected, with a high probability of continuation. The signal is strong and the risk-reward ratio is favorable. Buy position recommended.",
-            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
-        }
-    },
     "GBP/USD": {
         "timestamp": "2025-09-27T11:35:29.073464+00:00",
         "signal": {
@@ -194,6 +176,60 @@
             "MODELS_AGREE": true,
             "GEMINI_ANALYSIS": "روند بلندمدت و کوتاه‌مدت برای AUD/NZD صعودی است که نشان‌دهنده تمایل کلی بازار به رشد است. با این حال، قیمت در حال حاضر نزدیک مقاومت قوی 1.13460 قرار دارد و مومنتوم RSI خنثی است. برای بهره‌برداری از روند صعودی، بهترین استراتژی انتظار برای شکست قاطع مقاومت 1.13460 و تثبیت قیمت در بالای آن است. ورود به معامله خرید پس از تأیید شکست، با حد ضرر زیر حمایت 1.13110، می‌تواند یک موقعیت معاملاتی با نسبت ریسک به ریوارد مطلوب فراهم کند. در صورت عدم شکست مقاومت و برگشت قیمت، این سناریو بی‌اعتبار خواهد شد و نیاز به تحلیل مجدد دارد.",
             "CLOUDFLARE_ANALYSIS": "Short-term bullish trend, medium-term uptrend, RSI at overbought level",
+            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
+        }
+    },
+    "EUR/USD": {
+        "timestamp": "2025-09-27T12:46:51.060911+00:00",
+        "signal": {
+            "SYMBOL": "EUR/USD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "1.16480 - 1.16550",
+            "STOP_LOSS": "1.16290",
+            "TAKE_PROFIT": "1.17480",
+            "RISK_REWARD_RATIO": "4.6:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 8,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T12:46:51.060701+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "EUR/AUD": {
+        "timestamp": "2025-09-27T12:47:50.004733+00:00",
+        "signal": {
+            "SYMBOL": "EUR/AUD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 8,
+            "ENTRY_ZONE": "محدوده ورود",
+            "STOP_LOSS": "1.77782",
+            "TAKE_PROFIT": "1.79172",
+            "RISK_REWARD_RATIO": "1:2",
+            "ANALYSIS": "سیگنال از Cloudflare با اعتماد بالاتر - مدل دیگر مخالف است",
+            "EXPIRATION_H": "14",
+            "ai_model": "Cloudflare",
+            "timestamp": "2025-09-27T12:47:33.762728+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "CAD/JPY": {
+        "timestamp": "2025-09-27T12:48:43.976772+00:00",
+        "signal": {
+            "SYMBOL": "CAD/JPY",
+            "ACTION": "BUY",
+            "CONFIDENCE": 34,
+            "ENTRY_ZONE": "107.62300",
+            "STOP_LOSS": "107.50000",
+            "TAKE_PROFIT": "108.05000",
+            "RISK_REWARD_RATIO": "1.75:1",
+            "EXPIRATION_H": 6,
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": true,
+            "GEMINI_ANALYSIS": "جفت ارز CAD/JPY در تایم فریم کوتاه‌مدت (LTF) روند صعودی دارد و با الگوهای کندلی صعودی (DOJI_10_0.1, HARAMI) پشتیبانی می‌شود. قیمت در حال حاضر در نزدیکی مقاومت قوی 107.623 قرار دارد. با وجود اینکه روند بلندمدت (HTF) خنثی تا ضعیف است، مومنتوم RSI (62.7) نشان‌دهنده پتانسیل برای ادامه حرکت صعودی و تلاش برای شکست مقاومت است. ورود به معامله خرید پس از شکست قطعی و تثبیت قیمت بالای مقاومت 107.623 (ترجیحاً با ریتست آن به عنوان حمایت) توصیه می‌شود تا از ادامه حرکت صعودی کوتاه‌مدت بهره برد. حد سود بر اساس اولین هدف منطقی پس از شکست مقاومت تعیین شده است.",
+            "CLOUDFLARE_ANALYSIS": "تحلیل وضعیت محدوده ورود",
             "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
         }
     }
