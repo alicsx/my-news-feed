@@ -211,5 +211,39 @@
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": false
         }
+    },
+    "USD/CHF": {
+        "timestamp": "2025-09-27T08:29:32.186050+00:00",
+        "signal": {
+            "SYMBOL": "USD/CHF",
+            "ACTION": "SELL",
+            "CONFIDENCE": 4,
+            "ENTRY_ZONE": "انتظار رسیدن قیمت به مقاومت 0.80140 و مشاهده علائم برگشتی معتبر",
+            "STOP_LOSS": "0.80250",
+            "TAKE_PROFIT": "0.79425",
+            "RISK_REWARD_RATIO": "5.59:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T08:29:32.185833+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "NZD/USD": {
+        "timestamp": "2025-09-27T08:29:54.826467+00:00",
+        "signal": {
+            "SYMBOL": "NZD/USD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 3,
+            "ENTRY_ZONE": "0.57614 - 0.57700",
+            "STOP_LOSS": "0.57450",
+            "TAKE_PROFIT": "0.58200",
+            "RISK_REWARD_RATIO": "2.75:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T08:29:54.826275+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
     }
 }
