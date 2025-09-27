@@ -1,216 +1,234 @@
 {
-    "EUR/USD": {
-        "timestamp": "2025-09-27T16:28:42.921092+00:00",
+    "EUR/GBP": {
+        "timestamp": "2025-09-27T18:36:12.440607+00:00",
         "signal": {
-            "SYMBOL": "EUR/USD",
+            "SYMBOL": "EUR/GBP",
             "ACTION": "BUY",
-            "CONFIDENCE": 7,
-            "ENTRY_ZONE": "1.16454",
-            "STOP_LOSS": "1.16352",
-            "TAKE_PROFIT": "1.17863",
-            "RISK_REWARD_RATIO": "4.15:1",
+            "CONFIDENCE": 8,
+            "ENTRY_ZONE": "0.87510",
+            "STOP_LOSS": "0.87095",
+            "TAKE_PROFIT": "0.87750",
+            "RISK_REWARD_RATIO": "تقریباً 1.45:1",
             "EXPIRATION_H": 14,
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "EUR/USD is currently showing a short-term bearish trend, however, it is trading near a significant support level of 1.16454. The Relative Strength Index (RSI) at 24.3 indicates oversold conditions, suggesting a potential rebound. This aligns with the medium-strength long-term bullish trend. While a bearish engulfing candlestick pattern has been identified, the confluence of oversold RSI, price at support, and the underlying long-term bullish bias points towards a buying opportunity, anticipating a correction or a bounce back towards the higher time frame trend. Traders should look for bullish confirmation at the current support zone.",
-            "CLOUDFLARE_ANALYSIS": "Short-term trend is upward, medium-term trend is sideways, and long-term trend is downward. RSI is oversold, indicating a potential buying opportunity. Entry point is near support, stop loss is near the recent low, and take profit is near the recent high.",
+            "GEMINI_ANALYSIS": "جفت ارز EUR/GBP در هر دو تایم‌فریم بلندمدت و کوتاه‌مدت در روند صعودی قوی قرار دارد. قیمت در حال حاضر نزدیک مقاومت کلیدی 0.87510 قرار گرفته است. RSI در محدوده خنثی بوده و سیگنال قوی از اشباع خرید ارائه نمی‌دهد. با توجه به قدرت روند صعودی، سناریوی غالب شکست مقاومت و ادامه حرکت صعودی است. ورود به معامله خرید پس از تثبیت قیمت بالای مقاومت 0.87510 توصیه می‌شود. در صورت عدم شکست، انتظار پولبک به حمایت 0.87223 را داریم که می‌تواند فرصت خرید دیگری در راستای روند فراهم کند.",
+            "CLOUDFLARE_ANALYSIS": "Short-term uptrend, medium-term uptrend, and strong momentum indicators suggest a potential buy opportunity. The entry zone is near the support level, and the stop loss and take profit levels are set accordingly. The risk-reward ratio is favorable, and the signal is strong.",
+            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
+        }
+    },
+    "AUD/NZD": {
+        "timestamp": "2025-09-27T18:36:50.116499+00:00",
+        "signal": {
+            "SYMBOL": "AUD/NZD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 6,
+            "ENTRY_ZONE": "محدوده ورود",
+            "STOP_LOSS": "1.12375",
+            "TAKE_PROFIT": "1.13460",
+            "RISK_REWARD_RATIO": "1:2",
+            "ANALYSIS": "سیگنال از Cloudflare - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "4 hours",
+            "ai_model": "Cloudflare",
+            "timestamp": "2025-09-27T18:36:26.110142+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "EUR/AUD": {
+        "timestamp": "2025-09-27T18:37:16.135872+00:00",
+        "signal": {
+            "SYMBOL": "EUR/AUD",
+            "ACTION": "SELL",
+            "CONFIDENCE": 2,
+            "ENTRY_ZONE": "1.78400 - 1.78500",
+            "STOP_LOSS": "1.78700",
+            "TAKE_PROFIT": "1.77800",
+            "RISK_REWARD_RATIO": "2.6:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 8,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T18:37:16.135670+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "GBP/CHF": {
+        "timestamp": "2025-09-27T18:37:39.740918+00:00",
+        "signal": {
+            "SYMBOL": "GBP/CHF",
+            "ACTION": "SELL",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "1.06500 - 1.06580",
+            "STOP_LOSS": "1.06900",
+            "TAKE_PROFIT": "1.06000",
+            "RISK_REWARD_RATIO": "1.5:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "8",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T18:37:39.740725+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "CAD/JPY": {
+        "timestamp": "2025-09-27T18:38:16.177155+00:00",
+        "signal": {
+            "SYMBOL": "CAD/JPY",
+            "ACTION": "BUY",
+            "CONFIDENCE": 4,
+            "ENTRY_ZONE": "107.650-107.700",
+            "STOP_LOSS": "106.880",
+            "TAKE_PROFIT": "108.800",
+            "RISK_REWARD_RATIO": "1:1.5",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 8,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T18:38:16.176954+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "EUR/USD": {
+        "timestamp": "2025-09-27T18:32:31.813794+00:00",
+        "signal": {
+            "SYMBOL": "EUR/USD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 6,
+            "ENTRY_ZONE": "1.16550",
+            "STOP_LOSS": "1.16919",
+            "TAKE_PROFIT": "1.17844",
+            "RISK_REWARD_RATIO": "3.36:1",
+            "EXPIRATION_H": 12,
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": true,
+            "GEMINI_ANALYSIS": "جفت ارز EUR/USD در یک سطح حمایت کلیدی (1.16454) با RSI در محدوده اشباع فروش (24.3) قرار دارد که نشان‌دهنده احتمال بالای برگشت صعودی در چارچوب روند بلندمدت صعودی است. با وجود روند کوتاه‌مدت نزولی و الگوی کندلی Engulfing نزولی، این نشانه‌ها ممکن است حاکی از خستگی فروشندگان باشد. یک موقعیت خرید با هدف مقاومت اول (1.17539) ترجیح داده می‌شود.",
+            "CLOUDFLARE_ANALYSIS": "Short-term bullish, medium-term bearish",
             "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
         }
     },
     "GBP/USD": {
-        "timestamp": "2025-09-27T16:29:00.021506+00:00",
+        "timestamp": "2025-09-27T18:32:48.586325+00:00",
         "signal": {
             "SYMBOL": "GBP/USD",
             "ACTION": "BUY",
             "CONFIDENCE": 8,
-            "ENTRY_ZONE": "1.33253",
-            "STOP_LOSS": "1.32950",
-            "TAKE_PROFIT": "1.34500",
-            "RISK_REWARD_RATIO": "4.0",
-            "EXPIRATION_H": 11,
+            "ENTRY_ZONE": "1.33250",
+            "STOP_LOSS": "1.33000",
+            "TAKE_PROFIT": "1.34670",
+            "RISK_REWARD_RATIO": "5.0:1",
+            "EXPIRATION_H": 26,
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "جفت ارز GBP/USD در یک روند نزولی کوتاه‌مدت قرار دارد اما به سطح حمایتی قوی 1.33253 نزدیک شده است. اندیکاتور RSI در منطقه اشباع فروش (22.6) قرار دارد که نشان‌دهنده احتمال بالای برگشت یا حداقل یک پولبک صعودی از این ناحیه است. روند بلندمدت خنثی و قوی است که می‌تواند به پایداری این حمایت کمک کند. با توجه به اشباع فروش و رسیدن به حمایت، یک موقعیت خرید برای بهره‌برداری از اصلاح صعودی یا برگشت احتمالی پیشنهاد می‌شود. فقدان الگوی کندلی خاص، اندکی از قدرت سیگنال می‌کاهد اما شرایط کلی مساعد است.",
-            "CLOUDFLARE_ANALYSIS": "تحلیل کلی وضعیت",
+            "GEMINI_ANALYSIS": "جفت ارز GBP/USD با وجود روند کوتاه‌مدت نزولی، به سطح حمایتی کلیدی 1.33253 رسیده است. شاخص RSI نیز در محدوده اشباع فروش (22.6) قرار دارد که این ترکیب (قیمت در حمایت و RSI اشباع فروش) سیگنالی قوی برای پتانسیل برگشت صعودی یا حداقل یک اصلاح قابل توجه به سمت مقاومت اول ارائه می‌دهد. روند بلندمدت خنثی، فضا را برای این حرکت اصلاحی فراهم می‌کند. انتظار می‌رود قیمت از این سطح حمایت واکنش نشان داده و به سمت مقاومت 1.34673 حرکت کند.",
+            "CLOUDFLARE_ANALYSIS": "The current trend is bullish, with a strong uptrend and high momentum. The RSI is at 22.6, indicating overbought conditions. The trend is expected to continue in the near term. Buying at the entry zone with a stop loss at the recent low and taking profit at the next resistance level is a potential trading opportunity.",
             "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
+        }
+    },
+    "USD/CHF": {
+        "timestamp": "2025-09-27T18:33:28.665836+00:00",
+        "signal": {
+            "SYMBOL": "USD/CHF",
+            "ACTION": "SELL",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "0.80140 - 0.80180 (انتظار برای رد شدن قیمت)",
+            "STOP_LOSS": "0.80300",
+            "TAKE_PROFIT": "0.79425",
+            "RISK_REWARD_RATIO": "5.25:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "12",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T18:33:28.665661+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
         }
     },
     "AUD/USD": {
-        "timestamp": "2025-09-27T16:30:09.050668+00:00",
+        "timestamp": "2025-09-27T18:33:48.845256+00:00",
         "signal": {
             "SYMBOL": "AUD/USD",
             "ACTION": "BUY",
-            "CONFIDENCE": 8,
-            "ENTRY_ZONE": "0.65300",
-            "STOP_LOSS": "0.65220",
-            "TAKE_PROFIT": "0.66148",
-            "RISK_REWARD_RATIO": "3.8:1",
-            "EXPIRATION_H": 14,
+            "CONFIDENCE": 4,
+            "ENTRY_ZONE": "0.65300 - 0.65350",
+            "STOP_LOSS": "0.65150",
+            "TAKE_PROFIT": "0.65750",
+            "RISK_REWARD_RATIO": "2.4",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "8",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-27T18:33:48.845030+00:00",
             "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "جفت ارز AUD/USD در نزدیکی سطح حمایت قوی 0.65291 قرار دارد. با توجه به RSI در منطقه اشباع فروش (30.4) و روند بلندمدت خنثی و قوی (که نشان‌دهنده احتمالی رنج زدن است)، انتظار می‌رود قیمت از این سطح حمایت واکنش مثبت نشان داده و به سمت مقاومت 0.66055 حرکت کند. با وجود روند کوتاه‌مدت نزولی، این موقعیت می‌تواند فرصتی برای یک معامله خرید معکوس (Counter-trend bounce) با ریسک پایین از سطح حمایت باشد.",
-            "CLOUDFLARE_ANALYSIS": "Short-term trend is bullish, medium-term trend is neutral. RSI is oversold, suggesting a potential bounce. entry zone is near the support level. Stop loss is set near the recent low, take profit is set near the recent high.",
-            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
+            "MODELS_AGREE": false
         }
     },
     "GBP/JPY": {
-        "timestamp": "2025-09-27T16:30:32.795201+00:00",
+        "timestamp": "2025-09-27T18:34:17.032897+00:00",
         "signal": {
             "SYMBOL": "GBP/JPY",
             "ACTION": "BUY",
             "CONFIDENCE": 6,
             "ENTRY_ZONE": "199.60000",
             "STOP_LOSS": "199.25000",
-            "TAKE_PROFIT": "200.30000",
-            "RISK_REWARD_RATIO": "1.6:1",
-            "EXPIRATION_H": 11,
+            "TAKE_PROFIT": "200.34500",
+            "RISK_REWARD_RATIO": "1.7:1",
+            "EXPIRATION_H": 4,
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "جفت ارز GBP/JPY در روندهای بلندمدت و کوتاه‌مدت خنثی قرار دارد، با مومنتوم RSI نیز خنثی. قیمت در میانه رنج معاملاتی نوسان می‌کند. تنها سیگنال جهت‌دار، الگوی کندلی HARAMI صعودی است که می‌تواند نشانه‌ای برای حرکت رو به بالا به سمت مقاومت باشد. با توجه به وضعیت کلی خنثی، این معامله ریسک متوسطی دارد و باید با احتیاط مدیریت شود.",
-            "CLOUDFLARE_ANALYSIS": "Short-term trend is bullish, but medium-term trend is bearish. RSI is oversold, indicating a potential bounce. Entry at the lower end of the range, with a stop loss at the upper end and a take profit at the lower end.",
+            "GEMINI_ANALYSIS": "روندهای بلندمدت و کوتاه‌مدت خنثی همراه با مومنتوم ضعیف (RSI 46.6) نشان‌دهنده تثبیت قیمت در یک محدوده مشخص است. موقعیت قیمت در میانه رنج، تاییدکننده عدم وجود جهت‌گیری قوی است. با این حال، شکل‌گیری الگوی کندلی HARAMI (صعودی) پتانسیل یک حرکت برگشتی یا صعودی کوتاه‌مدت را نشان می‌دهد. با توجه به خنثی بودن شرایط کلی بازار برای این جفت ارز، این حرکت صعودی احتمالاً به سمت مقاومت بالای محدوده فعلی خواهد بود. سطح اطمینان برای این معامله پایین است، زیرا تنها بر پایه یک الگوی کندلی کوتاه‌مدت در یک بازار بدون روند قوی استوار است. مدیریت ریسک با حد ضرر زیر حمایت اصلی (199.328) و هدف‌گذاری مقاومت اول (200.345) حیاتی است.",
+            "CLOUDFLARE_ANALYSIS": "Short-term trend is upward, but the medium-term trend is neutral. RSI is oversold, indicating a potential buying opportunity. However, the stop loss and take profit are set at relatively close distances, which may limit potential profits.",
             "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
         }
     },
     "EUR/JPY": {
-        "timestamp": "2025-09-27T16:30:56.870396+00:00",
+        "timestamp": "2025-09-27T18:34:40.213689+00:00",
         "signal": {
             "SYMBOL": "EUR/JPY",
             "ACTION": "BUY",
-            "CONFIDENCE": 3,
-            "ENTRY_ZONE": "174.470 - 174.520 (on a retest of Support 1)",
-            "STOP_LOSS": "174.150",
-            "TAKE_PROFIT": "174.900",
-            "RISK_REWARD_RATIO": "1.17",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "8",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-27T16:30:56.870189+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "AUD/JPY": {
-        "timestamp": "2025-09-27T16:31:18.685777+00:00",
-        "signal": {
-            "SYMBOL": "AUD/JPY",
-            "ACTION": "BUY",
-            "CONFIDENCE": 8,
-            "ENTRY_ZONE": "97.80000",
-            "STOP_LOSS": "97.69000",
-            "TAKE_PROFIT": "98.20000",
-            "RISK_REWARD_RATIO": "2.2:1",
-            "EXPIRATION_H": 14,
+            "CONFIDENCE": 29,
+            "ENTRY_ZONE": "174.47200",
+            "STOP_LOSS": "174.18000",
+            "TAKE_PROFIT": "174.90000",
+            "RISK_REWARD_RATIO": "1:1.46",
+            "EXPIRATION_H": 8,
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "AUD/JPY exhibits a strong bullish bias across both long-term and short-term trends. The appearance of a bullish Engulfing pattern further supports upward movement. While RSI is neutral, indicating no immediate overbought/oversold conditions, the price is currently positioned in the middle of its range, allowing room for a move towards the primary resistance at 98.224. A potential entry following a retest of support or confirmation of the bullish engulfing pattern is advised, targeting the resistance level.",
+            "GEMINI_ANALYSIS": "روند کلی EUR/JPY در هر دو تایم فریم بلندمدت و کوتاه‌مدت صعودی است. با این حال، قدرت روند بلندمدت ضعیف گزارش شده و مومنتوم (RSI 53.4) نیز خنثی است که نشان‌دهنده عدم وجود شتاب قوی صعودی در حال حاضر است. قیمت در میانه یک محدوده قرار دارد و الگوی کندلی خاصی شناسایی نشده. با توجه به روند صعودی غالب، یک استراتژی خرید در صورت پولبک به منطقه حمایتی اول (174.47200) قابل بررسی است. حد ضرر باید زیر حمایت دوم قرار گیرد تا از ریسک‌های احتمالی محافظت شود. حد سود نزدیک مقاومت اول تنظیم می‌شود. احتیاط توصیه می‌شود.",
             "CLOUDFLARE_ANALYSIS": "تحلیل کلی وضعیت",
             "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
         }
     },
-    "USD/CAD": {
-        "timestamp": "2025-09-27T16:32:15.152366+00:00",
+    "AUD/JPY": {
+        "timestamp": "2025-09-27T18:35:06.505707+00:00",
         "signal": {
-            "SYMBOL": "USD/CAD",
-            "ACTION": "SELL",
-            "CONFIDENCE": 4,
-            "ENTRY_ZONE": "1.39400-1.39494",
-            "STOP_LOSS": "1.39650",
-            "TAKE_PROFIT": "1.38800",
-            "RISK_REWARD_RATIO": "3.25:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": 24,
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-27T16:32:15.152184+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "EUR/GBP": {
-        "timestamp": "2025-09-27T16:32:42.072028+00:00",
-        "signal": {
-            "SYMBOL": "EUR/GBP",
+            "SYMBOL": "AUD/JPY",
             "ACTION": "BUY",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "بریک اوت بالای 0.87510 (ورود حدود 0.87520 - 0.87550)",
-            "STOP_LOSS": "0.87200",
-            "TAKE_PROFIT": "0.87850",
-            "RISK_REWARD_RATIO": "1:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": 24,
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-27T16:32:42.071852+00:00",
+            "CONFIDENCE": 8,
+            "ENTRY_ZONE": "97.74400",
+            "STOP_LOSS": "97.65000",
+            "TAKE_PROFIT": "98.22400",
+            "RISK_REWARD_RATIO": "3.8:1",
+            "EXPIRATION_H": 12,
             "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
+            "MODELS_AGREE": true,
+            "GEMINI_ANALYSIS": "جفت ارز AUD/JPY در هر دو تایم فریم بلندمدت و کوتاه‌مدت (HTF و LTF) روند صعودی قوی دارد. شکل‌گیری الگوی کندلی انگلفینگ صعودی (Bullish Engulfing) نشان‌دهنده تقویت احتمالی روند صعودی و ادامه حرکت به سمت بالا است. با وجود اینکه اندیکاتور RSI در وضعیت خنثی (48.9) قرار دارد، این وضعیت مانع از حرکت صعودی مورد انتظار نیست و فضایی برای رشد قیمت فراهم می‌کند. قیمت در میانه یک رنج معاملاتی قرار گرفته و با توجه به الگوی صعودی، پتانسیل حرکت به سمت مقاومت 98.22400 را دارد. ورود به پوزیشن خرید در محدوده ذکر شده با هدف مقاومت اول و حد ضرر محافظه‌کارانه زیر حمایت اول، می‌تواند معامله‌ای با نسبت ریسک به ریوارد مطلوب (تقریباً 3.8 به 1) باشد.",
+            "CLOUDFLARE_ANALYSIS": "Short-term trend is upward, medium-term trend is flat, and long-term trend is downward. RSI is overbought, suggesting a potential reversal.",
+            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
         }
     },
-    "AUD/NZD": {
-        "timestamp": "2025-09-27T16:33:25.828732+00:00",
+    "NZD/USD": {
+        "timestamp": "2025-09-27T18:35:23.776620+00:00",
         "signal": {
-            "SYMBOL": "AUD/NZD",
-            "ACTION": "BUY",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "بالای 1.13460 پس از شکست قطعی مقاومت",
-            "STOP_LOSS": "1.13110",
-            "TAKE_PROFIT": "1.13900",
-            "RISK_REWARD_RATIO": "1:1.25",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "12",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-27T16:33:25.828552+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "EUR/AUD": {
-        "timestamp": "2025-09-27T16:33:57.151279+00:00",
-        "signal": {
-            "SYMBOL": "EUR/AUD",
-            "ACTION": "BUY",
-            "CONFIDENCE": 6,
-            "ENTRY_ZONE": "محدوده ورود",
-            "STOP_LOSS": "حد ضرر",
-            "TAKE_PROFIT": "حد سود",
-            "RISK_REWARD_RATIO": "نسبت risk/reward",
-            "ANALYSIS": "سیگنال از Cloudflare - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "4 ساعت",
-            "ai_model": "Cloudflare",
-            "timestamp": "2025-09-27T16:33:43.159153+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "GBP/CHF": {
-        "timestamp": "2025-09-27T16:34:28.765894+00:00",
-        "signal": {
-            "SYMBOL": "GBP/CHF",
+            "SYMBOL": "NZD/USD",
             "ACTION": "SELL",
             "CONFIDENCE": 5,
-            "ENTRY_ZONE": "محدوده 1.07000 الی 1.07160 (پس از پولبک به مقاومت)",
-            "STOP_LOSS": "1.07350",
-            "TAKE_PROFIT": "1.06000",
-            "RISK_REWARD_RATIO": "حدود 4.4:1",
+            "ENTRY_ZONE": "0.58300-0.58400",
+            "STOP_LOSS": "0.58750",
+            "TAKE_PROFIT": "0.57000",
+            "RISK_REWARD_RATIO": "1:3",
             "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
             "EXPIRATION_H": 48,
             "ai_model": "Gemini",
-            "timestamp": "2025-09-27T16:34:28.765721+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "CAD/JPY": {
-        "timestamp": "2025-09-27T16:35:04.404706+00:00",
-        "signal": {
-            "SYMBOL": "CAD/JPY",
-            "ACTION": "BUY",
-            "CONFIDENCE": 60.7,
-            "ENTRY_ZONE": "محدوده ورود",
-            "STOP_LOSS": "حد ضرر",
-            "TAKE_PROFIT": "حد سود",
-            "RISK_REWARD_RATIO": "نسبت risk/reward",
-            "ANALYSIS": "سیگنال از Cloudflare - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "مدت اعتبار سیگنال به ساعت (مثلا: 4)",
-            "ai_model": "Cloudflare",
-            "timestamp": "2025-09-27T16:34:45.906765+00:00",
+            "timestamp": "2025-09-27T18:35:23.776422+00:00",
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": false
         }
