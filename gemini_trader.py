@@ -1,3 +1,4 @@
+ 
 import google.generativeai as genai
 import os
 import re
@@ -494,11 +495,10 @@ class HybridAIManager:
 
     # --- ALL HELPER METHODS ARE NOW INDENTED TO BE INSIDE THE CLASS ---
 
-    def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
+def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
         """ایجاد پرامپت تحلیل"""
         base_currency, quote_currency = symbol.split('/')
         
-        # This is the new, stricter instruction
         final_instruction = """
 **تحلیل خود را ارائه داده و موارد زیر را مشخص کنید.
 مهم: فقط و فقط یک آبجکت JSON معتبر بدون هیچ‌گونه متن اضافی، مقدمه یا توضیح بازگردان. پاسخ تو باید مستقیماً با `{` شروع و با `}` تمام شود.**
@@ -532,7 +532,8 @@ class HybridAIManager:
   "STOP_LOSS": "حد ضرر",
   "TAKE_PROFIT": "حد سود", 
   "RISK_REWARD_RATIO": "نسبت risk/reward",
-  "ANALYSIS": "تحلیل کلی وضعیت"
+  "ANALYSIS": "تحلیل کلی وضعیت",
+  "EXPIRATION_H": "مدت اعتبار سیگنال به ساعت (مثلا: 4)"
 }}
 """
 
@@ -558,8 +559,29 @@ class HybridAIManager:
             logging.error(f"خطا در پارس کردن پاسخ {ai_name} برای {symbol}: {e}")
             return None
 
+    def _extract_numeric_value(self, value: str) -> Optional[float]:
+        """
+        Safely extracts a floating-point number from a string.
+        Handles ranges (takes the first number) and text.
+        """
+        if isinstance(value, (int, float)):
+            return float(value)
+        if not isinstance(value, str):
+            return None
+            
+        # Find the first floating point number in the string
+        match = re.search(r'[-+]?\d*\.\d+|\d+', value)
+        if match:
+            try:
+                return float(match.group(0))
+            except (ValueError, TypeError):
+                return None
+        return None
+
     def _combine_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
-        """ترکیب نتایج دو مدل AI"""
+        """
+        ترکیب نتایج دو مدل AI با قابلیت میانگین‌گیری مقادیر عددی.
+        """
         results = []
         
         if gemini_result and gemini_result.get('ACTION') != 'HOLD':
@@ -568,6 +590,7 @@ class HybridAIManager:
             results.append(('Cloudflare', cloudflare_result))
         
         if not results:
+            # ... (این بخش بدون تغییر باقی می‌ماند)
             logging.info(f"هر دو مدل AI برای {symbol} سیگنال HOLD دادند")
             return {
                 'SYMBOL': symbol, 'ACTION': 'HOLD', 'CONFIDENCE': 0,
@@ -576,6 +599,7 @@ class HybridAIManager:
             }
         
         if len(results) == 1:
+            # ... (این بخش بدون تغییر باقی می‌ماند)
             model_name, result = results[0]
             result['COMBINED_ANALYSIS'] = True
             result['MODELS_AGREE'] = False
@@ -587,18 +611,56 @@ class HybridAIManager:
         cloudflare_action = cloudflare_result.get('ACTION')
         
         if gemini_action == cloudflare_action:
-            combined_confidence = (gemini_result.get('CONFIDENCE', 5) + cloudflare_result.get('CONFIDENCE', 5)) // 2
+            # --- START OF THE AVERAGING LOGIC ---
+            averaged_values = {}
+            fields_to_average = ['STOP_LOSS', 'TAKE_PROFIT', 'ENTRY_ZONE', 'CONFIDENCE', 'EXPIRATION_H']
+
+            for field in fields_to_average:
+                gemini_val_str = gemini_result.get(field)
+                cloudflare_val_str = cloudflare_result.get(field)
+
+                gemini_num = self._extract_numeric_value(gemini_val_str)
+                cloudflare_num = self._extract_numeric_value(cloudflare_val_str)
+
+                if gemini_num is not None and cloudflare_num is not None:
+                    # اگر هر دو مقدار معتبر بودند، میانگین بگیر
+                    averaged_values[field] = (gemini_num + cloudflare_num) / 2
+                elif gemini_num is not None:
+                    # اگر فقط یکی معتبر بود، از همان استفاده کن
+                    averaged_values[field] = gemini_num
+                elif cloudflare_num is not None:
+                    averaged_values[field] = cloudflare_num
+                else:
+                    # اگر هیچکدام معتبر نبودند
+                    averaged_values[field] = None
+
+            # قالب‌بندی نهایی برای نمایش
+            entry_zone_avg = f"{averaged_values.get('ENTRY_ZONE'):.5f}" if averaged_values.get('ENTRY_ZONE') else "Not specified"
+            stop_loss_avg = f"{averaged_values.get('STOP_LOSS'):.5f}" if averaged_values.get('STOP_LOSS') else "Not specified"
+            take_profit_avg = f"{averaged_values.get('TAKE_PROFIT'):.5f}" if averaged_values.get('TAKE_PROFIT') else "Not specified"
+            confidence_avg = int(round(averaged_values.get('CONFIDENCE', 5))) if averaged_values.get('CONFIDENCE') else 5
+            expiration_avg = int(round(averaged_values.get('EXPIRATION_H', 4))) if averaged_values.get('EXPIRATION_H') else 4
+            
             return {
-                'SYMBOL': symbol, 'ACTION': gemini_action,
-                'CONFIDENCE': min(10, combined_confidence + 1),
-                'COMBINED_ANALYSIS': True, 'MODELS_AGREE': True,
+                'SYMBOL': symbol,
+                'ACTION': gemini_action,
+                'CONFIDENCE': confidence_avg,
+                'ENTRY_ZONE': entry_zone_avg,
+                'STOP_LOSS': stop_loss_avg,
+                'TAKE_PROFIT': take_profit_avg,
+                'RISK_REWARD_RATIO': gemini_result.get('RISK_REWARD_RATIO', 'N/A'), # این فیلد معمولا متنی است و میانگین گرفته نمی‌شود
+                'EXPIRATION_H': expiration_avg,
+                'COMBINED_ANALYSIS': True,
+                'MODELS_AGREE': True,
                 'GEMINI_ANALYSIS': gemini_result.get('ANALYSIS', ''),
                 'CLOUDFLARE_ANALYSIS': cloudflare_result.get('ANALYSIS', ''),
-                'FINAL_ANALYSIS': f"توافق کامل بین مدل‌ها - سیگنال {gemini_action} با اعتماد بالا"
+                'FINAL_ANALYSIS': f"توافق کامل بین مدل‌ها - سیگنال {gemini_action} با اعتماد بالا (مقادیر میانگین‌گیری شده)"
             }
+            # --- END OF THE AVERAGING LOGIC ---
         else:
-            gemini_conf = gemini_result.get('CONFIDENCE', 5)
-            cloudflare_conf = cloudflare_result.get('CONFIDENCE', 5)
+            # ... (این بخش بدون تغییر باقی می‌ماند)
+            gemini_conf = self._extract_numeric_value(gemini_result.get('CONFIDENCE', 5))
+            cloudflare_conf = self._extract_numeric_value(cloudflare_result.get('CONFIDENCE', 5))
             
             if abs(gemini_conf - cloudflare_conf) >= 3:
                 selected_result = gemini_result if gemini_conf > cloudflare_conf else cloudflare_result
