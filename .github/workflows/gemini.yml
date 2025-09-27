@@ -38,7 +38,7 @@ jobs:
           TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
           CLOUDFLARE_AI_API_KEY: ${{ secrets.CLOUDFLARE_AI_API_KEY }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: python gemini_trader.py --all
+        run: python gemini_trader.py --pair EUR/USD
 
       # مرحله کامیت کردن فایل با کد خودتان (فقط نام فایل اصلاح شد)
       - name: Commit trade signal file
