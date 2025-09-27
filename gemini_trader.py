@@ -402,8 +402,6 @@ class AdvancedTechnicalAnalyzer:
 # --- کلاس مدیریت AI ترکیبی (با Cloudflare) ---
 # =================================================================================
 
-# Replace your entire HybridAIManager class with this corrected version
-
 class HybridAIManager:
     def __init__(self, gemini_api_key: str, cloudflare_api_key: str):
         self.gemini_api_key = gemini_api_key
@@ -493,9 +491,9 @@ class HybridAIManager:
             logging.warning(f"خطا در تحلیل Cloudflare برای {symbol}: {e}")
             return None
 
-    # --- ALL HELPER METHODS ARE NOW INDENTED TO BE INSIDE THE CLASS ---
+    # --- ALL HELPER METHODS ARE NOW CORRECTLY INDENTED INSIDE THE CLASS ---
 
-def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
+    def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
         """ایجاد پرامپت تحلیل"""
         base_currency, quote_currency = symbol.split('/')
         
@@ -590,7 +588,6 @@ def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name
             results.append(('Cloudflare', cloudflare_result))
         
         if not results:
-            # ... (این بخش بدون تغییر باقی می‌ماند)
             logging.info(f"هر دو مدل AI برای {symbol} سیگنال HOLD دادند")
             return {
                 'SYMBOL': symbol, 'ACTION': 'HOLD', 'CONFIDENCE': 0,
@@ -599,7 +596,6 @@ def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name
             }
         
         if len(results) == 1:
-            # ... (این بخش بدون تغییر باقی می‌ماند)
             model_name, result = results[0]
             result['COMBINED_ANALYSIS'] = True
             result['MODELS_AGREE'] = False
@@ -611,7 +607,6 @@ def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name
         cloudflare_action = cloudflare_result.get('ACTION')
         
         if gemini_action == cloudflare_action:
-            # --- START OF THE AVERAGING LOGIC ---
             averaged_values = {}
             fields_to_average = ['STOP_LOSS', 'TAKE_PROFIT', 'ENTRY_ZONE', 'CONFIDENCE', 'EXPIRATION_H']
 
@@ -623,18 +618,14 @@ def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name
                 cloudflare_num = self._extract_numeric_value(cloudflare_val_str)
 
                 if gemini_num is not None and cloudflare_num is not None:
-                    # اگر هر دو مقدار معتبر بودند، میانگین بگیر
                     averaged_values[field] = (gemini_num + cloudflare_num) / 2
                 elif gemini_num is not None:
-                    # اگر فقط یکی معتبر بود، از همان استفاده کن
                     averaged_values[field] = gemini_num
                 elif cloudflare_num is not None:
                     averaged_values[field] = cloudflare_num
                 else:
-                    # اگر هیچکدام معتبر نبودند
                     averaged_values[field] = None
 
-            # قالب‌بندی نهایی برای نمایش
             entry_zone_avg = f"{averaged_values.get('ENTRY_ZONE'):.5f}" if averaged_values.get('ENTRY_ZONE') else "Not specified"
             stop_loss_avg = f"{averaged_values.get('STOP_LOSS'):.5f}" if averaged_values.get('STOP_LOSS') else "Not specified"
             take_profit_avg = f"{averaged_values.get('TAKE_PROFIT'):.5f}" if averaged_values.get('TAKE_PROFIT') else "Not specified"
@@ -648,7 +639,7 @@ def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name
                 'ENTRY_ZONE': entry_zone_avg,
                 'STOP_LOSS': stop_loss_avg,
                 'TAKE_PROFIT': take_profit_avg,
-                'RISK_REWARD_RATIO': gemini_result.get('RISK_REWARD_RATIO', 'N/A'), # این فیلد معمولا متنی است و میانگین گرفته نمی‌شود
+                'RISK_REWARD_RATIO': gemini_result.get('RISK_REWARD_RATIO', 'N/A'),
                 'EXPIRATION_H': expiration_avg,
                 'COMBINED_ANALYSIS': True,
                 'MODELS_AGREE': True,
@@ -656,9 +647,7 @@ def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name
                 'CLOUDFLARE_ANALYSIS': cloudflare_result.get('ANALYSIS', ''),
                 'FINAL_ANALYSIS': f"توافق کامل بین مدل‌ها - سیگنال {gemini_action} با اعتماد بالا (مقادیر میانگین‌گیری شده)"
             }
-            # --- END OF THE AVERAGING LOGIC ---
         else:
-            # ... (این بخش بدون تغییر باقی می‌ماند)
             gemini_conf = self._extract_numeric_value(gemini_result.get('CONFIDENCE', 5))
             cloudflare_conf = self._extract_numeric_value(cloudflare_result.get('CONFIDENCE', 5))
             
