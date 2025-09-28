@@ -53,24 +53,6 @@
             "MODELS_AGREE": false
         }
     },
-    "GBP/CHF": {
-        "timestamp": "2025-09-28T16:33:02.948022+00:00",
-        "signal": {
-            "SYMBOL": "GBP/CHF",
-            "ACTION": "SELL",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "below 1.06610 (e.g., 1.06550)",
-            "STOP_LOSS": "1.07250",
-            "TAKE_PROFIT": "1.05500",
-            "RISK_REWARD_RATIO": "1.5:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "24",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T16:33:02.947849+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
     "CAD/JPY": {
         "timestamp": "2025-09-28T18:36:58.731822+00:00",
         "signal": {
@@ -247,6 +229,42 @@
             "EXPIRATION_H": 24,
             "ai_model": "Gemini",
             "timestamp": "2025-09-28T18:35:00.764654+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "NZD/USD": {
+        "timestamp": "2025-09-28T20:25:55.591010+00:00",
+        "signal": {
+            "SYMBOL": "NZD/USD",
+            "ACTION": "SELL",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "Break below 0.57614 (e.g., 0.57590)",
+            "STOP_LOSS": "0.57700",
+            "TAKE_PROFIT": "0.57000",
+            "RISK_REWARD_RATIO": "5.36:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 6,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T20:25:55.590817+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "GBP/CHF": {
+        "timestamp": "2025-09-28T20:26:18.576381+00:00",
+        "signal": {
+            "SYMBOL": "GBP/CHF",
+            "ACTION": "SELL",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "بریک آوت قطعی زیر 1.06610 (مثلا 1.06580)",
+            "STOP_LOSS": "1.06750",
+            "TAKE_PROFIT": "1.06000",
+            "RISK_REWARD_RATIO": "3.41:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "24",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T20:26:18.576178+00:00",
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": false
         }
