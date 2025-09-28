@@ -250,5 +250,23 @@
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": false
         }
+    },
+    "USD/CAD": {
+        "timestamp": "2025-09-28T08:29:48.676092+00:00",
+        "signal": {
+            "SYMBOL": "USD/CAD",
+            "ACTION": "SELL",
+            "CONFIDENCE": 4,
+            "ENTRY_ZONE": "1.39450 - 1.39550",
+            "STOP_LOSS": "1.39750",
+            "TAKE_PROFIT": "1.38800",
+            "RISK_REWARD_RATIO": "2.7:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "24",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T08:29:47.177740+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
     }
 }
