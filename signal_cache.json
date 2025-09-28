@@ -1,256 +1,4 @@
 {
-    "EUR/USD": {
-        "timestamp": "2025-09-28T06:35:07.174988+00:00",
-        "signal": {
-            "SYMBOL": "EUR/USD",
-            "ACTION": "BUY",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "1.16450 - 1.16500",
-            "STOP_LOSS": "1.16300",
-            "TAKE_PROFIT": "1.17500",
-            "RISK_REWARD_RATIO": "5.8:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "24",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:35:05.299938+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "GBP/USD": {
-        "timestamp": "2025-09-28T06:35:23.891635+00:00",
-        "signal": {
-            "SYMBOL": "GBP/USD",
-            "ACTION": "BUY",
-            "CONFIDENCE": 8,
-            "ENTRY_ZONE": "1.33200",
-            "STOP_LOSS": "1.32950",
-            "TAKE_PROFIT": "1.34650",
-            "RISK_REWARD_RATIO": "4.66:1",
-            "EXPIRATION_H": 14,
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "جفت ارز GBP/USD در شرایط اشباع فروش قوی (RSI 22.6) قرار دارد و همزمان در حال تست سطح حمایت کلیدی 1.33253 است. روند کوتاه‌مدت نزولی بوده، اما این همگرایی اشباع فروش و حمایت قوی، احتمال بازگشت یا حداقل اصلاح صعودی را به شدت افزایش می‌دهد. در حالی که روند بلندمدت خنثی است، انتظار می‌رود قیمت از این سطح حمایت واکنش نشان داده و به سمت مقاومت اول (1.34673) حرکت کند. عدم شناسایی الگوی کندلی صعودی، از شدت اطمینان کمی می‌کاهد اما شرایط کلی برای یک معامله خرید کوتاه‌مدت مناسب است.",
-            "CLOUDFLARE_ANALYSIS": "The current trend is bullish, with a strong momentum and a high RSI, indicating a potential buy signal. The entry zone is near the support level, and the stop loss and take profit are set at the same level. The risk reward ratio is 1:2, indicating a good risk reward ratio. However, the signal is not very confident, with a confidence level of 8 out of 10.",
-            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
-        }
-    },
-    "USD/JPY": {
-        "timestamp": "2025-09-28T06:35:40.933677+00:00",
-        "signal": {
-            "SYMBOL": "USD/JPY",
-            "ACTION": "SELL",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "149.850 - 149.950",
-            "STOP_LOSS": "150.150",
-            "TAKE_PROFIT": "148.550",
-            "RISK_REWARD_RATIO": "5.2:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "24",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:35:34.078015+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "USD/CHF": {
-        "timestamp": "2025-09-28T06:36:02.388895+00:00",
-        "signal": {
-            "SYMBOL": "USD/CHF",
-            "ACTION": "SELL",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "0.80050 - 0.80150",
-            "STOP_LOSS": "0.80300",
-            "TAKE_PROFIT": "0.79425",
-            "RISK_REWARD_RATIO": "3.375",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "24",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:36:02.388669+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "AUD/USD": {
-        "timestamp": "2025-09-28T06:36:19.135293+00:00",
-        "signal": {
-            "SYMBOL": "AUD/USD",
-            "ACTION": "BUY",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "0.65300 - 0.65400",
-            "STOP_LOSS": "0.65190",
-            "TAKE_PROFIT": "0.66000",
-            "RISK_REWARD_RATIO": "4.06",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": 8,
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:36:17.248536+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "GBP/JPY": {
-        "timestamp": "2025-09-28T06:36:41.851493+00:00",
-        "signal": {
-            "SYMBOL": "GBP/JPY",
-            "ACTION": "BUY",
-            "CONFIDENCE": 6,
-            "ENTRY_ZONE": "199.60000",
-            "STOP_LOSS": "199.25000",
-            "TAKE_PROFIT": "200.34500",
-            "RISK_REWARD_RATIO": "1.43:1",
-            "EXPIRATION_H": 34,
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "جفت ارز GBP/JPY در روندهای بلندمدت و کوتاه‌مدت خنثی قرار دارد و قدرت روند بلندمدت نیز ضعیف است که نشان‌دهنده یک بازار نوسانی (رنج) است. مومنتوم (RSI 46.6) نیز وضعیت خنثی را تایید می‌کند. قیمت در میانه رنج قرار دارد. ظهور الگوی کندلی HARAMI صعودی، نشان‌دهنده پتانسیل حرکت صعودی است. با توجه به این الگو و موقعیت در میانه رنج، می‌توان انتظار یک حرکت به سمت مقاومت اول (200.34500) را داشت. ورود به معامله در نزدیکی حمایت‌های داخلی یا با تایید الگو در میانه رنج، با حد ضرر زیر حمایت ۲، منطقی به نظر می‌رسد. به دلیل وضعیت خنثی بازار و قدرت ضعیف روند، معامله باید با احتیاط و مدیریت ریسک دقیق انجام شود و انتظار حرکات قوی و بلندمدت را نداشت.",
-            "CLOUDFLARE_ANALYSIS": "Short-term bullish trend detected. RSI is oversold and the candlestick pattern is bullish. Consider buying at the entry zone.",
-            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
-        }
-    },
-    "EUR/JPY": {
-        "timestamp": "2025-09-28T06:37:05.561209+00:00",
-        "signal": {
-            "SYMBOL": "EUR/JPY",
-            "ACTION": "BUY",
-            "CONFIDENCE": 2,
-            "ENTRY_ZONE": "خرید در محدوده 174.47200 (S1)",
-            "STOP_LOSS": "174.100",
-            "TAKE_PROFIT": "174.94099",
-            "RISK_REWARD_RATIO": "تقریبا 1.26:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": 12,
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:37:05.561031+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "AUD/JPY": {
-        "timestamp": "2025-09-28T06:37:28.675298+00:00",
-        "signal": {
-            "SYMBOL": "AUD/JPY",
-            "ACTION": "BUY",
-            "CONFIDENCE": 8,
-            "ENTRY_ZONE": "97.80000",
-            "STOP_LOSS": "97.69000",
-            "TAKE_PROFIT": "98.22000",
-            "RISK_REWARD_RATIO": "2.78:1",
-            "EXPIRATION_H": 13,
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": true,
-            "GEMINI_ANALYSIS": "AUD/JPY در روندهای بلندمدت و کوتاه‌مدت قوی صعودی قرار دارد که نشان‌دهنده تمایل کلی به سمت بالا است. الگوی کندلی Engulfing صعودی نیز این جهت‌گیری را تقویت می‌کند. با این حال، مومنتوم RSI خنثی (48.9) و موقعیت قیمت در میانه رنج، نشان می‌دهد که ممکن است حرکت صعودی بلافاصله قوی نباشد و نیاز به کاتالیزور یا پولبک داشته باشد. بهترین استراتژی برای ورود، خرید در یک پولبک (اصلاح) به محدوده 97.800 تا 97.850 است که نسبت ریسک به ریوارد بهتری را ارائه می‌دهد. حد ضرر باید در زیر حمایت 1 (97.744) و حد سود در نزدیکی مقاومت 1 (98.224) قرار گیرد. حفظ روند صعودی مستلزم شکست مقاومت 1 است.",
-            "CLOUDFLARE_ANALYSIS": "Long-term uptrend detected, with a high degree of confidence. Entering a buy position with a stop loss at the recent low and a take profit at the next resistance level.",
-            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
-        }
-    },
-    "NZD/USD": {
-        "timestamp": "2025-09-28T06:37:52.229478+00:00",
-        "signal": {
-            "SYMBOL": "NZD/USD",
-            "ACTION": "SELL",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "منتظر پولبک به محدوده مقاومت 1 (0.58326) یا مقاومت 2 (0.58665) برای ورود فروش. همچنین، شکست قاطع حمایت 1 (0.57614) می‌تواند سیگنال فروش برای ادامه روند نزولی باشد.",
-            "STOP_LOSS": "برای ورود از مقاومت 1 (0.58326): بالای مقاومت 2 (0.58665)؛ مثلاً 0.58800. برای ورود از شکست حمایت 1 (0.57614): کمی بالای حمایت 1؛ مثلاً 0.57800.",
-            "TAKE_PROFIT": "هدف اولیه: حمایت 1 (0.57614). اهداف پایین‌تر در صورت شکست حمایت 1 (بر اساس ادامه روند نزولی قوی).",
-            "RISK_REWARD_RATIO": "با فرض ورود از محدوده 0.58326 و حد ضرر 0.58800 و حد سود 0.57614، نسبت Risk/Reward تقریباً 1.5:1 است.",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": 8,
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:37:52.229248+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "EUR/GBP": {
-        "timestamp": "2025-09-28T06:38:27.744414+00:00",
-        "signal": {
-            "SYMBOL": "EUR/GBP",
-            "ACTION": "BUY",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "0.87530 - 0.87560 (بعد از شکست تایید شده مقاومت 0.87510)",
-            "STOP_LOSS": "0.87190",
-            "TAKE_PROFIT": "0.88000",
-            "RISK_REWARD_RATIO": "1.3",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "24",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:38:27.744190+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "AUD/NZD": {
-        "timestamp": "2025-09-28T06:38:50.005491+00:00",
-        "signal": {
-            "SYMBOL": "AUD/NZD",
-            "ACTION": "BUY",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "پس از شکست مقاومت 1.13460 و تثبیت قیمت بالای آن، در محدوده 1.13500-1.13520 وارد شوید.",
-            "STOP_LOSS": "1.13080",
-            "TAKE_PROFIT": "1.14150",
-            "RISK_REWARD_RATIO": "1.5:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "12",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:38:50.005271+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "EUR/AUD": {
-        "timestamp": "2025-09-28T06:39:19.281084+00:00",
-        "signal": {
-            "SYMBOL": "EUR/AUD",
-            "ACTION": "BUY",
-            "CONFIDENCE": 8,
-            "ENTRY_ZONE": "محدوده ورود",
-            "STOP_LOSS": "حد ضرر",
-            "TAKE_PROFIT": "حد سود",
-            "RISK_REWARD_RATIO": "1:2",
-            "ANALYSIS": "سیگنال از Cloudflare با اعتماد بالاتر - مدل دیگر مخالف است",
-            "EXPIRATION_H": "4",
-            "ai_model": "Cloudflare",
-            "timestamp": "2025-09-28T06:39:06.915168+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "GBP/CHF": {
-        "timestamp": "2025-09-28T06:39:45.813149+00:00",
-        "signal": {
-            "SYMBOL": "GBP/CHF",
-            "ACTION": "SELL",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "Below 1.06610 upon confirmed breakdown (e.g., 1.06550)",
-            "STOP_LOSS": "1.06700",
-            "TAKE_PROFIT": "1.06000",
-            "RISK_REWARD_RATIO": "3.67:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": "24",
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:39:45.812946+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
-    "CAD/JPY": {
-        "timestamp": "2025-09-28T06:40:07.954960+00:00",
-        "signal": {
-            "SYMBOL": "CAD/JPY",
-            "ACTION": "BUY",
-            "CONFIDENCE": 5,
-            "ENTRY_ZONE": "107.680 - 107.720",
-            "STOP_LOSS": "106.850",
-            "TAKE_PROFIT": "108.550",
-            "RISK_REWARD_RATIO": "1:1",
-            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
-            "EXPIRATION_H": 24,
-            "ai_model": "Gemini",
-            "timestamp": "2025-09-28T06:40:07.954779+00:00",
-            "COMBINED_ANALYSIS": true,
-            "MODELS_AGREE": false
-        }
-    },
     "USD/CAD": {
         "timestamp": "2025-09-28T08:29:48.676092+00:00",
         "signal": {
@@ -267,6 +15,222 @@
             "timestamp": "2025-09-28T08:29:47.177740+00:00",
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": false
+        }
+    },
+    "EUR/USD": {
+        "timestamp": "2025-09-28T10:24:38.369957+00:00",
+        "signal": {
+            "SYMBOL": "EUR/USD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "1.16454 - 1.16550",
+            "STOP_LOSS": "1.16250",
+            "TAKE_PROFIT": "1.17500",
+            "RISK_REWARD_RATIO": "4:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 24,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:24:36.512528+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "GBP/USD": {
+        "timestamp": "2025-09-28T10:24:54.789797+00:00",
+        "signal": {
+            "SYMBOL": "GBP/USD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "1.33280 - 1.33400",
+            "STOP_LOSS": "1.32980",
+            "TAKE_PROFIT": "1.34673",
+            "RISK_REWARD_RATIO": "تقریبا 3.9:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "24",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:24:48.176136+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "USD/JPY": {
+        "timestamp": "2025-09-28T10:25:11.203684+00:00",
+        "signal": {
+            "SYMBOL": "USD/JPY",
+            "ACTION": "SELL",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "حدود 149.850 - 149.900 (پس از تایید الگوی Bearish Engulfing و رد شدن از مقاومت 149.92799)",
+            "STOP_LOSS": "150.250",
+            "TAKE_PROFIT": "148.554",
+            "RISK_REWARD_RATIO": "3.24:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 24,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:25:10.485749+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "AUD/USD": {
+        "timestamp": "2025-09-28T10:26:20.658407+00:00",
+        "signal": {
+            "SYMBOL": "AUD/USD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 4,
+            "ENTRY_ZONE": "0.65291 - 0.65350",
+            "STOP_LOSS": "0.65180",
+            "TAKE_PROFIT": "0.66000",
+            "RISK_REWARD_RATIO": "4.85:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 8,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:26:17.021195+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "EUR/JPY": {
+        "timestamp": "2025-09-28T10:26:57.159272+00:00",
+        "signal": {
+            "SYMBOL": "EUR/JPY",
+            "ACTION": "BUY",
+            "CONFIDENCE": 2,
+            "ENTRY_ZONE": "174.470 - 174.500",
+            "STOP_LOSS": "174.150",
+            "TAKE_PROFIT": "174.930",
+            "RISK_REWARD_RATIO": "1.3:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "8",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:26:57.159064+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "AUD/JPY": {
+        "timestamp": "2025-09-28T10:27:14.783895+00:00",
+        "signal": {
+            "SYMBOL": "AUD/JPY",
+            "ACTION": "BUY",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "بالای 97.74400",
+            "STOP_LOSS": "97.60000",
+            "TAKE_PROFIT": "98.22400",
+            "RISK_REWARD_RATIO": "تقریبا 3.2:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 24,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:27:14.783706+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "NZD/USD": {
+        "timestamp": "2025-09-28T10:27:33.913756+00:00",
+        "signal": {
+            "SYMBOL": "NZD/USD",
+            "ACTION": "SELL",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "0.58300 - 0.58350",
+            "STOP_LOSS": "0.58750",
+            "TAKE_PROFIT": "0.57614",
+            "RISK_REWARD_RATIO": "1.68",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "12",
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:27:33.913539+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "EUR/GBP": {
+        "timestamp": "2025-09-28T10:27:56.677035+00:00",
+        "signal": {
+            "SYMBOL": "EUR/GBP",
+            "ACTION": "BUY",
+            "CONFIDENCE": 8,
+            "ENTRY_ZONE": "0.87223",
+            "STOP_LOSS": "0.87190",
+            "TAKE_PROFIT": "0.87500",
+            "RISK_REWARD_RATIO": "6.75",
+            "EXPIRATION_H": 14,
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": true,
+            "GEMINI_ANALYSIS": "جفت ارز EUR/GBP در یک روند صعودی قوی در تایم فریم‌های بلندمدت و کوتاه‌مدت قرار دارد. قیمت در حال حاضر نزدیک مقاومت 0.87510 است و RSI در وضعیت خنثی قرار دارد که نشان‌دهنده احتمال تثبیت یا اصلاح قیمت قبل از ادامه حرکت صعودی است. با توجه به روند غالب صعودی و نسبت ریسک به ریوارد جذاب، بهترین استراتژی انتظار برای پولبک به ناحیه حمایتی قوی در حدود 0.87223 تا 0.87250 است تا از آنجا پوزیشن خرید با هدف مقاومت 0.87500 باز شود. حد ضرر باید زیر حمایت دوم در 0.87190 قرار گیرد. در صورت شکست صعودی مقاومت 0.87510 بدون پولبک، این سیگنال خرید معتبر نخواهد بود.",
+            "CLOUDFLARE_ANALYSIS": "Short-term uptrend detected. Consider buying at the entry zone.",
+            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
+        }
+    },
+    "AUD/NZD": {
+        "timestamp": "2025-09-28T10:28:20.156114+00:00",
+        "signal": {
+            "SYMBOL": "AUD/NZD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 6,
+            "ENTRY_ZONE": "محدوده ورود",
+            "STOP_LOSS": "حد ضرر",
+            "TAKE_PROFIT": "حد سود",
+            "RISK_REWARD_RATIO": "1:2",
+            "ANALYSIS": "سیگنال از Cloudflare - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": "4 hours",
+            "ai_model": "Cloudflare",
+            "timestamp": "2025-09-28T10:28:14.020709+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "EUR/AUD": {
+        "timestamp": "2025-09-28T10:28:46.088471+00:00",
+        "signal": {
+            "SYMBOL": "EUR/AUD",
+            "ACTION": "SELL",
+            "CONFIDENCE": 4,
+            "ENTRY_ZONE": "1.78100 - 1.78200",
+            "STOP_LOSS": "1.78350",
+            "TAKE_PROFIT": "1.77850",
+            "RISK_REWARD_RATIO": "1:1.5",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 4,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:28:46.088294+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "GBP/CHF": {
+        "timestamp": "2025-09-28T10:29:05.282326+00:00",
+        "signal": {
+            "SYMBOL": "GBP/CHF",
+            "ACTION": "SELL",
+            "CONFIDENCE": 5,
+            "ENTRY_ZONE": "زیر سطح 1.06610 پس از شکست قاطع (به عنوان مثال، در حدود 1.06580)",
+            "STOP_LOSS": "1.06850",
+            "TAKE_PROFIT": "1.06000",
+            "RISK_REWARD_RATIO": "2.14:1",
+            "ANALYSIS": "سیگنال از Gemini - نیاز به تأیید بیشتر",
+            "EXPIRATION_H": 8,
+            "ai_model": "Gemini",
+            "timestamp": "2025-09-28T10:29:05.282121+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
+    },
+    "CAD/JPY": {
+        "timestamp": "2025-09-28T10:29:32.584970+00:00",
+        "signal": {
+            "SYMBOL": "CAD/JPY",
+            "ACTION": "BUY",
+            "CONFIDENCE": 7,
+            "ENTRY_ZONE": "107.65000",
+            "STOP_LOSS": "107.50000",
+            "TAKE_PROFIT": "107.95000",
+            "RISK_REWARD_RATIO": "1:2",
+            "EXPIRATION_H": 6,
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": true,
+            "GEMINI_ANALYSIS": "جفت ارز CAD/JPY در تایم فریم کوتاه مدت صعودی است و الگوهای کندلی صعودی (DOJI_10_0.1 و HARAMI) این روند را تقویت می‌کنند. قیمت در حال حاضر نزدیک به مقاومت قوی 107.62300 قرار دارد. با توجه به مومنتوم RSI خنثی و تمایل به صعود (62.7)، در صورت شکست قاطع این سطح مقاومت و تثبیت قیمت در بالای آن، انتظار می‌رود روند صعودی ادامه یابد. روند بلندمدت خنثی و ضعیف است، بنابراین مدیریت ریسک در این معامله ضروری است.",
+            "CLOUDFLARE_ANALYSIS": "Short-term trend is upward, but the medium-term trend is downward. The currency pair is approaching a support level, which could be a good entry point for a buy position. However, the risk-reward ratio is not in favor of the trade, so caution is advised.",
+            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا (مقادیر میانگین‌گیری شده)"
         }
     }
 }
