@@ -20,7 +20,7 @@ jobs:
         
     - name: Install dependencies
       run: |
-        pip install -r google-generativeai pandas pandas-ta aiohttp requests TA-Lib
+        pip install google-generativeai pandas pandas-ta aiohttp requests TA-Lib
         
     - name: Run Forex Analysis
       env:
