@@ -46,7 +46,7 @@ CLOUDFLARE_AI_API_URL = "https://api.cloudflare.com/client/v4/accounts/{account_
 # راه‌اندازی سیستم لاگ‌گیری پیشرفته
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asasctime)s - %(levelname)s - %(message)s',
+    format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8'),
         logging.StreamHandler()
