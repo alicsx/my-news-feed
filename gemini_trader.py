@@ -1,4 +1,3 @@
- 
 import google.generativeai as genai
 import os
 import re
@@ -47,7 +46,7 @@ CLOUDFLARE_AI_API_URL = "https://api.cloudflare.com/client/v4/accounts/{account_
 # راه‌اندازی سیستم لاگ‌گیری پیشرفته
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
+    format='%(asasctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler(LOG_FILE, mode='a', encoding='utf-8'),
         logging.StreamHandler()
@@ -299,16 +298,16 @@ class AdvancedTechnicalAnalyzer:
 
     def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
         """تحلیل سطوح حمایت و مقاومت"""
-        # سطوح داینامیک از باندهای بولینگر - با استفاده از .get() برای جلوگیری از خطا
-        bb_upper = ltf_df.get('BBU_20_2.0', 0).iloc[-1] if 'BBU_20_2.0' in ltf_df.columns else 0
-        bb_lower = ltf_df.get('BBL_20_2.0', 0).iloc[-1] if 'BBL_20_2.0' in ltf_df.columns else 0
-        bb_middle = ltf_df.get('BBM_20_2.0', 0).iloc[-1] if 'BBM_20_2.0' in ltf_df.columns else 0
+        # سطوح داینامیک از باندهای بولینگر
+        bb_upper = ltf_df.get('BBU_20_2.0', pd.Series([0])).iloc[-1]
+        bb_lower = ltf_df.get('BBL_20_2.0', pd.Series([0])).iloc[-1]
+        bb_middle = ltf_df.get('BBM_20_2.0', pd.Series([0])).iloc[-1]
         
         # سطوح استاتیک
-        support_1 = ltf_df.get('sup_1', 0).iloc[-1] if 'sup_1' in ltf_df.columns else 0
-        resistance_1 = ltf_df.get('res_1', 0).iloc[-1] if 'res_1' in ltf_df.columns else 0
-        support_2 = ltf_df.get('sup_2', 0).iloc[-1] if 'sup_2' in ltf_df.columns else 0
-        resistance_2 = ltf_df.get('res_2', 0).iloc[-1] if 'res_2' in ltf_df.columns else 0
+        support_1 = ltf_df.get('sup_1', pd.Series([0])).iloc[-1]
+        resistance_1 = ltf_df.get('res_1', pd.Series([0])).iloc[-1]
+        support_2 = ltf_df.get('sup_2', pd.Series([0])).iloc[-1]
+        resistance_2 = ltf_df.get('res_2', pd.Series([0])).iloc[-1]
         
         return {
             'dynamic': {
@@ -327,14 +326,12 @@ class AdvancedTechnicalAnalyzer:
 
     def _get_price_position(self, price: float, support: float, resistance: float) -> str:
         """تعیین موقعیت قیمت نسبت به سطوح"""
-        if resistance == support:
+        if resistance == support or resistance <= support:
             return "در محدوده خنثی"
         
         range_size = resistance - support
-        if range_size == 0:
-            return "در محدوده خنثی"
-        
         position = (price - support) / range_size
+        
         if position < 0.3:
             return "نزدیک حمایت"
         elif position > 0.7:
@@ -345,7 +342,7 @@ class AdvancedTechnicalAnalyzer:
     def _analyze_candle_patterns(self, df: pd.DataFrame) -> Dict:
         """تحلیل الگوهای کندل استیک"""
         if len(df) < 3:
-            return {}
+            return {'patterns': [], 'current_candle': {}, 'recent_patterns': []}
             
         last_candle = df.iloc[-1]
         patterns = []
@@ -378,7 +375,7 @@ class AdvancedTechnicalAnalyzer:
         total_range = high - low
         
         if total_range == 0:
-            return {"type": "تعریف نشده"}
+            return {"type": "تعریف نشده", "direction": "خنثی", "body_ratio": 0, "strength": "ضعیف"}
             
         body_ratio = body_size / total_range
         
@@ -408,7 +405,7 @@ class HybridAIManager:
         self.cloudflare_api_key = cloudflare_api_key
         self.gemini_model = GEMINI_MODEL
         
-        # NOTE: Make sure your CLOUDFLARE_ACCOUNT_ID is set correctly as an environment variable!
+        # تنظیمات Cloudflare
         self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
         self.cloudflare_model_name = os.getenv("CLOUDFLARE_MODEL_NAME", "@cf/meta/llama-2-7b-chat-fp16")
         self.cloudflare_url = f"https://api.cloudflare.com/client/v4/accounts/{self.cloudflare_account_id}/ai/run/{self.cloudflare_model_name}"
@@ -425,6 +422,14 @@ class HybridAIManager:
         try:
             results = await asyncio.gather(*tasks, return_exceptions=True)
             gemini_result, cloudflare_result = results
+            
+            # لاگ خطاها برای دیباگ
+            if isinstance(gemini_result, Exception):
+                logging.error(f"خطا در Gemini برای {symbol}: {gemini_result}")
+                gemini_result = None
+            if isinstance(cloudflare_result, Exception):
+                logging.error(f"خطا در Cloudflare برای {symbol}: {cloudflare_result}")
+                cloudflare_result = None
             
             return self._combine_analyses(symbol, gemini_result, cloudflare_result, technical_analysis)
             
@@ -466,7 +471,10 @@ class HybridAIManager:
             
             payload = {
                 "messages": [
-                    {"role": "system", "content": "You are an expert forex trading analyst. Provide your analysis in JSON format."},
+                    {
+                        "role": "system", 
+                        "content": "You are an expert forex trading analyst. Provide concise analysis in valid JSON format only."
+                    },
                     {"role": "user", "content": prompt}
                 ],
                 "stream": False
@@ -476,8 +484,12 @@ class HybridAIManager:
                 async with session.post(self.cloudflare_url, headers=headers, json=payload, timeout=120) as response:
                     if response.status == 200:
                         data = await response.json()
+                        # بررسی ساختار پاسخ Cloudflare
                         if "result" in data and "response" in data["result"]:
                             content = data["result"]["response"]
+                            return self._parse_ai_response(content, symbol, "Cloudflare")
+                        elif "response" in data:
+                            content = data["response"]
                             return self._parse_ai_response(content, symbol, "Cloudflare")
                         else:
                             logging.warning(f"فرمت پاسخ Cloudflare نامعتبر است: {data}")
@@ -491,23 +503,13 @@ class HybridAIManager:
             logging.warning(f"خطا در تحلیل Cloudflare برای {symbol}: {e}")
             return None
 
-    # --- ALL HELPER METHODS ARE NOW CORRECTLY INDENTED INSIDE THE CLASS ---
-
     def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
-        """ایجاد پرامپت تحلیل"""
+        """ایجاد پرامپت تحلیل بهبود یافته"""
         base_currency, quote_currency = symbol.split('/')
         
-        final_instruction = """
-**دستورالعمل‌های حیاتی برای فرمت خروجی:**
-1.  پاسخ تو **باید** فقط و فقط یک آبجکت JSON معتبر باشد.
-2.  **هیچ** متن، توضیح، مقدمه، کد مارک‌داون (```json) یا کاراکتر اضافی قبل یا بعد از آبجکت JSON قرار **نگیرد**.
-3.  پاسخ باید مستقیماً با کاراکتر `{` شروع و با کاراکتر `}` تمام شود.
-
-**تحلیل خود را بر اساس این قوانین در فرمت زیر ارائه بده:**
-"""
-
+        # فرمت دقیق‌تر برای جلوگیری از خطا
         return f"""
-به عنوان یک تحلیلگر حرفه‌ای بازار فارکس، تحلیل تکنیکال زیر را برای جفت ارز {symbol} بررسی کنید:
+به عنوان یک تحلیلگر حرفه‌ای بازار فارکس، تحلیل تکنیکال زیر را برای جفت ارز {symbol} بررسی کنید و فقط و فقط یک آبجکت JSON معتبر برگردانید.
 
 📊 **وضعیت تکنیکال {symbol}:**
 - روند بلندمدت (HTF): {technical_analysis['htf_trend']['direction']} - قدرت: {technical_analysis['htf_trend']['strength']}
@@ -521,58 +523,101 @@ class HybridAIManager:
 - مقاومت ۲: {technical_analysis['key_levels']['static']['resistance_2']:.5f}
 - حمایت ۲: {technical_analysis['key_levels']['static']['support_2']:.5f}
 
-🕯️ **الگوهای کندلی:**
-{chr(10).join(technical_analysis['candle_patterns']['patterns'][-3:]) if technical_analysis['candle_patterns']['patterns'] else 'الگوی خاصی شناسایی نشد'}
+**لطفاً پاسخ را فقط در قالب JSON زیر ارائه دهید (بدون هیچ متن اضافی):**
 
-{final_instruction}
-```json
 {{
   "SYMBOL": "{symbol}",
   "ACTION": "BUY/SELL/HOLD",
   "CONFIDENCE": 1-10,
-  "ENTRY_ZONE": "محدوده ورود",
-  "STOP_LOSS": "حد ضرر",
-  "TAKE_PROFIT": "حد سود", 
-  "RISK_REWARD_RATIO": "نسبت risk/reward",
-  "ANALYSIS": "تحلیل کلی وضعیت",
-  "EXPIRATION_H": "مدت اعتبار سیگنال به ساعت (مثلا: 4)"
+  "ENTRY_ZONE": "عدد اعشاری (مثال: 1.12345)",
+  "STOP_LOSS": "عدد اعشاری (مثال: 1.12000)", 
+  "TAKE_PROFIT": "عدد اعشاری (مثال: 1.13000)",
+  "RISK_REWARD_RATIO": "نسبت عددی (مثال: 1.5)",
+  "ANALYSIS": "تحلیل مختصر فارسی",
+  "EXPIRATION_H": "عدد صحیح (مثال: 4)"
 }}
 """
 
     def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
-        """پارس کردن پاسخ AI"""
+        """پارس کردن پاسخ AI با قابلیت بهبود یافته"""
         try:
-            json_match = re.search(r'```json\s*(\{.*?\})\s*```', response, re.DOTALL)
-            if not json_match:
-                json_match = re.search(r'(\{.*?\})', response, re.DOTALL)
+            # حذف کاراکترهای اضافی و یافتن JSON
+            cleaned_response = response.strip()
+            
+            # چندین الگو برای یافتن JSON
+            json_patterns = [
+                r'```json\s*(\{.*?\})\s*```',
+                r'```\s*(\{.*?\})\s*```',
+                r'(\{.*\})'
+            ]
+            
+            json_match = None
+            for pattern in json_patterns:
+                json_match = re.search(pattern, cleaned_response, re.DOTALL)
+                if json_match:
+                    break
             
             if json_match:
                 json_str = json_match.group(1)
                 signal_data = json.loads(json_str)
+                
+                # اعتبارسنجی فیلدهای ضروری
+                if not self._validate_signal_data(signal_data, symbol):
+                    return None
+                
                 signal_data['ai_model'] = ai_name
                 signal_data['timestamp'] = datetime.now(UTC).isoformat()
                 logging.info(f"✅ {ai_name} سیگنال برای {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                 return signal_data
             else:
                 logging.warning(f"❌ پاسخ {ai_name} برای {symbol} فاقد فرمت JSON بود")
+                logging.debug(f"پاسخ کامل: {response}")
                 return None
                 
+        except json.JSONDecodeError as e:
+            logging.error(f"خطای JSON در پاسخ {ai_name} برای {symbol}: {e}")
+            logging.debug(f"پاسخ مشکل‌دار: {response}")
+            return None
         except Exception as e:
             logging.error(f"خطا در پارس کردن پاسخ {ai_name} برای {symbol}: {e}")
             return None
 
+    def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
+        """اعتبارسنجی داده‌های سیگنال"""
+        required_fields = ['SYMBOL', 'ACTION', 'CONFIDENCE']
+        
+        for field in required_fields:
+            if field not in signal_data:
+                logging.warning(f"فیلد ضروری {field} در سیگنال {symbol} وجود ندارد")
+                return False
+        
+        # اعتبارسنجی ACTION
+        action = signal_data['ACTION'].upper()
+        if action not in ['BUY', 'SELL', 'HOLD']:
+            logging.warning(f"ACTION نامعتبر برای {symbol}: {action}")
+            return False
+        
+        # اعتبارسنجی CONFIDENCE
+        try:
+            confidence = float(signal_data['CONFIDENCE'])
+            if not (1 <= confidence <= 10):
+                logging.warning(f"CONFIDENCE خارج از محدوده برای {symbol}: {confidence}")
+                return False
+        except (ValueError, TypeError):
+            logging.warning(f"CONFIDENCE نامعتبر برای {symbol}: {signal_data['CONFIDENCE']}")
+            return False
+        
+        return True
+
     def _extract_numeric_value(self, value: str) -> Optional[float]:
-        """
-        Safely extracts a floating-point number from a string.
-        Handles ranges (takes the first number) and text.
-        """
+        """استخراج ایمن مقدار عددی از رشته"""
         if isinstance(value, (int, float)):
             return float(value)
         if not isinstance(value, str):
             return None
             
-        # Find the first floating point number in the string
-        match = re.search(r'[-+]?\d*\.\d+|\d+', value)
+        # حذف کاراکترهای غیر عددی و استخراج اولین عدد
+        match = re.search(r'[-+]?\d*\.\d+|\d+', value.replace(',', ''))
         if match:
             try:
                 return float(match.group(0))
@@ -581,95 +626,117 @@ class HybridAIManager:
         return None
 
     def _combine_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
-        """
-        ترکیب نتایج دو مدل AI با قابلیت میانگین‌گیری مقادیر عددی.
-        """
-        results = []
+        """ترکیب نتایج دو مدل AI با اعتبارسنجی پیشرفته"""
+        # فیلتر کردن نتایج نامعتبر
+        valid_results = []
         
-        if gemini_result and gemini_result.get('ACTION') != 'HOLD':
-            results.append(('Gemini', gemini_result))
-        if cloudflare_result and cloudflare_result.get('ACTION') != 'HOLD':
-            results.append(('Cloudflare', cloudflare_result))
+        if gemini_result and self._validate_signal_data(gemini_result, symbol):
+            valid_results.append(('Gemini', gemini_result))
         
-        if not results:
-            logging.info(f"هر دو مدل AI برای {symbol} سیگنال HOLD دادند")
+        if cloudflare_result and self._validate_signal_data(cloudflare_result, symbol):
+            valid_results.append(('Cloudflare', cloudflare_result))
+        
+        if not valid_results:
+            logging.info(f"هیچ سیگنال معتبری از مدل‌های AI برای {symbol} دریافت نشد")
             return {
-                'SYMBOL': symbol, 'ACTION': 'HOLD', 'CONFIDENCE': 0,
-                'COMBINED_ANALYSIS': True, 'MODELS_AGREE': True,
-                'ANALYSIS': 'عدم وجود سیگنال واضح از هر دو مدل'
+                'SYMBOL': symbol, 
+                'ACTION': 'HOLD', 
+                'CONFIDENCE': 0,
+                'COMBINED_ANALYSIS': True, 
+                'MODELS_AGREE': True,
+                'ANALYSIS': 'عدم وجود سیگنال معتبر از مدل‌های AI'
             }
         
-        if len(results) == 1:
-            model_name, result = results[0]
+        if len(valid_results) == 1:
+            model_name, result = valid_results[0]
             result['COMBINED_ANALYSIS'] = True
             result['MODELS_AGREE'] = False
-            result['CONFIDENCE'] = max(1, result.get('CONFIDENCE', 5) - 2)
+            # کاهش اعتماد برای سیگنال‌های تک مدلی
+            result['CONFIDENCE'] = max(1, int(float(result.get('CONFIDENCE', 5)) - 2))
             result['ANALYSIS'] = f"سیگنال از {model_name} - نیاز به تأیید بیشتر"
             return result
         
-        gemini_action = gemini_result.get('ACTION')
-        cloudflare_action = cloudflare_result.get('ACTION')
+        # ترکیب نتایج دو مدل
+        gemini_data = valid_results[0][1] if valid_results[0][0] == 'Gemini' else valid_results[1][1]
+        cloudflare_data = valid_results[0][1] if valid_results[0][0] == 'Cloudflare' else valid_results[1][1]
+        
+        gemini_action = gemini_data.get('ACTION', 'HOLD').upper()
+        cloudflare_action = cloudflare_data.get('ACTION', 'HOLD').upper()
         
         if gemini_action == cloudflare_action:
-            averaged_values = {}
-            fields_to_average = ['STOP_LOSS', 'TAKE_PROFIT', 'ENTRY_ZONE', 'CONFIDENCE', 'EXPIRATION_H']
-
-            for field in fields_to_average:
-                gemini_val_str = gemini_result.get(field)
-                cloudflare_val_str = cloudflare_result.get(field)
-
-                gemini_num = self._extract_numeric_value(gemini_val_str)
-                cloudflare_num = self._extract_numeric_value(cloudflare_val_str)
-
-                if gemini_num is not None and cloudflare_num is not None:
-                    averaged_values[field] = (gemini_num + cloudflare_num) / 2
-                elif gemini_num is not None:
-                    averaged_values[field] = gemini_num
-                elif cloudflare_num is not None:
-                    averaged_values[field] = cloudflare_num
-                else:
-                    averaged_values[field] = None
-
-            entry_zone_avg = f"{averaged_values.get('ENTRY_ZONE'):.5f}" if averaged_values.get('ENTRY_ZONE') else "Not specified"
-            stop_loss_avg = f"{averaged_values.get('STOP_LOSS'):.5f}" if averaged_values.get('STOP_LOSS') else "Not specified"
-            take_profit_avg = f"{averaged_values.get('TAKE_PROFIT'):.5f}" if averaged_values.get('TAKE_PROFIT') else "Not specified"
-            confidence_avg = int(round(averaged_values.get('CONFIDENCE', 5))) if averaged_values.get('CONFIDENCE') else 5
-            expiration_avg = int(round(averaged_values.get('EXPIRATION_H', 4))) if averaged_values.get('EXPIRATION_H') else 4
-            
-            return {
-                'SYMBOL': symbol,
-                'ACTION': gemini_action,
-                'CONFIDENCE': confidence_avg,
-                'ENTRY_ZONE': entry_zone_avg,
-                'STOP_LOSS': stop_loss_avg,
-                'TAKE_PROFIT': take_profit_avg,
-                'RISK_REWARD_RATIO': gemini_result.get('RISK_REWARD_RATIO', 'N/A'),
-                'EXPIRATION_H': expiration_avg,
-                'COMBINED_ANALYSIS': True,
-                'MODELS_AGREE': True,
-                'GEMINI_ANALYSIS': gemini_result.get('ANALYSIS', ''),
-                'CLOUDFLARE_ANALYSIS': cloudflare_result.get('ANALYSIS', ''),
-                'FINAL_ANALYSIS': f"توافق کامل بین مدل‌ها - سیگنال {gemini_action} با اعتماد بالا (مقادیر میانگین‌گیری شده)"
-            }
+            # میانگین‌گیری مقادیر عددی
+            averaged_signal = self._average_signals(symbol, gemini_data, cloudflare_data)
+            averaged_signal['COMBINED_ANALYSIS'] = True
+            averaged_signal['MODELS_AGREE'] = True
+            averaged_signal['FINAL_ANALYSIS'] = f"توافق کامل بین مدل‌ها - سیگنال {gemini_action} با اعتماد بالا"
+            return averaged_signal
         else:
-            gemini_conf = self._extract_numeric_value(gemini_result.get('CONFIDENCE', 5))
-            cloudflare_conf = self._extract_numeric_value(cloudflare_result.get('CONFIDENCE', 5))
+            # مدیریت تضاد بین مدل‌ها
+            return self._resolve_conflict(symbol, gemini_data, cloudflare_data)
+
+    def _average_signals(self, symbol: str, gemini_data: Dict, cloudflare_data: Dict) -> Dict:
+        """میانگین‌گیری مقادیر سیگنال‌ها"""
+        averaged = {'SYMBOL': symbol}
+        
+        # ACTION
+        averaged['ACTION'] = gemini_data['ACTION']
+        
+        # CONFIDENCE
+        gemini_conf = float(gemini_data.get('CONFIDENCE', 5))
+        cloudflare_conf = float(cloudflare_data.get('CONFIDENCE', 5))
+        averaged['CONFIDENCE'] = round((gemini_conf + cloudflare_conf) / 2, 1)
+        
+        # مقادیر عددی
+        numeric_fields = ['ENTRY_ZONE', 'STOP_LOSS', 'TAKE_PROFIT', 'EXPIRATION_H']
+        
+        for field in numeric_fields:
+            gemini_val = self._extract_numeric_value(gemini_data.get(field, '0'))
+            cloudflare_val = self._extract_numeric_value(cloudflare_data.get(field, '0'))
             
-            if abs(gemini_conf - cloudflare_conf) >= 3:
-                selected_result = gemini_result if gemini_conf > cloudflare_conf else cloudflare_result
-                selected_model = 'Gemini' if gemini_conf > cloudflare_conf else 'Cloudflare'
-                
-                selected_result['COMBINED_ANALYSIS'] = True
-                selected_result['MODELS_AGREE'] = False
-                selected_result['ANALYSIS'] = f"سیگنال از {selected_model} با اعتماد بالاتر - مدل دیگر مخالف است"
-                return selected_result
+            if gemini_val is not None and cloudflare_val is not None:
+                avg_val = (gemini_val + cloudflare_val) / 2
+                if field == 'EXPIRATION_H':
+                    averaged[field] = int(round(avg_val))
+                else:
+                    averaged[field] = round(avg_val, 5)
+            elif gemini_val is not None:
+                averaged[field] = gemini_val
+            elif cloudflare_val is not None:
+                averaged[field] = cloudflare_val
             else:
-                return {
-                    'SYMBOL': symbol, 'ACTION': 'HOLD', 'CONFIDENCE': 0,
-                    'COMBINED_ANALYSIS': True, 'MODELS_AGREE': False,
-                    'ANALYSIS': 'تضاد بین مدل‌ها - نیاز به بررسی بیشتر'
-                }
-      
+                averaged[field] = 0
+        
+        # سایر فیلدها
+        averaged['RISK_REWARD_RATIO'] = gemini_data.get('RISK_REWARD_RATIO', 'N/A')
+        averaged['GEMINI_ANALYSIS'] = gemini_data.get('ANALYSIS', '')
+        averaged['CLOUDFLARE_ANALYSIS'] = cloudflare_data.get('ANALYSIS', '')
+        
+        return averaged
+
+    def _resolve_conflict(self, symbol: str, gemini_data: Dict, cloudflare_data: Dict) -> Dict:
+        """مدیریت تضاد بین سیگنال‌های مدل‌ها"""
+        gemini_conf = float(gemini_data.get('CONFIDENCE', 5))
+        cloudflare_conf = float(cloudflare_data.get('CONFIDENCE', 5))
+        
+        # انتخاب مدل با اعتماد بالاتر
+        if gemini_conf > cloudflare_conf:
+            selected = gemini_data
+            selected_model = 'Gemini'
+        else:
+            selected = cloudflare_data
+            selected_model = 'Cloudflare'
+        
+        selected['COMBINED_ANALYSIS'] = True
+        selected['MODELS_AGREE'] = False
+        selected['CONFIDENCE'] = max(1, int(float(selected.get('CONFIDENCE', 5)) - 1))
+        selected['ANALYSIS'] = f"سیگنال از {selected_model} با اعتماد بالاتر - مدل دیگر مخالف است"
+        
+        return selected
+
+# =================================================================================
+# --- کلاس اصلی تحلیلگر فارکس ---
+# =================================================================================
+
 class AdvancedForexAnalyzer:
     def __init__(self):
         self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
@@ -689,19 +756,19 @@ class AdvancedForexAnalyzer:
             htf_df = await self.get_market_data_async(pair, HIGH_TIMEFRAME)
             ltf_df = await self.get_market_data_async(pair, LOW_TIMEFRAME)
             
-            if htf_df is None or ltf_df is None:
-                logging.warning(f"داده‌های بازار برای {pair} دریافت نشد")
+            if htf_df is None or ltf_df is None or htf_df.empty or ltf_df.empty:
+                logging.warning(f"داده‌های بازار برای {pair} دریافت نشد یا خالی است")
                 return None
             
             # تحلیل تکنیکال
-            htf_df = self.technical_analyzer.calculate_advanced_indicators(htf_df)
-            ltf_df = self.technical_analyzer.calculate_advanced_indicators(ltf_df)
+            htf_df_processed = self.technical_analyzer.calculate_advanced_indicators(htf_df)
+            ltf_df_processed = self.technical_analyzer.calculate_advanced_indicators(ltf_df)
             
-            if htf_df is None or ltf_df is None:
+            if htf_df_processed is None or ltf_df_processed is None:
                 logging.warning(f"خطا در محاسبه اندیکاتورها برای {pair}")
                 return None
             
-            technical_analysis = self.technical_analyzer.generate_technical_analysis(pair, htf_df, ltf_df)
+            technical_analysis = self.technical_analyzer.generate_technical_analysis(pair, htf_df_processed, ltf_df_processed)
             
             if not technical_analysis:
                 logging.warning(f"تحلیل تکنیکال برای {pair} ناموفق بود")
@@ -712,9 +779,10 @@ class AdvancedForexAnalyzer:
             
             if ai_analysis and ai_analysis.get('ACTION') != 'HOLD':
                 self.cache_manager.update_cache(pair, ai_analysis)
+                logging.info(f"✅ سیگنال معاملاتی برای {pair}: {ai_analysis['ACTION']}")
                 return ai_analysis
             else:
-                logging.info(f"هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
+                logging.info(f"🔍 هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
                 return None
                 
         except Exception as e:
@@ -722,7 +790,7 @@ class AdvancedForexAnalyzer:
             return None
 
     async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
-        """Asynchronously gets market data."""
+        """دریافت داده‌های بازار به صورت آسنکرون"""
         for attempt in range(retries):
             try:
                 async with self.api_rate_limiter:
@@ -732,26 +800,40 @@ class AdvancedForexAnalyzer:
                         async with session.get(url, timeout=60) as response:
                             if response.status == 200:
                                 data = await response.json()
-                                if 'values' in data and len(data['values']) > 0:
+                                if 'values' in data and data['values']:
                                     df = pd.DataFrame(data['values'])
                                     df = df.iloc[::-1].reset_index(drop=True)
                                     
                                     # تبدیل انواع داده
-                                    for col in ['open', 'high', 'low', 'close']:
+                                    numeric_columns = ['open', 'high', 'low', 'close']
+                                    for col in numeric_columns:
                                         if col in df.columns:
                                             df[col] = pd.to_numeric(df[col], errors='coerce')
                                     
-                                    df['datetime'] = pd.to_datetime(df['datetime'])
-                                    df.dropna(subset=['open', 'high', 'low', 'close'], inplace=True)
+                                    if 'datetime' in df.columns:
+                                        df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
                                     
-                                    return df
+                                    # حذف ردیف‌های دارای مقادیر NaN
+                                    df = df.dropna(subset=numeric_columns)
+                                    
+                                    if len(df) > 0:
+                                        return df
+                                    else:
+                                        logging.warning(f"داده‌های {symbol} پس از پاک‌سازی خالی است")
+                                        return None
+                                else:
+                                    logging.warning(f"داده‌های {symbol} خالی است یا ساختار نامعتبر دارد")
+                                    return None
                             else:
                                 logging.warning(f"خطای HTTP {response.status} برای {symbol}")
+                                if response.status == 429:  # Rate limit
+                                    await asyncio.sleep(10)
                                 
             except Exception as e:
                 logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
                 await asyncio.sleep(2)
         
+        logging.error(f"عدم موفقیت در دریافت داده‌های {symbol} پس از {retries} تلاش")
         return None
 
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
@@ -759,13 +841,12 @@ class AdvancedForexAnalyzer:
         logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
         
         # محدود کردن concurrent tasks برای مدیریت rate limits
-        semaphore = asyncio.Semaphore(1) 
+        semaphore = asyncio.Semaphore(2)  # کاهش از 3 به 2 برای جلوگیری از overload
         
         async def bounded_analyze(pair):
             async with semaphore:
                 result = await self.analyze_pair(pair)
-                # یک ثانیه تأخیر بین تحلیل هر جفت‌ارز برای جلوگیری از رسیدن به سقف محدودیت API
-                await asyncio.sleep(1)
+                await asyncio.sleep(1)  # تأخیر بین تحلیل هر جفت‌ارز
                 return result
         
         tasks = [bounded_analyze(pair) for pair in pairs]
@@ -779,41 +860,75 @@ class AdvancedForexAnalyzer:
             elif isinstance(result, Exception):
                 logging.error(f"خطا در تحلیل: {result}")
         
+        logging.info(f"📊 تحلیل کامل شد. {len(valid_signals)} سیگنال معتبر شناسایی شد")
         return valid_signals
 
+# =================================================================================
+# --- تابع اصلی ---
+# =================================================================================
+
 async def main():
-    # This entire block is now correctly indented
+    """تابع اصلی اجرای برنامه"""
     logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Hybrid AI v2.0)")
-    analyzer = AdvancedForexAnalyzer()
-    # بررسی جفت ارزهای مشخص شده از طریق آرگومان
+    
+    # بررسی آرگومان‌های خط فرمان
     import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص")
-    parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزها")
+    parser = argparse.ArgumentParser(description='سیستم تحلیل فارکس با AI ترکیبی')
+    parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص (مثال: EUR/USD)")
+    parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزهای پیش‌فرض")
+    parser.add_argument("--pairs", type=str, help="تحلیل جفت ارزهای مشخص شده (جدا شده با کاما)")
+    
     args = parser.parse_args()
 
+    # تعیین جفت ارزها برای تحلیل
     if args.pair:
         pairs_to_analyze = [args.pair]
+    elif args.pairs:
+        pairs_to_analyze = [p.strip() for p in args.pairs.split(',')]
     elif args.all:
         pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
     else:
-        # اگر هیچ آرگومانی داده نشود، همه را تحلیل کن
-        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
+        # تحلیل 5 جفت ارز اصلی به صورت پیش‌فرض
+        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:5]
+        logging.info(f"استفاده از 5 جفت ارز اصلی به صورت پیش‌فرض")
 
-    # اجرای تحلیل
+    logging.info(f"🔍 جفت ارزهای مورد تحلیل: {', '.join(pairs_to_analyze)}")
+    
+    # ایجاد تحلیلگر و اجرای تحلیل
+    analyzer = AdvancedForexAnalyzer()
     signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
 
-    # ذخیره نتایج
+    # ذخیره و نمایش نتایج
     if signals:
-        output_file = "hybrid_ai_signals.json"
+        output_file = f"hybrid_ai_signals_{datetime.now(UTC).strftime('%Y%m%d_%H%M')}.json"
+        
+        # پاک‌سازی و فرمت‌دهی نتایج
+        cleaned_signals = []
+        for signal in signals:
+            cleaned_signal = {
+                'SYMBOL': signal.get('SYMBOL', 'Unknown'),
+                'ACTION': signal.get('ACTION', 'HOLD'),
+                'CONFIDENCE': signal.get('CONFIDENCE', 0),
+                'ENTRY_ZONE': signal.get('ENTRY_ZONE', 'N/A'),
+                'STOP_LOSS': signal.get('STOP_LOSS', 'N/A'),
+                'TAKE_PROFIT': signal.get('TAKE_PROFIT', 'N/A'),
+                'RISK_REWARD_RATIO': signal.get('RISK_REWARD_RATIO', 'N/A'),
+                'EXPIRATION_H': signal.get('EXPIRATION_H', 0),
+                'TIMESTAMP': signal.get('timestamp', datetime.now(UTC).isoformat())
+            }
+            cleaned_signals.append(cleaned_signal)
+        
         with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump(signals, f, indent=4, ensure_ascii=False)
+            json.dump(cleaned_signals, f, indent=4, ensure_ascii=False)
         
         logging.info(f"✅ تحلیل کامل شد. {len(signals)} سیگنال در {output_file} ذخیره شد")
         
         # نمایش خلاصه نتایج
-        for signal in signals:
-            logging.info(f"📈 {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal.get('CONFIDENCE', 'N/A')}/10)")
+        logging.info("📈 خلاصه سیگنال‌های معاملاتی:")
+        for signal in cleaned_signals:
+            action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
+            logging.info(f"{action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10)")
+            
     else:
         logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
 
