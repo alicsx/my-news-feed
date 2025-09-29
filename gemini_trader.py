@@ -40,7 +40,7 @@ CACHE_DURATION_HOURS = 2
 LOG_FILE = "trading_log.log"
 
 # مدل‌های AI پیشرفته
-GEMINI_MODEL = 'gemini-2.5-flash-exp'
+GEMINI_MODEL = 'gemini-2.5-flash'
 IMPROVED_CLOUDFLARE_MODELS = [
     "@cf/meta/llama-3-8b-instruct",  # مدل اصلی
     "@cf/qwen/qwen1.5-14b-chat-awq",  # مدل fallback
