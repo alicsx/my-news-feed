@@ -232,5 +232,41 @@
             "COMBINED_ANALYSIS": true,
             "MODELS_AGREE": false
         }
+    },
+    "EUR/GBP": {
+        "timestamp": "2025-09-29T13:09:17.200371+00:00",
+        "signal": {
+            "SYMBOL": "EUR/GBP",
+            "ACTION": "BUY",
+            "CONFIDENCE": 8.0,
+            "ENTRY_ZONE": 0.87358,
+            "STOP_LOSS": 0.87075,
+            "TAKE_PROFIT": 0.8758,
+            "EXPIRATION_H": 8,
+            "RISK_REWARD_RATIO": 1.4,
+            "GEMINI_ANALYSIS": "جفت ارز EUR/GBP در روند صعودی بلندمدت و کوتاه‌مدت قرار دارد و قیمت نزدیک حمایت اصلی (0.87358) است. با وجود مومنتوم خنثی RSI، با توجه به قدرت روند صعودی، فرصت خرید با هدف ادامه حرکت به سمت مقاومت‌های بالاتر وجود دارد.",
+            "CLOUDFLARE_ANALYSIS": "Bullish trend, short-term uptrend, RSI above 48.4, near support",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": true,
+            "FINAL_ANALYSIS": "توافق کامل بین مدل‌ها - سیگنال BUY با اعتماد بالا"
+        }
+    },
+    "EUR/AUD": {
+        "timestamp": "2025-09-29T13:09:26.340105+00:00",
+        "signal": {
+            "SYMBOL": "EUR/AUD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 7,
+            "ENTRY_ZONE": "1.78993",
+            "STOP_LOSS": "1.78052",
+            "TAKE_PROFIT": "1.79000",
+            "RISK_REWARD_RATIO": "1.5",
+            "ANALYSIS": "سیگنال از Cloudflare با اعتماد بالاتر - مدل دیگر مخالف است",
+            "EXPIRATION_H": "4",
+            "ai_model": "Cloudflare",
+            "timestamp": "2025-09-29T13:09:17.429858+00:00",
+            "COMBINED_ANALYSIS": true,
+            "MODELS_AGREE": false
+        }
     }
 }
