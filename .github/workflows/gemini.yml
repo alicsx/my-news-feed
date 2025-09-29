@@ -32,7 +32,7 @@ jobs:
         python enhanced_forex_analyzer.py --all
         
     - name: Upload results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: forex-analysis-results
         path: |
