@@ -1,0 +1,18 @@
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 4,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-09-30T19:57:15.379613+00:00",
+    "CONFIDENCE": 6.5,
+    "ENTRY_ZONE": "1.08400-1.08550",
+    "STOP_LOSS": "1.08300",
+    "TAKE_PROFIT": "1.08800",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "تحلیل فنی بر اساس روند صعودی ضعیف در تایم فریم بالاتر (4H) که نشان‌دهنده پتانسیل برای ادامه حرکت صعودی پس از تثبیت قیمت است. اندیکاتورهای RSI و LTF خنثی هستند، در حالی که MACD نزولی است که می‌تواند نشانه‌ای از یک پولبک یا تثبیت کوتاه مدت قبل از ازسرگیری روند اصلی باشد."
+  }
+]
