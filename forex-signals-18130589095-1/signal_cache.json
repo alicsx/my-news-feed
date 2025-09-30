@@ -1,0 +1,48 @@
+{
+    "GBP/USD": {
+        "timestamp": "2025-09-30T12:58:10.161926+00:00",
+        "signal": {
+            "SYMBOL": "GBP/USD",
+            "ACTION": "BUY",
+            "CONFIDENCE": 4,
+            "ENTRY_ZONE": 1.345,
+            "STOP_LOSS": 1.342,
+            "TAKE_PROFIT": 1.3485,
+            "RISK_REWARD_RATIO": 1.5,
+            "ANALYSIS": "قیمت در نزدیک مقاومت اول قرار دارد و شمع ماروبوزو صعودی نشان از تمایل به ادامه روند صعودی دارد. ممانعت‌های متوسط نشان از همگرایی ملایم به سمت مقاومت است.",
+            "EXPIRATION_H": 4,
+            "TRADE_RATIONALE": [
+                "شمع ماروبوزو قوی نشان از فشار خریداران است",
+                "قیمت در نزدیک مقاومت 1 (1.34497) قرار دارد",
+                "MACD صعودی و RSI خنثی نشان از پتانسیل شکست مقاومت",
+                "نسبت ریسک به بازده مناسب با توجه به فاصله سطوح حمایت و مقاومت"
+            ],
+            "ai_model": "Groq-qwen/qwen3-32b",
+            "timestamp": "2025-09-30T12:57:39.004134+00:00",
+            "AGREEMENT_LEVEL": 1,
+            "AGREEMENT_TYPE": "NO_CONSENSUS",
+            "VALID_MODELS": 2,
+            "TOTAL_MODELS": 5,
+            "CONSENSUS_ANALYSIS": "توافق ضعیف بین 1 مدل از 5 مدل - سیگنال با اعتماد پایین"
+        }
+    },
+    "USD/JPY": {
+        "timestamp": "2025-09-30T12:58:10.719884+00:00",
+        "signal": {
+            "SYMBOL": "USD/JPY",
+            "ACTION": "BUY",
+            "CONFIDENCE": 6.5,
+            "ENTRY_ZONE": 148.4835,
+            "STOP_LOSS": 148.2455,
+            "TAKE_PROFIT": 149.6415,
+            "EXPIRATION_H": 4,
+            "RISK_REWARD_RATIO": 1.5,
+            "ANALYSIS": "توافق بین 2 مدل",
+            "AGREEMENT_LEVEL": 2,
+            "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+            "VALID_MODELS": 2,
+            "TOTAL_MODELS": 5,
+            "CONSENSUS_ANALYSIS": "توافق ضعیف بین 2 مدل از 5 مدل - سیگنال با اعتماد پایین"
+        }
+    }
+}
