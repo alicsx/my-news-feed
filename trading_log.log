@@ -3340,3 +3340,31 @@
   groq: 2/10000 (9998 باقیمانده)
 
 2025-09-30 21:00:02,176 - INFO - 🏁 پایان اجرای سیستم
+2025-09-30 22:12:41,978 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-09-30 22:12:41,978 - INFO - 🎯 Currency pairs to analyze: EUR/USD
+2025-09-30 22:12:41,979 - INFO - 🚀 Starting analysis for 1 currency pairs
+2025-09-30 22:12:41,979 - INFO - 🔍 Starting analysis for EUR/USD
+2025-09-30 22:12:41,979 - INFO - 📊 API Usage Summary:
+ google_gemini: 1/1500 (1499 remaining)
+ cloudflare: 2/10000 (9998 remaining)
+ groq: 2/10000 (9998 remaining)
+
+2025-09-30 22:12:42,354 - ERROR - Error calculating indicators: 'NoneType' object has no attribute 'index'
+2025-09-30 22:12:42,370 - ERROR - Error calculating indicators: 'NoneType' object has no attribute 'index'
+2025-09-30 22:12:42,370 - WARNING - ⚠️ Technical analysis failed for EUR/USD
+2025-09-30 22:12:42,371 - INFO - 📊 Analysis complete. 0 valid signals
+2025-09-30 22:12:42,371 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-09-30 22:12:42,371 - INFO - 📝 No signals to save
+2025-09-30 22:12:42,371 - INFO - 💾 Empty file created: strong_consensus_signals.json
+2025-09-30 22:12:42,371 - INFO - 💾 Empty file created: medium_consensus_signals.json
+2025-09-30 22:12:42,371 - INFO - 💾 Empty file created: weak_consensus_signals.json
+2025-09-30 22:12:42,372 - INFO - 📈 Results Summary:
+2025-09-30 22:12:42,372 - INFO - 🎯 Strong signals: 0
+2025-09-30 22:12:42,372 - INFO - 📊 Medium signals: 0
+2025-09-30 22:12:42,372 - INFO - 📈 Weak signals: 0
+2025-09-30 22:12:42,372 - INFO - 📊 API Usage Summary:
+ google_gemini: 1/1500 (1499 remaining)
+ cloudflare: 2/10000 (9998 remaining)
+ groq: 2/10000 (9998 remaining)
+
+2025-09-30 22:12:42,372 - INFO - 🏁 System execution completed
