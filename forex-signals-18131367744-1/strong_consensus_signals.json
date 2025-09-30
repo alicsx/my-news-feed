@@ -1,0 +1,11 @@
+[
+    {
+        "SYMBOL": "EUR/USD",
+        "ACTION": "SELL",
+        "CONFIDENCE": 6.7,
+        "AGREEMENT_LEVEL": 3,
+        "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+        "VALID_MODELS": 3,
+        "TOTAL_MODELS": 5
+    }
+]
