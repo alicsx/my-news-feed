@@ -21,6 +21,7 @@ import concurrent.futures
 google_api_key = os.getenv("GOOGLE_API_KEY")
 TWELVEDATA_API_KEY = os.getenv("TWELVEDATA_API_KEY")
 CLOUDFLARE_AI_API_KEY = os.getenv("CLOUDFLARE_AI_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 if not all([google_api_key, TWELVEDATA_API_KEY]):
     raise ValueError("لطفاً کلیدهای API را تنظیم کنید: GOOGLE_API_KEY, TWELVEDATA_API_KEY")
@@ -31,7 +32,8 @@ LOW_TIMEFRAME = "1h"
 CANDLES_TO_FETCH = 300
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD",
-    "GBP/JPY", "EUR/JPY", "AUD/JPY", "NZD/USD", "USD/CAD", "EUR/AUD", "CAD/JPY"
+    "GBP/JPY", "EUR/JPY", "AUD/JPY", "NZD/USD", "USD/CAD",
+    "EUR/GBP", "AUD/NZD", "EUR/AUD", "GBP/CHF", "CAD/JPY"
 ]
 
 CACHE_FILE = "signal_cache.json"
@@ -41,9 +43,18 @@ LOG_FILE = "trading_log.log"
 # مدل‌های AI
 GEMINI_MODEL = 'gemini-2.5-flash'
 CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-4-scout-17b-16e-instruct",
-    "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"  # مدل DeepSeek
+    "@cf/meta/llama-2-7b-chat-fp16",
+    "@cf/deepseek-ai/deepseek-math-7b-instruct"
 ]
+GROQ_MODEL = "mixtral-8x7b-32768"  # مدل سریع و قوی Groq
+
+# محدودیت‌های API برای مدیریت مصرف
+API_RATE_LIMITS = {
+    'google': {'daily_limit': 1500, 'requests_per_minute': 60},
+    'cloudflare': {'daily_limit': 1000, 'requests_per_minute': 10},
+    'groq': {'daily_limit': 10000, 'requests_per_minute': 30},
+    'twelvedata': {'daily_limit': 800, 'requests_per_minute': 8}
+}
 
 # راه‌اندازی سیستم لاگ‌گیری پیشرفته
 logging.basicConfig(
@@ -54,6 +65,57 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+class APIRateManager:
+    """مدیریت هوشمند محدودیت‌های API"""
+    def __init__(self):
+        self.usage = {
+            'google': {'daily': 0, 'minute': 0, 'last_reset_minute': time.time()},
+            'cloudflare': {'daily': 0, 'minute': 0, 'last_reset_minute': time.time()},
+            'groq': {'daily': 0, 'minute': 0, 'last_reset_minute': time.time()},
+            'twelvedata': {'daily': 0, 'minute': 0, 'last_reset_minute': time.time()}
+        }
+        self.last_daily_reset = datetime.now(UTC).date()
+    
+    def can_make_request(self, api_name: str) -> bool:
+        """بررسی امکان درخواست جدید"""
+        self._reset_counters_if_needed()
+        
+        limits = API_RATE_LIMITS[api_name]
+        usage = self.usage[api_name]
+        
+        if usage['daily'] >= limits['daily_limit']:
+            logging.warning(f"محدودیت روزانه {api_name} رسیده است: {usage['daily']}/{limits['daily_limit']}")
+            return False
+        
+        if usage['minute'] >= limits['requests_per_minute']:
+            logging.warning(f"محدودیت دقیقه‌ای {api_name} رسیده است: {usage['minute']}/{limits['requests_per_minute']}")
+            return False
+        
+        return True
+    
+    def record_request(self, api_name: str):
+        """ثبت درخواست جدید"""
+        self.usage[api_name]['daily'] += 1
+        self.usage[api_name]['minute'] += 1
+    
+    def _reset_counters_if_needed(self):
+        """بازنشانی شمارنده‌ها در صورت نیاز"""
+        current_date = datetime.now(UTC).date()
+        current_time = time.time()
+        
+        # بازنشانی روزانه
+        if current_date != self.last_daily_reset:
+            for api in self.usage:
+                self.usage[api]['daily'] = 0
+            self.last_daily_reset = current_date
+            logging.info("📊 شمارنده‌های روزانه API بازنشانی شدند")
+        
+        # بازنشانی دقیقه‌ای
+        for api in self.usage:
+            if current_time - self.usage[api]['last_reset_minute'] > 60:
+                self.usage[api]['minute'] = 0
+                self.usage[api]['last_reset_minute'] = current_time
 
 class AsyncRateLimiter:
     def __init__(self, rate_limit: int, period: int):
@@ -155,12 +217,13 @@ class AdvancedTechnicalAnalyzer:
     def __init__(self):
         self.indicators_config = {
             'trend': ['ema_21', 'ema_50', 'ema_200', 'adx_14'],
-            'momentum': ['rsi_14', 'stoch_14_3_3', 'macd'],
-            'volatility': ['bb_20_2', 'atr_14'],
-            'volume': ['obv', 'volume_sma_20'],
+            'momentum': ['rsi_14', 'stoch_14_3_3', 'macd', 'williams_r'],
+            'volatility': ['bb_20_2', 'atr_14', 'kc_20'],
+            'volume': ['obv', 'volume_sma_20', 'mfi'],
             'ichimoku': True,
             'support_resistance': True,
-            'candle_patterns': True
+            'candle_patterns': True,
+            'pivot_points': True
         }
 
     def calculate_advanced_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -173,23 +236,28 @@ class AdvancedTechnicalAnalyzer:
             df.ta.ema(length=50, append=True)
             df.ta.ema(length=200, append=True)
             df.ta.adx(length=14, append=True)
+            df.ta.psar(append=True)  # Parabolic SAR
             
             # اندیکاتورهای مومنتوم
             df.ta.rsi(length=14, append=True)
             df.ta.stoch(append=True)
             df.ta.macd(append=True)
+            df.ta.willr(length=14, append=True)  # Williams %R
+            df.ta.cci(length=20, append=True)   # Commodity Channel Index
             
             # اندیکاتورهای نوسان
             df.ta.bbands(length=20, std=2, append=True)
             df.ta.atr(length=14, append=True)
+            df.ta.kc(length=20, append=True)    # Keltner Channel
             
             # حجم
             if 'volume' in df.columns and not df['volume'].isnull().all():
                 logging.info(f"ستون 'volume' شناسایی شد. محاسبه اندیکاتورهای حجم...")
                 df.ta.obv(append=True)
                 df['volume_sma_20'] = df['volume'].rolling(20).mean()
+                df.ta.mfi(length=14, append=True)  # Money Flow Index
             else:
-                logging.warning("ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای OBV و Volume SMA نادیده گرفته شدند.")
+                logging.warning("ستون 'volume' در داده‌ها یافت نشد. اندیکاتورهای حجم نادیده گرفته شدند.")
             
             # ایچیموکو
             df.ta.ichimoku(append=True)
@@ -200,9 +268,17 @@ class AdvancedTechnicalAnalyzer:
             df['sup_2'] = df['low'].rolling(50).min().shift(1)
             df['res_2'] = df['high'].rolling(50).max().shift(1)
             
+            # پیوت پوینت‌ها
+            df['pivot'] = (df['high'] + df['low'] + df['close']) / 3
+            df['r1'] = 2 * df['pivot'] - df['low']
+            df['s1'] = 2 * df['pivot'] - df['high']
+            df['r2'] = df['pivot'] + (df['high'] - df['low'])
+            df['s2'] = df['pivot'] - (df['high'] - df['low'])
+            
             # الگوهای کندل استیک
             if self.indicators_config['candle_patterns']:
-                popular_patterns = ['doji', 'hammer', 'engulfing', 'harami', 'morningstar', 'eveningstar']
+                popular_patterns = ['doji', 'hammer', 'engulfing', 'harami', 'morningstar', 
+                                  'eveningstar', 'piercing', 'darkcloud', 'hikkake']
                 for pattern in popular_patterns:
                     try:
                         df.ta.cdl_pattern(name=pattern, append=True)
@@ -238,6 +314,12 @@ class AdvancedTechnicalAnalyzer:
         # تحلیل الگوهای کندل استیک
         candle_analysis = self._analyze_candle_patterns(ltf_df)
         
+        # تحلیل قدرت روند
+        trend_strength = self._analyze_trend_strength(ltf_df)
+        
+        # سیگنال‌های ترکیبی
+        composite_signals = self._generate_composite_signals(last_ltf, htf_trend, ltf_trend, momentum)
+        
         return {
             'symbol': symbol,
             'htf_trend': htf_trend,
@@ -245,6 +327,8 @@ class AdvancedTechnicalAnalyzer:
             'momentum': momentum,
             'key_levels': key_levels,
             'candle_patterns': candle_analysis,
+            'trend_strength': trend_strength,
+            'composite_signals': composite_signals,
             'volatility': last_ltf.get('ATRr_14', 0),
             'timestamp': datetime.now(UTC).isoformat()
         }
@@ -254,14 +338,27 @@ class AdvancedTechnicalAnalyzer:
         ema_50 = data.get('EMA_50', 0)
         ema_200 = data.get('EMA_200', 0)
         adx = data.get('ADX_14', 0)
+        psar = data.get('PSARl_0.02_0.2', 0)
         
-        trend_direction = "صعودی" if ema_21 > ema_50 > ema_200 else "نزولی" if ema_21 < ema_50 < ema_200 else "خنثی"
-        trend_strength = "قوی" if adx > 25 else "ضعیف" if adx < 20 else "متوسط"
+        # تحلیل پیشرفته روند
+        ema_alignment = "صعودی" if ema_21 > ema_50 > ema_200 else "نزولی" if ema_21 < ema_50 < ema_200 else "خنثی"
+        psar_signal = "صعودی" if data['close'] > psar else "نزولی"
+        
+        # قدرت روند بر اساس ADX
+        if adx > 40:
+            trend_strength = "بسیار قوی"
+        elif adx > 25:
+            trend_strength = "قوی"
+        elif adx > 20:
+            trend_strength = "متوسط"
+        else:
+            trend_strength = "ضعیف"
         
         return {
-            'direction': trend_direction,
+            'direction': ema_alignment,
             'strength': trend_strength,
             'adx': adx,
+            'psar_signal': psar_signal,
             'ema_alignment': f"EMA21: {ema_21:.5f}, EMA50: {ema_50:.5f}, EMA200: {ema_200:.5f}"
         }
 
@@ -269,15 +366,144 @@ class AdvancedTechnicalAnalyzer:
         rsi = data.get('RSI_14', 50)
         macd_hist = data.get('MACDh_12_26_9', 0)
         stoch_k = data.get('STOCHk_14_3_3', 50)
+        williams_r = data.get('WILLR_14', -50)
+        cci = data.get('CCI_20_0.015', 0)
+        mfi = data.get('MFI_14', 50)
         
         rsi_signal = "اشباع خرید" if rsi > 70 else "اشباع فروش" if rsi < 30 else "خنثی"
         macd_signal = "صعودی" if macd_hist > 0 else "نزولی"
         stoch_signal = "اشباع خرید" if stoch_k > 80 else "اشباع فروش" if stoch_k < 20 else "خنثی"
+        williams_signal = "اشباع خرید" if williams_r > -20 else "اشباع فروش" if williams_r < -80 else "خنثی"
+        cci_signal = "اشباع خرید" if cci > 100 else "اشباع فروش" if cci < -100 else "خنثی"
+        mfi_signal = "اشباع خرید" if mfi > 80 else "اشباع فروش" if mfi < 20 else "خنثی"
+        
+        # سیگنال ترکیبی مومنتوم
+        bullish_signals = sum([
+            macd_signal == "صعودی",
+            rsi_signal == "اشباع فروش",
+            stoch_signal == "اشباع فروش",
+            williams_signal == "اشباع فروش"
+        ])
+        
+        bearish_signals = sum([
+            macd_signal == "نزولی",
+            rsi_signal == "اشباع خرید",
+            stoch_signal == "اشباع خرید",
+            williams_signal == "اشباع خرید"
+        ])
+        
+        momentum_bias = "صعودی" if bullish_signals > bearish_signals else "نزولی" if bearish_signals > bullish_signals else "خنثی"
         
         return {
             'rsi': {'value': rsi, 'signal': rsi_signal},
             'macd': {'signal': macd_signal, 'histogram': macd_hist},
-            'stochastic': {'value': stoch_k, 'signal': stoch_signal}
+            'stochastic': {'value': stoch_k, 'signal': stoch_signal},
+            'williams_r': {'value': williams_r, 'signal': williams_signal},
+            'cci': {'value': cci, 'signal': cci_signal},
+            'mfi': {'value': mfi, 'signal': mfi_signal},
+            'momentum_bias': momentum_bias,
+            'bullish_signals': bullish_signals,
+            'bearish_signals': bearish_signals
+        }
+
+    def _analyze_trend_strength(self, df: pd.DataFrame) -> Dict:
+        """تحلیل قدرت روند با استفاده از چندین اندیکاتور"""
+        if len(df) < 2:
+            return {'strength': 'ضعیف', 'score': 0}
+        
+        last = df.iloc[-1]
+        
+        # محاسبه امتیاز قدرت روند (0-100)
+        strength_score = 0
+        
+        # ADX (0-25)
+        adx = last.get('ADX_14', 0)
+        strength_score += min(adx, 25)
+        
+        # EMA Alignment (0-25)
+        ema_21 = last.get('EMA_21', 0)
+        ema_50 = last.get('EMA_50', 0)
+        ema_200 = last.get('EMA_200', 0)
+        if (ema_21 > ema_50 > ema_200) or (ema_21 < ema_50 < ema_200):
+            strength_score += 25
+        
+        # قیمت نسبت به باندهای بولینگر (0-25)
+        bb_upper = last.get('BBU_20_2.0', 0)
+        bb_lower = last.get('BBL_20_2.0', 0)
+        close = last['close']
+        bb_position = (close - bb_lower) / (bb_upper - bb_lower) if bb_upper != bb_lower else 0.5
+        if bb_position > 0.8 or bb_position < 0.2:
+            strength_score += 25
+        
+        # حجم (0-25) - اگر موجود باشد
+        if 'volume_sma_20' in last and last['volume_sma_20'] > 0:
+            volume_ratio = last.get('volume', 0) / last['volume_sma_20']
+            if volume_ratio > 1.2:
+                strength_score += 25
+        
+        strength_level = "بسیار قوی" if strength_score > 75 else "قوی" if strength_score > 50 else "متوسط" if strength_score > 25 else "ضعیف"
+        
+        return {
+            'strength': strength_level,
+            'score': strength_score,
+            'adx_contribution': min(adx, 25)
+        }
+
+    def _generate_composite_signals(self, data: pd.Series, htf_trend: Dict, ltf_trend: Dict, momentum: Dict) -> Dict:
+        """تولید سیگنال‌های ترکیبی"""
+        signals = []
+        confidence = 0
+        
+        # سیگنال هماهنگی روندها
+        if htf_trend['direction'] == ltf_trend['direction']:
+            signals.append("هماهنگی روند بلندمدت و کوتاه‌مدت")
+            confidence += 25
+        
+        # سیگنال قدرت روند
+        if htf_trend['strength'] in ["قوی", "بسیار قوی"]:
+            signals.append("روند بلندمدت قوی")
+            confidence += 20
+        
+        # سیگنال مومنتوم
+        if momentum['momentum_bias'] == htf_trend['direction']:
+            signals.append("هماهنگی مومنتوم با روند")
+            confidence += 20
+        
+        # سیگنال اشباع خرید/فروش
+        oversold_conditions = sum([
+            momentum['rsi']['signal'] == "اشباع فروش",
+            momentum['stochastic']['signal'] == "اشباع فروش",
+            momentum['williams_r']['signal'] == "اشباع فروش"
+        ])
+        
+        overbought_conditions = sum([
+            momentum['rsi']['signal'] == "اشباع خرید",
+            momentum['stochastic']['signal'] == "اشباع خرید",
+            momentum['williams_r']['signal'] == "اشباع خرید"
+        ])
+        
+        if oversold_conditions >= 2 and htf_trend['direction'] == "صعودی":
+            signals.append("اشباع فروش در روند صعودی")
+            confidence += 15
+        
+        if overbought_conditions >= 2 and htf_trend['direction'] == "نزولی":
+            signals.append("اشباع خرید در روند نزولی")
+            confidence += 15
+        
+        # سیگنال شکست سطوح
+        bb_upper = data.get('BBU_20_2.0', 0)
+        bb_lower = data.get('BBL_20_2.0', 0)
+        close = data['close']
+        
+        if close > bb_upper:
+            signals.append("شکست مقاومت بولینگر")
+        elif close < bb_lower:
+            signals.append("شکست حمایت بولینگر")
+        
+        return {
+            'signals': signals,
+            'confidence_score': min(confidence, 100),
+            'signal_strength': "قوی" if confidence >= 60 else "متوسط" if confidence >= 40 else "ضعیف"
         }
 
     def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
@@ -285,22 +511,41 @@ class AdvancedTechnicalAnalyzer:
         bb_lower = ltf_df.get('BBL_20_2.0', pd.Series([0])).iloc[-1]
         bb_middle = ltf_df.get('BBM_20_2.0', pd.Series([0])).iloc[-1]
         
+        kc_upper = ltf_df.get('KCUe_20_2', pd.Series([0])).iloc[-1]
+        kc_lower = ltf_df.get('KCLe_20_2', pd.Series([0])).iloc[-1]
+        
         support_1 = ltf_df.get('sup_1', pd.Series([0])).iloc[-1]
         resistance_1 = ltf_df.get('res_1', pd.Series([0])).iloc[-1]
         support_2 = ltf_df.get('sup_2', pd.Series([0])).iloc[-1]
         resistance_2 = ltf_df.get('res_2', pd.Series([0])).iloc[-1]
         
+        # پیوت پوینت‌ها
+        pivot = ltf_df.get('pivot', pd.Series([0])).iloc[-1]
+        r1 = ltf_df.get('r1', pd.Series([0])).iloc[-1]
+        s1 = ltf_df.get('s1', pd.Series([0])).iloc[-1]
+        r2 = ltf_df.get('r2', pd.Series([0])).iloc[-1]
+        s2 = ltf_df.get('s2', pd.Series([0])).iloc[-1]
+        
         return {
             'dynamic': {
                 'bb_upper': bb_upper,
                 'bb_lower': bb_lower,
-                'bb_middle': bb_middle
+                'bb_middle': bb_middle,
+                'kc_upper': kc_upper,
+                'kc_lower': kc_lower
             },
             'static': {
                 'support_1': support_1,
                 'resistance_1': resistance_1,
                 'support_2': support_2,
                 'resistance_2': resistance_2
+            },
+            'pivot_points': {
+                'pivot': pivot,
+                'resistance_1': r1,
+                'support_1': s1,
+                'resistance_2': r2,
+                'support_2': s2
             },
             'current_price_position': self._get_price_position(current_price, support_1, resistance_1)
         }
@@ -312,9 +557,13 @@ class AdvancedTechnicalAnalyzer:
         range_size = resistance - support
         position = (price - support) / range_size
         
-        if position < 0.3:
+        if position < 0.2:
+            return "نزدیک حمایت قوی"
+        elif position < 0.4:
             return "نزدیک حمایت"
-        elif position > 0.7:
+        elif position > 0.8:
+            return "نزدیک مقاومت قوی"
+        elif position > 0.6:
             return "نزدیک مقاومت"
         else:
             return "در میانه رنج"
@@ -364,57 +613,82 @@ class AdvancedTechnicalAnalyzer:
             
         direction = "صعودی" if close > open_price else "نزولی"
         
+        # تحلیل سایه‌ها
+        upper_shadow = high - max(open_price, close)
+        lower_shadow = min(open_price, close) - low
+        total_shadow = upper_shadow + lower_shadow
+        
+        shadow_analysis = ""
+        if upper_shadow > body_size * 2 and lower_shadow < body_size * 0.5:
+            shadow_analysis = "سایه بالایی بلند - فشار فروش"
+        elif lower_shadow > body_size * 2 and upper_shadow < body_size * 0.5:
+            shadow_analysis = "سایه پایینی بلند - فشار خرید"
+        
         return {
             'type': candle_type,
             'direction': direction,
             'body_ratio': body_ratio,
-            'strength': "قوی" if body_ratio > 0.6 else "متوسط" if body_ratio > 0.3 else "ضعیف"
+            'strength': "قوی" if body_ratio > 0.6 else "متوسط" if body_ratio > 0.3 else "ضعیف",
+            'shadow_analysis': shadow_analysis,
+            'upper_shadow_ratio': upper_shadow / total_range if total_range > 0 else 0,
+            'lower_shadow_ratio': lower_shadow / total_range if total_range > 0 else 0
         }
 
 # =================================================================================
-# --- کلاس مدیریت AI سه‌گانه (Gemini + 2 مدل Cloudflare) ---
+# --- کلاس مدیریت AI چهارگانه (Gemini + 2 مدل Cloudflare + Groq) ---
 # =================================================================================
 
-class TripleAIManager:
-    def __init__(self, gemini_api_key: str, cloudflare_api_key: str):
+class QuadAIManager:
+    def __init__(self, gemini_api_key: str, cloudflare_api_key: str, groq_api_key: str):
         self.gemini_api_key = gemini_api_key
         self.cloudflare_api_key = cloudflare_api_key
+        self.groq_api_key = groq_api_key
         self.gemini_model = GEMINI_MODEL
         
         # تنظیمات Cloudflare
         self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
         self.cloudflare_models = CLOUDFLARE_MODELS
         
+        # تنظیمات Groq
+        self.groq_url = "https://api.groq.com/openai/v1/chat/completions"
+        
         genai.configure(api_key=gemini_api_key)
+        self.rate_manager = APIRateManager()
     
-    async def get_triple_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """دریافت تحلیل از سه مدل AI و بررسی توافق"""
+    async def get_quad_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """دریافت تحلیل از چهار مدل AI و بررسی توافق"""
         tasks = [
             self._get_gemini_analysis(symbol, technical_analysis),
             self._get_cloudflare_analysis(symbol, technical_analysis, self.cloudflare_models[0], "Llama"),
-            self._get_cloudflare_analysis(symbol, technical_analysis, self.cloudflare_models[1], "DeepSeek")
+            self._get_cloudflare_analysis(symbol, technical_analysis, self.cloudflare_models[1], "DeepSeek"),
+            self._get_groq_analysis(symbol, technical_analysis)
         ]
         
         try:
             results = await asyncio.gather(*tasks, return_exceptions=True)
-            gemini_result, llama_result, deepseek_result = results
+            gemini_result, llama_result, deepseek_result, groq_result = results
             
             # لاگ خطاها
-            for i, (name, result) in enumerate(zip(["Gemini", "Llama", "DeepSeek"], results)):
+            model_names = ["Gemini", "Llama", "DeepSeek", "Groq"]
+            for i, (name, result) in enumerate(zip(model_names, results)):
                 if isinstance(result, Exception):
                     logging.error(f"خطا در {name} برای {symbol}: {result}")
                     results[i] = None
             
-            return self._combine_and_classify_signals(symbol, gemini_result, llama_result, deepseek_result, technical_analysis)
+            return self._combine_and_classify_signals(symbol, gemini_result, llama_result, deepseek_result, groq_result, technical_analysis)
             
         except Exception as e:
-            logging.error(f"خطا در تحلیل سه‌گانه برای {symbol}: {e}")
+            logging.error(f"خطا در تحلیل چهارگانه برای {symbol}: {e}")
             return None
     
     async def _get_gemini_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """تحلیل با Gemini"""
+        if not self.rate_manager.can_make_request('google'):
+            logging.warning("محدودیت Gemini API رسیده است")
+            return None
+            
         try:
-            prompt = self._create_analysis_prompt(symbol, technical_analysis)
+            prompt = self._create_enhanced_analysis_prompt(symbol, technical_analysis)
             model = genai.GenerativeModel(self.gemini_model)
             
             response = await asyncio.to_thread(
@@ -423,6 +697,7 @@ class TripleAIManager:
                 request_options={'timeout': 120}
             )
             
+            self.rate_manager.record_request('google')
             return self._parse_ai_response(response.text, symbol, "Gemini")
             
         except Exception as e:
@@ -431,12 +706,16 @@ class TripleAIManager:
     
     async def _get_cloudflare_analysis(self, symbol: str, technical_analysis: Dict, model_name: str, model_display_name: str) -> Optional[Dict]:
         """تحلیل با Cloudflare AI"""
+        if not self.rate_manager.can_make_request('cloudflare'):
+            logging.warning("محدودیت Cloudflare API رسیده است")
+            return None
+            
         if not self.cloudflare_api_key or self.cloudflare_account_id == "your_account_id":
             logging.warning("کلید یا شناسه حساب Cloudflare API تنظیم نشده است")
             return None
             
         try:
-            prompt = self._create_analysis_prompt(symbol, technical_analysis)
+            prompt = self._create_enhanced_analysis_prompt(symbol, technical_analysis)
             
             headers = {
                 "Authorization": f"Bearer {self.cloudflare_api_key}",
@@ -447,7 +726,7 @@ class TripleAIManager:
                 "messages": [
                     {
                         "role": "system", 
-                        "content": "You are an expert forex trading analyst. Provide concise analysis in valid JSON format only."
+                        "content": "You are an expert forex trading analyst with 20 years experience. Provide concise analysis in valid JSON format only."
                     },
                     {"role": "user", "content": prompt}
                 ],
@@ -460,6 +739,8 @@ class TripleAIManager:
                 async with session.post(url, headers=headers, json=payload, timeout=120) as response:
                     if response.status == 200:
                         data = await response.json()
+                        self.rate_manager.record_request('cloudflare')
+                        
                         if "result" in data and "response" in data["result"]:
                             content = data["result"]["response"]
                             return self._parse_ai_response(content, symbol, model_display_name)
@@ -478,22 +759,101 @@ class TripleAIManager:
             logging.warning(f"خطا در تحلیل {model_display_name} برای {symbol}: {e}")
             return None
 
-    def _create_analysis_prompt(self, symbol: str, technical_analysis: Dict) -> str:
-        """ایجاد پرامپت تحلیل"""
+    async def _get_groq_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """تحلیل با Groq API"""
+        if not self.rate_manager.can_make_request('groq'):
+            logging.warning("محدودیت Groq API رسیده است")
+            return None
+            
+        if not self.groq_api_key:
+            logging.warning("کلید Groq API تنظیم نشده است")
+            return None
+            
+        try:
+            prompt = self._create_enhanced_analysis_prompt(symbol, technical_analysis)
+            
+            headers = {
+                "Authorization": f"Bearer {self.groq_api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are a professional forex trading analyst. Always respond with valid JSON format only, no additional text."
+                    },
+                    {
+                        "role": "user", 
+                        "content": prompt
+                    }
+                ],
+                "model": GROQ_MODEL,
+                "temperature": 0.1,
+                "max_tokens": 1024,
+                "stream": False
+            }
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.post(self.groq_url, headers=headers, json=payload, timeout=120) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        self.rate_manager.record_request('groq')
+                        
+                        if "choices" in data and len(data["choices"]) > 0:
+                            content = data["choices"][0]["message"]["content"]
+                            return self._parse_ai_response(content, symbol, "Groq")
+                        else:
+                            logging.warning(f"فرمت پاسخ Groq نامعتبر است: {data}")
+                            return None
+                    else:
+                        error_text = await response.text()
+                        logging.warning(f"خطا در پاسخ Groq: {response.status} - {error_text}")
+                        return None
+                        
+        except Exception as e:
+            logging.warning(f"خطا در تحلیل Groq برای {symbol}: {e}")
+            return None
+
+    def _create_enhanced_analysis_prompt(self, symbol: str, technical_analysis: Dict) -> str:
+        """ایجاد پرامپت تحلیل پیشرفته"""
+        composite = technical_analysis.get('composite_signals', {})
+        trend_strength = technical_analysis.get('trend_strength', {})
+        
         return f"""
-به عنوان یک تحلیلگر حرفه‌ای بازار فارکس، تحلیل تکنیکال زیر را برای جفت ارز {symbol} بررسی کنید و فقط و فقط یک آبجکت JSON معتبر برگردانید.
+به عنوان یک تحلیلگر حرفه‌ای بازار فارکس با ۲۰ سال تجربه، تحلیل تکنیکال زیر را برای جفت ارز {symbol} بررسی کنید و فقط و فقط یک آبجکت JSON معتبر برگردانید.
 
-📊 **وضعیت تکنیکال {symbol}:**
-- روند بلندمدت (HTF): {technical_analysis['htf_trend']['direction']} - قدرت: {technical_analysis['htf_trend']['strength']}
+📊 **وضعیت تکنیکال پیشرفته {symbol}:**
+
+🎯 **تحلیل روند:**
+- روند بلندمدت (HTF): {technical_analysis['htf_trend']['direction']} - قدرت: {technical_analysis['htf_trend']['strength']} (ADX: {technical_analysis['htf_trend']['adx']:.1f})
 - روند کوتاه‌مدت (LTF): {technical_analysis['ltf_trend']['direction']}
-- مومنتوم: RSI {technical_analysis['momentum']['rsi']['value']:.1f} ({technical_analysis['momentum']['rsi']['signal']})
-- موقعیت قیمت: {technical_analysis['key_levels']['current_price_position']}
+- قدرت کلی روند: {trend_strength.get('strength', 'نامشخص')} (امتیاز: {trend_strength.get('score', 0)}/100)
 
-🎯 **سطوح کلیدی:**
-- مقاومت ۱: {technical_analysis['key_levels']['static']['resistance_1']:.5f}
-- حمایت ۱: {technical_analysis['key_levels']['static']['support_1']:.5f}
-- مقاومت ۲: {technical_analysis['key_levels']['static']['resistance_2']:.5f}
-- حمایت ۲: {technical_analysis['key_levels']['static']['support_2']:.5f}
+📈 **تحلیل مومنتوم:**
+- RSI: {technical_analysis['momentum']['rsi']['value']:.1f} ({technical_analysis['momentum']['rsi']['signal']})
+- MACD: {technical_analysis['momentum']['macd']['signal']}
+- Stochastic: {technical_analysis['momentum']['stochastic']['signal']}
+- تمایل مومنتوم: {technical_analysis['momentum']['momentum_bias']}
+- سیگنال‌های صعودی: {technical_analysis['momentum']['bullish_signals']} | سیگنال‌های نزولی: {technical_analysis['momentum']['bearish_signals']}
+
+🛡️ **سطوح کلیدی:**
+- موقعیت قیمت: {technical_analysis['key_levels']['current_price_position']}
+- مقاومت فوری: {technical_analysis['key_levels']['static']['resistance_1']:.5f}
+- حمایت فوری: {technical_analysis['key_levels']['static']['support_1']:.5f}
+- مقاومت اصلی: {technical_analysis['key_levels']['static']['resistance_2']:.5f}
+- حمایت اصلی: {technical_analysis['key_levels']['static']['support_2']:.5f}
+- باند بالایی: {technical_analysis['key_levels']['dynamic']['bb_upper']:.5f}
+- باند پایینی: {technical_analysis['key_levels']['dynamic']['bb_lower']:.5f}
+
+⚡ **سیگنال‌های ترکیبی:**
+- قدرت سیگنال: {composite.get('signal_strength', 'نامشخص')}
+- امتیاز اطمینان: {composite.get('confidence_score', 0)}/100
+- سیگنال‌های شناسایی شده: {', '.join(composite.get('signals', []))}
+
+💎 **الگوهای کندل استیک:**
+- کندل فعلی: {technical_analysis['candle_patterns']['current_candle']['type']} - جهت: {technical_analysis['candle_patterns']['current_candle']['direction']}
+- الگوهای اخیر: {', '.join(technical_analysis['candle_patterns']['recent_patterns'])}
 
 **لطفاً پاسخ را فقط در قالب JSON زیر ارائه دهید (بدون هیچ متن اضافی):**
 
@@ -501,12 +861,14 @@ class TripleAIManager:
   "SYMBOL": "{symbol}",
   "ACTION": "BUY/SELL/HOLD",
   "CONFIDENCE": 1-10,
-  "ENTRY_ZONE": "عدد اعشاری (مثال: 1.12345)",
+  "ENTRY_ZONE": "عدد اعشاری (مثال: 1.12340-1.12400)",
   "STOP_LOSS": "عدد اعشاری (مثال: 1.12000)", 
-  "TAKE_PROFIT": "عدد اعشاری (مثال: 1.13000)",
-  "RISK_REWARD_RATIO": "نسبت عددی (مثال: 1.5)",
-  "ANALYSIS": "تحلیل مختصر فارسی",
-  "EXPIRATION_H": "عدد صحیح (مثال: 4)"
+  "TAKE_PROFIT_1": "عدد اعشاری (مثال: 1.12800)",
+  "TAKE_PROFIT_2": "عدد اعشاری (مثال: 1.13000)",
+  "RISK_REWARD_RATIO": "نسبت عددی (مثال: 1.8)",
+  "ANALYSIS": "تحلیل مختصر فارسی با دلایل فنی",
+  "EXPIRATION_H": "عدد صحیح (مثال: 6)",
+  "TRADE_TYPE": "TREND_FOLLOWING/REVERSAL/BREAKOUT"
 }}
 """
 
@@ -536,7 +898,7 @@ class TripleAIManager:
                 
                 signal_data['ai_model'] = ai_name
                 signal_data['timestamp'] = datetime.now(UTC).isoformat()
-                logging.info(f"✅ {ai_name} سیگنال برای {symbol}: {signal_data.get('ACTION', 'HOLD')}")
+                logging.info(f"✅ {ai_name} سیگنال برای {symbol}: {signal_data.get('ACTION', 'HOLD')} (اعتماد: {signal_data.get('CONFIDENCE', 0)})")
                 return signal_data
             else:
                 logging.warning(f"❌ پاسخ {ai_name} برای {symbol} فاقد فرمت JSON بود")
@@ -589,8 +951,8 @@ class TripleAIManager:
                 return None
         return None
 
-    def _combine_and_classify_signals(self, symbol: str, gemini_result: Dict, llama_result: Dict, deepseek_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
-        """ترکیب نتایج سه مدل AI و طبقه‌بندی بر اساس توافق"""
+    def _combine_and_classify_signals(self, symbol: str, gemini_result: Dict, llama_result: Dict, deepseek_result: Dict, groq_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
+        """ترکیب نتایج چهار مدل AI و طبقه‌بندی بر اساس توافق"""
         valid_results = []
         
         if gemini_result and self._validate_signal_data(gemini_result, symbol):
@@ -601,6 +963,9 @@ class TripleAIManager:
         
         if deepseek_result and self._validate_signal_data(deepseek_result, symbol):
             valid_results.append(('DeepSeek', deepseek_result))
+            
+        if groq_result and self._validate_signal_data(groq_result, symbol):
+            valid_results.append(('Groq', groq_result))
         
         if not valid_results:
             logging.info(f"هیچ سیگنال معتبری از مدل‌های AI برای {symbol} دریافت نشد")
@@ -625,27 +990,35 @@ class TripleAIManager:
         max_agreement = max(action_counts.values())
         agreement_level = max_agreement
         
-        if agreement_level >= 2:
-            # پیدا کردن اکثریت
+        if agreement_level >= 3:
+            # اجماع قوی (۳ یا ۴ موافق)
             majority_action = max(action_counts, key=action_counts.get)
-            agreement_type = 'MAJORITY_CONSENSUS'
+            agreement_type = 'STRONG_CONSENSUS'
             
-            # ترکیب سیگنال‌های موافق
+            agreeing_results = [result for _, result in valid_results if result['ACTION'].upper() == majority_action]
+            combined_signal = self._average_agreeing_signals(symbol, agreeing_results, majority_action)
+            
+        elif agreement_level == 2:
+            # اجماع متوسط (۲ موافق)
+            majority_action = max(action_counts, key=action_counts.get)
+            agreement_type = 'MEDIUM_CONSENSUS'
+            
             agreeing_results = [result for _, result in valid_results if result['ACTION'].upper() == majority_action]
             combined_signal = self._average_agreeing_signals(symbol, agreeing_results, majority_action)
             
         else:
-            # عدم توافق (همه مدل‌ها سیگنال‌های مختلف)
+            # عدم توافق (۰ یا ۱ موافق)
             agreement_type = 'NO_CONSENSUS'
             # انتخاب مدل با بیشترین اعتماد
             highest_confidence_model = max(valid_results, key=lambda x: float(x[1].get('CONFIDENCE', 0)))
             combined_signal = highest_confidence_model[1]
-            combined_signal['CONFIDENCE'] = max(1, int(float(combined_signal.get('CONFIDENCE', 5)) - 2))
+            combined_signal['CONFIDENCE'] = max(1, int(float(combined_signal.get('CONFIDENCE', 5)) - 3))
         
         combined_signal['AGREEMENT_LEVEL'] = agreement_level
         combined_signal['AGREEMENT_TYPE'] = agreement_type
         combined_signal['VALID_MODELS'] = total_models
         combined_signal['CONSENSUS_ANALYSIS'] = self._generate_consensus_analysis(agreement_type, agreement_level, total_models)
+        combined_signal['TECHNICAL_SCORE'] = technical_analysis.get('composite_signals', {}).get('confidence_score', 0)
         
         return combined_signal
 
@@ -663,7 +1036,7 @@ class TripleAIManager:
         averaged['CONFIDENCE'] = round(sum(confidences) / len(confidences), 1)
         
         # میانگین مقادیر عددی
-        numeric_fields = ['ENTRY_ZONE', 'STOP_LOSS', 'TAKE_PROFIT', 'EXPIRATION_H']
+        numeric_fields = ['ENTRY_ZONE', 'STOP_LOSS', 'TAKE_PROFIT_1', 'TAKE_PROFIT_2', 'EXPIRATION_H']
         
         for field in numeric_fields:
             values = []
@@ -683,6 +1056,7 @@ class TripleAIManager:
         
         # سایر فیلدها
         averaged['RISK_REWARD_RATIO'] = agreeing_results[0].get('RISK_REWARD_RATIO', 'N/A')
+        averaged['TRADE_TYPE'] = agreeing_results[0].get('TRADE_TYPE', 'TREND_FOLLOWING')
         
         # ذخیره تحلیل‌های جداگانه
         model_analyses = {}
@@ -696,11 +1070,13 @@ class TripleAIManager:
 
     def _generate_consensus_analysis(self, agreement_type: str, agreement_level: int, total_models: int) -> str:
         """تولید تحلیل توافق"""
-        if agreement_type == 'MAJORITY_CONSENSUS':
-            if agreement_level == 3:
-                return "توافق کامل بین هر سه مدل AI - سیگنال با اعتماد بسیار بالا"
-            elif agreement_level == 2:
-                return f"توافق بین ۲ مدل از {total_models} مدل - سیگنال با اعتماد بالا"
+        if agreement_type == 'STRONG_CONSENSUS':
+            if agreement_level == 4:
+                return "توافق کامل بین هر چهار مدل AI - سیگنال با اعتماد بسیار بالا"
+            elif agreement_level == 3:
+                return f"توافق قوی بین ۳ مدل از {total_models} مدل - سیگنال با اعتماد بالا"
+        elif agreement_type == 'MEDIUM_CONSENSUS':
+            return f"توافق متوسط بین ۲ مدل از {total_models} مدل - سیگنال با اعتماد متوسط"
         else:
             return "عدم توافق بین مدل‌ها - سیگنال با اعتماد پایین"
 
@@ -713,7 +1089,7 @@ class AdvancedForexAnalyzer:
         self.api_rate_limiter = AsyncRateLimiter(rate_limit=8, period=60)
         self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
-        self.ai_manager = TripleAIManager(google_api_key, CLOUDFLARE_AI_API_KEY)
+        self.ai_manager = QuadAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY)
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
         """تحلیل کامل یک جفت ارز"""
@@ -745,12 +1121,12 @@ class AdvancedForexAnalyzer:
                 logging.warning(f"تحلیل تکنیکال برای {pair} ناموفق بود")
                 return None
             
-            # تحلیل سه‌گانه AI
-            ai_analysis = await self.ai_manager.get_triple_analysis(pair, technical_analysis)
+            # تحلیل چهارگانه AI
+            ai_analysis = await self.ai_manager.get_quad_analysis(pair, technical_analysis)
             
             if ai_analysis and ai_analysis.get('ACTION') != 'HOLD':
                 self.cache_manager.update_cache(pair, ai_analysis)
-                logging.info(f"✅ سیگنال معاملاتی برای {pair}: {ai_analysis['ACTION']} (توافق: {ai_analysis.get('AGREEMENT_LEVEL', 0)})")
+                logging.info(f"✅ سیگنال معاملاتی برای {pair}: {ai_analysis['ACTION']} (توافق: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/4)")
                 return ai_analysis
             else:
                 logging.info(f"🔍 هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
@@ -836,10 +1212,10 @@ class AdvancedForexAnalyzer:
 
 async def main():
     """تابع اصلی اجرای برنامه"""
-    logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Triple AI v3.0)")
+    logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Quad AI v4.0)")
     
     import argparse
-    parser = argparse.ArgumentParser(description='سیستم تحلیل فارکس با AI سه‌گانه')
+    parser = argparse.ArgumentParser(description='سیستم تحلیل فارکس با AI چهارگانه')
     parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص (مثال: EUR/USD)")
     parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزهای پیش‌فرض")
     parser.add_argument("--pairs", type=str, help="تحلیل جفت ارزهای مشخص شده (جدا شده با کاما)")
@@ -862,22 +1238,25 @@ async def main():
     signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
 
     # تقسیم سیگنال‌ها بر اساس سطح توافق
-    high_confidence_signals = []
-    low_confidence_signals = []
+    strong_consensus_signals = []
+    medium_consensus_signals = []
+    weak_consensus_signals = []
     
     for signal in signals:
         agreement_level = signal.get('AGREEMENT_LEVEL', 0)
-        if agreement_level >= 2:  # توافق حداقل ۲ مدل از ۳ مدل
-            high_confidence_signals.append(signal)
-        else:
-            low_confidence_signals.append(signal)
+        if agreement_level >= 3:  # توافق ۳ یا ۴ مدل
+            strong_consensus_signals.append(signal)
+        elif agreement_level == 2:  # توافق ۲ مدل
+            medium_consensus_signals.append(signal)
+        else:  # توافق ۰ یا ۱ مدل
+            weak_consensus_signals.append(signal)
 
-    # ذخیره سیگنال‌های با توافق بالا
-    if high_confidence_signals:
-        high_conf_file = "high_confidence_signals.json"
-        cleaned_high_signals = []
+    # ذخیره سیگنال‌های با توافق قوی
+    if strong_consensus_signals:
+        strong_conf_file = "strong_consensus_signals.json"
+        cleaned_strong_signals = []
         
-        for signal in high_confidence_signals:
+        for signal in strong_consensus_signals:
             cleaned_signal = {
                 'SYMBOL': signal.get('SYMBOL', 'Unknown'),
                 'ACTION': signal.get('ACTION', 'HOLD'),
@@ -887,25 +1266,28 @@ async def main():
                 'AGREEMENT_TYPE': signal.get('AGREEMENT_TYPE', 'UNKNOWN'),
                 'ENTRY_ZONE': signal.get('ENTRY_ZONE', 'N/A'),
                 'STOP_LOSS': signal.get('STOP_LOSS', 'N/A'),
-                'TAKE_PROFIT': signal.get('TAKE_PROFIT', 'N/A'),
+                'TAKE_PROFIT_1': signal.get('TAKE_PROFIT_1', 'N/A'),
+                'TAKE_PROFIT_2': signal.get('TAKE_PROFIT_2', 'N/A'),
                 'RISK_REWARD_RATIO': signal.get('RISK_REWARD_RATIO', 'N/A'),
                 'EXPIRATION_H': signal.get('EXPIRATION_H', 0),
+                'TRADE_TYPE': signal.get('TRADE_TYPE', 'N/A'),
+                'TECHNICAL_SCORE': signal.get('TECHNICAL_SCORE', 0),
                 'CONSENSUS_ANALYSIS': signal.get('CONSENSUS_ANALYSIS', ''),
                 'TIMESTAMP': signal.get('timestamp', datetime.now(UTC).isoformat())
             }
-            cleaned_high_signals.append(cleaned_signal)
+            cleaned_strong_signals.append(cleaned_signal)
         
-        with open(high_conf_file, 'w', encoding='utf-8') as f:
-            json.dump(cleaned_high_signals, f, indent=4, ensure_ascii=False)
+        with open(strong_conf_file, 'w', encoding='utf-8') as f:
+            json.dump(cleaned_strong_signals, f, indent=4, ensure_ascii=False)
         
-        logging.info(f"✅ {len(high_confidence_signals)} سیگنال با توافق بالا در {high_conf_file} ذخیره شد")
+        logging.info(f"🎯 {len(strong_consensus_signals)} سیگنال با توافق قوی در {strong_conf_file} ذخیره شد")
 
-    # ذخیره سیگنال‌های با توافق پایین
-    if low_confidence_signals:
-        low_conf_file = "low_confidence_signals.json"
-        cleaned_low_signals = []
+    # ذخیره سیگنال‌های با توافق متوسط
+    if medium_consensus_signals:
+        medium_conf_file = "medium_consensus_signals.json"
+        cleaned_medium_signals = []
         
-        for signal in low_confidence_signals:
+        for signal in medium_consensus_signals:
             cleaned_signal = {
                 'SYMBOL': signal.get('SYMBOL', 'Unknown'),
                 'ACTION': signal.get('ACTION', 'HOLD'),
@@ -915,31 +1297,70 @@ async def main():
                 'AGREEMENT_TYPE': signal.get('AGREEMENT_TYPE', 'UNKNOWN'),
                 'ENTRY_ZONE': signal.get('ENTRY_ZONE', 'N/A'),
                 'STOP_LOSS': signal.get('STOP_LOSS', 'N/A'),
-                'TAKE_PROFIT': signal.get('TAKE_PROFIT', 'N/A'),
+                'TAKE_PROFIT_1': signal.get('TAKE_PROFIT_1', 'N/A'),
+                'TAKE_PROFIT_2': signal.get('TAKE_PROFIT_2', 'N/A'),
                 'RISK_REWARD_RATIO': signal.get('RISK_REWARD_RATIO', 'N/A'),
                 'EXPIRATION_H': signal.get('EXPIRATION_H', 0),
+                'TRADE_TYPE': signal.get('TRADE_TYPE', 'N/A'),
+                'TECHNICAL_SCORE': signal.get('TECHNICAL_SCORE', 0),
                 'CONSENSUS_ANALYSIS': signal.get('CONSENSUS_ANALYSIS', ''),
                 'TIMESTAMP': signal.get('timestamp', datetime.now(UTC).isoformat())
             }
-            cleaned_low_signals.append(cleaned_signal)
+            cleaned_medium_signals.append(cleaned_signal)
         
-        with open(low_conf_file, 'w', encoding='utf-8') as f:
-            json.dump(cleaned_low_signals, f, indent=4, ensure_ascii=False)
+        with open(medium_conf_file, 'w', encoding='utf-8') as f:
+            json.dump(cleaned_medium_signals, f, indent=4, ensure_ascii=False)
         
-        logging.info(f"📊 {len(low_confidence_signals)} سیگنال با توافق پایین در {low_conf_file} ذخیره شد")
+        logging.info(f"📊 {len(medium_consensus_signals)} سیگنال با توافق متوسط در {medium_conf_file} ذخیره شد")
+
+    # ذخیره سیگنال‌های با توافق ضعیف
+    if weak_consensus_signals:
+        weak_conf_file = "weak_consensus_signals.json"
+        cleaned_weak_signals = []
+        
+        for signal in weak_consensus_signals:
+            cleaned_signal = {
+                'SYMBOL': signal.get('SYMBOL', 'Unknown'),
+                'ACTION': signal.get('ACTION', 'HOLD'),
+                'CONFIDENCE': signal.get('CONFIDENCE', 0),
+                'AGREEMENT_LEVEL': signal.get('AGREEMENT_LEVEL', 0),
+                'VALID_MODELS': signal.get('VALID_MODELS', 0),
+                'AGREEMENT_TYPE': signal.get('AGREEMENT_TYPE', 'UNKNOWN'),
+                'ENTRY_ZONE': signal.get('ENTRY_ZONE', 'N/A'),
+                'STOP_LOSS': signal.get('STOP_LOSS', 'N/A'),
+                'TAKE_PROFIT_1': signal.get('TAKE_PROFIT_1', 'N/A'),
+                'TAKE_PROFIT_2': signal.get('TAKE_PROFIT_2', 'N/A'),
+                'RISK_REWARD_RATIO': signal.get('RISK_REWARD_RATIO', 'N/A'),
+                'EXPIRATION_H': signal.get('EXPIRATION_H', 0),
+                'TRADE_TYPE': signal.get('TRADE_TYPE', 'N/A'),
+                'TECHNICAL_SCORE': signal.get('TECHNICAL_SCORE', 0),
+                'CONSENSUS_ANALYSIS': signal.get('CONSENSUS_ANALYSIS', ''),
+                'TIMESTAMP': signal.get('timestamp', datetime.now(UTC).isoformat())
+            }
+            cleaned_weak_signals.append(cleaned_signal)
+        
+        with open(weak_conf_file, 'w', encoding='utf-8') as f:
+            json.dump(cleaned_weak_signals, f, indent=4, ensure_ascii=False)
+        
+        logging.info(f"📈 {len(weak_consensus_signals)} سیگنال با توافق ضعیف در {weak_conf_file} ذخیره شد")
 
     # نمایش خلاصه نتایج
     logging.info("📈 خلاصه سیگنال‌های معاملاتی:")
     
-    logging.info("🎯 سیگنال‌های با توافق بالا (حداقل ۲ مدل):")
-    for signal in high_confidence_signals:
+    logging.info("🎯 سیگنال‌های با توافق قوی (۳-۴ مدل):")
+    for signal in strong_consensus_signals:
         action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/3)")
+        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/4)")
     
-    logging.info("📊 سیگنال‌های با توافق پایین:")
-    for signal in low_confidence_signals:
+    logging.info("📊 سیگنال‌های با توافق متوسط (۲ مدل):")
+    for signal in medium_consensus_signals:
         action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/3)")
+        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/4)")
+    
+    logging.info("📈 سیگنال‌های با توافق ضعیف (۰-۱ مدل):")
+    for signal in weak_consensus_signals:
+        action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
+        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/4)")
 
     if not signals:
         logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
