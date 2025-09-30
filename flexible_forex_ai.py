@@ -828,11 +828,11 @@ class ImprovedForexAnalyzer:
             logging.error(f"❌ خطا در ایجاد فایل‌های خالی: {e}")
         return
 
-    strong_signals = []
-    medium_signals = []
-    weak_signals = []
+        strong_signals = []
+        medium_signals = []
+        weak_signals = []
 
-    for signal in signals:
+      for signal in signals:
         agreement_type = signal.get('AGREEMENT_TYPE', '')
         if agreement_type == 'STRONG_CONSENSUS':
             strong_signals.append(signal)
@@ -841,8 +841,8 @@ class ImprovedForexAnalyzer:
         else:
             weak_signals.append(signal)
 
-    # ذخیره در root directory
-    try:
+       # ذخیره در root directory
+      try:
         # فایل سیگنال‌های قوی
         with open("strong_consensus_signals.json", 'w', encoding='utf-8') as f:
             json.dump(strong_signals, f, indent=2, ensure_ascii=False)
@@ -866,7 +866,7 @@ class ImprovedForexAnalyzer:
             else:
                 logging.error(f"❌ فایل {filename} ایجاد نشد!")
                 
-    except Exception as e:
+      except Exception as e:
         logging.error(f"❌ خطا در ذخیره‌سازی سیگنال‌ها: {e}")
 
 # =================================================================================
