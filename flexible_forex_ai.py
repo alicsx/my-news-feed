@@ -1,4 +1,3 @@
- 
 import google.generativeai as genai
 import os
 import re
@@ -809,65 +808,64 @@ class ImprovedForexAnalyzer:
         import os
         current_dir = os.getcwd()
         logging.info(f"📁 مسیر جاری برای ذخیره فایل‌ها: {current_dir}")
-    
+        
         if not signals:
             logging.info("📝 هیچ سیگنالی برای ذخیره وجود ندارد")
             # ایجاد فایل‌های خالی در root
             empty_data = []
-        try:
-            files_to_create = [
-                "strong_consensus_signals.json",
-                "medium_consensus_signals.json", 
-                "weak_consensus_signals.json"
-            ]
-            for filename in files_to_create:
-                with open(filename, 'w', encoding='utf-8') as f:
-                    json.dump(empty_data, f, indent=2, ensure_ascii=False)
-                logging.info(f"💾 فایل خالی ایجاد شد: {filename}")
-        except Exception as e:
-            logging.error(f"❌ خطا در ایجاد فایل‌های خالی: {e}")
-        return
+            try:
+                files_to_create = [
+                    "strong_consensus_signals.json",
+                    "medium_consensus_signals.json", 
+                    "weak_consensus_signals.json"
+                ]
+                for filename in files_to_create:
+                    with open(filename, 'w', encoding='utf-8') as f:
+                        json.dump(empty_data, f, indent=2, ensure_ascii=False)
+                    logging.info(f"💾 فایل خالی ایجاد شد: {filename}")
+            except Exception as e:
+                logging.error(f"❌ خطا در ایجاد فایل‌های خالی: {e}")
+            return
 
         strong_signals = []
         medium_signals = []
         weak_signals = []
 
-      for signal in signals:
-        agreement_type = signal.get('AGREEMENT_TYPE', '')
-        if agreement_type == 'STRONG_CONSENSUS':
-            strong_signals.append(signal)
-        elif agreement_type == 'MEDIUM_CONSENSUS':
-            medium_signals.append(signal)
-        else:
-            weak_signals.append(signal)
-
-       # ذخیره در root directory
-      try:
-        # فایل سیگنال‌های قوی
-        with open("strong_consensus_signals.json", 'w', encoding='utf-8') as f:
-            json.dump(strong_signals, f, indent=2, ensure_ascii=False)
-        logging.info(f"💾 {len(strong_signals)} سیگنال قوی در root ذخیره شد")
-        
-        # فایل سیگنال‌های متوسط
-        with open("medium_consensus_signals.json", 'w', encoding='utf-8') as f:
-            json.dump(medium_signals, f, indent=2, ensure_ascii=False)
-        logging.info(f"💾 {len(medium_signals)} سیگنال متوسط در root ذخیره شد")
-        
-        # فایل سیگنال‌های ضعیف
-        with open("weak_consensus_signals.json", 'w', encoding='utf-8') as f:
-            json.dump(weak_signals, f, indent=2, ensure_ascii=False)
-        logging.info(f"💾 {len(weak_signals)} سیگنال ضعیف در root ذخیره شد")
-        
-        # تأیید ایجاد فایل‌ها
-        import os
-        for filename in ["strong_consensus_signals.json", "medium_consensus_signals.json", "weak_consensus_signals.json"]:
-            if os.path.exists(filename):
-                logging.info(f"✅ فایل {filename} با موفقیت ایجاد شد")
+        for signal in signals:
+            agreement_type = signal.get('AGREEMENT_TYPE', '')
+            if agreement_type == 'STRONG_CONSENSUS':
+                strong_signals.append(signal)
+            elif agreement_type == 'MEDIUM_CONSENSUS':
+                medium_signals.append(signal)
             else:
-                logging.error(f"❌ فایل {filename} ایجاد نشد!")
-                
-      except Exception as e:
-        logging.error(f"❌ خطا در ذخیره‌سازی سیگنال‌ها: {e}")
+                weak_signals.append(signal)
+
+        # ذخیره در root directory
+        try:
+            # فایل سیگنال‌های قوی
+            with open("strong_consensus_signals.json", 'w', encoding='utf-8') as f:
+                json.dump(strong_signals, f, indent=2, ensure_ascii=False)
+            logging.info(f"💾 {len(strong_signals)} سیگنال قوی در root ذخیره شد")
+            
+            # فایل سیگنال‌های متوسط
+            with open("medium_consensus_signals.json", 'w', encoding='utf-8') as f:
+                json.dump(medium_signals, f, indent=2, ensure_ascii=False)
+            logging.info(f"💾 {len(medium_signals)} سیگنال متوسط در root ذخیره شد")
+            
+            # فایل سیگنال‌های ضعیف
+            with open("weak_consensus_signals.json", 'w', encoding='utf-8') as f:
+                json.dump(weak_signals, f, indent=2, ensure_ascii=False)
+            logging.info(f"💾 {len(weak_signals)} سیگنال ضعیف در root ذخیره شد")
+            
+            # تأیید ایجاد فایل‌ها
+            for filename in ["strong_consensus_signals.json", "medium_consensus_signals.json", "weak_consensus_signals.json"]:
+                if os.path.exists(filename):
+                    logging.info(f"✅ فایل {filename} با موفقیت ایجاد شد")
+                else:
+                    logging.error(f"❌ فایل {filename} ایجاد نشد!")
+                    
+        except Exception as e:
+            logging.error(f"❌ خطا در ذخیره‌سازی سیگنال‌ها: {e}")
 
 # =================================================================================
 # --- تابع اصلی ---
