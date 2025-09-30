@@ -36,7 +36,31 @@ jobs:
       with:
         name: forex-analysis-results
         path: |
-          consensus_signals.json
-          non_consensus_signals.json
-          comprehensive_analysis_report.json
+          high_confidence_signals.json
+          low_confidence_signals.json
           trading_log.log
+          signal_cache.json
+        retention-days: 7
+        
+    - name: Upload results to GitHub Pages (Optional)
+      if: success()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        keep_files: false
+        publish_branch: gh-pages
+        force_orphan: true
+        commit_message: '📈 Update Forex AI Signals - ${{ github.run_id }}'
+        
+    - name: Send notification on failure
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '❌ Forex AI Analysis Failed',
+            body: `Workflow run failed: ${{ github.run_id }}`
+          })
