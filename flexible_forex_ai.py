@@ -805,15 +805,15 @@ class ImprovedForexAnalyzer:
         return valid_signals
 
     def save_signals(self, signals: List[Dict]):
-    """ذخیره سیگنال‌ها در فایل‌های مختلف در root directory"""
-    import os
-    current_dir = os.getcwd()
-    logging.info(f"📁 مسیر جاری برای ذخیره فایل‌ها: {current_dir}")
+        """ذخیره سیگنال‌ها در فایل‌های مختلف در root directory"""
+        import os
+        current_dir = os.getcwd()
+        logging.info(f"📁 مسیر جاری برای ذخیره فایل‌ها: {current_dir}")
     
-    if not signals:
-        logging.info("📝 هیچ سیگنالی برای ذخیره وجود ندارد")
-        # ایجاد فایل‌های خالی در root
-        empty_data = []
+        if not signals:
+            logging.info("📝 هیچ سیگنالی برای ذخیره وجود ندارد")
+            # ایجاد فایل‌های خالی در root
+            empty_data = []
         try:
             files_to_create = [
                 "strong_consensus_signals.json",
