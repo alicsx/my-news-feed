@@ -1,0 +1,18 @@
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-09-30T16:34:17.194867+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY_ZONE": "1.08480-1.08520",
+    "STOP_LOSS": "1.08600",
+    "TAKE_PROFIT": "1.08350",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "MACD نزولی در کنار روندهای خنثی، نشان‌دهنده فشار فروش کوتاه‌مدت است. RSI نیز خنثی است."
+  }
+]
