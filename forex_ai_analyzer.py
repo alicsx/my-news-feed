@@ -37,25 +37,37 @@ CURRENCY_PAIRS_TO_ANALYZE = [
 ]
 
 CACHE_FILE = "signal_cache.json"
-CACHE_DURATION_HOURS = 2
+USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
-# مدل‌های AI
+# مدل‌های AI به‌روز شده
 GEMINI_MODEL = 'gemini-2.5-flash'
+
+# مدل‌های Cloudflare به‌روز شده (جدیدترین‌ها)
 CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-4-scout-17b-16e-instruct",
-    "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
-]
-GROQ_MODELS = [
-    "gemma-7b-it",
-    "mixtral-8x7b-32768"
+    "@cf/meta/llama-4-scout-17b-16e-instruct",  # جدیدترین
+    "@cf/google/gemma-3-12b-it",                # جدید
+    "@cf/mistralai/mistral-small-3.1-24b-instruct", # جدید 
+    "@cf/meta/llama-3.3-70b-instruct-fp8-fast", # جدید
+    "@cf/meta/llama-3.1-8b-instruct-fast"      # جدی
 ]
 
-# سیستم مدیریت Rate Limiting
-API_RATE_LIMITS = {
-    "google_gemini": {"requests_per_minute": 15, "requests_per_day": 1500},
-    "cloudflare": {"requests_per_minute": 10, "requests_per_day": 1000},
-    "groq": {"requests_per_minute": 30, "requests_per_day": 10000}  # محدودیت واقعی Groq
+# مدل‌های Groq به‌روز شده (جدیدترین‌ها)
+GROQ_MODELS = [
+    "qwen/qwen3-32b",
+    "meta-llama/llama-4-scout-17b-16e-instruct",        # جدید
+    "openai/gpt-oss-120b",
+    "moonshotai/kimi-k2-instruct-0905"
+    "llama-3.1-8b-instant"  , # جدید
+    "llama-3.3-70b-versatile",                          # جدیدترین
+    "meta-llama/llama-4-maverick-17b-128e-instruct"   # جدید 
+]
+
+# محدودیت‌های روزانه API
+API_DAILY_LIMITS = {
+    "google_gemini": 1500,
+    "cloudflare": 10000,  # 10,000 neuron روزانه
+    "groq": 10000         # 10,000 درخواست روزانه
 }
 
 # راه‌اندازی سیستم لاگ‌گیری پیشرفته
@@ -68,36 +80,167 @@ logging.basicConfig(
     ]
 )
 
-class AdvancedRateLimiter:
-    """مدیریت پیشرفته Rate Limiting برای APIهای مختلف"""
-    def __init__(self):
-        self.limits = API_RATE_LIMITS
-        self.usage = {service: {"minute": [], "day": []} for service in self.limits}
-        self._lock = asyncio.Lock()
+# =================================================================================
+# --- کلاس مدیریت مصرف API هوشمند ---
+# =================================================================================
+
+class SmartAPIManager:
+    def __init__(self, usage_file: str):
+        self.usage_file = usage_file
+        self.usage_data = self.load_usage_data()
+        self.available_models = self.initialize_available_models()
+        
+    def load_usage_data(self) -> Dict:
+        """بارگذاری داده‌های مصرف API"""
+        if not os.path.exists(self.usage_file):
+            return self.initialize_usage_data()
+        
+        try:
+            with open(self.usage_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                # بررسی تاریخ و ریست کردن در صورت نیاز
+                return self.check_and_reset_daily_usage(data)
+        except (json.JSONDecodeError, IOError) as e:
+            logging.error(f"خطا در بارگذاری داده‌های مصرف API: {e}")
+            return self.initialize_usage_data()
     
-    async def acquire(self, service: str):
-        async with self._lock:
-            now = time.time()
+    def initialize_usage_data(self) -> Dict:
+        """مقداردهی اولیه داده‌های مصرف"""
+        today = datetime.now(UTC).date().isoformat()
+        return {
+            "last_reset_date": today,
+            "providers": {
+                "google_gemini": {"used_today": 0, "limit": API_DAILY_LIMITS["google_gemini"]},
+                "cloudflare": {"used_today": 0, "limit": API_DAILY_LIMITS["cloudflare"]},
+                "groq": {"used_today": 0, "limit": API_DAILY_LIMITS["groq"]}
+            }
+        }
+    
+    def check_and_reset_daily_usage(self, data: Dict) -> Dict:
+        """بررسی و ریست مصرف روزانه"""
+        today = datetime.now(UTC).date().isoformat()
+        last_reset = data.get("last_reset_date", "")
+        
+        if last_reset != today:
+            # ریست مصرف روزانه
+            for provider in data["providers"]:
+                data["providers"][provider]["used_today"] = 0
+            data["last_reset_date"] = today
+            self.save_usage_data(data)
+            logging.info("✅ مصرف روزانه APIها ریست شد")
+        
+        return data
+    
+    def save_usage_data(self, data: Dict = None):
+        """ذخیره داده‌های مصرف"""
+        if data is None:
+            data = self.usage_data
             
-            # پاک‌سازی تاریخچه قدیمی
-            self.usage[service]["minute"] = [t for t in self.usage[service]["minute"] if now - t < 60]
-            self.usage[service]["day"] = [t for t in self.usage[service]["day"] if now - t < 86400]
+        try:
+            with open(self.usage_file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+        except IOError as e:
+            logging.error(f"خطا در ذخیره داده‌های مصرف API: {e}")
+    
+    def initialize_available_models(self) -> Dict:
+        """مقداردهی اولیه مدل‌های موجود"""
+        return {
+            "google_gemini": [GEMINI_MODEL],
+            "cloudflare": CLOUDFLARE_MODELS.copy(),
+            "groq": GROQ_MODELS.copy()
+        }
+    
+    def can_use_provider(self, provider: str, models_needed: int = 1) -> bool:
+        """بررسی امکان استفاده از provider"""
+        if provider not in self.usage_data["providers"]:
+            return False
             
-            # بررسی محدودیت دقیقه
-            if len(self.usage[service]["minute"]) >= self.limits[service]["requests_per_minute"]:
-                oldest = self.usage[service]["minute"][0]
-                wait_time = 60 - (now - oldest)
-                if wait_time > 0:
-                    await asyncio.sleep(wait_time)
-                    return await self.acquire(service)
+        provider_data = self.usage_data["providers"][provider]
+        remaining = provider_data["limit"] - provider_data["used_today"]
+        
+        # بررسی موجودی کافی برای تعداد مدل‌های مورد نیاز
+        if remaining >= models_needed:
+            return True
+        else:
+            logging.info(f"⚠️ موجودی {provider} کافی نیست: {remaining} باقیمانده، {models_needed} مورد نیاز")
+            return False
+    
+    def get_available_models_count(self, provider: str) -> int:
+        """تعداد مدل‌های موجود برای یک provider"""
+        if not self.can_use_provider(provider):
+            return 0
             
-            # بررسی محدودیت روزانه
-            if len(self.usage[service]["day"]) >= self.limits[service]["requests_per_day"]:
-                raise Exception(f"محدودیت روزانه {service} تمام شده است")
+        provider_data = self.usage_data["providers"][provider]
+        remaining = provider_data["limit"] - provider_data["used_today"]
+        
+        # حداکثر تعداد مدل‌هایی که می‌توانیم استفاده کنیم
+        available_models = len(self.available_models[provider])
+        return min(remaining, available_models)
+    
+    def select_optimal_models(self, target_total: int = 5) -> List[Tuple[str, str]]:
+        """انتخاب بهینه مدل‌ها بر اساس موجودی"""
+        selected_models = []
+        
+        # محاسبه ظرفیت هر provider
+        provider_capacity = {}
+        for provider in ["google_gemini", "cloudflare", "groq"]:
+            provider_capacity[provider] = self.get_available_models_count(provider)
+        
+        logging.info(f"📊 ظرفیت providerها: Gemini={provider_capacity['google_gemini']}, "
+                    f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
+        
+        # استراتژی انتخاب: اولویت با providerهایی است که ظرفیت بیشتری دارند
+        total_available = sum(provider_capacity.values())
+        
+        if total_available == 0:
+            logging.error("❌ هیچ providerی در دسترس نیست")
+            return selected_models
+        
+        # توزیع مدل‌ها بین providerها
+        remaining_target = min(target_total, total_available)
+        
+        # همیشه از Gemini استفاده کن (اگر موجود باشد)
+        if provider_capacity["google_gemini"] > 0:
+            selected_models.append(("google_gemini", self.available_models["google_gemini"][0]))
+            remaining_target -= 1
+            provider_capacity["google_gemini"] -= 1
+        
+        # توزیع باقی‌مانده بین Cloudflare و Groq
+        while remaining_target > 0 and (provider_capacity["cloudflare"] > 0 or provider_capacity["groq"] > 0):
+            # انتخاب provider با بیشترین ظرفیت باقیمانده
+            best_provider = None
+            max_capacity = 0
             
-            # ثبت درخواست
-            self.usage[service]["minute"].append(now)
-            self.usage[service]["day"].append(now)
+            for provider in ["cloudflare", "groq"]:
+                if provider_capacity[provider] > max_capacity:
+                    max_capacity = provider_capacity[provider]
+                    best_provider = provider
+            
+            if best_provider:
+                # انتخاب جدیدترین مدل از این provider
+                model_index = len(self.available_models[best_provider]) - provider_capacity[best_provider]
+                selected_model = self.available_models[best_provider][model_index]
+                selected_models.append((best_provider, selected_model))
+                
+                provider_capacity[best_provider] -= 1
+                remaining_target -= 1
+        
+        logging.info(f"🎯 {len(selected_models)} مدل انتخاب شد: {selected_models}")
+        return selected_models
+    
+    def record_api_usage(self, provider: str, count: int = 1):
+        """ثبت استفاده از API"""
+        if provider in self.usage_data["providers"]:
+            self.usage_data["providers"][provider]["used_today"] += count
+            self.save_usage_data()
+    
+    def get_usage_summary(self) -> str:
+        """خلاصه وضعیت مصرف"""
+        summary = "📊 خلاصه مصرف API:\n"
+        for provider, data in self.usage_data["providers"].items():
+            remaining = data["limit"] - data["used_today"]
+            summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} باقیمانده)\n"
+        return summary
 
 # =================================================================================
 # --- کلاس مدیریت کش هوشمند ---
@@ -439,10 +582,6 @@ class AdvancedTechnicalAnalyzer:
         ema_alignment_htf = self._get_ema_alignment_score(last_htf)
         ema_alignment_ltf = self._get_ema_alignment_score(last_ltf)
         
-        # قدرت مومنتوم
-        rsi_htf = last_htf.get('RSI_14', 50)
-        rsi_ltf = last_ltf.get('RSI_14', 50)
-        
         # محاسبه امتیاز کلی قدرت روند
         trend_strength_score = (
             (adx_htf / 50) * 0.3 +  # ADX اهمیت 30%
@@ -487,63 +626,79 @@ class AdvancedTechnicalAnalyzer:
             return 0.0
 
 # =================================================================================
-# --- کلاس مدیریت 5 هوش مصنوعی (Gemini + 2 Cloudflare + 2 Groq) ---
+# --- کلاس مدیریت AI هوشمند و انعطاف‌پذیر ---
 # =================================================================================
 
-class FiveAIManager:
-    def __init__(self, gemini_api_key: str, cloudflare_api_key: str, groq_api_key: str):
+class FlexibleAIManager:
+    def __init__(self, gemini_api_key: str, cloudflare_api_key: str, groq_api_key: str, api_manager: SmartAPIManager):
         self.gemini_api_key = gemini_api_key
         self.cloudflare_api_key = cloudflare_api_key
         self.groq_api_key = groq_api_key
-        self.gemini_model = GEMINI_MODEL
-        self.rate_limiter = AdvancedRateLimiter()
-        
-        # تنظیمات Cloudflare
-        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
-        self.cloudflare_models = CLOUDFLARE_MODELS
-        
-        # تنظیمات Groq
-        self.groq_models = GROQ_MODELS
-        self.groq_base_url = "https://api.groq.com/openai/v1/chat/completions"
+        self.api_manager = api_manager
         
         genai.configure(api_key=gemini_api_key)
     
-    async def get_five_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """دریافت تحلیل از 5 مدل AI و بررسی توافق"""
-        tasks = [
-            self._get_gemini_analysis(symbol, technical_analysis),
-            self._get_cloudflare_analysis(symbol, technical_analysis, self.cloudflare_models[0], "Cloudflare-Llama"),
-            self._get_cloudflare_analysis(symbol, technical_analysis, self.cloudflare_models[1], "Cloudflare-DeepSeek"),
-            self._get_groq_analysis(symbol, technical_analysis, self.groq_models[0], "Groq-Llama2"),
-            self._get_groq_analysis(symbol, technical_analysis, self.groq_models[1], "Groq-Mixtral")
-        ]
+    async def get_adaptive_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """تحلیل با AI با قابلیت تنظیم خودکار بر اساس موجودی API"""
+        # انتخاب مدل‌ها بر اساس موجودی
+        selected_models = self.api_manager.select_optimal_models(target_total=5)
+        
+        if not selected_models:
+            logging.error(f"❌ هیچ مدل AI در دسترس برای تحلیل {symbol}")
+            return None
+        
+        logging.info(f"🎯 استفاده از {len(selected_models)} مدل AI برای {symbol}: {selected_models}")
+        
+        # ایجاد تسک‌های تحلیل
+        tasks = []
+        for provider, model_name in selected_models:
+            task = self._get_single_ai_analysis(symbol, technical_analysis, provider, model_name)
+            tasks.append(task)
         
         try:
             results = await asyncio.gather(*tasks, return_exceptions=True)
             
-            # پردازش نتایج و مدیریت خطاها
-            processed_results = []
-            model_names = ["Gemini", "Cloudflare-Llama", "Cloudflare-DeepSeek", "Groq-Llama2", "Groq-Mixtral"]
-            
-            for i, (name, result) in enumerate(zip(model_names, results)):
+            # پردازش نتایج
+            valid_results = []
+            for i, (provider, model_name) in enumerate(selected_models):
+                result = results[i]
                 if isinstance(result, Exception):
-                    logging.error(f"خطا در {name} برای {symbol}: {result}")
-                    processed_results.append(None)
+                    logging.error(f"خطا در {provider}/{model_name} برای {symbol}: {result}")
+                    # حتی در صورت خطا، استفاده از API را ثبت کن
+                    self.api_manager.record_api_usage(provider)
+                elif result is not None:
+                    valid_results.append(result)
+                    self.api_manager.record_api_usage(provider)
                 else:
-                    processed_results.append(result)
+                    self.api_manager.record_api_usage(provider)
             
-            return self._combine_and_classify_signals(symbol, processed_results, technical_analysis)
+            return self._combine_and_classify_signals(symbol, valid_results, technical_analysis, len(selected_models))
             
         except Exception as e:
-            logging.error(f"خطا در تحلیل پنج‌گانه برای {symbol}: {e}")
+            logging.error(f"خطا در تحلیل AI برای {symbol}: {e}")
             return None
     
-    async def _get_gemini_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+    async def _get_single_ai_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
+        """تحلیل با یک مدل خاص"""
+        try:
+            if provider == "google_gemini":
+                return await self._get_gemini_analysis(symbol, technical_analysis, model_name)
+            elif provider == "cloudflare":
+                return await self._get_cloudflare_analysis(symbol, technical_analysis, model_name)
+            elif provider == "groq":
+                return await self._get_groq_analysis(symbol, technical_analysis, model_name)
+            else:
+                return None
+                
+        except Exception as e:
+            logging.warning(f"خطا در تحلیل {provider}/{model_name} برای {symbol}: {e}")
+            return None
+    
+    async def _get_gemini_analysis(self, symbol: str, technical_analysis: Dict, model_name: str) -> Optional[Dict]:
         """تحلیل با Gemini"""
         try:
-            await self.rate_limiter.acquire("google_gemini")
             prompt = self._create_advanced_analysis_prompt(symbol, technical_analysis)
-            model = genai.GenerativeModel(self.gemini_model)
+            model = genai.GenerativeModel(model_name)
             
             response = await asyncio.to_thread(
                 model.generate_content,
@@ -551,20 +706,19 @@ class FiveAIManager:
                 request_options={'timeout': 120}
             )
             
-            return self._parse_ai_response(response.text, symbol, "Gemini")
+            return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
             
         except Exception as e:
             logging.warning(f"خطا در تحلیل Gemini برای {symbol}: {e}")
             return None
     
-    async def _get_cloudflare_analysis(self, symbol: str, technical_analysis: Dict, model_name: str, model_display_name: str) -> Optional[Dict]:
+    async def _get_cloudflare_analysis(self, symbol: str, technical_analysis: Dict, model_name: str) -> Optional[Dict]:
         """تحلیل با Cloudflare AI"""
-        if not self.cloudflare_api_key or self.cloudflare_account_id == "your_account_id":
-            logging.warning("کلید یا شناسه حساب Cloudflare API تنظیم نشده است")
+        if not self.cloudflare_api_key:
+            logging.warning("کلید Cloudflare API تنظیم نشده است")
             return None
             
         try:
-            await self.rate_limiter.acquire("cloudflare")
             prompt = self._create_advanced_analysis_prompt(symbol, technical_analysis)
             
             headers = {
@@ -583,7 +737,8 @@ class FiveAIManager:
                 "stream": False
             }
             
-            url = f"https://api.cloudflare.com/client/v4/accounts/{self.cloudflare_account_id}/ai/run/{model_name}"
+            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_name}"
             
             async with aiohttp.ClientSession() as session:
                 async with session.post(url, headers=headers, json=payload, timeout=120) as response:
@@ -591,10 +746,10 @@ class FiveAIManager:
                         data = await response.json()
                         if "result" in data and "response" in data["result"]:
                             content = data["result"]["response"]
-                            return self._parse_ai_response(content, symbol, model_display_name)
+                            return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
                         elif "response" in data:
                             content = data["response"]
-                            return self._parse_ai_response(content, symbol, model_display_name)
+                            return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
                         else:
                             logging.warning(f"فرمت پاسخ Cloudflare نامعتبر است: {data}")
                             return None
@@ -604,17 +759,16 @@ class FiveAIManager:
                         return None
                         
         except Exception as e:
-            logging.warning(f"خطا در تحلیل {model_display_name} برای {symbol}: {e}")
+            logging.warning(f"خطا در تحلیل Cloudflare/{model_name} برای {symbol}: {e}")
             return None
 
-    async def _get_groq_analysis(self, symbol: str, technical_analysis: Dict, model_name: str, model_display_name: str) -> Optional[Dict]:
+    async def _get_groq_analysis(self, symbol: str, technical_analysis: Dict, model_name: str) -> Optional[Dict]:
         """تحلیل با Groq API"""
         if not self.groq_api_key:
             logging.warning("کلید Groq API تنظیم نشده است")
             return None
             
         try:
-            await self.rate_limiter.acquire("groq")
             prompt = self._create_advanced_analysis_prompt(symbol, technical_analysis)
             
             headers = {
@@ -639,13 +793,15 @@ class FiveAIManager:
                 "stream": False
             }
             
+            url = "https://api.groq.com/openai/v1/chat/completions"
+            
             async with aiohttp.ClientSession() as session:
-                async with session.post(self.groq_base_url, headers=headers, json=payload, timeout=120) as response:
+                async with session.post(url, headers=headers, json=payload, timeout=120) as response:
                     if response.status == 200:
                         data = await response.json()
                         if "choices" in data and len(data["choices"]) > 0:
                             content = data["choices"][0]["message"]["content"]
-                            return self._parse_ai_response(content, symbol, model_display_name)
+                            return self._parse_ai_response(content, symbol, f"Groq-{model_name}")
                         else:
                             logging.warning(f"فرمت پاسخ Groq نامعتبر است: {data}")
                             return None
@@ -655,13 +811,11 @@ class FiveAIManager:
                         return None
                         
         except Exception as e:
-            logging.warning(f"خطا در تحلیل {model_display_name} برای {symbol}: {e}")
+            logging.warning(f"خطا در تحلیل Groq/{model_name} برای {symbol}: {e}")
             return None
 
     def _create_advanced_analysis_prompt(self, symbol: str, technical_analysis: Dict) -> str:
-        """ایجاد پرامپت تحلیل پیشرفته برای تشخیص سیگنال"""
-        base_currency, quote_currency = symbol.split('/')
-        
+        """ایجاد پرامپت تحلیل پیشرفته"""
         return f"""
 ANALYZE THIS FOREX PAIR AS EXPERT TECHNICAL ANALYST:
 
@@ -795,15 +949,8 @@ RETURN ONLY THIS JSON FORMAT (NO OTHER TEXT):
                 return None
         return None
 
-    def _combine_and_classify_signals(self, symbol: str, results: List[Optional[Dict]], technical_analysis: Dict) -> Optional[Dict]:
-        """ترکیب نتایج 5 مدل AI و طبقه‌بندی بر اساس توافق"""
-        valid_results = []
-        model_names = ["Gemini", "Cloudflare-Llama", "Cloudflare-DeepSeek", "Groq-Llama2", "Groq-Mixtral"]
-        
-        for i, result in enumerate(results):
-            if result and self._validate_signal_data(result, symbol):
-                valid_results.append((model_names[i], result))
-        
+    def _combine_and_classify_signals(self, symbol: str, valid_results: List[Dict], technical_analysis: Dict, total_models: int) -> Optional[Dict]:
+        """ترکیب نتایج و طبقه‌بندی بر اساس توافق"""
         if not valid_results:
             logging.info(f"هیچ سیگنال معتبری از مدل‌های AI برای {symbol} دریافت نشد")
             return {
@@ -813,13 +960,13 @@ RETURN ONLY THIS JSON FORMAT (NO OTHER TEXT):
                 'AGREEMENT_LEVEL': 0,
                 'AGREEMENT_TYPE': 'NO_CONSENSUS',
                 'VALID_MODELS': 0,
-                'TOTAL_MODELS': 5,
+                'TOTAL_MODELS': total_models,
                 'ANALYSIS': 'عدم وجود سیگنال معتبر از مدل‌های AI'
             }
         
         # شمارش سیگنال‌های مختلف
         action_counts = {}
-        for model_name, result in valid_results:
+        for result in valid_results:
             action = result['ACTION'].upper()
             action_counts[action] = action_counts.get(action, 0) + 1
         
@@ -828,39 +975,42 @@ RETURN ONLY THIS JSON FORMAT (NO OTHER TEXT):
         max_agreement = max(action_counts.values())
         agreement_level = max_agreement
         
-        if agreement_level >= 3:
-            # اکثریت قوی (3 مدل یا بیشتر)
-            majority_action = max(action_counts, key=action_counts.get)
-            agreement_type = 'STRONG_CONSENSUS'
-            
-            # ترکیب سیگنال‌های موافق
-            agreeing_results = [result for _, result in valid_results if result['ACTION'].upper() == majority_action]
-            combined_signal = self._average_agreeing_signals(symbol, agreeing_results, majority_action)
-            
-        elif agreement_level == 2:
-            # اکثریت ضعیف (2 مدل)
-            majority_action = max(action_counts, key=action_counts.get)
-            agreement_type = 'WEAK_CONSENSUS'
-            
-            agreeing_results = [result for _, result in valid_results if result['ACTION'].upper() == majority_action]
-            combined_signal = self._average_agreeing_signals(symbol, agreeing_results, majority_action)
-            # کاهش اعتماد برای توافق ضعیف
-            combined_signal['CONFIDENCE'] = max(1, int(float(combined_signal.get('CONFIDENCE', 5)) - 1))
-            
+        # طبقه‌بندی بر اساس تعداد کل مدل‌ها
+        if total_models >= 4:
+            # سیستم 4-5 مدلی
+            if agreement_level >= 4:
+                agreement_type = 'STRONG_CONSENSUS'
+            elif agreement_level == 3:
+                agreement_type = 'MEDIUM_CONSENSUS'
+            elif agreement_level == 2:
+                agreement_type = 'WEAK_CONSENSUS'
+            else:
+                agreement_type = 'NO_CONSENSUS'
         else:
-            # عدم توافق
-            agreement_type = 'NO_CONSENSUS'
+            # سیستم 1-3 مدلی
+            if agreement_level == total_valid_models and total_valid_models >= 2:
+                agreement_type = 'STRONG_CONSENSUS'
+            elif agreement_level >= 2:
+                agreement_type = 'MEDIUM_CONSENSUS'
+            else:
+                agreement_type = 'WEAK_CONSENSUS'
+        
+        # ترکیب سیگنال‌های موافق
+        if agreement_level >= 2:
+            majority_action = max(action_counts, key=action_counts.get)
+            agreeing_results = [result for result in valid_results if result['ACTION'].upper() == majority_action]
+            combined_signal = self._average_agreeing_signals(symbol, agreeing_results, majority_action)
+        else:
             # انتخاب مدل با بیشترین اعتماد
-            highest_confidence_model = max(valid_results, key=lambda x: float(x[1].get('CONFIDENCE', 0)))
-            combined_signal = highest_confidence_model[1]
+            highest_confidence_model = max(valid_results, key=lambda x: float(x.get('CONFIDENCE', 0)))
+            combined_signal = highest_confidence_model
             combined_signal['CONFIDENCE'] = max(1, int(float(combined_signal.get('CONFIDENCE', 5)) - 2))
         
         combined_signal['AGREEMENT_LEVEL'] = agreement_level
         combined_signal['AGREEMENT_TYPE'] = agreement_type
         combined_signal['VALID_MODELS'] = total_valid_models
-        combined_signal['TOTAL_MODELS'] = 5
-        combined_signal['CONSENSUS_ANALYSIS'] = self._generate_consensus_analysis(agreement_type, agreement_level, total_valid_models)
-        combined_signal['MODEL_BREAKDOWN'] = {name: result.get('ACTION', 'HOLD') for name, result in valid_results}
+        combined_signal['TOTAL_MODELS'] = total_models
+        combined_signal['CONSENSUS_ANALYSIS'] = self._generate_consensus_analysis(agreement_type, agreement_level, total_valid_models, total_models)
         
         return combined_signal
 
@@ -868,7 +1018,7 @@ RETURN ONLY THIS JSON FORMAT (NO OTHER TEXT):
         """میانگین‌گیری سیگنال‌های موافق"""
         if len(agreeing_results) == 1:
             result = agreeing_results[0]
-            result['CONSENSUS_DETAIL'] = f"سیگنال از {result['ai_model']} - نیاز به تأیید بیشتر"
+            result['CONSENSUS_DETAIL'] = f"سیگنال از {result['ai_model']}"
             return result
         
         averaged = {'SYMBOL': symbol, 'ACTION': majority_action}
@@ -898,32 +1048,21 @@ RETURN ONLY THIS JSON FORMAT (NO OTHER TEXT):
         
         # سایر فیلدها
         averaged['RISK_REWARD_RATIO'] = agreeing_results[0].get('RISK_REWARD_RATIO', 'N/A')
-        
-        # ترکیب تحلیل‌ها
-        model_analyses = {}
-        for result in agreeing_results:
-            model_analyses[result['ai_model']] = {
-                'analysis': result.get('ANALYSIS', ''),
-                'confidence': result.get('CONFIDENCE', 0),
-                'trade_rationale': result.get('TRADE_RATIONALE', '')
-            }
-        
-        averaged['MODEL_ANALYSES'] = model_analyses
-        averaged['CONSENSUS_DETAIL'] = f"توافق بین {len(agreeing_results)} مدل از {len(agreeing_results)} مدل معتبر"
+        averaged['ANALYSIS'] = f"توافق بین {len(agreeing_results)} مدل"
         
         return averaged
 
-    def _generate_consensus_analysis(self, agreement_type: str, agreement_level: int, total_models: int) -> str:
+    def _generate_consensus_analysis(self, agreement_type: str, agreement_level: int, valid_models: int, total_models: int) -> str:
         """تولید تحلیل توافق"""
         if agreement_type == 'STRONG_CONSENSUS':
-            if agreement_level >= 4:
-                return "توافق بسیار قوی بین اکثریت مدل‌ها - سیگنال با اعتماد بسیار بالا"
-            elif agreement_level == 3:
-                return f"توافق قوی بین ۳ مدل از {total_models} مدل - سیگنال با اعتماد بالا"
-        elif agreement_type == 'WEAK_CONSENSUS':
-            return f"توافق ضعیف بین ۲ مدل از {total_models} مدل - سیگنال با اعتماد متوسط"
+            if agreement_level == total_models:
+                return f"توافق کامل بین تمام {total_models} مدل - سیگنال با اعتماد بسیار بالا"
+            else:
+                return f"توافق قوی بین {agreement_level} مدل از {total_models} مدل - سیگنال با اعتماد بالا"
+        elif agreement_type == 'MEDIUM_CONSENSUS':
+            return f"توافق متوسط بین {agreement_level} مدل از {total_models} مدل - سیگنال با اعتماد متوسط"
         else:
-            return "عدم توافق بین مدل‌ها - سیگنال با اعتماد پایین"
+            return f"توافق ضعیف بین {agreement_level} مدل از {total_models} مدل - سیگنال با اعتماد پایین"
 
 # =================================================================================
 # --- کلاس اصلی تحلیلگر فارکس ---
@@ -931,10 +1070,10 @@ RETURN ONLY THIS JSON FORMAT (NO OTHER TEXT):
 
 class AdvancedForexAnalyzer:
     def __init__(self):
-        self.api_rate_limiter = AdvancedRateLimiter()
-        self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
+        self.api_manager = SmartAPIManager(USAGE_TRACKER_FILE)
+        self.cache_manager = SmartCacheManager(CACHE_FILE, 2)  # 2 ساعت کش
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
-        self.ai_manager = FiveAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY)
+        self.ai_manager = FlexibleAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY, self.api_manager)
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
         """تحلیل کامل یک جفت ارز"""
@@ -944,6 +1083,9 @@ class AdvancedForexAnalyzer:
         logging.info(f"🔍 شروع تحلیل پیشرفته برای {pair}")
         
         try:
+            # نمایش وضعیت مصرف API
+            logging.info(self.api_manager.get_usage_summary())
+            
             # دریافت داده‌های بازار
             htf_df = await self.get_market_data_async(pair, HIGH_TIMEFRAME)
             ltf_df = await self.get_market_data_async(pair, LOW_TIMEFRAME)
@@ -966,12 +1108,12 @@ class AdvancedForexAnalyzer:
                 logging.warning(f"تحلیل تکنیکال برای {pair} ناموفق بود")
                 return None
             
-            # تحلیل پنج‌گانه AI
-            ai_analysis = await self.ai_manager.get_five_ai_analysis(pair, technical_analysis)
+            # تحلیل AI هوشمند
+            ai_analysis = await self.ai_manager.get_adaptive_ai_analysis(pair, technical_analysis)
             
             if ai_analysis and ai_analysis.get('ACTION') != 'HOLD':
                 self.cache_manager.update_cache(pair, ai_analysis)
-                logging.info(f"✅ سیگنال معاملاتی برای {pair}: {ai_analysis['ACTION']} (توافق: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/5)")
+                logging.info(f"✅ سیگنال معاملاتی برای {pair}: {ai_analysis['ACTION']} (توافق: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/{ai_analysis.get('TOTAL_MODELS', 0)})")
                 return ai_analysis
             else:
                 logging.info(f"🔍 هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
@@ -1056,10 +1198,10 @@ class AdvancedForexAnalyzer:
 
 async def main():
     """تابع اصلی اجرای برنامه"""
-    logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (5 AI Engine v4.0)")
+    logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Flexible AI Engine v5.0)")
     
     import argparse
-    parser = argparse.ArgumentParser(description='سیستم تحلیل فارکس با 5 هوش مصنوعی')
+    parser = argparse.ArgumentParser(description='سیستم تحلیل فارکس با AI هوشمند')
     parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص (مثال: EUR/USD)")
     parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزهای پیش‌فرض")
     parser.add_argument("--pairs", type=str, help="تحلیل جفت ارزهای مشخص شده (جدا شده با کاما)")
@@ -1073,146 +1215,70 @@ async def main():
     elif args.all:
         pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
     else:
-        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:5]
-        logging.info(f"استفاده از 5 جفت ارز اصلی به صورت پیش‌فرض")
+        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:3]  # کاهش به 3 جفت برای صرفه‌جویی در API
+        logging.info(f"استفاده از 3 جفت ارز اصلی به صورت پیش‌فرض")
 
     logging.info(f"🔍 جفت ارزهای مورد تحلیل: {', '.join(pairs_to_analyze)}")
     
     analyzer = AdvancedForexAnalyzer()
     signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
 
-    # تقسیم سیگنال‌ها بر اساس سطح توافق
-    strong_consensus_signals = []  # 4-5 موافق
-    medium_consensus_signals = []  # 3 موافق
-    weak_consensus_signals = []    # 2 موافق
-    no_consensus_signals = []      # 0-1 موافق
+    # تقسیم سیگنال‌ها بر اساس سطح توافق و تعداد مدل‌ها
+    strong_consensus_signals = []
+    medium_consensus_signals = []
+    weak_consensus_signals = []
     
     for signal in signals:
-        agreement_level = signal.get('AGREEMENT_LEVEL', 0)
-        if agreement_level >= 4:
+        agreement_type = signal.get('AGREEMENT_TYPE', '')
+        total_models = signal.get('TOTAL_MODELS', 0)
+        
+        if agreement_type == 'STRONG_CONSENSUS':
             strong_consensus_signals.append(signal)
-        elif agreement_level == 3:
+        elif agreement_type == 'MEDIUM_CONSENSUS':
             medium_consensus_signals.append(signal)
-        elif agreement_level == 2:
-            weak_consensus_signals.append(signal)
         else:
-            no_consensus_signals.append(signal)
+            weak_consensus_signals.append(signal)
 
-    # ذخیره سیگنال‌های با توافق قوی (4-5 موافق)
+    # ذخیره سیگنال‌ها در فایل‌های مختلف
     if strong_consensus_signals:
-        strong_conf_file = "strong_consensus_signals.json"
-        cleaned_strong_signals = []
-        
-        for signal in strong_consensus_signals:
-            cleaned_signal = {
-                'SYMBOL': signal.get('SYMBOL', 'Unknown'),
-                'ACTION': signal.get('ACTION', 'HOLD'),
-                'CONFIDENCE': signal.get('CONFIDENCE', 0),
-                'AGREEMENT_LEVEL': signal.get('AGREEMENT_LEVEL', 0),
-                'VALID_MODELS': signal.get('VALID_MODELS', 0),
-                'TOTAL_MODELS': signal.get('TOTAL_MODELS', 5),
-                'AGREEMENT_TYPE': signal.get('AGREEMENT_TYPE', 'UNKNOWN'),
-                'ENTRY_ZONE': signal.get('ENTRY_ZONE', 'N/A'),
-                'STOP_LOSS': signal.get('STOP_LOSS', 'N/A'),
-                'TAKE_PROFIT': signal.get('TAKE_PROFIT', 'N/A'),
-                'RISK_REWARD_RATIO': signal.get('RISK_REWARD_RATIO', 'N/A'),
-                'EXPIRATION_H': signal.get('EXPIRATION_H', 0),
-                'CONSENSUS_ANALYSIS': signal.get('CONSENSUS_ANALYSIS', ''),
-                'TRADE_RATIONALE': signal.get('TRADE_RATIONALE', ''),
-                'MODEL_BREAKDOWN': signal.get('MODEL_BREAKDOWN', {}),
-                'TIMESTAMP': signal.get('timestamp', datetime.now(UTC).isoformat())
-            }
-            cleaned_strong_signals.append(cleaned_signal)
-        
-        with open(strong_conf_file, 'w', encoding='utf-8') as f:
-            json.dump(cleaned_strong_signals, f, indent=4, ensure_ascii=False)
-        
-        logging.info(f"🎯 {len(strong_consensus_signals)} سیگنال با توافق قوی در {strong_conf_file} ذخیره شد")
+        strong_file = "strong_consensus_signals.json"
+        with open(strong_file, 'w', encoding='utf-8') as f:
+            json.dump(strong_consensus_signals, f, indent=4, ensure_ascii=False)
+        logging.info(f"🎯 {len(strong_consensus_signals)} سیگنال با توافق قوی در {strong_file} ذخیره شد")
 
-    # ذخیره سیگنال‌های با توافق متوسط (3 موافق)
     if medium_consensus_signals:
-        medium_conf_file = "medium_consensus_signals.json"
-        cleaned_medium_signals = []
-        
-        for signal in medium_consensus_signals:
-            cleaned_signal = {
-                'SYMBOL': signal.get('SYMBOL', 'Unknown'),
-                'ACTION': signal.get('ACTION', 'HOLD'),
-                'CONFIDENCE': signal.get('CONFIDENCE', 0),
-                'AGREEMENT_LEVEL': signal.get('AGREEMENT_LEVEL', 0),
-                'VALID_MODELS': signal.get('VALID_MODELS', 0),
-                'TOTAL_MODELS': signal.get('TOTAL_MODELS', 5),
-                'AGREEMENT_TYPE': signal.get('AGREEMENT_TYPE', 'UNKNOWN'),
-                'ENTRY_ZONE': signal.get('ENTRY_ZONE', 'N/A'),
-                'STOP_LOSS': signal.get('STOP_LOSS', 'N/A'),
-                'TAKE_PROFIT': signal.get('TAKE_PROFIT', 'N/A'),
-                'RISK_REWARD_RATIO': signal.get('RISK_REWARD_RATIO', 'N/A'),
-                'EXPIRATION_H': signal.get('EXPIRATION_H', 0),
-                'CONSENSUS_ANALYSIS': signal.get('CONSENSUS_ANALYSIS', ''),
-                'TRADE_RATIONALE': signal.get('TRADE_RATIONALE', ''),
-                'MODEL_BREAKDOWN': signal.get('MODEL_BREAKDOWN', {}),
-                'TIMESTAMP': signal.get('timestamp', datetime.now(UTC).isoformat())
-            }
-            cleaned_medium_signals.append(cleaned_signal)
-        
-        with open(medium_conf_file, 'w', encoding='utf-8') as f:
-            json.dump(cleaned_medium_signals, f, indent=4, ensure_ascii=False)
-        
-        logging.info(f"📊 {len(medium_consensus_signals)} سیگنال با توافق متوسط در {medium_conf_file} ذخیره شد")
+        medium_file = "medium_consensus_signals.json"
+        with open(medium_file, 'w', encoding='utf-8') as f:
+            json.dump(medium_consensus_signals, f, indent=4, ensure_ascii=False)
+        logging.info(f"📊 {len(medium_consensus_signals)} سیگنال با توافق متوسط در {medium_file} ذخیره شد")
 
-    # ذخیره سیگنال‌های با توافق ضعیف و بدون توافق
-    other_signals = weak_consensus_signals + no_consensus_signals
-    if other_signals:
-        other_conf_file = "other_signals.json"
-        cleaned_other_signals = []
-        
-        for signal in other_signals:
-            cleaned_signal = {
-                'SYMBOL': signal.get('SYMBOL', 'Unknown'),
-                'ACTION': signal.get('ACTION', 'HOLD'),
-                'CONFIDENCE': signal.get('CONFIDENCE', 0),
-                'AGREEMENT_LEVEL': signal.get('AGREEMENT_LEVEL', 0),
-                'VALID_MODELS': signal.get('VALID_MODELS', 0),
-                'TOTAL_MODELS': signal.get('TOTAL_MODELS', 5),
-                'AGREEMENT_TYPE': signal.get('AGREEMENT_TYPE', 'UNKNOWN'),
-                'ENTRY_ZONE': signal.get('ENTRY_ZONE', 'N/A'),
-                'STOP_LOSS': signal.get('STOP_LOSS', 'N/A'),
-                'TAKE_PROFIT': signal.get('TAKE_PROFIT', 'N/A'),
-                'RISK_REWARD_RATIO': signal.get('RISK_REWARD_RATIO', 'N/A'),
-                'EXPIRATION_H': signal.get('EXPIRATION_H', 0),
-                'CONSENSUS_ANALYSIS': signal.get('CONSENSUS_ANALYSIS', ''),
-                'TRADE_RATIONALE': signal.get('TRADE_RATIONALE', ''),
-                'MODEL_BREAKDOWN': signal.get('MODEL_BREAKDOWN', {}),
-                'TIMESTAMP': signal.get('timestamp', datetime.now(UTC).isoformat())
-            }
-            cleaned_other_signals.append(cleaned_signal)
-        
-        with open(other_conf_file, 'w', encoding='utf-8') as f:
-            json.dump(cleaned_other_signals, f, indent=4, ensure_ascii=False)
-        
-        logging.info(f"📈 {len(other_signals)} سیگنال با توافق ضعیف/بدون توافق در {other_conf_file} ذخیره شد")
+    if weak_consensus_signals:
+        weak_file = "weak_consensus_signals.json"
+        with open(weak_file, 'w', encoding='utf-8') as f:
+            json.dump(weak_consensus_signals, f, indent=4, ensure_ascii=False)
+        logging.info(f"📈 {len(weak_consensus_signals)} سیگنال با توافق ضعیف در {weak_file} ذخیره شد")
 
     # نمایش خلاصه نتایج
     logging.info("📈 خلاصه سیگنال‌های معاملاتی:")
     
-    logging.info("🎯 سیگنال‌های با توافق قوی (4-5 موافق):")
-    for signal in strong_consensus_signals:
-        action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/5)")
-    
-    logging.info("📊 سیگنال‌های با توافق متوسط (3 موافق):")
-    for signal in medium_consensus_signals:
-        action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/5)")
-    
-    logging.info("📈 سیگنال‌های با توافق ضعیف (2 موافق):")
-    for signal in weak_consensus_signals:
-        action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/5)")
+    for category, signals_list, icon in [
+        ("سیگنال‌های با توافق قوی", strong_consensus_signals, "🎯"),
+        ("سیگنال‌های با توافق متوسط", medium_consensus_signals, "📊"),
+        ("سیگنال‌های با توافق ضعیف", weak_consensus_signals, "📈")
+    ]:
+        if signals_list:
+            logging.info(f"{icon} {category}:")
+            for signal in signals_list:
+                action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
+                logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/{signal['TOTAL_MODELS']})")
 
     if not signals:
         logging.info("🔍 هیچ سیگنال معاملاتی‌ای در این اجرا شناسایی نشد")
 
+    # نمایش وضعیت نهایی مصرف API
+    analyzer.api_manager.save_usage_data()
+    logging.info(analyzer.api_manager.get_usage_summary())
+    
     logging.info("🏁 پایان اجرای سیستم")
 
 if __name__ == "__main__":
