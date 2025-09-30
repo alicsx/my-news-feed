@@ -1,0 +1,18 @@
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 1,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-09-30T13:45:27.897888+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY_ZONE": "1.08500-1.08600",
+    "STOP_LOSS": "1.08700",
+    "TAKE_PROFIT": "1.08200",
+    "RISK_REWARD_RATIO": "1.2",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "تحلیل فنی بر اساس روند و مومنتوم"
+  }
+]
