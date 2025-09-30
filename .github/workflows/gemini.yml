@@ -30,12 +30,21 @@ on:
 env:
   PYTHON_VERSION: '3.12'
   OUTPUT_DIR: 'results'
-
+  
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  
 jobs:
   forex-analysis:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    
+
+    permissions:
+      contents: write
+      issues: write
+      
     strategy:
       matrix:
         python-version: [3.12]
