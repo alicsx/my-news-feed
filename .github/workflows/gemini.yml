@@ -65,7 +65,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install google-generativeai pandas pandas-ta aiohttp asyncio python-dotenv requests jq 
+        pip install google-generativeai pandas pandas-ta aiohttp asyncio python-dotenv requests jq TA-Lib
         
     - name: Create results directory
       run: mkdir -p ${{ env.OUTPUT_DIR }}
