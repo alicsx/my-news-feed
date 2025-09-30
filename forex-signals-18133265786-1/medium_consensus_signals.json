@@ -1,0 +1,18 @@
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-09-30T14:28:19.742068+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY_ZONE": "1.08450-1.08500",
+    "STOP_LOSS": "1.08300",
+    "TAKE_PROFIT": "1.08740",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "تحلیل فنی بر اساس روند و مومنتوم"
+  }
+]
