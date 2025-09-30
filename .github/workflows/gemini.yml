@@ -1,59 +1,194 @@
-name: Advanced Forex Analysis
-description: Advanced Forex trading analysis with hybrid AI
+name: Forex AI Analysis
+
 on:
   schedule:
-    - cron: '0 */2 * * *'  # اجرای هر ۲ ساعت
-  workflow_dispatch:  # اجرای دستی
+    # اجرای هر 2 ساعت در ساعت‌های زوج
+    - cron: '0 */2 * * *'
+    # اجرای روزانه در ساعت 8 صبح به وقت UTC
+    - cron: '0 8 * * *'
+  workflow_dispatch:  # امکان اجرای دستی
+    inputs:
+      pairs:
+        description: 'جفت ارزها (جدا شده با کاما)'
+        required: false
+        default: 'EUR/USD,GBP/USD,USD/JPY,USD/CHF,AUD/USD'
+      all_pairs:
+        description: 'تحلیل همه جفت ارزها'
+        required: false
+        type: boolean
+        default: false
+      analysis_type:
+        description: 'نوع تحلیل'
+        required: false
+        type: choice
+        options:
+        - 'standard'
+        - 'deep'
+        - 'quick'
+        default: 'standard'
+
+env:
+  PYTHON_VERSION: '3.11'
+  OUTPUT_DIR: 'results'
 
 jobs:
-  analyze:
+  forex-analysis:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     
+    strategy:
+      matrix:
+        python-version: [3.11]
+        
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.12'
+        python-version: ${{ matrix.python-version }}
         
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
-        pip install google-generativeai pandas pandas-ta aiohttp requests TA-Lib
+        sudo apt-get update
+        sudo apt-get install -y python3-pip build-essential
         
-    - name: Run Forex Analysis
+    - name: Cache Python packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Create results directory
+      run: mkdir -p ${{ env.OUTPUT_DIR }}
+      
+    - name: Run Forex AI Analysis
       env:
         GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         TWELVEDATA_API_KEY: ${{ secrets.TWELVEDATA_API_KEY }}
         CLOUDFLARE_AI_API_KEY: ${{ secrets.CLOUDFLARE_AI_API_KEY }}
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       run: |
-        python gemini_trader.py --all
+        echo "🔄 شروع تحلیل فارکس با AI چهارگانه..."
         
-    - name: Upload results
+        # تعیین جفت ارزها بر اساس ورودی
+        if [ "${{ github.event.inputs.all_pairs }}" = "true" ]; then
+          echo "🔍 تحلیل همه جفت ارزها"
+          python forex_ai_analyzer.py --all
+        elif [ -n "${{ github.event.inputs.pairs }}" ]; then
+          echo "🔍 تحلیل جفت ارزهای مشخص شده: ${{ github.event.inputs.pairs }}"
+          python forex_ai_analyzer.py --pairs "${{ github.event.inputs.pairs }}"
+        else
+          echo "🔍 تحلیل ۵ جفت ارز اصلی به صورت پیش‌فرض"
+          python forex_ai_analyzer.py
+        fi
+        
+        echo "✅ تحلیل کامل شد"
+        
+    - name: Archive results
       uses: actions/upload-artifact@v4
       with:
-        name: forex-analysis-results
+        name: forex-signals-${{ github.run_id }}-${{ github.run_attempt }}
         path: |
-          high_confidence_signals.json
-          low_confidence_signals.json
+          strong_consensus_signals.json
+          medium_consensus_signals.json
+          weak_consensus_signals.json
           trading_log.log
           signal_cache.json
-        retention-days: 7
+        retention-days: 30
+        if-no-files-found: error
         
-    - name: Upload results to GitHub Pages (Optional)
+    - name: Upload results to workflow summary
+      run: |
+        echo "# 📊 نتایج تحلیل فارکس AI" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**زمان اجرا:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # بررسی وجود فایل‌های سیگنال و نمایش خلاصه
+        if [ -f "strong_consensus_signals.json" ]; then
+          STRONG_COUNT=$(jq length strong_consensus_signals.json)
+          echo "## 🎯 سیگنال‌های با توافق قوی: $STRONG_COUNT" >> $GITHUB_STEP_SUMMARY
+          jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/4\n- **سطح ورود:** \(.ENTRY_ZONE)\n- **حد ضرر:** \(.STOP_LOSS)\n- **حد سود ۱:** \(.TAKE_PROFIT_1)\n- **نسبت سود به زیان:** \(.RISK_REWARD_RATIO)\n- **انقضا:** \(.EXPIRATION_H) ساعت\n- **نوع معامله:** \(.TRADE_TYPE)\n- **امتیاز فنی:** \(.TECHNICAL_SCORE)/100\n\n"' strong_consensus_signals.json >> $GITHUB_STEP_SUMMARY
+        else
+          echo "## 🎯 سیگنال‌های با توافق قوی: ۰" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -f "medium_consensus_signals.json" ]; then
+          MEDIUM_COUNT=$(jq length medium_consensus_signals.json)
+          echo "## 📊 سیگنال‌های با توافق متوسط: $MEDIUM_COUNT" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "## 📊 سیگنال‌های با توافق متوسط: ۰" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -f "weak_consensus_signals.json" ]; then
+          WEAK_COUNT=$(jq length weak_consensus_signals.json)
+          echo "## 📈 سیگنال‌های با توافق ضعیف: $WEAK_COUNT" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "## 📈 سیگنال‌های با توافق ضعیف: ۰" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "---" >> $GITHUB_STEP_SUMMARY
+        echo "🤖 *تولید شده توسط سیستم تحلیل فارکس با AI چهارگانه*" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Send success notification
       if: success()
-      uses: peaceiris/actions-gh-pages@v3
+      uses: actions/github-script@v6
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
-        keep_files: false
-        publish_branch: gh-pages
-        force_orphan: true
-        commit_message: '📈 Update Forex AI Signals - ${{ github.run_id }}'
-        
-    - name: Send notification on failure
+        script: |
+          const fs = require('fs');
+          
+          let message = '✅ تحلیل فارکس با موفقیت انجام شد\\n\\n';
+          
+          // خواندن فایل‌های سیگنال
+          try {
+            if (fs.existsSync('strong_consensus_signals.json')) {
+              const strongSignals = JSON.parse(fs.readFileSync('strong_consensus_signals.json', 'utf8'));
+              message += `🎯 سیگنال‌های قوی: ${strongSignals.length}\\n`;
+              
+              strongSignals.forEach(signal => {
+                message += `• ${signal.SYMBOL} - ${signal.ACTION} (اعتماد: ${signal.CONFIDENCE}/10)\\n`;
+              });
+            }
+            
+            if (fs.existsSync('medium_consensus_signals.json')) {
+              const mediumSignals = JSON.parse(fs.readFileSync('medium_consensus_signals.json', 'utf8'));
+              message += `📊 سیگنال‌های متوسط: ${mediumSignals.length}\\n`;
+            }
+            
+            if (fs.existsSync('weak_consensus_signals.json')) {
+              const weakSignals = JSON.parse(fs.readFileSync('weak_consensus_signals.json', 'utf8'));
+              message += `📈 سیگنال‌های ضعیف: ${weakSignals.length}\\n`;
+            }
+            
+            if (message === '✅ تحلیل فارکس با موفقیت انجام شد\\n\\n') {
+              message += '🔍 هیچ سیگنال معاملاتی‌ای شناسایی نشد';
+            }
+            
+          } catch (error) {
+            message += '📝 خطا در خواندن نتایج';
+          }
+          
+          // ایجاد issue برای لاگ‌گیری (اختیاری)
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `📈 گزارش تحلیل فارکس - ${new Date().toLocaleDateString('fa-IR')}`,
+            body: message,
+            labels: ['forex-analysis', 'automated']
+          });
+          
+    - name: Send failure notification
       if: failure()
       uses: actions/github-script@v6
       with:
@@ -61,6 +196,33 @@ jobs:
           github.rest.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            title: '❌ Forex AI Analysis Failed',
-            body: `Workflow run failed: ${{ github.run_id }}`
-          })
+            title: '❌ خطا در تحلیل فارکس',
+            body: `Workflow ${context.workflow} failed in run ${context.runId}`,
+            labels: ['forex-analysis', 'failure']
+          });
+
+  deploy-results:
+    needs: forex-analysis
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Download analysis results
+      uses: actions/download-artifact@v4
+      with:
+        pattern: forex-signals-*
+        path: ./results
+        
+    - name: List downloaded files
+      run: ls -la ./results/
+      
+    - name: Deploy to GitHub Pages (Optional)
+      if: success()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./results
+        keep_files: true
+        publish_branch: gh-pages
+        force_orphan: false
+        commit_message: '📈 Update Forex AI Signals - ${{ github.run_id }}'
