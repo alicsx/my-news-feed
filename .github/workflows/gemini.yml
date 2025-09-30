@@ -2,11 +2,9 @@ name: Forex AI Analysis
 
 on:
   schedule:
-    # اجرای هر 2 ساعت در ساعت‌های زوج
     - cron: '0 */2 * * *'
-    # اجرای روزانه در ساعت 8 صبح به وقت UTC
     - cron: '0 8 * * *'
-  workflow_dispatch:  # امکان اجرای دستی
+  workflow_dispatch:
     inputs:
       pairs:
         description: 'جفت ارزها (جدا شده با کاما)'
@@ -20,58 +18,37 @@ on:
 
 env:
   PYTHON_VERSION: '3.12'
-  OUTPUT_DIR: 'results'
   
 permissions:
   contents: write
   issues: write
-  pull-requests: write
   
 jobs:
   forex-analysis:
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
-    permissions:
-      contents: write
-      issues: write
-      
-    strategy:
-      matrix:
-        python-version: [3.12]
-        
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python ${{ env.PYTHON_VERSION }}
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: ${{ env.PYTHON_VERSION }}
         
     - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-pip build-essential jq
         
-    - name: Cache Python packages
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-          
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install google-generativeai pandas pandas-ta aiohttp asyncio python-dotenv requests
         
-    - name: Create results directory
-      run: mkdir -p ${{ env.OUTPUT_DIR }}
-      
     - name: Run Flexible Forex AI Analysis
       env:
         GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
@@ -81,7 +58,6 @@ jobs:
         GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       run: |
         echo "🔄 شروع تحلیل فارکس با AI هوشمند و انعطاف‌پذیر..."
-        echo "📊 وضعیت APIها: Gemini, Cloudflare, Groq"
         
         # تعیین جفت ارزها بر اساس ورودی
         if [ "${{ github.event.inputs.all_pairs }}" = "true" ]; then
@@ -96,26 +72,48 @@ jobs:
         fi
         
         echo "✅ تحلیل کامل شد"
+        echo "📁 فایل‌های ایجاد شده:"
+        ls -la *.json *.log || echo "فایلی یافت نشد"
         
-    - name: Archive results
-      uses: actions/upload-artifact@v4
-      with:
-        name: forex-signals-${{ github.run_id }}-${{ github.run_attempt }}
-        path: |
-          strong_consensus_signals.json
-          medium_consensus_signals.json
-          weak_consensus_signals.json
-          trading_log.log
-          signal_cache.json
-          api_usage_tracker.json
-        retention-days: 30
-        if-no-files-found: warn
+    - name: Commit and Push Results to Repository
+      run: |
+        echo "📊 بررسی فایل‌های ایجاد شده در root:"
+        ls -la *.json *.log 2>/dev/null || echo "⚠️ فایل JSON یا LOG یافت نشد"
+        
+        # پیکربندی git
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # اضافه کردن تمام فایل‌های سیگنال و لاگ
+        git add *.json *.log 2>/dev/null || true
+        
+        # بررسی تغییرات
+        if git status --porcelain | grep -E '\.(json|log)$'; then
+          echo "🔄 تغییرات شناسایی شد:"
+          git status --porcelain
+          
+          # ایجاد commit
+          git commit -m "📈 به‌روزرسانی سیگنال‌های فارکس - $(date +'%Y-%m-%d %H:%M UTC')"
+          
+          # push تغییرات
+          git push
+          echo "✅ فایل‌های سیگنال با موفقیت به ریپو push شدند"
+        else
+          echo "🔍 هیچ تغییر قابل توجهی در فایل‌ها وجود ندارد"
+        fi
         
     - name: Upload results to workflow summary
       run: |
         echo "# 🎯 نتایج تحلیل فارکس AI هوشمند" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "**زمان اجرا:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # بررسی و نمایش فایل‌های موجود
+        echo "## 📁 فایل‌های ایجاد شده" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        ls -la *.json *.log 2>/dev/null >> $GITHUB_STEP_SUMMARY || echo "فایلی یافت نشد" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         
         # نمایش وضعیت مصرف API
@@ -127,21 +125,21 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
         fi
         
-        # بررسی وجود فایل‌های سیگنال و نمایش خلاصه
-        if [ -f "strong_consensus_signals.json" ] && [ -s "strong_consensus_signals.json" ]; then
-          STRONG_COUNT=$(jq length strong_consensus_signals.json)
-          echo "## 🎯 سیگنال‌های با توافق قوی: $STRONG_COUNT" >> $GITHUB_STEP_SUMMARY
-          jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/\(.TOTAL_MODELS)\n- **سطح ورود:** \(.ENTRY_ZONE)\n- **حد ضرر:** \(.STOP_LOSS)\n- **حد سود:** \(.TAKE_PROFIT)\n- **نسبت سود به زیان:** \(.RISK_REWARD_RATIO)\n- **انقضا:** \(.EXPIRATION_H) ساعت\n- **تحلیل:** \(.ANALYSIS)\n- **مدل‌های موافق:** \(.VALID_MODELS) از \(.TOTAL_MODELS)\n\n"' strong_consensus_signals.json >> $GITHUB_STEP_SUMMARY
-        else
-          echo "## 🎯 سیگنال‌های با توافق قوی: ۰" >> $GITHUB_STEP_SUMMARY
-        fi
-        
+        # نمایش سیگنال‌ها
         if [ -f "medium_consensus_signals.json" ] && [ -s "medium_consensus_signals.json" ]; then
           MEDIUM_COUNT=$(jq length medium_consensus_signals.json)
           echo "## 📊 سیگنال‌های با توافق متوسط: $MEDIUM_COUNT" >> $GITHUB_STEP_SUMMARY
           jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/\(.TOTAL_MODELS)\n- **تحلیل:** \(.ANALYSIS)\n\n"' medium_consensus_signals.json >> $GITHUB_STEP_SUMMARY
         else
           echo "## 📊 سیگنال‌های با توافق متوسط: ۰" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -f "strong_consensus_signals.json" ] && [ -s "strong_consensus_signals.json" ]; then
+          STRONG_COUNT=$(jq length strong_consensus_signals.json)
+          echo "## 🎯 سیگنال‌های با توافق قوی: $STRONG_COUNT" >> $GITHUB_STEP_SUMMARY
+          jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/\(.TOTAL_MODELS)\n- **تحلیل:** \(.ANALYSIS)\n\n"' strong_consensus_signals.json >> $GITHUB_STEP_SUMMARY
+        else
+          echo "## 🎯 سیگنال‌های با توافق قوی: ۰" >> $GITHUB_STEP_SUMMARY
         fi
         
         if [ -f "weak_consensus_signals.json" ] && [ -s "weak_consensus_signals.json" ]; then
@@ -155,142 +153,59 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "---" >> $GITHUB_STEP_SUMMARY
         echo "🤖 *تولید شده توسط سیستم تحلیل فارکس با AI هوشمند و انعطاف‌پذیر*" >> $GITHUB_STEP_SUMMARY
-        echo "🔄 *مدیریت خودکار APIها: Gemini, Cloudflare, Groq*" >> $GITHUB_STEP_SUMMARY
 
-    - name: Commit and Push Results to Repository
-      run: |
-        # پیکربندی git
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        
-        # بررسی تغییرات در فایل‌های سیگنال
-        if git diff --name-only | grep -E '(strong_consensus_signals|medium_consensus_signals|weak_consensus_signals|api_usage_tracker)\.json'; then
-          echo "🔄 تغییرات در فایل‌های سیگنال شناسایی شد"
-          
-          # اضافه کردن فایل‌های سیگنال
-          git add strong_consensus_signals.json medium_consensus_signals.json weak_consensus_signals.json api_usage_tracker.json trading_log.log
-          
-          # ایجاد commit
-          git commit -m "📈 به‌روزرسانی سیگنال‌های فارکس - $(date +'%Y-%m-%d %H:%M')"
-          
-          # push تغییرات
-          git push
-          
-          echo "✅ فایل‌های سیگنال با موفقیت به ریپو push شدند"
-        else
-          echo "🔍 هیچ تغییر قابل توجهی در فایل‌های سیگنال وجود ندارد"
-        fi
-        
-    - name: Send success notification
-      if: success()
+    - name: Create Issue with Results
+      if: always()
       uses: actions/github-script@v7
       with:
         script: |
           const fs = require('fs');
+          let message = '## 📊 نتایج تحلیل فارکس\n\n';
           
-          let message = '✅ تحلیل فارکس با موفقیت انجام شد\\n\\n';
-          let hasSignals = false;
-          
-          // خواندن وضعیت مصرف API
           try {
-            if (fs.existsSync('api_usage_tracker.json')) {
-              const apiUsage = JSON.parse(fs.readFileSync('api_usage_tracker.json', 'utf8'));
-              message += '📊 **وضعیت مصرف API:**\\n';
-              for (const [provider, data] of Object.entries(apiUsage.providers)) {
-                const remaining = data.limit - data.used_today;
-                message += `• ${provider}: ${data.used_today}/${data.limit} (${remaining} باقیمانده)\\n`;
-              }
-              message += '\\n';
-            }
-          } catch (error) {
-            console.log('خطا در خواندن وضعیت API:', error);
-          }
-          
-          // خواندن فایل‌های سیگنال
-          try {
-            if (fs.existsSync('strong_consensus_signals.json')) {
-              const strongSignals = JSON.parse(fs.readFileSync('strong_consensus_signals.json', 'utf8'));
-              if (strongSignals.length > 0) {
-                hasSignals = true;
-                message += `🎯 **سیگنال‌های قوی:** ${strongSignals.length}\\n`;
-                strongSignals.forEach(signal => {
-                  const actionIcon = signal.ACTION === 'BUY' ? '🟢' : signal.ACTION === 'SELL' ? '🔴' : '⚪';
-                  message += `${actionIcon} ${signal.SYMBOL} - ${signal.ACTION} (اعتماد: ${signal.CONFIDENCE}/10, توافق: ${signal.AGREEMENT_LEVEL}/${signal.TOTAL_MODELS})\\n`;
-                });
-                message += '\\n';
-              }
-            }
+            // خواندن فایل‌های سیگنال
+            const files = ['strong_consensus_signals.json', 'medium_consensus_signals.json', 'weak_consensus_signals.json'];
+            let hasSignals = false;
             
-            if (fs.existsSync('medium_consensus_signals.json')) {
-              const mediumSignals = JSON.parse(fs.readFileSync('medium_consensus_signals.json', 'utf8'));
-              if (mediumSignals.length > 0) {
-                hasSignals = true;
-                message += `📊 **سیگنال‌های متوسط:** ${mediumSignals.length}\\n`;
-                mediumSignals.forEach(signal => {
-                  const actionIcon = signal.ACTION === 'BUY' ? '🟢' : signal.ACTION === 'SELL' ? '🔴' : '⚪';
-                  message += `${actionIcon} ${signal.SYMBOL} - ${signal.ACTION} (اعتماد: ${signal.CONFIDENCE}/10)\\n`;
-                });
-                message += '\\n';
-              }
-            }
-            
-            if (fs.existsSync('weak_consensus_signals.json')) {
-              const weakSignals = JSON.parse(fs.readFileSync('weak_consensus_signals.json', 'utf8'));
-              if (weakSignals.length > 0) {
-                hasSignals = true;
-                message += `📈 **سیگنال‌های ضعیف:** ${weakSignals.length}\\n`;
-                weakSignals.forEach(signal => {
-                  const actionIcon = signal.ACTION === 'BUY' ? '🟢' : signal.ACTION === 'SELL' ? '🔴' : '⚪';
-                  message += `${actionIcon} ${signal.SYMBOL} - ${signal.ACTION}\\n`;
-                });
+            for (const file of files) {
+              if (fs.existsSync(file)) {
+                const signals = JSON.parse(fs.readFileSync(file, 'utf8'));
+                if (signals.length > 0) {
+                  hasSignals = true;
+                  const type = file.includes('strong') ? 'قوی' : file.includes('medium') ? 'متوسط' : 'ضعیف';
+                  message += `### 🎯 سیگنال‌های ${type}: ${signals.length}\n`;
+                  
+                  signals.forEach(signal => {
+                    const icon = signal.ACTION === 'BUY' ? '🟢' : signal.ACTION === 'SELL' ? '🔴' : '⚪';
+                    message += `${icon} **${signal.SYMBOL}** - ${signal.ACTION} (اعتماد: ${signal.CONFIDENCE}/10)\n`;
+                    message += `   - توافق: ${signal.AGREEMENT_LEVEL}/${signal.TOTAL_MODELS}\n`;
+                    message += `   - تحلیل: ${signal.ANALYSIS || 'ندارد'}\n\n`;
+                  });
+                }
               }
             }
             
             if (!hasSignals) {
-              message += '🔍 **هیچ سیگنال معاملاتی‌ای شناسایی نشد**\\n';
+              message += '🔍 هیچ سیگنال معاملاتی‌ای شناسایی نشد\n\n';
+            }
+            
+            // اضافه کردن وضعیت API
+            if (fs.existsSync('api_usage_tracker.json')) {
+              const apiUsage = JSON.parse(fs.readFileSync('api_usage_tracker.json', 'utf8'));
+              message += '### 📊 وضعیت مصرف API\n';
+              message += '```json\n' + JSON.stringify(apiUsage, null, 2) + '\n```\n';
             }
             
           } catch (error) {
-            message += '📝 **خطا در خواندن نتایج**\\n';
-            console.log('خطا در خواندن سیگنال‌ها:', error);
+            message += '❌ خطا در خواندن نتایج\n';
+            console.error('Error:', error);
           }
           
-          // ایجاد issue برای لاگ‌گیری
-          github.rest.issues.create({
+          // ایجاد issue
+          await github.rest.issues.create({
             owner: context.repo.owner,
             repo: context.repo.repo,
             title: `📈 گزارش تحلیل فارکس - ${new Date().toISOString().split('T')[0]}`,
             body: message,
             labels: ['forex-analysis', 'automated']
           });
-
-  cleanup:
-    runs-on: ubuntu-latest
-    if: always()
-    
-    steps:
-    - name: Cleanup old artifacts
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const { data: artifacts } = await github.rest.actions.listArtifactsForRepo({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            per_page: 100
-          });
-          
-          const now = Date.now();
-          const retentionDays = 7; // حذف آرتیفکت‌های قدیمی‌تر از 7 روز
-          const retentionTime = retentionDays * 24 * 60 * 60 * 1000;
-          
-          for (const artifact of artifacts.artifacts) {
-            const createdAt = new Date(artifact.created_at).getTime();
-            if (now - createdAt > retentionTime) {
-              console.log(`Deleting old artifact: ${artifact.name}`);
-              await github.rest.actions.deleteArtifact({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                artifact_id: artifact.id
-              });
-            }
-          }
