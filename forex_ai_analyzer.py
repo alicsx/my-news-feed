@@ -47,7 +47,7 @@ CLOUDFLARE_MODELS = [
     "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
 ]
 GROQ_MODELS = [
-    "gemma2-8b-it",
+    "gemma-7b-it",
     "mixtral-8x7b-32768"
 ]
 
