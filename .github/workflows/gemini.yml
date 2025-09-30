@@ -17,15 +17,6 @@ on:
         required: false
         type: boolean
         default: false
-      analysis_type:
-        description: 'نوع تحلیل'
-        required: false
-        type: choice
-        options:
-        - 'standard'
-        - 'deep'
-        - 'quick'
-        default: 'standard'
 
 env:
   PYTHON_VERSION: '3.12'
@@ -51,8 +42,10 @@ jobs:
         
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v5
-      
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
@@ -61,7 +54,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y python3-pip build-essential
+        sudo apt-get install -y python3-pip build-essential jq
         
     - name: Cache Python packages
       uses: actions/cache@v4
@@ -74,7 +67,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install google-generativeai pandas pandas-ta aiohttp asyncio python-dotenv requests jq TA-Lib
+        pip install google-generativeai pandas pandas-ta aiohttp asyncio python-dotenv requests
         
     - name: Create results directory
       run: mkdir -p ${{ env.OUTPUT_DIR }}
@@ -98,7 +91,7 @@ jobs:
           echo "🔍 تحلیل جفت ارزهای مشخص شده: ${{ github.event.inputs.pairs }}"
           python flexible_forex_ai.py --pairs "${{ github.event.inputs.pairs }}"
         else
-          echo "🔍 تحلیل ۳ جفت ارز اصلی به صورت پیش‌فرض"
+          echo "🔍 تحلیل ۲ جفت ارز اصلی به صورت پیش‌فرض"
           python flexible_forex_ai.py
         fi
         
@@ -135,7 +128,7 @@ jobs:
         fi
         
         # بررسی وجود فایل‌های سیگنال و نمایش خلاصه
-        if [ -f "strong_consensus_signals.json" ]; then
+        if [ -f "strong_consensus_signals.json" ] && [ -s "strong_consensus_signals.json" ]; then
           STRONG_COUNT=$(jq length strong_consensus_signals.json)
           echo "## 🎯 سیگنال‌های با توافق قوی: $STRONG_COUNT" >> $GITHUB_STEP_SUMMARY
           jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/\(.TOTAL_MODELS)\n- **سطح ورود:** \(.ENTRY_ZONE)\n- **حد ضرر:** \(.STOP_LOSS)\n- **حد سود:** \(.TAKE_PROFIT)\n- **نسبت سود به زیان:** \(.RISK_REWARD_RATIO)\n- **انقضا:** \(.EXPIRATION_H) ساعت\n- **تحلیل:** \(.ANALYSIS)\n- **مدل‌های موافق:** \(.VALID_MODELS) از \(.TOTAL_MODELS)\n\n"' strong_consensus_signals.json >> $GITHUB_STEP_SUMMARY
@@ -143,18 +136,18 @@ jobs:
           echo "## 🎯 سیگنال‌های با توافق قوی: ۰" >> $GITHUB_STEP_SUMMARY
         fi
         
-        if [ -f "medium_consensus_signals.json" ]; then
+        if [ -f "medium_consensus_signals.json" ] && [ -s "medium_consensus_signals.json" ]; then
           MEDIUM_COUNT=$(jq length medium_consensus_signals.json)
           echo "## 📊 سیگنال‌های با توافق متوسط: $MEDIUM_COUNT" >> $GITHUB_STEP_SUMMARY
-          jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/\(.TOTAL_MODELS)\n- **تحلیل:** \(.CONSENSUS_ANALYSIS)\n\n"' medium_consensus_signals.json >> $GITHUB_STEP_SUMMARY
+          jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/\(.TOTAL_MODELS)\n- **تحلیل:** \(.ANALYSIS)\n\n"' medium_consensus_signals.json >> $GITHUB_STEP_SUMMARY
         else
           echo "## 📊 سیگنال‌های با توافق متوسط: ۰" >> $GITHUB_STEP_SUMMARY
         fi
         
-        if [ -f "weak_consensus_signals.json" ]; then
+        if [ -f "weak_consensus_signals.json" ] && [ -s "weak_consensus_signals.json" ]; then
           WEAK_COUNT=$(jq length weak_consensus_signals.json)
           echo "## 📈 سیگنال‌های با توافق ضعیف: $WEAK_COUNT" >> $GITHUB_STEP_SUMMARY
-          jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/\(.TOTAL_MODELS)\n- **تحلیل:** \(.CONSENSUS_ANALYSIS)\n\n"' weak_consensus_signals.json >> $GITHUB_STEP_SUMMARY
+          jq -r '.[] | "### \(.SYMBOL) - \(.ACTION) \n- **اعتماد:** \(.CONFIDENCE)/10\n- **توافق:** \(.AGREEMENT_LEVEL)/\(.TOTAL_MODELS)\n- **تحلیل:** \(.ANALYSIS)\n\n"' weak_consensus_signals.json >> $GITHUB_STEP_SUMMARY
         else
           echo "## 📈 سیگنال‌های با توافق ضعیف: ۰" >> $GITHUB_STEP_SUMMARY
         fi
@@ -163,10 +156,34 @@ jobs:
         echo "---" >> $GITHUB_STEP_SUMMARY
         echo "🤖 *تولید شده توسط سیستم تحلیل فارکس با AI هوشمند و انعطاف‌پذیر*" >> $GITHUB_STEP_SUMMARY
         echo "🔄 *مدیریت خودکار APIها: Gemini, Cloudflare, Groq*" >> $GITHUB_STEP_SUMMARY
+
+    - name: Commit and Push Results to Repository
+      run: |
+        # پیکربندی git
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # بررسی تغییرات در فایل‌های سیگنال
+        if git diff --name-only | grep -E '(strong_consensus_signals|medium_consensus_signals|weak_consensus_signals|api_usage_tracker)\.json'; then
+          echo "🔄 تغییرات در فایل‌های سیگنال شناسایی شد"
+          
+          # اضافه کردن فایل‌های سیگنال
+          git add strong_consensus_signals.json medium_consensus_signals.json weak_consensus_signals.json api_usage_tracker.json trading_log.log
+          
+          # ایجاد commit
+          git commit -m "📈 به‌روزرسانی سیگنال‌های فارکس - $(date +'%Y-%m-%d %H:%M')"
+          
+          # push تغییرات
+          git push
+          
+          echo "✅ فایل‌های سیگنال با موفقیت به ریپو push شدند"
+        else
+          echo "🔍 هیچ تغییر قابل توجهی در فایل‌های سیگنال وجود ندارد"
+        fi
         
     - name: Send success notification
       if: success()
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         script: |
           const fs = require('fs');
@@ -246,45 +263,6 @@ jobs:
             body: message,
             labels: ['forex-analysis', 'automated']
           });
-          
-    - name: Send failure notification
-      if: failure()
-      uses: actions/github-script@v6
-      with:
-        script: |
-          github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: '❌ خطا در تحلیل فارکس',
-            body: `Workflow ${context.workflow} failed in run ${context.runId}\n\nPlease check the workflow logs for details.`,
-            labels: ['forex-analysis', 'failure', 'bug']
-          });
-
-  deploy-results:
-    needs: forex-analysis
-    runs-on: ubuntu-latest
-    if: always()
-    
-    steps:
-    - name: Download analysis results
-      uses: actions/download-artifact@v4
-      with:
-        pattern: forex-signals-*
-        path: ./results
-        
-    - name: List downloaded files
-      run: ls -la ./results/
-      
-    - name: Deploy to GitHub Pages
-      if: success()
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./results
-        keep_files: true
-        publish_branch: gh-pages
-        force_orphan: false
-        commit_message: '📈 Update Forex AI Signals - ${{ github.run_id }}'
 
   cleanup:
     runs-on: ubuntu-latest
@@ -292,7 +270,7 @@ jobs:
     
     steps:
     - name: Cleanup old artifacts
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         script: |
           const { data: artifacts } = await github.rest.actions.listArtifactsForRepo({
