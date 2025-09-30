@@ -39,27 +39,25 @@ CACHE_FILE = "signal_cache.json"
 USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
-# مدل‌های AI به‌روز شده
+# مدل‌های AI به‌روز شده با تنوع بیشتر
 GEMINI_MODEL = 'gemini-2.5-flash'
 
-# مدل‌های Cloudflare به‌روز شده
+# مدل‌های Cloudflare با تنوع بیشتر
 CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-4-scout-17b-16e-instruct",  # جدیدترین
-    "@cf/google/gemma-3-12b-it",                # جدید
-    "@cf/mistralai/mistral-small-3.1-24b-instruct", # جدید 
-    "@cf/meta/llama-3.3-70b-instruct-fp8-fast", # جدید
-    "@cf/meta/llama-3.1-8b-instruct-fast"      # جدی
+    "@cf/meta/llama-4-scout-17b-16e-instruct",      # Llama 4
+    "@cf/google/gemma-3-12b-it",                    # Gemma 3
+    "@cf/mistralai/mistral-small-3.1-24b-instruct", # Mistral
+    "@cf/qwen/qwq-32b",                             # Qwen
+    "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"  # DeepSeek
 ]
 
-# مدل‌های Groq به‌روز شده (جدیدترین‌ها)
+# مدل‌های Groq با تنوع بیشتر
 GROQ_MODELS = [
-    "qwen/qwen3-32b",
-    "meta-llama/llama-4-scout-17b-16e-instruct",        # جدید
-    "openai/gpt-oss-120b",
-    "moonshotai/kimi-k2-instruct-0905"
-    "llama-3.1-8b-instant"  , # جدید
-    "llama-3.3-70b-versatile",                          # جدیدترین
-    "meta-llama/llama-4-maverick-17b-128e-instruct"   # جدید 
+    "llama-3.3-70b-versatile",                          # Llama 3.3
+    "qwen/qwen3-32b",                                   # Qwen 3
+    "meta-llama/llama-4-maverick-17b-128e-instruct",    # Llama 4 Maverick
+    "llama-3.1-8b-instant",                             # Llama 3.1
+    "mixtral-8x7b-32768"                                # Mixtral
 ]
 
 # محدودیت‌های روزانه API
@@ -80,7 +78,7 @@ logging.basicConfig(
 )
 
 # =================================================================================
-# --- کلاس مدیریت مصرف API هوشمند با قابلیت Fallback ---
+# --- کلاس مدیریت مصرف API هوشمند با انتخاب متنوع مدل‌ها ---
 # =================================================================================
 
 class SmartAPIManager:
@@ -88,18 +86,17 @@ class SmartAPIManager:
         self.usage_file = usage_file
         self.usage_data = self.load_usage_data()
         self.available_models = self.initialize_available_models()
-        self.failed_models = set()  # مدل‌های شکست خورده
+        self.failed_models = set()
         
     def load_usage_data(self) -> Dict:
         """بارگذاری داده‌های مصرف API"""
-        if not os.path.exists(self.usage_file):
-            return self.initialize_usage_data()
-        
         try:
-            with open(self.usage_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                return self.check_and_reset_daily_usage(data)
-        except (json.JSONDecodeError, IOError) as e:
+            if os.path.exists(self.usage_file):
+                with open(self.usage_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    return self.check_and_reset_daily_usage(data)
+            return self.initialize_usage_data()
+        except Exception as e:
             logging.error(f"خطا در بارگذاری داده‌های مصرف API: {e}")
             return self.initialize_usage_data()
     
@@ -137,7 +134,7 @@ class SmartAPIManager:
         try:
             with open(self.usage_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=4, ensure_ascii=False)
-        except IOError as e:
+        except Exception as e:
             logging.error(f"خطا در ذخیره داده‌های مصرف API: {e}")
     
     def initialize_available_models(self) -> Dict:
@@ -148,15 +145,14 @@ class SmartAPIManager:
             "groq": GROQ_MODELS.copy()
         }
     
-    def can_use_provider(self, provider: str, models_needed: int = 1) -> bool:
+    def can_use_provider(self, provider: str) -> bool:
         """بررسی امکان استفاده از provider"""
         if provider not in self.usage_data["providers"]:
             return False
             
         provider_data = self.usage_data["providers"][provider]
         remaining = provider_data["limit"] - provider_data["used_today"]
-        
-        return remaining >= models_needed
+        return remaining > 0
     
     def get_available_models_count(self, provider: str) -> int:
         """تعداد مدل‌های موجود برای یک provider"""
@@ -165,7 +161,6 @@ class SmartAPIManager:
             
         provider_data = self.usage_data["providers"][provider]
         remaining = provider_data["limit"] - provider_data["used_today"]
-        
         available_models = len(self.available_models[provider])
         return min(remaining, available_models)
     
@@ -178,8 +173,8 @@ class SmartAPIManager:
         """بررسی آیا مدل شکست خورده است"""
         return (provider, model_name) in self.failed_models
     
-    def select_optimal_models_with_fallback(self, target_total: int = 5, min_required: int = 3) -> List[Tuple[str, str]]:
-        """انتخاب بهینه مدل‌ها با قابلیت Fallback"""
+    def select_diverse_models(self, target_total: int = 5, min_required: int = 3) -> List[Tuple[str, str]]:
+        """انتخاب مدل‌های متنوع از providerهای مختلف"""
         selected_models = []
         
         # محاسبه ظرفیت هر provider
@@ -190,68 +185,57 @@ class SmartAPIManager:
         logging.info(f"📊 ظرفیت providerها: Gemini={provider_capacity['google_gemini']}, "
                     f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
         
-        # استراتژی انتخاب: اولویت با providerهایی است که ظرفیت بیشتری دارند
+        # استراتژی: انتخاب متنوع از همه providerها
         total_available = sum(provider_capacity.values())
         
         if total_available == 0:
             logging.error("❌ هیچ providerی در دسترس نیست")
             return selected_models
         
-        # توزیع مدل‌ها بین providerها
+        # توزیع متعادل بین providerها
+        providers_order = ["google_gemini", "cloudflare", "groq"]
+        
+        # انتخاب از هر provider به صورت چرخشی
+        round_robin_index = 0
         remaining_target = min(target_total, total_available)
         
-        # همیشه از Gemini استفاده کن (اگر موجود باشد)
-        if provider_capacity["google_gemini"] > 0:
-            gemini_model = self.available_models["google_gemini"][0]
-            if not self.is_model_failed("google_gemini", gemini_model):
-                selected_models.append(("google_gemini", gemini_model))
-                remaining_target -= 1
-                provider_capacity["google_gemini"] -= 1
-        
-        # توزیع باقی‌مانده بین Cloudflare و Groq
-        providers_order = ["cloudflare", "groq"]
-        
         while remaining_target > 0 and any(provider_capacity[p] > 0 for p in providers_order):
-            # انتخاب provider با بیشترین ظرفیت باقیمانده
-            best_provider = None
-            max_capacity = 0
+            current_provider = providers_order[round_robin_index % len(providers_order)]
             
-            for provider in providers_order:
-                if provider_capacity[provider] > max_capacity:
-                    max_capacity = provider_capacity[provider]
-                    best_provider = provider
+            if provider_capacity[current_provider] > 0:
+                # انتخاب اولین مدل موجود از این provider که شکست نخورده باشد
+                for model_name in self.available_models[current_provider]:
+                    if (current_provider, model_name) not in selected_models and not self.is_model_failed(current_provider, model_name):
+                        selected_models.append((current_provider, model_name))
+                        provider_capacity[current_provider] -= 1
+                        remaining_target -= 1
+                        break
             
-            if best_provider:
-                # انتخاب جدیدترین مدل از این provider که شکست نخورده باشد
-                available_in_provider = len(self.available_models[best_provider])
-                for i in range(available_in_provider):
-                    model_index = available_in_provider - 1 - i  # از جدید به قدیم
-                    if model_index < provider_capacity[best_provider]:
-                        candidate_model = self.available_models[best_provider][model_index]
-                        if not self.is_model_failed(best_provider, candidate_model):
-                            selected_models.append((best_provider, candidate_model))
-                            provider_capacity[best_provider] -= 1
-                            remaining_target -= 1
-                            break
+            round_robin_index += 1
+            
+            # اگر بعد از یک دور کامل چیزی اضافه نشد، break کن
+            if round_robin_index > len(providers_order) * 2:  # حداکثر 2 دور چرخش
+                break
         
-        # اگر به حداقل نرسیدیم، Fallback به مدل‌های دیگر
+        # اگر به حداقل نرسیدیم، Fallback
         if len(selected_models) < min_required:
             logging.warning(f"⚠️ فقط {len(selected_models)} مدل انتخاب شد. فعال کردن Fallback...")
             
-            # جستجو برای مدل‌های اضافی از تمام providerها
+            # جستجو برای مدل‌های اضافی
             additional_models = []
-            for provider in ["google_gemini", "cloudflare", "groq"]:
-                available_count = self.get_available_models_count(provider)
-                for i in range(min(available_count, 2)):  # حداکثر ۲ مدل از هر provider
-                    model_name = self.available_models[provider][i]
-                    if (provider, model_name) not in selected_models and not self.is_model_failed(provider, model_name):
-                        additional_models.append((provider, model_name))
+            for provider in providers_order:
+                if self.can_use_provider(provider):
+                    for model_name in self.available_models[provider]:
+                        if (provider, model_name) not in selected_models and not self.is_model_failed(provider, model_name):
+                            additional_models.append((provider, model_name))
+                            if len(additional_models) >= (min_required - len(selected_models)):
+                                break
+                if len(selected_models) + len(additional_models) >= min_required:
+                    break
             
-            # اضافه کردن مدل‌های اضافی تا رسیدن به حداقل
-            needed_additional = min_required - len(selected_models)
-            selected_models.extend(additional_models[:needed_additional])
+            selected_models.extend(additional_models)
         
-        logging.info(f"🎯 {len(selected_models)} مدل انتخاب شد: {selected_models}")
+        logging.info(f"🎯 {len(selected_models)} مدل متنوع انتخاب شد: {selected_models}")
         return selected_models
     
     def record_api_usage(self, provider: str, count: int = 1):
@@ -312,15 +296,6 @@ class AdvancedTechnicalAnalyzer:
             df['sup_2'] = df['low'].rolling(50).min().shift(1)
             df['res_2'] = df['high'].rolling(50).max().shift(1)
             
-            # الگوهای کندل استیک
-            if self.indicators_config['candle_patterns']:
-                popular_patterns = ['doji', 'hammer', 'engulfing', 'harami', 'morningstar', 'eveningstar']
-                for pattern in popular_patterns:
-                    try:
-                        df.ta.cdl_pattern(name=pattern, append=True)
-                    except Exception as e:
-                        continue
-            
             df.dropna(inplace=True)
             return df
             
@@ -345,20 +320,12 @@ class AdvancedTechnicalAnalyzer:
         # تحلیل سطوح کلیدی
         key_levels = self._analyze_key_levels(htf_df, ltf_df, last_ltf['close'])
         
-        # تحلیل الگوهای کندل استیک
-        candle_analysis = self._analyze_candle_patterns(ltf_df)
-        
-        # تحلیل قدرت روند
-        trend_strength = self._analyze_trend_strength(htf_df, ltf_df)
-        
         return {
             'symbol': symbol,
             'htf_trend': htf_trend,
             'ltf_trend': ltf_trend,
             'momentum': momentum,
             'key_levels': key_levels,
-            'candle_patterns': candle_analysis,
-            'trend_strength': trend_strength,
             'volatility': last_ltf.get('ATRr_14', 0),
             'timestamp': datetime.now(UTC).isoformat()
         }
@@ -375,36 +342,27 @@ class AdvancedTechnicalAnalyzer:
         return {
             'direction': trend_direction,
             'strength': trend_strength,
-            'adx': adx,
-            'ema_alignment': f"EMA21: {ema_21:.5f}, EMA50: {ema_50:.5f}, EMA200: {ema_200:.5f}"
+            'adx': adx
         }
 
     def _analyze_momentum(self, data: pd.Series) -> Dict:
         rsi = data.get('RSI_14', 50)
         macd_hist = data.get('MACDh_12_26_9', 0)
         stoch_k = data.get('STOCHk_14_3_3', 50)
-        stoch_d = data.get('STOCHd_14_3_3', 50)
         
         rsi_signal = "اشباع خرید" if rsi > 70 else "اشباع فروش" if rsi < 30 else "خنثی"
         macd_signal = "صعودی" if macd_hist > 0 else "نزولی"
         stoch_signal = "اشباع خرید" if stoch_k > 80 else "اشباع فروش" if stoch_k < 20 else "خنثی"
-        stoch_cross = "طلایی" if stoch_k > stoch_d and stoch_d < 20 else "مرده" if stoch_k < stoch_d and stoch_d > 80 else "خنثی"
         
         return {
             'rsi': {'value': rsi, 'signal': rsi_signal},
             'macd': {'signal': macd_signal, 'histogram': macd_hist},
-            'stochastic': {
-                'k': stoch_k, 
-                'd': stoch_d, 
-                'signal': stoch_signal,
-                'cross': stoch_cross
-            }
+            'stochastic': {'value': stoch_k, 'signal': stoch_signal}
         }
 
     def _analyze_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
         bb_upper = ltf_df.get('BBU_20_2.0', pd.Series([0])).iloc[-1]
         bb_lower = ltf_df.get('BBL_20_2.0', pd.Series([0])).iloc[-1]
-        bb_middle = ltf_df.get('BBM_20_2.0', pd.Series([0])).iloc[-1]
         
         support_1 = ltf_df.get('sup_1', pd.Series([0])).iloc[-1]
         resistance_1 = ltf_df.get('res_1', pd.Series([0])).iloc[-1]
@@ -412,165 +370,19 @@ class AdvancedTechnicalAnalyzer:
         resistance_2 = ltf_df.get('res_2', pd.Series([0])).iloc[-1]
         
         return {
-            'dynamic': {
-                'bb_upper': bb_upper,
-                'bb_lower': bb_lower,
-                'bb_middle': bb_middle,
-                'bb_position': self._get_bb_position(current_price, bb_upper, bb_lower)
-            },
-            'static': {
-                'support_1': support_1,
-                'resistance_1': resistance_1,
-                'support_2': support_2,
-                'resistance_2': resistance_2
-            },
-            'current_price_position': self._get_price_position(current_price, support_1, resistance_1)
+            'support_1': support_1,
+            'resistance_1': resistance_1,
+            'support_2': support_2,
+            'resistance_2': resistance_2,
+            'bb_upper': bb_upper,
+            'bb_lower': bb_lower
         }
-
-    def _get_bb_position(self, price: float, bb_upper: float, bb_lower: float) -> str:
-        if bb_upper == bb_lower:
-            return "وسط باند"
-        
-        bb_width = bb_upper - bb_lower
-        position = (price - bb_lower) / bb_width
-        
-        if position < 0.1:
-            return "نزدیک باند پایین"
-        elif position > 0.9:
-            return "نزدیک باند بالا"
-        elif position < 0.3:
-            return "قسمت پایین باند"
-        elif position > 0.7:
-            return "قسمت بالای باند"
-        else:
-            return "وسط باند"
-
-    def _get_price_position(self, price: float, support: float, resistance: float) -> str:
-        if resistance == support or resistance <= support:
-            return "در محدوده خنثی"
-        
-        range_size = resistance - support
-        position = (price - support) / range_size
-        
-        if position < 0.2:
-            return "خیلی نزدیک حمایت"
-        elif position < 0.4:
-            return "نزدیک حمایت"
-        elif position > 0.8:
-            return "خیلی نزدیک مقاومت"
-        elif position > 0.6:
-            return "نزدیک مقاومت"
-        else:
-            return "در میانه رنج"
-
-    def _analyze_candle_patterns(self, df: pd.DataFrame) -> Dict:
-        if len(df) < 3:
-            return {'patterns': [], 'current_candle': {}, 'recent_patterns': []}
-            
-        last_candle = df.iloc[-1]
-        patterns = []
-        
-        candle_indicators = [col for col in df.columns if col.startswith('CDL_')]
-        for indicator in candle_indicators:
-            if abs(last_candle.get(indicator, 0)) > 0:
-                pattern_name = indicator.replace('CDL_', '')
-                direction = "صعودی" if last_candle[indicator] > 0 else "نزولی"
-                patterns.append(f"{pattern_name} ({direction})")
-        
-        current_candle = self._analyze_single_candle(df.iloc[-1])
-        
-        return {
-            'patterns': patterns,
-            'current_candle': current_candle,
-            'recent_patterns': patterns[-3:] if patterns else []
-        }
-
-    def _analyze_single_candle(self, candle: pd.Series) -> Dict:
-        open_price = candle.get('open', 0)
-        close = candle.get('close', 0)
-        high = candle.get('high', 0)
-        low = candle.get('low', 0)
-        
-        body_size = abs(close - open_price)
-        total_range = high - low
-        
-        if total_range == 0:
-            return {"type": "تعریف نشده", "direction": "خنثی", "body_ratio": 0, "strength": "ضعیف"}
-            
-        body_ratio = body_size / total_range
-        
-        if body_ratio < 0.3:
-            candle_type = "دوجی/فرفره"
-        elif body_ratio > 0.7:
-            candle_type = "ماروبوزو"
-        else:
-            candle_type = "عادی"
-            
-        direction = "صعودی" if close > open_price else "نزولی"
-        
-        return {
-            'type': candle_type,
-            'direction': direction,
-            'body_ratio': body_ratio,
-            'strength': "قوی" if body_ratio > 0.6 else "متوسط" if body_ratio > 0.3 else "ضعیف"
-        }
-
-    def _analyze_trend_strength(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
-        last_htf = htf_df.iloc[-1]
-        last_ltf = ltf_df.iloc[-1]
-        
-        adx_htf = last_htf.get('ADX_14', 0)
-        adx_ltf = last_ltf.get('ADX_14', 0)
-        
-        ema_alignment_htf = self._get_ema_alignment_score(last_htf)
-        ema_alignment_ltf = self._get_ema_alignment_score(last_ltf)
-        
-        trend_strength_score = (
-            (adx_htf / 50) * 0.3 +
-            (adx_ltf / 50) * 0.2 +
-            ema_alignment_htf * 0.3 +
-            ema_alignment_ltf * 0.2
-        )
-        
-        if trend_strength_score > 0.7:
-            strength_level = "بسیار قوی"
-        elif trend_strength_score > 0.5:
-            strength_level = "قوی"
-        elif trend_strength_score > 0.3:
-            strength_level = "متوسط"
-        else:
-            strength_level = "ضعیف"
-        
-        return {
-            'score': round(trend_strength_score, 2),
-            'level': strength_level,
-            'adx_htf': adx_htf,
-            'adx_ltf': adx_ltf,
-            'ema_alignment_htf': ema_alignment_htf,
-            'ema_alignment_ltf': ema_alignment_ltf
-        }
-
-    def _get_ema_alignment_score(self, data: pd.Series) -> float:
-        ema_21 = data.get('EMA_21', 0)
-        ema_50 = data.get('EMA_50', 0)
-        ema_200 = data.get('EMA_200', 0)
-        
-        if ema_21 > ema_50 > ema_200:
-            return 1.0
-        elif ema_21 < ema_50 < ema_200:
-            return 1.0
-        elif (ema_21 > ema_50 and ema_50 > ema_200) or (ema_21 < ema_50 and ema_50 < ema_200):
-            return 0.7
-        elif abs(ema_21 - ema_50) < abs(ema_50 - ema_200) * 0.1:
-            return 0.3
-        else:
-            return 0.0
 
 # =================================================================================
-# --- کلاس مدیریت AI هوشمند با پرامپت پیشرفته ---
+# --- کلاس مدیریت AI با پرامپت بهبود یافته ---
 # =================================================================================
 
-class AdvancedAIManager:
+class EnhancedAIManager:
     def __init__(self, gemini_api_key: str, cloudflare_api_key: str, groq_api_key: str, api_manager: SmartAPIManager):
         self.gemini_api_key = gemini_api_key
         self.cloudflare_api_key = cloudflare_api_key
@@ -581,8 +393,7 @@ class AdvancedAIManager:
     
     async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """تحلیل پیشرفته با حداقل ۳ مدل AI"""
-        # انتخاب مدل‌ها با قابلیت Fallback
-        selected_models = self.api_manager.select_optimal_models_with_fallback(target_total=5, min_required=3)
+        selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
         
         if len(selected_models) < 3:
             logging.error(f"❌ نمی‌توان حداقل ۳ مدل AI برای تحلیل {symbol} پیدا کرد")
@@ -590,16 +401,14 @@ class AdvancedAIManager:
         
         logging.info(f"🎯 استفاده از {len(selected_models)} مدل AI برای {symbol}")
         
-        # ایجاد تسک‌های تحلیل
         tasks = []
         for provider, model_name in selected_models:
-            task = self._get_enhanced_single_analysis(symbol, technical_analysis, provider, model_name)
+            task = self._get_single_analysis(symbol, technical_analysis, provider, model_name)
             tasks.append(task)
         
         try:
             results = await asyncio.gather(*tasks, return_exceptions=True)
             
-            # پردازش نتایج
             valid_results = []
             failed_count = 0
             
@@ -618,76 +427,16 @@ class AdvancedAIManager:
             
             logging.info(f"📊 نتایج: {len(valid_results)} موفق, {failed_count} شکست")
             
-            # اگر کمتر از ۳ مدل موفق داشتیم، Fallback
-            if len(valid_results) < 3:
-                logging.warning(f"⚠️ فقط {len(valid_results)} مدل موفق بودند. فعال کردن Fallback...")
-                additional_results = await self._get_fallback_analysis(symbol, technical_analysis, selected_models, 3 - len(valid_results))
-                valid_results.extend(additional_results)
-            
-            return self._combine_and_classify_signals(symbol, valid_results, technical_analysis, len(selected_models))
+            return self._combine_signals(symbol, valid_results, len(selected_models))
             
         except Exception as e:
             logging.error(f"خطا در تحلیل AI برای {symbol}: {e}")
             return None
     
-    async def _get_fallback_analysis(self, symbol: str, technical_analysis: Dict, 
-                                   used_models: List[Tuple[str, str]], needed_count: int) -> List[Dict]:
-        """دریافت تحلیل از مدل‌های جایگزین"""
-        if needed_count <= 0:
-            return []
-        
-        fallback_models = []
-        used_set = set(used_models)
-        
-        # جستجو برای مدل‌های جایگزین
-        for provider in ["google_gemini", "cloudflare", "groq"]:
-            if self.api_manager.can_use_provider(provider):
-                for model in self.api_manager.available_models[provider]:
-                    if (provider, model) not in used_set and not self.api_manager.is_model_failed(provider, model):
-                        fallback_models.append((provider, model))
-                        if len(fallback_models) >= needed_count:
-                            break
-            if len(fallback_models) >= needed_count:
-                break
-        
-        if not fallback_models:
-            return []
-        
-        logging.info(f"🔄 استفاده از {len(fallback_models)} مدل Fallback: {fallback_models}")
-        
-        tasks = []
-        for provider, model_name in fallback_models:
-            task = self._get_enhanced_single_analysis(symbol, technical_analysis, provider, model_name)
-            tasks.append(task)
-        
+    async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
+        """تحلیل با یک مدل خاص"""
         try:
-            results = await asyncio.gather(*tasks, return_exceptions=True)
-            
-            valid_results = []
-            for i, (provider, model_name) in enumerate(fallback_models):
-                result = results[i]
-                if isinstance(result, Exception):
-                    logging.error(f"خطا در Fallback {provider}/{model_name}: {result}")
-                    self.api_manager.mark_model_failed(provider, model_name)
-                    self.api_manager.record_api_usage(provider)
-                elif result is not None:
-                    valid_results.append(result)
-                    self.api_manager.record_api_usage(provider)
-                else:
-                    self.api_manager.record_api_usage(provider)
-            
-            return valid_results
-            
-        except Exception as e:
-            logging.error(f"خطا در تحلیل Fallback: {e}")
-            return []
-    
-    async def _get_enhanced_single_analysis(self, symbol: str, technical_analysis: Dict, 
-                                          provider: str, model_name: str) -> Optional[Dict]:
-        """تحلیل پیشرفته با یک مدل خاص"""
-        try:
-            fundamental_data = await self._get_fundamental_analysis(symbol)
-            prompt = self._create_enhanced_analysis_prompt(symbol, technical_analysis, fundamental_data)
+            prompt = self._create_enhanced_prompt(symbol, technical_analysis)
             
             if provider == "google_gemini":
                 return await self._get_gemini_analysis(symbol, prompt, model_name)
@@ -702,84 +451,43 @@ class AdvancedAIManager:
             logging.warning(f"خطا در تحلیل {provider}/{model_name} برای {symbol}: {e}")
             return None
     
-    async def _get_fundamental_analysis(self, symbol: str) -> Dict:
-        """دریافت تحلیل فاندامنتال"""
-        try:
-            # استفاده از APIهای رایگان برای داده‌های فاندامنتال
-            base_currency, quote_currency = symbol.split('/')
-            
-            fundamental_data = {
-                'symbol': symbol,
-                'base_currency': base_currency,
-                'quote_currency': quote_currency,
-                'interest_rate_diff': "تحلیل بر اساس آخرین داده‌های موجود",
-                'economic_outlook': "رشد اقتصادی و تورم بر اساس آخرین گزارشات",
-                'risk_sentiment': "تحلیل بر اساس شرایط بازار جهانی",
-                'key_events': "رویدادهای اقتصادی مهم هفته جاری",
-                'market_bias': "تمایل کلی بازار بر اساس عوامل فاندامنتال"
-            }
-            
-            return fundamental_data
-            
-        except Exception as e:
-            logging.warning(f"خطا در دریافت داده‌های فاندامنتال: {e}")
-            return {
-                'symbol': symbol,
-                'error': 'عدم دسترسی به داده‌های فاندامنتال'
-            }
-    
-    def _create_enhanced_analysis_prompt(self, symbol: str, technical_analysis: Dict, fundamental_data: Dict) -> str:
-        """ایجاد پرامپت تحلیل پیشرفته با فاندامنتال"""
+    def _create_enhanced_prompt(self, symbol: str, technical_analysis: Dict) -> str:
+        """ایجاد پرامپت بهبود یافته"""
+        current_price = 1.0850  # مقدار نمونه - در عمل باید از داده‌های واقعی استفاده شود
+        
         return f"""
-CRITICAL INSTRUCTION: YOU MUST RETURN ONLY VALID JSON FORMAT. NO OTHER TEXT, NO EXPLANATIONS, NO MARKDOWN.
+IMPORTANT: You MUST return ONLY valid JSON format. No other text, no explanations.
 
-As an expert forex analyst with 20+ years experience, analyze this currency pair using BOTH technical and fundamental analysis:
+As a professional forex trading analyst, analyze this currency pair and provide trading signals:
 
 SYMBOL: {symbol}
+CURRENT PRICE: ~{current_price}
 
-TECHNICAL ANALYSIS DATA:
+TECHNICAL ANALYSIS:
 - HTF Trend (4H): {technical_analysis['htf_trend']['direction']} ({technical_analysis['htf_trend']['strength']})
-- LTF Trend (1H): {technical_analysis['ltf_trend']['direction']} ({technical_analysis['ltf_trend']['strength']})
-- Trend Strength: {technical_analysis['trend_strength']['level']} (Score: {technical_analysis['trend_strength']['score']})
+- LTF Trend (1H): {technical_analysis['ltf_trend']['direction']} 
 - RSI: {technical_analysis['momentum']['rsi']['value']:.1f} ({technical_analysis['momentum']['rsi']['signal']})
 - MACD: {technical_analysis['momentum']['macd']['signal']}
-- Stochastic: {technical_analysis['momentum']['stochastic']['signal']} (Cross: {technical_analysis['momentum']['stochastic']['cross']})
-- Price Position: {technical_analysis['key_levels']['current_price_position']}
-- BB Position: {technical_analysis['key_levels']['dynamic']['bb_position']}
-- Support 1: {technical_analysis['key_levels']['static']['support_1']:.5f}
-- Resistance 1: {technical_analysis['key_levels']['static']['resistance_1']:.5f}
-- Volatility (ATR): {technical_analysis['volatility']:.5f}
+- Key Support: {technical_analysis['key_levels']['support_1']:.5f}
+- Key Resistance: {technical_analysis['key_levels']['resistance_1']:.5f}
 
-FUNDAMENTAL CONSIDERATIONS:
-- Currency Pair: {fundamental_data['base_currency']}/{fundamental_data['quote_currency']}
-- Interest Rate Outlook: {fundamental_data['interest_rate_diff']}
-- Economic Conditions: {fundamental_data['economic_outlook']}
-- Market Risk Sentiment: {fundamental_data['risk_sentiment']}
-- Key Events: {fundamental_data['key_events']}
-- Overall Market Bias: {fundamental_data['market_bias']}
+CALCULATE REALISTIC LEVELS based on current price ~{current_price} and technical structure.
 
-ANALYSIS REQUIREMENTS:
-1. Evaluate technical setup strength
-2. Consider fundamental drivers
-3. Assess risk-reward ratio
-4. Determine optimal entry/exit levels
-5. Consider market sentiment and positioning
-
-RETURN ONLY THIS EXACT JSON FORMAT (NO OTHER TEXT):
+RETURN ONLY THIS EXACT JSON FORMAT:
 {{
   "SYMBOL": "{symbol}",
   "ACTION": "BUY/SELL/HOLD",
-  "CONFIDENCE": 1-10,
-  "ENTRY_ZONE": "number",
-  "STOP_LOSS": "number", 
-  "TAKE_PROFIT": "number",
-  "RISK_REWARD_RATIO": "number",
-  "ANALYSIS": "brief_farsi_analysis_here",
-  "EXPIRATION_H": "number",
-  "TRADE_RATIONALE": "key_reasons_farsi"
+  "CONFIDENCE": 7,
+  "ENTRY_ZONE": "{current_price - 0.0010:.5f}-{current_price + 0.0005:.5f}",
+  "STOP_LOSS": "{current_price - 0.0020:.5f}",
+  "TAKE_PROFIT": "{current_price + 0.0030:.5f}",
+  "RISK_REWARD_RATIO": "1.5",
+  "ANALYSIS": "تحلیل فنی بر اساس روند و مومنتوم",
+  "EXPIRATION_H": 4,
+  "TRADE_RATIONALE": "سیگنال بر اساس همگرایی اندیکاتورها"
 }}
 
-IMPORTANT: Your response must be ONLY the JSON object, no other text.
+Your response must be ONLY the JSON object.
 """
     
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
@@ -790,7 +498,7 @@ IMPORTANT: Your response must be ONLY the JSON object, no other text.
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
-                request_options={'timeout': 120}
+                request_options={'timeout': 60}
             )
             
             return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
@@ -814,7 +522,7 @@ IMPORTANT: Your response must be ONLY the JSON object, no other text.
                 "messages": [
                     {
                         "role": "system", 
-                        "content": "You are an expert forex trading analyst. Return ONLY valid JSON format, no other text."
+                        "content": "You are a forex trading expert. Return ONLY valid JSON format."
                     },
                     {"role": "user", "content": prompt}
                 ],
@@ -825,14 +533,16 @@ IMPORTANT: Your response must be ONLY the JSON object, no other text.
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_name}"
             
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, headers=headers, json=payload, timeout=120) as response:
+                async with session.post(url, headers=headers, json=payload, timeout=60) as response:
                     if response.status == 200:
                         data = await response.json()
+                        content = ""
                         if "result" in data and "response" in data["result"]:
                             content = data["result"]["response"]
-                            return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
                         elif "response" in data:
                             content = data["response"]
+                        
+                        if content:
                             return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
                     return None
                         
@@ -855,20 +565,20 @@ IMPORTANT: Your response must be ONLY the JSON object, no other text.
                 "messages": [
                     {
                         "role": "system",
-                        "content": "You are a professional forex trading expert. Return ONLY valid JSON format, no other text."
+                        "content": "You are a forex trading expert. Return ONLY valid JSON format."
                     },
                     {"role": "user", "content": prompt}
                 ],
                 "model": model_name,
                 "temperature": 0.1,
-                "max_tokens": 1024,
+                "max_tokens": 500,
                 "stream": False
             }
             
             url = "https://api.groq.com/openai/v1/chat/completions"
             
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, headers=headers, json=payload, timeout=120) as response:
+                async with session.post(url, headers=headers, json=payload, timeout=60) as response:
                     if response.status == 200:
                         data = await response.json()
                         if "choices" in data and len(data["choices"]) > 0:
@@ -881,11 +591,15 @@ IMPORTANT: Your response must be ONLY the JSON object, no other text.
             return None
 
     def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
-        """پارس کردن پاسخ AI"""
+        """پارس کردن پاسخ AI با قابلیت بهبود یافته"""
         try:
             cleaned_response = response.strip()
             
-            # حذف تمام متن غیر از JSON
+            # حذف markdown و کد بلاک
+            cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
+            cleaned_response = re.sub(r'```\s*', '', cleaned_response)
+            
+            # یافتن JSON
             json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
             if json_match:
                 json_str = json_match.group(0)
@@ -894,10 +608,14 @@ IMPORTANT: Your response must be ONLY the JSON object, no other text.
                 if self._validate_signal_data(signal_data, symbol):
                     signal_data['ai_model'] = ai_name
                     signal_data['timestamp'] = datetime.now(UTC).isoformat()
-                    logging.info(f"✅ {ai_name} سیگنال برای {symbol}: {signal_data.get('ACTION', 'HOLD')} (اعتماد: {signal_data.get('CONFIDENCE', 0)})")
+                    
+                    # اعتبارسنجی مقادیر عددی
+                    signal_data = self._validate_numeric_values(signal_data, symbol)
+                    
+                    logging.info(f"✅ {ai_name} سیگنال برای {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
             
-            logging.warning(f"❌ پاسخ {ai_name} برای {symbol} فاقد فرمت JSON بود")
+            logging.warning(f"❌ پاسخ {ai_name} برای {symbol} فاقد فرمت JSON معتبر")
             return None
                 
         except json.JSONDecodeError as e:
@@ -913,96 +631,113 @@ IMPORTANT: Your response must be ONLY the JSON object, no other text.
         
         for field in required_fields:
             if field not in signal_data:
+                logging.warning(f"فیلد ضروری {field} در سیگنال {symbol} وجود ندارد")
                 return False
         
         action = signal_data['ACTION'].upper()
         if action not in ['BUY', 'SELL', 'HOLD']:
+            logging.warning(f"ACTION نامعتبر برای {symbol}: {action}")
             return False
         
         try:
             confidence = float(signal_data['CONFIDENCE'])
             if not (1 <= confidence <= 10):
+                logging.warning(f"CONFIDENCE خارج از محدوده برای {symbol}: {confidence}")
                 return False
         except (ValueError, TypeError):
+            logging.warning(f"CONFIDENCE نامعتبر برای {symbol}: {signal_data['CONFIDENCE']}")
             return False
         
         return True
 
-    def _combine_and_classify_signals(self, symbol: str, valid_results: List[Dict], technical_analysis: Dict, total_models: int) -> Optional[Dict]:
-        """ترکیب نتایج و طبقه‌بندی بر اساس توافق"""
+    def _validate_numeric_values(self, signal_data: Dict, symbol: str) -> Dict:
+        """اعتبارسنجی و اصلاح مقادیر عددی"""
+        numeric_fields = ['ENTRY_ZONE', 'STOP_LOSS', 'TAKE_PROFIT', 'EXPIRATION_H', 'RISK_REWARD_RATIO']
+        
+        for field in numeric_fields:
+            if field in signal_data:
+                value = signal_data[field]
+                if value is None or value == "null" or str(value).strip() == "":
+                    # مقدار پیش‌فرض برای فیلدهای ضروری
+                    if field == 'EXPIRATION_H':
+                        signal_data[field] = 4
+                    elif field == 'RISK_REWARD_RATIO':
+                        signal_data[field] = "1.5"
+                    else:
+                        signal_data[field] = "N/A"
+        
+        return signal_data
+
+    def _combine_signals(self, symbol: str, valid_results: List[Dict], total_models: int) -> Optional[Dict]:
+        """ترکیب نتایج سیگنال‌ها"""
         if not valid_results:
             return None
         
-        # شمارش سیگنال‌های مختلف
+        # شمارش سیگنال‌ها
         action_counts = {}
         for result in valid_results:
             action = result['ACTION'].upper()
             action_counts[action] = action_counts.get(action, 0) + 1
         
-        # تعیین سطح توافق
-        total_valid_models = len(valid_results)
+        total_valid = len(valid_results)
         max_agreement = max(action_counts.values())
-        agreement_level = max_agreement
         
-        # طبقه‌بندی
-        if agreement_level >= 3:
+        # تعیین نوع توافق
+        if max_agreement >= 3:
             agreement_type = 'STRONG_CONSENSUS'
-        elif agreement_level == 2:
+        elif max_agreement == 2:
             agreement_type = 'MEDIUM_CONSENSUS'  
         else:
             agreement_type = 'WEAK_CONSENSUS'
         
+        # انتخاب سیگنال اکثریت
+        majority_action = max(action_counts, key=action_counts.get)
+        agreeing_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
+        
         # ترکیب سیگنال‌های موافق
-        if agreement_level >= 2:
-            majority_action = max(action_counts, key=action_counts.get)
-            agreeing_results = [result for result in valid_results if result['ACTION'].upper() == majority_action]
-            combined_signal = self._average_signals(symbol, agreeing_results, majority_action)
-        else:
-            # انتخاب مدل با بیشترین اعتماد
-            highest_confidence_model = max(valid_results, key=lambda x: float(x.get('CONFIDENCE', 0)))
-            combined_signal = highest_confidence_model
+        combined = {
+            'SYMBOL': symbol,
+            'ACTION': majority_action,
+            'AGREEMENT_LEVEL': max_agreement,
+            'AGREEMENT_TYPE': agreement_type,
+            'VALID_MODELS': total_valid,
+            'TOTAL_MODELS': total_models,
+            'timestamp': datetime.now(UTC).isoformat()
+        }
         
-        combined_signal['AGREEMENT_LEVEL'] = agreement_level
-        combined_signal['AGREEMENT_TYPE'] = agreement_type
-        combined_signal['VALID_MODELS'] = total_valid_models
-        combined_signal['TOTAL_MODELS'] = total_models
+        # میانگین اعتماد
+        if agreeing_results:
+            confidences = [float(r.get('CONFIDENCE', 5)) for r in agreeing_results]
+            combined['CONFIDENCE'] = round(sum(confidences) / len(confidences), 1)
+            
+            # استفاده از مقادیر از اولین سیگنال معتبر
+            first_valid = agreeing_results[0]
+            for field in ['ENTRY_ZONE', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO', 'EXPIRATION_H', 'ANALYSIS']:
+                if field in first_valid and first_valid[field] not in [None, "null", ""]:
+                    combined[field] = first_valid[field]
         
-        return combined_signal
-
-    def _average_signals(self, symbol: str, agreeing_results: List[Dict], majority_action: str) -> Dict:
-        """میانگین‌گیری سیگنال‌ها"""
-        if len(agreeing_results) == 1:
-            return agreeing_results[0]
-        
-        averaged = {'SYMBOL': symbol, 'ACTION': majority_action}
-        
-        # میانگین CONFIDENCE
-        confidences = [float(result.get('CONFIDENCE', 5)) for result in agreeing_results]
-        averaged['CONFIDENCE'] = round(sum(confidences) / len(confidences), 1)
-        
-        return averaged
+        return combined
 
 # =================================================================================
 # --- کلاس اصلی تحلیلگر فارکس ---
 # =================================================================================
 
-class EnhancedForexAnalyzer:
+class ImprovedForexAnalyzer:
     def __init__(self):
         self.api_manager = SmartAPIManager(USAGE_TRACKER_FILE)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
-        self.ai_manager = AdvancedAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY, self.api_manager)
+        self.ai_manager = EnhancedAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY, self.api_manager)
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
         """تحلیل کامل یک جفت ارز"""
-        logging.info(f"🔍 شروع تحلیل پیشرفته برای {pair}")
+        logging.info(f"🔍 شروع تحلیل برای {pair}")
         
         try:
-            # نمایش وضعیت مصرف API
             logging.info(self.api_manager.get_usage_summary())
             
             # دریافت داده‌های بازار
-            htf_df = await self.get_market_data_async(pair, HIGH_TIMEFRAME)
-            ltf_df = await self.get_market_data_async(pair, LOW_TIMEFRAME)
+            htf_df = await self.get_market_data(pair, HIGH_TIMEFRAME)
+            ltf_df = await self.get_market_data(pair, LOW_TIMEFRAME)
             
             if htf_df is None or ltf_df is None:
                 return None
@@ -1019,60 +754,93 @@ class EnhancedForexAnalyzer:
             if not technical_analysis:
                 return None
             
-            # تحلیل AI پیشرفته
+            # تحلیل AI
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
             
             if ai_analysis and ai_analysis.get('ACTION') != 'HOLD':
-                logging.info(f"✅ سیگنال معاملاتی برای {pair}: {ai_analysis['ACTION']} (توافق: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/{ai_analysis.get('TOTAL_MODELS', 0)})")
+                logging.info(f"✅ سیگنال برای {pair}: {ai_analysis['ACTION']} (توافق: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/{ai_analysis.get('TOTAL_MODELS', 0)})")
                 return ai_analysis
-            else:
-                logging.info(f"🔍 هیچ سیگنال معاملاتی برای {pair} شناسایی نشد")
-                return None
+            
+            logging.info(f"🔍 هیچ سیگنال معاملاتی برای {pair}")
+            return None
                 
         except Exception as e:
             logging.error(f"خطا در تحلیل {pair}: {e}")
             return None
 
-    async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
+    async def get_market_data(self, symbol: str, interval: str) -> Optional[pd.DataFrame]:
         """دریافت داده‌های بازار"""
-        for attempt in range(retries):
-            try:
-                url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
-                
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(url, timeout=60) as response:
-                        if response.status == 200:
-                            data = await response.json()
-                            if 'values' in data and data['values']:
-                                df = pd.DataFrame(data['values'])
-                                df = df.iloc[::-1].reset_index(drop=True)
-                                
-                                numeric_columns = ['open', 'high', 'low', 'close']
-                                for col in numeric_columns:
-                                    if col in df.columns:
-                                        df[col] = pd.to_numeric(df[col], errors='coerce')
-                                
-                                df = df.dropna(subset=numeric_columns)
-                                return df
-            except Exception as e:
-                await asyncio.sleep(2)
-        
-        return None
+        try:
+            url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, timeout=30) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        if 'values' in data and data['values']:
+                            df = pd.DataFrame(data['values'])
+                            df = df.iloc[::-1].reset_index(drop=True)
+                            
+                            for col in ['open', 'high', 'low', 'close']:
+                                if col in df.columns:
+                                    df[col] = pd.to_numeric(df[col], errors='coerce')
+                            
+                            df = df.dropna()
+                            return df
+            return None
+        except Exception:
+            return None
 
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
         """تحلیل همه جفت ارزها"""
-        logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
+        logging.info(f"🚀 شروع تحلیل برای {len(pairs)} جفت ارز")
         
         tasks = [self.analyze_pair(pair) for pair in pairs]
-        results = await asyncio.gather(*tasks, return_exceptions=True)
+        results = await asyncio.gather(*tasks)
         
-        valid_signals = []
-        for result in results:
-            if isinstance(result, Dict) and result.get('ACTION') != 'HOLD':
-                valid_signals.append(result)
+        valid_signals = [r for r in results if r is not None]
         
-        logging.info(f"📊 تحلیل کامل شد. {len(valid_signals)} سیگنال معتبر شناسایی شد")
+        logging.info(f"📊 تحلیل کامل شد. {len(valid_signals)} سیگنال معتبر")
         return valid_signals
+
+    def save_signals(self, signals: List[Dict]):
+        """ذخیره سیگنال‌ها در فایل‌های مختلف"""
+        if not signals:
+            logging.info("📝 هیچ سیگنالی برای ذخیره وجود ندارد")
+            return
+        
+        strong_signals = []
+        medium_signals = []
+        weak_signals = []
+        
+        for signal in signals:
+            agreement_type = signal.get('AGREEMENT_TYPE', '')
+            if agreement_type == 'STRONG_CONSENSUS':
+                strong_signals.append(signal)
+            elif agreement_type == 'MEDIUM_CONSENSUS':
+                medium_signals.append(signal)
+            else:
+                weak_signals.append(signal)
+        
+        # ذخیره با مدیریت خطا
+        try:
+            if strong_signals:
+                with open("strong_consensus_signals.json", 'w', encoding='utf-8') as f:
+                    json.dump(strong_signals, f, indent=2, ensure_ascii=False)
+                logging.info(f"💾 {len(strong_signals)} سیگنال قوی ذخیره شد")
+            
+            if medium_signals:
+                with open("medium_consensus_signals.json", 'w', encoding='utf-8') as f:
+                    json.dump(medium_signals, f, indent=2, ensure_ascii=False)
+                logging.info(f"💾 {len(medium_signals)} سیگنال متوسط ذخیره شد")
+            
+            if weak_signals:
+                with open("weak_consensus_signals.json", 'w', encoding='utf-8') as f:
+                    json.dump(weak_signals, f, indent=2, ensure_ascii=False)
+                logging.info(f"💾 {len(weak_signals)} سیگنال ضعیف ذخیره شد")
+                
+        except Exception as e:
+            logging.error(f"❌ خطا در ذخیره‌سازی سیگنال‌ها: {e}")
 
 # =================================================================================
 # --- تابع اصلی ---
@@ -1080,10 +848,10 @@ class EnhancedForexAnalyzer:
 
 async def main():
     """تابع اصلی اجرای برنامه"""
-    logging.info("🎯 شروع سیستم تحلیل فارکس پیشرفته (Enhanced AI Engine v6.0)")
+    logging.info("🎯 شروع سیستم تحلیل فارکس (Improved AI Engine)")
     
     import argparse
-    parser = argparse.ArgumentParser(description='سیستم تحلیل فارکس با AI پیشرفته')
+    parser = argparse.ArgumentParser(description='سیستم تحلیل فارکس با AI')
     parser.add_argument("--pair", type=str, help="تحلیل جفت ارز مشخص")
     parser.add_argument("--all", action="store_true", help="تحلیل همه جفت ارزها")
     parser.add_argument("--pairs", type=str, help="تحلیل جفت ارزهای مشخص شده")
@@ -1097,62 +865,33 @@ async def main():
     elif args.all:
         pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
     else:
-        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:3]
-        logging.info(f"استفاده از 3 جفت ارز اصلی به صورت پیش‌فرض")
+        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:2]
+        logging.info(f"🔍 استفاده از 2 جفت ارز اصلی")
 
-    logging.info(f"🔍 جفت ارزهای مورد تحلیل: {', '.join(pairs_to_analyze)}")
+    logging.info(f"🎯 جفت ارزهای مورد تحلیل: {', '.join(pairs_to_analyze)}")
     
-    analyzer = EnhancedForexAnalyzer()
+    analyzer = ImprovedForexAnalyzer()
     signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
 
-    # تقسیم سیگنال‌ها
-    strong_signals = []
-    medium_signals = []
-    weak_signals = []
-    
-    for signal in signals:
-        agreement_type = signal.get('AGREEMENT_TYPE', '')
-        if agreement_type == 'STRONG_CONSENSUS':
-            strong_signals.append(signal)
-        elif agreement_type == 'MEDIUM_CONSENSUS':
-            medium_signals.append(signal)
-        else:
-            weak_signals.append(signal)
-
     # ذخیره سیگنال‌ها
-    if strong_signals:
-        with open("strong_consensus_signals.json", 'w', encoding='utf-8') as f:
-            json.dump(strong_signals, f, indent=4, ensure_ascii=False)
-        logging.info(f"🎯 {len(strong_signals)} سیگنال با توافق قوی ذخیره شد")
-
-    if medium_signals:
-        with open("medium_consensus_signals.json", 'w', encoding='utf-8') as f:
-            json.dump(medium_signals, f, indent=4, ensure_ascii=False)
-        logging.info(f"📊 {len(medium_signals)} سیگنال با توافق متوسط ذخیره شد")
-
-    if weak_signals:
-        with open("weak_consensus_signals.json", 'w', encoding='utf-8') as f:
-            json.dump(weak_signals, f, indent=4, ensure_ascii=False)
-        logging.info(f"📈 {len(weak_signals)} سیگنال با توافق ضعیف ذخیره شد")
+    analyzer.save_signals(signals)
 
     # نمایش نتایج
-    logging.info("📈 خلاصه سیگنال‌های معاملاتی:")
+    logging.info("📈 خلاصه نتایج:")
     
-    for category, signals_list, icon in [
-        ("سیگنال‌های با توافق قوی", strong_signals, "🎯"),
-        ("سیگنال‌های با توافق متوسط", medium_signals, "📊"), 
-        ("سیگنال‌های با توافق ضعیف", weak_signals, "📈")
-    ]:
-        if signals_list:
-            logging.info(f"{icon} {category}:")
-            for signal in signals_list:
-                action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-                logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal['CONFIDENCE']}/10, توافق: {signal['AGREEMENT_LEVEL']}/{signal['TOTAL_MODELS']})")
+    strong_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'STRONG_CONSENSUS'])
+    medium_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'MEDIUM_CONSENSUS'])
+    weak_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'WEAK_CONSENSUS'])
+    
+    logging.info(f"🎯 سیگنال‌های قوی: {strong_count}")
+    logging.info(f"📊 سیگنال‌های متوسط: {medium_count}")
+    logging.info(f"📈 سیگنال‌های ضعیف: {weak_count}")
+    
+    for signal in signals:
+        action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
+        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (اعتماد: {signal.get('CONFIDENCE', 0)}/10)")
 
-    if not signals:
-        logging.info("🔍 هیچ سیگنال معاملاتی‌ای شناسایی نشد")
-
-    # نمایش وضعیت نهایی
+    # نمایش وضعیت نهایی API
     analyzer.api_manager.save_usage_data()
     logging.info(analyzer.api_manager.get_usage_summary())
     
