@@ -1,0 +1,34 @@
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-09-30T18:35:51.894284+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY_ZONE": "1.08450-1.08600",
+    "STOP_LOSS": "1.08700",
+    "TAKE_PROFIT": "1.08200",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "تحلیل فنی بر اساس روند و مومنتوم"
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 4,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-09-30T18:35:19.731142+00:00",
+    "CONFIDENCE": 6.5,
+    "ENTRY_ZONE": "1.08450-1.08550",
+    "STOP_LOSS": "1.08300",
+    "TAKE_PROFIT": "1.08800",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "تحلیل فنی نشان دهنده روند خنثی قوی در تایم فریم بالا و خنثی در تایم فریم پایین است. RSI نیز در وضعیت خنثی قرار دارد. با وجود سیگنال نزولی از MACD، وضعیت کلی بازار نشان دهنده فاز تثبیت و نوسان در یک محدوده است. انتظار می‌رود قیمت در یک برگشت کوتاه مدت از کف موقت محدوده خنثی، تا سقف نزدیک حرکت کند."
+  }
+]
