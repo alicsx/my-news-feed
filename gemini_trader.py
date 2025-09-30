@@ -40,9 +40,9 @@ CACHE_DURATION_HOURS = 2
 LOG_FILE = "trading_log.log"
 
 # مدل‌های AI پیشرفته
-GEMINI_MODEL = 'gemini-2.5-flash'
+GEMINI_MODEL = 'gemini-2.5-flash'  # تغییر به مدل پایدارتر
 IMPROVED_CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-3-8b-instruct",  # مدل اصلی
+    "@cf/meta/llama-4-scout-17b-16e-instruct",  # مدل اصلی
     "@cf/qwen/qwen1.5-14b-chat-awq",  # مدل fallback
     "@cf/meta/llama-2-7b-chat-fp16"   # مدل reserve
 ]
@@ -110,13 +110,19 @@ class SmartCacheManager:
         
         for pair, cache_data in cache.items():
             if isinstance(cache_data, str):
-                last_signal_time = datetime.fromisoformat(cache_data)
-                if current_time - last_signal_time < timedelta(hours=self.cache_duration_hours):
-                    cleaned_cache[pair] = cache_data
+                try:
+                    last_signal_time = datetime.fromisoformat(cache_data)
+                    if current_time - last_signal_time < timedelta(hours=self.cache_duration_hours):
+                        cleaned_cache[pair] = cache_data
+                except ValueError:
+                    continue
             elif isinstance(cache_data, dict):
-                signal_time = datetime.fromisoformat(cache_data.get('timestamp', ''))
-                if current_time - signal_time < timedelta(hours=self.cache_duration_hours):
-                    cleaned_cache[pair] = cache_data
+                try:
+                    signal_time = datetime.fromisoformat(cache_data.get('timestamp', ''))
+                    if current_time - signal_time < timedelta(hours=self.cache_duration_hours):
+                        cleaned_cache[pair] = cache_data
+                except ValueError:
+                    continue
                     
         return cleaned_cache
     
@@ -125,14 +131,20 @@ class SmartCacheManager:
             return False
             
         cache_data = self.cache[pair]
-        if isinstance(cache_data, str):
-            last_signal_time = datetime.fromisoformat(cache_data)
-        else:
-            last_signal_time = datetime.fromisoformat(cache_data.get('timestamp', ''))
+        try:
+            if isinstance(cache_data, str):
+                last_signal_time = datetime.fromisoformat(cache_data)
+            else:
+                last_signal_time = datetime.fromisoformat(cache_data.get('timestamp', ''))
+                
+            if datetime.now(UTC) - last_signal_time < timedelta(hours=self.cache_duration_hours):
+                logging.info(f"جفت ارز {pair} در دوره استراحت قرار دارد")
+                return True
+        except ValueError:
+            # اگر فرمت timestamp مشکل دارد، کش را پاک می‌کنیم
+            del self.cache[pair]
+            self.save_cache()
             
-        if datetime.now(UTC) - last_signal_time < timedelta(hours=self.cache_duration_hours):
-            logging.info(f"جفت ارز {pair} در دوره استراحت قرار دارد")
-            return True
         return False
     
     def update_cache(self, pair: str, signal_data: Dict = None):
@@ -167,63 +179,111 @@ class EnhancedTechnicalAnalyzer:
         }
 
     def calculate_enhanced_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
-        if df is None or df.empty or len(df) < 100:
+        """محاسبه اندیکاتورهای پیشرفته با مدیریت خطا"""
+        if df is None or df.empty:
+            logging.warning("داده‌های ورودی خالی یا None است")
+            return None
+            
+        if len(df) < 50:  # کاهش حداقل داده مورد نیاز
+            logging.warning(f"داده‌های کافی نیست. موجود: {len(df)}، مورد نیاز: 50")
             return None
             
         try:
-            # اندیکاتورهای روند پیشرفته
-            df.ta.ema(length=8, append=True)
-            df.ta.ema(length=21, append=True)
-            df.ta.ema(length=50, append=True)
-            df.ta.ema(length=200, append=True)
-            df.ta.adx(length=14, append=True)
-            df.ta.psar(append=True)
+            # کپی از داده‌ها برای جلوگیری از تغییرات ناخواسته
+            df_processed = df.copy()
             
-            # اندیکاتورهای مومنتوم پیشرفته
-            df.ta.rsi(length=14, append=True)
-            df.ta.stoch(append=True)
-            df.ta.macd(append=True)
-            df.ta.cci(length=20, append=True)
-            df.ta.willr(length=14, append=True)
+            # اطمینان از وجود ستون‌های ضروری
+            required_columns = ['open', 'high', 'low', 'close']
+            for col in required_columns:
+                if col not in df_processed.columns:
+                    logging.error(f"ستون ضروری {col} وجود ندارد")
+                    return None
             
+            # تبدیل به عدد
+            for col in required_columns:
+                df_processed[col] = pd.to_numeric(df_processed[col], errors='coerce')
+            
+            # حذف ردیف‌های با مقادیر NaN
+            df_processed = df_processed.dropna(subset=required_columns)
+            
+            if len(df_processed) < 20:
+                logging.warning("پس از پاکسازی، داده کافی نیست")
+                return None
+
+            # اندیکاتورهای روند
+            try:
+                df_processed.ta.ema(length=8, append=True)
+                df_processed.ta.ema(length=21, append=True)
+                df_processed.ta.ema(length=50, append=True)
+                df_processed.ta.ema(length=200, append=True)
+                df_processed.ta.adx(length=14, append=True)
+                df_processed.ta.psar(append=True)
+            except Exception as e:
+                logging.warning(f"خطا در محاسبه اندیکاتورهای روند: {e}")
+
+            # اندیکاتورهای مومنتوم
+            try:
+                df_processed.ta.rsi(length=14, append=True)
+                df_processed.ta.stoch(append=True)
+                df_processed.ta.macd(append=True)
+                df_processed.ta.cci(length=20, append=True)
+                df_processed.ta.willr(length=14, append=True)
+            except Exception as e:
+                logging.warning(f"خطا در محاسبه اندیکاتورهای مومنتوم: {e}")
+
             # اندیکاتورهای نوسان
-            df.ta.bbands(length=20, std=2, append=True)
-            df.ta.atr(length=14, append=True)
-            df.ta.kc(length=20, append=True)
-            
-            # حجم پیشرفته
-            if 'volume' in df.columns and not df['volume'].isnull().all():
-                df.ta.obv(append=True)
-                df['volume_sma_20'] = df['volume'].rolling(20).mean()
-                df.ta.mfi(length=14, append=True)
-            
+            try:
+                df_processed.ta.bbands(length=20, std=2, append=True)
+                df_processed.ta.atr(length=14, append=True)
+                df_processed.ta.kc(length=20, append=True)
+            except Exception as e:
+                logging.warning(f"خطا در محاسبه اندیکاتورهای نوسان: {e}")
+
+            # حجم
+            if 'volume' in df_processed.columns and not df_processed['volume'].isnull().all():
+                try:
+                    df_processed.ta.obv(append=True)
+                    df_processed['volume_sma_20'] = df_processed['volume'].rolling(20).mean()
+                    df_processed.ta.mfi(length=14, append=True)
+                except Exception as e:
+                    logging.warning(f"خطا در محاسبه اندیکاتورهای حجم: {e}")
+
             # ایچیموکو
-            df.ta.ichimoku(append=True)
-            
-            # سطوح حمایت و مقاومت داینامیک
-            df['sup_1'] = df['low'].rolling(20).min().shift(1)
-            df['res_1'] = df['high'].rolling(20).max().shift(1)
-            df['sup_2'] = df['low'].rolling(50).min().shift(1)
-            df['res_2'] = df['high'].rolling(50).max().shift(1)
-            
+            try:
+                df_processed.ta.ichimoku(append=True)
+            except Exception as e:
+                logging.warning(f"خطا در محاسبه ایچیموکو: {e}")
+
+            # سطوح حمایت و مقاومت
+            try:
+                df_processed['sup_1'] = df_processed['low'].rolling(20).min().shift(1)
+                df_processed['res_1'] = df_processed['high'].rolling(20).max().shift(1)
+                df_processed['sup_2'] = df_processed['low'].rolling(50).min().shift(1)
+                df_processed['res_2'] = df_processed['high'].rolling(50).max().shift(1)
+            except Exception as e:
+                logging.warning(f"خطا در محاسبه سطوح حمایت و مقاومت: {e}")
+
             # پیوت پوینت‌ها
-            df = self.calculate_pivot_points(df)
+            try:
+                df_processed = self.calculate_pivot_points(df_processed)
+            except Exception as e:
+                logging.warning(f"خطا در محاسبه پیوت پوینت‌ها: {e}")
+
+            # حذف ردیف‌های با مقادیر NaN
+            initial_length = len(df_processed)
+            df_processed = df_processed.dropna()
+            final_length = len(df_processed)
             
-            # الگوهای کندل استیک
-            if self.indicators_config['candle_patterns']:
-                enhanced_patterns = ['doji', 'hammer', 'engulfing', 'harami', 'morningstar', 
-                                   'eveningstar', 'piercing', 'darkcloudcover']
-                for pattern in enhanced_patterns:
-                    try:
-                        df.ta.cdl_pattern(name=pattern, append=True)
-                    except Exception as e:
-                        continue
+            if final_length == 0:
+                logging.warning("همه داده‌ها پس از محاسبه اندیکاتورها حذف شدند")
+                return None
+                
+            logging.info(f"اندیکاتورها با موفقیت محاسبه شد. ردیف‌های حذف شده: {initial_length - final_length}")
             
-            df.dropna(inplace=True)
-            return df
+            return df_processed
             
         except Exception as e:
-            logging.error(f"خطا در محاسبه اندیکاتورهای پیشرفته: {e}")
+            logging.error(f"خطای کلی در محاسبه اندیکاتورها: {e}")
             return None
 
     def calculate_pivot_points(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -252,276 +312,363 @@ class EnhancedTechnicalAnalyzer:
         return df
 
     def generate_enhanced_analysis(self, symbol: str, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
-        if htf_df.empty or ltf_df.empty:
+        """تولید تحلیل تکنیکال پیشرفته"""
+        if htf_df is None or ltf_df is None or htf_df.empty or ltf_df.empty:
+            logging.warning(f"داده‌های {symbol} برای تحلیل نامعتبر است")
             return None
             
-        last_htf = htf_df.iloc[-1]
-        last_ltf = ltf_df.iloc[-1]
-        prev_ltf = ltf_df.iloc[-2] if len(ltf_df) > 1 else last_ltf
-        
-        # تحلیل روند پیشرفته
-        htf_trend = self._analyze_enhanced_trend(last_htf)
-        ltf_trend = self._analyze_enhanced_trend(last_ltf)
-        
-        # تحلیل مومنتوم پیشرفته
-        momentum = self._analyze_enhanced_momentum(last_ltf)
-        
-        # تحلیل سطوح کلیدی پیشرفته
-        key_levels = self._analyze_enhanced_key_levels(htf_df, ltf_df, last_ltf['close'])
-        
-        # تحلیل الگوهای کندل استیک
-        candle_analysis = self._analyze_candle_patterns(ltf_df)
-        
-        # تحلیل قدرت روند
-        trend_strength = self._analyze_trend_strength(htf_df, ltf_df)
-        
-        # سیگنال‌های ترکیبی
-        combined_signals = self._generate_combined_signals(htf_trend, ltf_trend, momentum, key_levels)
-        
-        return {
-            'symbol': symbol,
-            'htf_trend': htf_trend,
-            'ltf_trend': ltf_trend,
-            'momentum': momentum,
-            'key_levels': key_levels,
-            'candle_patterns': candle_analysis,
-            'trend_strength': trend_strength,
-            'combined_signals': combined_signals,
-            'volatility': last_ltf.get('ATRr_14', 0),
-            'timestamp': datetime.now(UTC).isoformat()
-        }
+        try:
+            last_htf = htf_df.iloc[-1] if len(htf_df) > 0 else None
+            last_ltf = ltf_df.iloc[-1] if len(ltf_df) > 0 else None
+            
+            if last_htf is None or last_ltf is None:
+                logging.warning(f"داده‌های اخیر برای {symbol} موجود نیست")
+                return None
+
+            # تحلیل روند پیشرفته
+            htf_trend = self._analyze_enhanced_trend(last_htf)
+            ltf_trend = self._analyze_enhanced_trend(last_ltf)
+            
+            # تحلیل مومنتوم پیشرفته
+            momentum = self._analyze_enhanced_momentum(last_ltf)
+            
+            # تحلیل سطوح کلیدی پیشرفته
+            key_levels = self._analyze_enhanced_key_levels(htf_df, ltf_df, last_ltf.get('close', 0))
+            
+            # تحلیل الگوهای کندل استیک
+            candle_analysis = self._analyze_candle_patterns(ltf_df)
+            
+            # تحلیل قدرت روند
+            trend_strength = self._analyze_trend_strength(htf_df, ltf_df)
+            
+            # سیگنال‌های ترکیبی
+            combined_signals = self._generate_combined_signals(htf_trend, ltf_trend, momentum, key_levels)
+            
+            analysis_result = {
+                'symbol': symbol,
+                'htf_trend': htf_trend,
+                'ltf_trend': ltf_trend,
+                'momentum': momentum,
+                'key_levels': key_levels,
+                'candle_patterns': candle_analysis,
+                'trend_strength': trend_strength,
+                'combined_signals': combined_signals,
+                'volatility': last_ltf.get('ATRr_14', 0),
+                'timestamp': datetime.now(UTC).isoformat()
+            }
+            
+            logging.info(f"تحلیل تکنیکال برای {symbol} با موفقیت تولید شد")
+            return analysis_result
+            
+        except Exception as e:
+            logging.error(f"خطا در تولید تحلیل برای {symbol}: {e}")
+            return None
 
     def _analyze_enhanced_trend(self, data: pd.Series) -> Dict:
-        ema_8 = data.get('EMA_8', 0)
-        ema_21 = data.get('EMA_21', 0)
-        ema_50 = data.get('EMA_50', 0)
-        ema_200 = data.get('EMA_200', 0)
-        adx = data.get('ADX_14', 0)
-        psar = data.get('PSARl_0.02_0.2', 0)
-        
-        # تحلیل پیشرفته روند
-        ema_alignment = "صعودی قوی" if ema_8 > ema_21 > ema_50 > ema_200 else \
-                       "نزولی قوی" if ema_8 < ema_21 < ema_50 < ema_200 else \
-                       "صعودی ضعیف" if ema_8 > ema_21 else \
-                       "نزولی ضعیف" if ema_8 < ema_21 else "خنثی"
-        
-        trend_strength = "بسیار قوی" if adx > 40 else "قوی" if adx > 25 else "متوسط" if adx > 20 else "ضعیف"
-        
-        psar_signal = "صعودی" if psar < data.get('close', 0) else "نزولی"
-        
-        return {
-            'direction': ema_alignment,
-            'strength': trend_strength,
-            'adx': adx,
-            'psar_signal': psar_signal,
-            'ema_alignment': f"EMA8: {ema_8:.5f}, EMA21: {ema_21:.5f}, EMA50: {ema_50:.5f}"
-        }
+        """تحلیل پیشرفته روند"""
+        try:
+            ema_8 = data.get('EMA_8', 0)
+            ema_21 = data.get('EMA_21', 0)
+            ema_50 = data.get('EMA_50', 0)
+            ema_200 = data.get('EMA_200', 0)
+            adx = data.get('ADX_14', 0)
+            psar = data.get('PSARl_0.02_0.2', 0) or data.get('PSARs_0.02_0.2', 0)
+            current_price = data.get('close', 0)
+            
+            # تحلیل پیشرفته روند
+            ema_alignment = "صعودی قوی" if ema_8 > ema_21 > ema_50 > ema_200 else \
+                           "نزولی قوی" if ema_8 < ema_21 < ema_50 < ema_200 else \
+                           "صعودی ضعیف" if ema_8 > ema_21 else \
+                           "نزولی ضعیف" if ema_8 < ema_21 else "خنثی"
+            
+            trend_strength = "بسیار قوی" if adx > 40 else "قوی" if adx > 25 else "متوسط" if adx > 20 else "ضعیف"
+            
+            psar_signal = "صعودی" if psar < current_price else "نزولی"
+            
+            return {
+                'direction': ema_alignment,
+                'strength': trend_strength,
+                'adx': adx,
+                'psar_signal': psar_signal,
+                'ema_alignment': f"EMA8: {ema_8:.5f}, EMA21: {ema_21:.5f}, EMA50: {ema_50:.5f}"
+            }
+        except Exception as e:
+            logging.warning(f"خطا در تحلیل روند: {e}")
+            return {
+                'direction': 'نامشخص',
+                'strength': 'ضعیف',
+                'adx': 0,
+                'psar_signal': 'نامشخص',
+                'ema_alignment': 'خطا در محاسبه'
+            }
 
     def _analyze_enhanced_momentum(self, data: pd.Series) -> Dict:
-        rsi = data.get('RSI_14', 50)
-        macd_hist = data.get('MACDh_12_26_9', 0)
-        stoch_k = data.get('STOCHk_14_3_3', 50)
-        cci = data.get('CCI_20', 0)
-        williams = data.get('WILLR_14', -50)
-        
-        rsi_signal = "اشباع خرید" if rsi > 70 else "اشباع فروش" if rsi < 30 else "خنثی"
-        macd_signal = "صعودی قوی" if macd_hist > 0 and macd_hist > data.get('MACDh_12_26_9', 0) else \
-                     "صعودی ضعیف" if macd_hist > 0 else \
-                     "نزولی قوی" if macd_hist < 0 and macd_hist < data.get('MACDh_12_26_9', 0) else "نزولی ضعیف"
-        stoch_signal = "اشباع خرید" if stoch_k > 80 else "اشباع فروش" if stoch_k < 20 else "خنثی"
-        cci_signal = "صعودی" if cci > 100 else "نزولی" if cci < -100 else "خنثی"
-        williams_signal = "اشباع خرید" if williams > -20 else "اشباع فروش" if williams < -80 else "خنثی"
-        
-        return {
-            'rsi': {'value': rsi, 'signal': rsi_signal},
-            'macd': {'signal': macd_signal, 'histogram': macd_hist},
-            'stochastic': {'value': stoch_k, 'signal': stoch_signal},
-            'cci': {'value': cci, 'signal': cci_signal},
-            'williams': {'value': williams, 'signal': williams_signal},
-            'overall_momentum': self._calculate_overall_momentum(rsi, macd_hist, stoch_k, cci)
-        }
+        """تحلیل پیشرفته مومنتوم"""
+        try:
+            rsi = data.get('RSI_14', 50)
+            macd_hist = data.get('MACDh_12_26_9', 0)
+            stoch_k = data.get('STOCHk_14_3_3', 50)
+            cci = data.get('CCI_20', 0)
+            williams = data.get('WILLR_14', -50)
+            
+            rsi_signal = "اشباع خرید" if rsi > 70 else "اشباع فروش" if rsi < 30 else "خنثی"
+            macd_signal = "صعودی" if macd_hist > 0 else "نزولی"
+            stoch_signal = "اشباع خرید" if stoch_k > 80 else "اشباع فروش" if stoch_k < 20 else "خنثی"
+            cci_signal = "صعودی" if cci > 100 else "نزولی" if cci < -100 else "خنثی"
+            williams_signal = "اشباع خرید" if williams > -20 else "اشباع فروش" if williams < -80 else "خنثی"
+            
+            return {
+                'rsi': {'value': rsi, 'signal': rsi_signal},
+                'macd': {'signal': macd_signal, 'histogram': macd_hist},
+                'stochastic': {'value': stoch_k, 'signal': stoch_signal},
+                'cci': {'value': cci, 'signal': cci_signal},
+                'williams': {'value': williams, 'signal': williams_signal},
+                'overall_momentum': self._calculate_overall_momentum(rsi, macd_hist, stoch_k, cci)
+            }
+        except Exception as e:
+            logging.warning(f"خطا در تحلیل مومنتوم: {e}")
+            return {
+                'rsi': {'value': 50, 'signal': 'خنثی'},
+                'macd': {'signal': 'خنثی', 'histogram': 0},
+                'stochastic': {'value': 50, 'signal': 'خنثی'},
+                'cci': {'value': 0, 'signal': 'خنثی'},
+                'williams': {'value': -50, 'signal': 'خنثی'},
+                'overall_momentum': 'خنثی'
+            }
 
     def _calculate_overall_momentum(self, rsi: float, macd_hist: float, stoch_k: float, cci: float) -> str:
         """محاسبه مومنتوم کلی بر اساس چندین اندیکاتور"""
-        score = 0
-        if rsi > 50: score += 1
-        if macd_hist > 0: score += 1
-        if stoch_k > 50: score += 1
-        if cci > 0: score += 1
-        
-        if score >= 3: return "صعودی قوی"
-        if score == 2: return "صعودی ضعیف"
-        if score <= 1: return "نزولی ضعیف"
-        return "نزولی قوی"
+        try:
+            score = 0
+            if rsi > 50: score += 1
+            if macd_hist > 0: score += 1
+            if stoch_k > 50: score += 1
+            if cci > 0: score += 1
+            
+            if score >= 3: return "صعودی قوی"
+            if score == 2: return "صعودی ضعیف"
+            if score <= 1: return "نزولی ضعیف"
+            return "نزولی قوی"
+        except:
+            return "خنثی"
 
     def _analyze_enhanced_key_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
-        bb_upper = ltf_df.get('BBU_20_2.0', pd.Series([0])).iloc[-1]
-        bb_lower = ltf_df.get('BBL_20_2.0', pd.Series([0])).iloc[-1]
-        bb_middle = ltf_df.get('BBM_20_2.0', pd.Series([0])).iloc[-1]
-        
-        kc_upper = ltf_df.get('KCUe_20_2', pd.Series([0])).iloc[-1]
-        kc_lower = ltf_df.get('KCLe_20_2', pd.Series([0])).iloc[-1]
-        
-        support_1 = ltf_df.get('sup_1', pd.Series([0])).iloc[-1]
-        resistance_1 = ltf_df.get('res_1', pd.Series([0])).iloc[-1]
-        support_2 = ltf_df.get('sup_2', pd.Series([0])).iloc[-1]
-        resistance_2 = ltf_df.get('res_2', pd.Series([0])).iloc[-1]
-        
-        pivot = ltf_df.get('pivot', pd.Series([0])).iloc[-1]
-        r1 = ltf_df.get('r1', pd.Series([0])).iloc[-1]
-        s1 = ltf_df.get('s1', pd.Series([0])).iloc[-1]
-        
-        return {
-            'dynamic': {
-                'bb_upper': bb_upper,
-                'bb_lower': bb_lower,
-                'bb_middle': bb_middle,
-                'kc_upper': kc_upper,
-                'kc_lower': kc_lower
-            },
-            'static': {
-                'support_1': support_1,
-                'resistance_1': resistance_1,
-                'support_2': support_2,
-                'resistance_2': resistance_2
-            },
-            'pivot_points': {
-                'pivot': pivot,
-                'r1': r1,
-                's1': s1
-            },
-            'current_price_position': self._get_enhanced_price_position(current_price, support_1, resistance_1, bb_lower, bb_upper)
-        }
+        """تحلیل سطوح کلیدی"""
+        try:
+            bb_upper = ltf_df.get('BBU_20_2.0', [0])
+            bb_lower = ltf_df.get('BBL_20_2.0', [0])
+            bb_middle = ltf_df.get('BBM_20_2.0', [0])
+            
+            kc_upper = ltf_df.get('KCUe_20_2', [0])
+            kc_lower = ltf_df.get('KCLe_20_2', [0])
+            
+            support_1 = ltf_df.get('sup_1', [0])
+            resistance_1 = ltf_df.get('res_1', [0])
+            support_2 = ltf_df.get('sup_2', [0])
+            resistance_2 = ltf_df.get('res_2', [0])
+            
+            pivot = ltf_df.get('pivot', [0])
+            r1 = ltf_df.get('r1', [0])
+            s1 = ltf_df.get('s1', [0])
+            
+            # گرفتن آخرین مقادیر
+            bb_upper_val = bb_upper.iloc[-1] if hasattr(bb_upper, 'iloc') and len(bb_upper) > 0 else 0
+            bb_lower_val = bb_lower.iloc[-1] if hasattr(bb_lower, 'iloc') and len(bb_lower) > 0 else 0
+            bb_middle_val = bb_middle.iloc[-1] if hasattr(bb_middle, 'iloc') and len(bb_middle) > 0 else 0
+            
+            support_1_val = support_1.iloc[-1] if hasattr(support_1, 'iloc') and len(support_1) > 0 else 0
+            resistance_1_val = resistance_1.iloc[-1] if hasattr(resistance_1, 'iloc') and len(resistance_1) > 0 else 0
+            
+            return {
+                'dynamic': {
+                    'bb_upper': bb_upper_val,
+                    'bb_lower': bb_lower_val,
+                    'bb_middle': bb_middle_val
+                },
+                'static': {
+                    'support_1': support_1_val,
+                    'resistance_1': resistance_1_val,
+                    'support_2': support_2.iloc[-1] if hasattr(support_2, 'iloc') and len(support_2) > 0 else 0,
+                    'resistance_2': resistance_2.iloc[-1] if hasattr(resistance_2, 'iloc') and len(resistance_2) > 0 else 0
+                },
+                'pivot_points': {
+                    'pivot': pivot.iloc[-1] if hasattr(pivot, 'iloc') and len(pivot) > 0 else 0,
+                    'r1': r1.iloc[-1] if hasattr(r1, 'iloc') and len(r1) > 0 else 0,
+                    's1': s1.iloc[-1] if hasattr(s1, 'iloc') and len(s1) > 0 else 0
+                },
+                'current_price_position': self._get_enhanced_price_position(current_price, support_1_val, resistance_1_val, bb_lower_val, bb_upper_val)
+            }
+        except Exception as e:
+            logging.warning(f"خطا در تحلیل سطوح کلیدی: {e}")
+            return {
+                'dynamic': {'bb_upper': 0, 'bb_lower': 0, 'bb_middle': 0},
+                'static': {'support_1': 0, 'resistance_1': 0, 'support_2': 0, 'resistance_2': 0},
+                'pivot_points': {'pivot': 0, 'r1': 0, 's1': 0},
+                'current_price_position': 'نامشخص'
+            }
 
     def _get_enhanced_price_position(self, price: float, support: float, resistance: float, bb_lower: float, bb_upper: float) -> str:
-        if resistance == support or resistance <= support:
-            return "در محدوده خنثی"
-        
-        range_size = resistance - support
-        position = (price - support) / range_size
-        
-        # تحلیل موقعیت نسبت به باندهای بولینگر
-        bb_position = ""
-        if price < bb_lower:
-            bb_position = " (زیر باند پایینی)"
-        elif price > bb_upper:
-            bb_position = " (بالای باند بالایی)"
-        
-        if position < 0.2:
-            return "نزدیک حمایت اصلی" + bb_position
-        elif position > 0.8:
-            return "نزدیک مقاومت اصلی" + bb_position
-        elif position < 0.4:
-            return "نزدیک حمایت" + bb_position
-        elif position > 0.6:
-            return "نزدیک مقاومت" + bb_position
-        else:
-            return "در میانه رنج" + bb_position
+        """تحلیل موقعیت قیمت"""
+        try:
+            if resistance <= support or resistance == 0 or support == 0:
+                return "در محدوده خنثی"
+            
+            range_size = resistance - support
+            position = (price - support) / range_size
+            
+            # تحلیل موقعیت نسبت به باندهای بولینگر
+            bb_position = ""
+            if price < bb_lower and bb_lower > 0:
+                bb_position = " (زیر باند پایینی)"
+            elif price > bb_upper and bb_upper > 0:
+                bb_position = " (بالای باند بالایی)"
+            
+            if position < 0.2:
+                return "نزدیک حمایت اصلی" + bb_position
+            elif position > 0.8:
+                return "نزدیک مقاومت اصلی" + bb_position
+            elif position < 0.4:
+                return "نزدیک حمایت" + bb_position
+            elif position > 0.6:
+                return "نزدیک مقاومت" + bb_position
+            else:
+                return "در میانه رنج" + bb_position
+        except:
+            return "نامشخص"
 
     def _analyze_trend_strength(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
         """تحلیل قدرت روند"""
-        htf_adx = htf_df.get('ADX_14', pd.Series([0])).iloc[-1]
-        ltf_adx = ltf_df.get('ADX_14', pd.Series([0])).iloc[-1]
-        
-        htf_trend_dir = "صعودی" if htf_df.get('EMA_21', pd.Series([0])).iloc[-1] > htf_df.get('EMA_50', pd.Series([0])).iloc[-1] else "نزولی"
-        ltf_trend_dir = "صعودی" if ltf_df.get('EMA_21', pd.Series([0])).iloc[-1] > ltf_df.get('EMA_50', pd.Series([0])).iloc[-1] else "نزولی"
-        
-        trend_alignment = "همسو" if htf_trend_dir == ltf_trend_dir else "غیرهمسو"
-        
-        return {
-            'htf_strength': "قوی" if htf_adx > 25 else "ضعیف",
-            'ltf_strength': "قوی" if ltf_adx > 25 else "ضعیف",
-            'trend_alignment': trend_alignment,
-            'overall_strength': "بسیار قوی" if htf_adx > 25 and ltf_adx > 25 and trend_alignment == "همسو" else "قوی" if (htf_adx > 25 or ltf_adx > 25) else "ضعیف"
-        }
+        try:
+            htf_adx = htf_df.get('ADX_14', [0])
+            ltf_adx = ltf_df.get('ADX_14', [0])
+            
+            htf_adx_val = htf_adx.iloc[-1] if hasattr(htf_adx, 'iloc') and len(htf_adx) > 0 else 0
+            ltf_adx_val = ltf_adx.iloc[-1] if hasattr(ltf_adx, 'iloc') and len(ltf_adx) > 0 else 0
+            
+            htf_ema_21 = htf_df.get('EMA_21', [0])
+            htf_ema_50 = htf_df.get('EMA_50', [0])
+            ltf_ema_21 = ltf_df.get('EMA_21', [0])
+            ltf_ema_50 = ltf_df.get('EMA_50', [0])
+            
+            htf_trend_dir = "صعودی" if (htf_ema_21.iloc[-1] if hasattr(htf_ema_21, 'iloc') and len(htf_ema_21) > 0 else 0) > (htf_ema_50.iloc[-1] if hasattr(htf_ema_50, 'iloc') and len(htf_ema_50) > 0 else 0) else "نزولی"
+            ltf_trend_dir = "صعودی" if (ltf_ema_21.iloc[-1] if hasattr(ltf_ema_21, 'iloc') and len(ltf_ema_21) > 0 else 0) > (ltf_ema_50.iloc[-1] if hasattr(ltf_ema_50, 'iloc') and len(ltf_ema_50) > 0 else 0) else "نزولی"
+            
+            trend_alignment = "همسو" if htf_trend_dir == ltf_trend_dir else "غیرهمسو"
+            
+            return {
+                'htf_strength': "قوی" if htf_adx_val > 25 else "ضعیف",
+                'ltf_strength': "قوی" if ltf_adx_val > 25 else "ضعیف",
+                'trend_alignment': trend_alignment,
+                'overall_strength': "بسیار قوی" if htf_adx_val > 25 and ltf_adx_val > 25 and trend_alignment == "همسو" else "قوی" if (htf_adx_val > 25 or ltf_adx_val > 25) else "ضعیف"
+            }
+        except Exception as e:
+            logging.warning(f"خطا در تحلیل قدرت روند: {e}")
+            return {
+                'htf_strength': 'ضعیف',
+                'ltf_strength': 'ضعیف',
+                'trend_alignment': 'نامشخص',
+                'overall_strength': 'ضعیف'
+            }
 
     def _generate_combined_signals(self, htf_trend: Dict, ltf_trend: Dict, momentum: Dict, key_levels: Dict) -> List[str]:
         """تولید سیگنال‌های ترکیبی"""
         signals = []
         
-        # سیگنال روند
-        if htf_trend['direction'] == ltf_trend['direction'] and "صعودی" in htf_trend['direction']:
-            signals.append("همسویی روند صعودی")
-        elif htf_trend['direction'] == ltf_trend['direction'] and "نزولی" in htf_trend['direction']:
-            signals.append("همسویی روند نزولی")
-        
-        # سیگنال مومنتوم
-        if momentum['overall_momentum'] == "صعودی قوی":
-            signals.append("مومنتوم صعودی قوی")
-        elif momentum['overall_momentum'] == "نزولی قوی":
-            signals.append("مومنتوم نزولی قوی")
-        
-        # سیگنال موقعیت قیمت
-        price_pos = key_levels['current_price_position']
-        if "نزدیک حمایت" in price_pos and "صعودی" in momentum['overall_momentum']:
-            signals.append("موقعیت خرید در حمایت")
-        elif "نزدیک مقاومت" in price_pos and "نزولی" in momentum['overall_momentum']:
-            signals.append("موقعیت فروش در مقاومت")
-        
+        try:
+            # سیگنال روند
+            if htf_trend.get('direction', '') == ltf_trend.get('direction', '') and "صعودی" in htf_trend.get('direction', ''):
+                signals.append("همسویی روند صعودی")
+            elif htf_trend.get('direction', '') == ltf_trend.get('direction', '') and "نزولی" in htf_trend.get('direction', ''):
+                signals.append("همسویی روند نزولی")
+            
+            # سیگنال مومنتوم
+            momentum_str = momentum.get('overall_momentum', 'خنثی')
+            if momentum_str == "صعودی قوی":
+                signals.append("مومنتوم صعودی قوی")
+            elif momentum_str == "نزولی قوی":
+                signals.append("مومنتوم نزولی قوی")
+            
+            # سیگنال موقعیت قیمت
+            price_pos = key_levels.get('current_price_position', '')
+            if "نزدیک حمایت" in price_pos and "صعودی" in momentum_str:
+                signals.append("موقعیت خرید در حمایت")
+            elif "نزدیک مقاومت" in price_pos and "نزولی" in momentum_str:
+                signals.append("موقعیت فروش در مقاومت")
+        except Exception as e:
+            logging.warning(f"خطا در تولید سیگنال‌های ترکیبی: {e}")
+            
         return signals
 
     def _analyze_candle_patterns(self, df: pd.DataFrame) -> Dict:
-        if len(df) < 3:
-            return {'patterns': [], 'current_candle': {}, 'recent_patterns': []}
+        """تحلیل الگوهای کندل استیک"""
+        try:
+            if len(df) < 3:
+                return {'patterns': [], 'current_candle': {}, 'recent_patterns': []}
+                
+            last_candle = df.iloc[-1]
+            patterns = []
             
-        last_candle = df.iloc[-1]
-        patterns = []
-        
-        candle_indicators = [col for col in df.columns if col.startswith('CDL_')]
-        for indicator in candle_indicators:
-            if abs(last_candle.get(indicator, 0)) > 0:
-                pattern_name = indicator.replace('CDL_', '')
-                direction = "صعودی" if last_candle[indicator] > 0 else "نزولی"
-                patterns.append(f"{pattern_name} ({direction})")
-        
-        current_candle = self._analyze_single_candle(df.iloc[-1])
-        
-        return {
-            'patterns': patterns,
-            'current_candle': current_candle,
-            'recent_patterns': patterns[-3:] if patterns else [],
-            'pattern_strength': "قوی" if len(patterns) > 0 and any("صعودی قوی" in p or "نزولی قوی" in p for p in patterns) else "متوسط" if patterns else "ضعیف"
-        }
+            # بررسی الگوهای کندل استیک
+            current_candle = self._analyze_single_candle(last_candle)
+            
+            return {
+                'patterns': patterns,
+                'current_candle': current_candle,
+                'recent_patterns': patterns[-3:] if patterns else [],
+                'pattern_strength': "ضعیف"
+            }
+        except Exception as e:
+            logging.warning(f"خطا در تحلیل الگوهای کندل استیک: {e}")
+            return {
+                'patterns': [],
+                'current_candle': {},
+                'recent_patterns': [],
+                'pattern_strength': "ضعیف"
+            }
 
     def _analyze_single_candle(self, candle: pd.Series) -> Dict:
-        open_price = candle.get('open', 0)
-        close = candle.get('close', 0)
-        high = candle.get('high', 0)
-        low = candle.get('low', 0)
-        
-        body_size = abs(close - open_price)
-        total_range = high - low
-        
-        if total_range == 0:
-            return {"type": "تعریف نشده", "direction": "خنثی", "body_ratio": 0, "strength": "ضعیف"}
+        """تحلیل تک کندل"""
+        try:
+            open_price = candle.get('open', 0)
+            close = candle.get('close', 0)
+            high = candle.get('high', 0)
+            low = candle.get('low', 0)
             
-        body_ratio = body_size / total_range
-        
-        upper_shadow = high - max(open_price, close)
-        lower_shadow = min(open_price, close) - low
-        
-        if body_ratio < 0.1 and upper_shadow > 0 and lower_shadow > 0:
-            candle_type = "دوجی"
-        elif body_ratio < 0.3 and lower_shadow > 2 * body_size:
-            candle_type = "چکش"
-        elif body_ratio < 0.3 and upper_shadow > 2 * body_size:
-            candle_type = "ستاره ثاقب"
-        elif body_ratio > 0.7:
-            candle_type = "ماروبوزو"
-        else:
-            candle_type = "عادی"
+            body_size = abs(close - open_price)
+            total_range = high - low
             
-        direction = "صعودی" if close > open_price else "نزولی"
-        
-        shadow_ratio = (upper_shadow + lower_shadow) / total_range if total_range > 0 else 0
-        
-        return {
-            'type': candle_type,
-            'direction': direction,
-            'body_ratio': round(body_ratio, 2),
-            'shadow_ratio': round(shadow_ratio, 2),
-            'strength': "قوی" if body_ratio > 0.6 else "متوسط" if body_ratio > 0.3 else "ضعیف"
-        }
+            if total_range == 0:
+                return {"type": "تعریف نشده", "direction": "خنثی", "body_ratio": 0, "strength": "ضعیف"}
+                
+            body_ratio = body_size / total_range
+            
+            upper_shadow = high - max(open_price, close)
+            lower_shadow = min(open_price, close) - low
+            
+            if body_ratio < 0.1 and upper_shadow > 0 and lower_shadow > 0:
+                candle_type = "دوجی"
+            elif body_ratio < 0.3 and lower_shadow > 2 * body_size:
+                candle_type = "چکش"
+            elif body_ratio < 0.3 and upper_shadow > 2 * body_size:
+                candle_type = "ستاره ثاقب"
+            elif body_ratio > 0.7:
+                candle_type = "ماروبوزو"
+            else:
+                candle_type = "عادی"
+                
+            direction = "صعودی" if close > open_price else "نزولی"
+            
+            shadow_ratio = (upper_shadow + lower_shadow) / total_range if total_range > 0 else 0
+            
+            return {
+                'type': candle_type,
+                'direction': direction,
+                'body_ratio': round(body_ratio, 2),
+                'shadow_ratio': round(shadow_ratio, 2),
+                'strength': "قوی" if body_ratio > 0.6 else "متوسط" if body_ratio > 0.3 else "ضعیف"
+            }
+        except:
+            return {"type": "خطا", "direction": "خنثی", "body_ratio": 0, "strength": "ضعیف"}
 
 # =================================================================================
 # --- کلاس مدیریت AI ترکیبی پیشرفته ---
@@ -534,12 +681,13 @@ class AdvancedHybridAIManager:
         self.gemini_model = GEMINI_MODEL
         
         # تنظیمات پیشرفته Cloudflare
-        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
+        self.cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "")
         self.cloudflare_model_name = IMPROVED_CLOUDFLARE_MODELS[0]
         self.fallback_models = IMPROVED_CLOUDFLARE_MODELS[1:]
         self.current_model_index = 0
         
-        genai.configure(api_key=gemini_api_key)
+        if gemini_api_key:
+            genai.configure(api_key=gemini_api_key)
         
         # کش برای بهبود عملکرد
         self.analysis_cache = {}
@@ -547,6 +695,10 @@ class AdvancedHybridAIManager:
     
     async def get_enhanced_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """دریافت تحلیل پیشرفته ترکیبی"""
+        if not technical_analysis:
+            logging.warning(f"تحلیل تکنیکال برای {symbol} موجود نیست")
+            return None
+            
         cache_key = f"{symbol}_{hash(str(technical_analysis))}"
         current_time = time.time()
         
@@ -556,21 +708,35 @@ class AdvancedHybridAIManager:
             if current_time - timestamp < self.cache_timeout:
                 return cached_data
         
-        tasks = [
-            self._get_enhanced_gemini_analysis(symbol, technical_analysis),
-            self._get_enhanced_cloudflare_analysis(symbol, technical_analysis)
-        ]
+        tasks = []
+        
+        # اضافه کردن Gemini فقط اگر کلید API موجود باشد
+        if self.gemini_api_key:
+            tasks.append(self._get_enhanced_gemini_analysis(symbol, technical_analysis))
+        
+        # اضافه کردن Cloudflare فقط اگر کلید API موجود باشد
+        if self.cloudflare_api_key and self.cloudflare_account_id:
+            tasks.append(self._get_enhanced_cloudflare_analysis(symbol, technical_analysis))
+        
+        if not tasks:
+            logging.warning("هیچ مدل AI در دسترس نیست")
+            return self._create_fallback_signal(symbol, technical_analysis)
         
         try:
             results = await asyncio.gather(*tasks, return_exceptions=True)
-            gemini_result, cloudflare_result = results
             
-            if isinstance(gemini_result, Exception):
-                logging.error(f"خطا در Gemini برای {symbol}: {gemini_result}")
-                gemini_result = None
-            if isinstance(cloudflare_result, Exception):
-                logging.error(f"خطا در Cloudflare برای {symbol}: {cloudflare_result}")
-                cloudflare_result = None
+            gemini_result = None
+            cloudflare_result = None
+            
+            for i, result in enumerate(results):
+                if isinstance(result, Exception):
+                    logging.error(f"خطا در مدل AI: {result}")
+                    continue
+                    
+                if i == 0 and self.gemini_api_key:
+                    gemini_result = result
+                elif (i == 0 and not self.gemini_api_key) or (i == 1 and self.gemini_api_key):
+                    cloudflare_result = result
             
             combined_result = self._combine_enhanced_analyses(symbol, gemini_result, cloudflare_result, technical_analysis)
             
@@ -582,7 +748,7 @@ class AdvancedHybridAIManager:
             
         except Exception as e:
             logging.error(f"خطا در تحلیل ترکیبی برای {symbol}: {e}")
-            return None
+            return self._create_fallback_signal(symbol, technical_analysis)
     
     async def _get_enhanced_gemini_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """تحلیل پیشرفته با Gemini"""
@@ -593,7 +759,7 @@ class AdvancedHybridAIManager:
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
-                request_options={'timeout': 60}
+                request_options={'timeout': 30}
             )
             
             return self._parse_enhanced_ai_response(response.text, symbol, "Gemini")
@@ -604,8 +770,7 @@ class AdvancedHybridAIManager:
     
     async def _get_enhanced_cloudflare_analysis(self, symbol: str, technical_analysis: Dict, retry_count: int = 0) -> Optional[Dict]:
         """تحلیل پیشرفته با Cloudflare AI با قابلیت retry"""
-        if not self.cloudflare_api_key or self.cloudflare_account_id == "your_account_id":
-            logging.warning("کلید یا شناسه حساب Cloudflare API تنظیم نشده است")
+        if not self.cloudflare_api_key or not self.cloudflare_account_id:
             return None
             
         try:
@@ -632,7 +797,7 @@ class AdvancedHybridAIManager:
             cloudflare_url = f"https://api.cloudflare.com/client/v4/accounts/{self.cloudflare_account_id}/ai/run/{current_model}"
             
             async with aiohttp.ClientSession() as session:
-                async with session.post(cloudflare_url, headers=headers, json=payload, timeout=60) as response:
+                async with session.post(cloudflare_url, headers=headers, json=payload, timeout=30) as response:
                     if response.status == 200:
                         data = await response.json()
                         content = self._extract_cloudflare_response(data)
@@ -657,48 +822,48 @@ class AdvancedHybridAIManager:
 
     def _extract_cloudflare_response(self, data: Dict) -> Optional[str]:
         """استخراج پاسخ از داده‌های Cloudflare"""
-        if "result" in data and "response" in data["result"]:
-            return data["result"]["response"]
-        elif "response" in data:
-            return data["response"]
-        else:
-            logging.warning(f"فرمت پاسخ Cloudflare نامعتبر است: {data}")
+        try:
+            if "result" in data and "response" in data["result"]:
+                return data["result"]["response"]
+            elif "response" in data:
+                return data["response"]
+            else:
+                logging.warning(f"فرمت پاسخ Cloudflare نامعتبر است")
+                return None
+        except:
             return None
 
     def _create_enhanced_prompt(self, symbol: str, technical_analysis: Dict, ai_name: str) -> str:
-        base_currency, quote_currency = symbol.split('/')
-        
+        """ایجاد prompt برای مدل‌های AI"""
+        try:
+            base_currency, quote_currency = symbol.split('/')
+        except:
+            base_currency, quote_currency = symbol, "USD"
+
         return f"""
 به عنوان یک تحلیلگر حرفه‌ای بازار فارکس با ۲۰ سال تجربه، تحلیل تکنیکال زیر را برای جفت ارز {symbol} بررسی کنید و فقط و فقط یک آبجکت JSON معتبر برگردانید.
 
 📊 **وضعیت تکنیکال پیشرفته {symbol}:**
 
 🎯 **روندها:**
-- روند بلندمدت (HTF): {technical_analysis['htf_trend']['direction']} - قدرت: {technical_analysis['htf_trend']['strength']}
-- روند کوتاه‌مدت (LTF): {technical_analysis['ltf_trend']['direction']} - قدرت: {technical_analysis['ltf_trend']['strength']}
-- همسویی روندها: {technical_analysis['trend_strength']['trend_alignment']}
-- قدرت کلی: {technical_analysis['trend_strength']['overall_strength']}
+- روند بلندمدت (HTF): {technical_analysis.get('htf_trend', {}).get('direction', 'نامشخص')} - قدرت: {technical_analysis.get('htf_trend', {}).get('strength', 'ضعیف')}
+- روند کوتاه‌مدت (LTF): {technical_analysis.get('ltf_trend', {}).get('direction', 'نامشخص')} - قدرت: {technical_analysis.get('ltf_trend', {}).get('strength', 'ضعیف')}
+- همسویی روندها: {technical_analysis.get('trend_strength', {}).get('trend_alignment', 'نامشخص')}
+- قدرت کلی: {technical_analysis.get('trend_strength', {}).get('overall_strength', 'ضعیف')}
 
 ⚡ **مومنتوم:**
-- RSI: {technical_analysis['momentum']['rsi']['value']:.1f} ({technical_analysis['momentum']['rsi']['signal']})
-- MACD: {technical_analysis['momentum']['macd']['signal']}
-- Stochastic: {technical_analysis['momentum']['stochastic']['value']:.1f} ({technical_analysis['momentum']['stochastic']['signal']})
-- مومنتوم کلی: {technical_analysis['momentum']['overall_momentum']}
+- RSI: {technical_analysis.get('momentum', {}).get('rsi', {}).get('value', 50):.1f} ({technical_analysis.get('momentum', {}).get('rsi', {}).get('signal', 'خنثی')})
+- MACD: {technical_analysis.get('momentum', {}).get('macd', {}).get('signal', 'خنثی')}
+- Stochastic: {technical_analysis.get('momentum', {}).get('stochastic', {}).get('value', 50):.1f} ({technical_analysis.get('momentum', {}).get('stochastic', {}).get('signal', 'خنثی')})
+- مومنتوم کلی: {technical_analysis.get('momentum', {}).get('overall_momentum', 'خنثی')}
 
 📈 **سطوح کلیدی:**
-- موقعیت قیمت: {technical_analysis['key_levels']['current_price_position']}
-- مقاومت ۱: {technical_analysis['key_levels']['static']['resistance_1']:.5f}
-- حمایت ۱: {technical_analysis['key_levels']['static']['support_1']:.5f}
-- مقاومت ۲: {technical_analysis['key_levels']['static']['resistance_2']:.5f}
-- حمایت ۲: {technical_analysis['key_levels']['static']['support_2']:.5f}
-- پیوت: {technical_analysis['key_levels']['pivot_points']['pivot']:.5f}
-
-🕯️ **الگوهای کندل‌استیک:**
-- کندل فعلی: {technical_analysis['candle_patterns']['current_candle']['type']} ({technical_analysis['candle_patterns']['current_candle']['direction']})
-- الگوهای شناسایی شده: {', '.join(technical_analysis['candle_patterns']['patterns'][-2:])}
+- موقعیت قیمت: {technical_analysis.get('key_levels', {}).get('current_price_position', 'نامشخص')}
+- مقاومت ۱: {technical_analysis.get('key_levels', {}).get('static', {}).get('resistance_1', 0):.5f}
+- حمایت ۱: {technical_analysis.get('key_levels', {}).get('static', {}).get('support_1', 0):.5f}
 
 💡 **سیگنال‌های ترکیبی:**
-{chr(10).join(['- ' + signal for signal in technical_analysis['combined_signals']])}
+{chr(10).join(['- ' + signal for signal in technical_analysis.get('combined_signals', [])])}
 
 **لطفاً پاسخ را فقط در قالب JSON زیر ارائه دهید (بدون هیچ متن اضافی):**
 
@@ -718,6 +883,7 @@ class AdvancedHybridAIManager:
 """
 
     def _parse_enhanced_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
+        """پارس کردن پاسخ AI"""
         try:
             cleaned_response = response.strip()
             
@@ -756,6 +922,7 @@ class AdvancedHybridAIManager:
             return None
 
     def _validate_enhanced_signal_data(self, signal_data: Dict, symbol: str) -> bool:
+        """اعتبارسنجی داده‌های سیگنال"""
         required_fields = ['SYMBOL', 'ACTION', 'CONFIDENCE']
         
         for field in required_fields:
@@ -780,6 +947,7 @@ class AdvancedHybridAIManager:
         return True
 
     def _combine_enhanced_analyses(self, symbol: str, gemini_result: Dict, cloudflare_result: Dict, technical_analysis: Dict) -> Optional[Dict]:
+        """ترکیب تحلیل‌های مختلف AI"""
         valid_results = []
         
         if gemini_result and self._validate_enhanced_signal_data(gemini_result, symbol):
@@ -796,18 +964,18 @@ class AdvancedHybridAIManager:
             model_name, result = valid_results[0]
             return self._enhance_single_model_result(result, model_name, technical_analysis)
         
-        gemini_data = valid_results[0][1] if valid_results[0][0] == 'Gemini' else valid_results[1][1]
-        cloudflare_data = valid_results[0][1] if valid_results[0][0] == 'Cloudflare' else valid_results[1][1]
+        # ترکیب چندین نتیجه
+        gemini_data = next((r[1] for r in valid_results if r[0] == 'Gemini'), None)
+        cloudflare_data = next((r[1] for r in valid_results if r[0] == 'Cloudflare'), None)
         
-        gemini_action = gemini_data.get('ACTION', 'HOLD').upper()
-        cloudflare_action = cloudflare_data.get('ACTION', 'HOLD').upper()
-        
-        if gemini_action == cloudflare_action:
+        if gemini_data and cloudflare_data:
             return self._create_consensus_signal(symbol, gemini_data, cloudflare_data, technical_analysis)
         else:
-            return self._resolve_enhanced_conflict(symbol, gemini_data, cloudflare_data, technical_analysis)
+            model_name, result = valid_results[0]
+            return self._enhance_single_model_result(result, model_name, technical_analysis)
 
     def _create_hold_signal(self, symbol: str, technical_analysis: Dict) -> Dict:
+        """ایجاد سیگنال HOLD پیش‌فرض"""
         return {
             'SYMBOL': symbol,
             'ACTION': 'HOLD',
@@ -815,10 +983,15 @@ class AdvancedHybridAIManager:
             'CONSENSUS': False,
             'ANALYSIS': 'عدم وجود سیگنال معتبر از مدل‌های AI',
             'TIMESTAMP': datetime.now(UTC).isoformat(),
-            'TECHNICAL_CONTEXT': technical_analysis.get('combined_signals', [])
+            'TECHNICAL_CONTEXT': technical_analysis.get('combined_signals', []) if technical_analysis else []
         }
 
+    def _create_fallback_signal(self, symbol: str, technical_analysis: Dict) -> Dict:
+        """ایجاد سیگنال fallback"""
+        return self._create_hold_signal(symbol, technical_analysis)
+
     def _enhance_single_model_result(self, result: Dict, model_name: str, technical_analysis: Dict) -> Dict:
+        """بهبود نتیجه تک مدلی"""
         result['CONSENSUS'] = False
         result['MODEL_SOURCE'] = f"Single: {model_name}"
         
@@ -827,139 +1000,66 @@ class AdvancedHybridAIManager:
         result['CONFIDENCE'] = max(1, original_confidence - 2)
         
         # اضافه کردن اطلاعات تکنیکال
-        if 'TECHNICAL_CONTEXT' not in result:
+        if 'TECHNICAL_CONTEXT' not in result and technical_analysis:
             result['TECHNICAL_CONTEXT'] = technical_analysis.get('combined_signals', [])
         
         return result
 
     def _create_consensus_signal(self, symbol: str, gemini_data: Dict, cloudflare_data: Dict, technical_analysis: Dict) -> Dict:
+        """ایجاد سیگنال با توافق"""
         averaged_signal = self._average_enhanced_signals(symbol, gemini_data, cloudflare_data)
         averaged_signal['CONSENSUS'] = True
         averaged_signal['MODELS_AGREE'] = True
         averaged_signal['MODEL_SOURCE'] = "Gemini + Cloudflare Consensus"
-        averaged_signal['PRIORITY'] = self._calculate_priority(averaged_signal, technical_analysis)
+        
+        if technical_analysis:
+            averaged_signal['PRIORITY'] = self._calculate_priority(averaged_signal, technical_analysis)
         
         # افزایش اعتماد برای سیگنال‌های با توافق
         original_confidence = float(averaged_signal.get('CONFIDENCE', 5))
         averaged_signal['CONFIDENCE'] = min(10, original_confidence + 1)
         
         averaged_signal['FINAL_ANALYSIS'] = f"توافق کامل بین مدل‌ها - سیگنال {gemini_data['ACTION']} با اعتماد بالا"
-        averaged_signal['TECHNICAL_CONTEXT'] = technical_analysis.get('combined_signals', [])
+        
+        if technical_analysis:
+            averaged_signal['TECHNICAL_CONTEXT'] = technical_analysis.get('combined_signals', [])
         
         return averaged_signal
 
-    def _resolve_enhanced_conflict(self, symbol: str, gemini_data: Dict, cloudflare_data: Dict, technical_analysis: Dict) -> Dict:
-        gemini_conf = float(gemini_data.get('CONFIDENCE', 5))
-        cloudflare_conf = float(cloudflare_data.get('CONFIDENCE', 5))
-        
-        # انتخاب بر اساس اعتماد و همسویی با تحلیل تکنیکال
-        tech_signals = technical_analysis.get('combined_signals', [])
-        gemini_score = self._calculate_model_score(gemini_data, gemini_conf, tech_signals)
-        cloudflare_score = self._calculate_model_score(cloudflare_data, cloudflare_conf, tech_signals)
-        
-        if gemini_score >= cloudflare_score:
-            selected = gemini_data
-            selected_model = 'Gemini'
-        else:
-            selected = cloudflare_data
-            selected_model = 'Cloudflare'
-        
-        selected['CONSENSUS'] = False
-        selected['MODELS_AGREE'] = False
-        selected['MODEL_SOURCE'] = f"Conflict Resolution: {selected_model}"
-        selected['CONFIDENCE'] = max(1, float(selected.get('CONFIDENCE', 5)) - 1)
-        selected['PRIORITY'] = 'LOW'
-        selected['ANALYSIS'] = f"سیگنال از {selected_model} - تضاد با مدل دیگر - نیاز به تأیید"
-        selected['TECHNICAL_CONTEXT'] = tech_signals
-        
-        return selected
-
-    def _calculate_model_score(self, signal_data: Dict, confidence: float, tech_signals: List[str]) -> float:
-        score = confidence
-        
-        # افزایش امتیاز بر اساس همسویی با سیگنال‌های تکنیکال
-        action = signal_data.get('ACTION', '').upper()
-        if action == 'BUY' and any('صعودی' in signal or 'خرید' in signal for signal in tech_signals):
-            score += 2
-        elif action == 'SELL' and any('نزولی' in signal or 'فروش' in signal for signal in tech_signals):
-            score += 2
-        
-        return score
-
     def _calculate_priority(self, signal: Dict, technical_analysis: Dict) -> str:
-        confidence = float(signal.get('CONFIDENCE', 5))
-        trend_strength = technical_analysis.get('trend_strength', {}).get('overall_strength', 'ضعیف')
-        
-        if confidence >= 8 and trend_strength in ['بسیار قوی', 'قوی']:
-            return 'HIGH'
-        elif confidence >= 6:
-            return 'MEDIUM'
-        else:
+        """محاسبه اولویت سیگنال"""
+        try:
+            confidence = float(signal.get('CONFIDENCE', 5))
+            trend_strength = technical_analysis.get('trend_strength', {}).get('overall_strength', 'ضعیف')
+            
+            if confidence >= 8 and trend_strength in ['بسیار قوی', 'قوی']:
+                return 'HIGH'
+            elif confidence >= 6:
+                return 'MEDIUM'
+            else:
+                return 'LOW'
+        except:
             return 'LOW'
 
     def _average_enhanced_signals(self, symbol: str, gemini_data: Dict, cloudflare_data: Dict) -> Dict:
+        """میانگین‌گیری سیگنال‌ها"""
         averaged = {'SYMBOL': symbol}
         
         averaged['ACTION'] = gemini_data['ACTION']
         
-        gemini_conf = float(gemini_data.get('CONFIDENCE', 5))
-        cloudflare_conf = float(cloudflare_data.get('CONFIDENCE', 5))
-        averaged['CONFIDENCE'] = round((gemini_conf + cloudflare_conf) / 2, 1)
+        try:
+            gemini_conf = float(gemini_data.get('CONFIDENCE', 5))
+            cloudflare_conf = float(cloudflare_data.get('CONFIDENCE', 5))
+            averaged['CONFIDENCE'] = round((gemini_conf + cloudflare_conf) / 2, 1)
+        except:
+            averaged['CONFIDENCE'] = 5
         
-        numeric_fields = ['ENTRY_ZONE', 'STOP_LOSS', 'TAKE_PROFIT_1', 'TAKE_PROFIT_2', 'EXPIRATION_H']
-        
-        for field in numeric_fields:
-            gemini_val = self._extract_numeric_value(gemini_data.get(field, '0'))
-            cloudflare_val = self._extract_numeric_value(cloudflare_data.get(field, '0'))
-            
-            if gemini_val is not None and cloudflare_val is not None:
-                avg_val = (gemini_val + cloudflare_val) / 2
-                if field == 'EXPIRATION_H':
-                    averaged[field] = int(round(avg_val))
-                else:
-                    averaged[field] = round(avg_val, 5)
-            elif gemini_val is not None:
-                averaged[field] = gemini_val
-            elif cloudflare_val is not None:
-                averaged[field] = cloudflare_val
-        
-        averaged['RISK_REWARD_RATIO'] = self._calculate_risk_reward(
-            averaged.get('STOP_LOSS', 0), 
-            averaged.get('TAKE_PROFIT_1', 0),
-            gemini_data.get('close', 0)
-        )
-        
+        # ترکیب تحلیل‌ها
         averaged['GEMINI_ANALYSIS'] = gemini_data.get('ANALYSIS', '')
         averaged['CLOUDFLARE_ANALYSIS'] = cloudflare_data.get('ANALYSIS', '')
         averaged['ANALYSIS'] = f"ترکیب تحلیل‌ها: {gemini_data.get('ANALYSIS', '')}"
         
         return averaged
-
-    def _extract_numeric_value(self, value: str) -> Optional[float]:
-        if isinstance(value, (int, float)):
-            return float(value)
-        if not isinstance(value, str):
-            return None
-            
-        match = re.search(r'[-+]?\d*\.\d+|\d+', value.replace(',', ''))
-        if match:
-            try:
-                return float(match.group(0))
-            except (ValueError, TypeError):
-                return None
-        return None
-
-    def _calculate_risk_reward(self, stop_loss: float, take_profit: float, entry: float) -> float:
-        if not all([stop_loss, take_profit, entry]) or stop_loss == take_profit:
-            return 1.0
-        
-        risk = abs(entry - stop_loss)
-        reward = abs(take_profit - entry)
-        
-        if risk == 0:
-            return 1.0
-        
-        return round(reward / risk, 2)
 
 # =================================================================================
 # --- کلاس مدیریت سیگنال‌های با توافق ---
@@ -988,21 +1088,24 @@ class ConsensusSignalManager:
     
     def _is_consensus_signal(self, signal: Dict) -> bool:
         """بررسی آیا سیگنال دارای توافق است"""
-        # شرط 1: مدل‌ها با هم توافق دارند
-        models_agree = signal.get('MODELS_AGREE', False)
-        consensus_flag = signal.get('CONSENSUS', False)
-        
-        # شرط 2: سطح اعتماد بالا
-        confidence = float(signal.get('CONFIDENCE', 0))
-        high_confidence = confidence >= self.consensus_threshold
-        
-        # شرط 3: سیگنال از نوع HOLD نیست
-        not_hold = signal.get('ACTION', 'HOLD') != 'HOLD'
-        
-        # شرط 4: اولویت بالا
-        high_priority = signal.get('PRIORITY', 'LOW') in ['HIGH', 'MEDIUM']
-        
-        return (models_agree or consensus_flag) and high_confidence and not_hold and high_priority
+        try:
+            # شرط 1: مدل‌ها با هم توافق دارند
+            models_agree = signal.get('MODELS_AGREE', False)
+            consensus_flag = signal.get('CONSENSUS', False)
+            
+            # شرط 2: سطح اعتماد بالا
+            confidence = float(signal.get('CONFIDENCE', 0))
+            high_confidence = confidence >= self.consensus_threshold
+            
+            # شرط 3: سیگنال از نوع HOLD نیست
+            not_hold = signal.get('ACTION', 'HOLD') != 'HOLD'
+            
+            # شرط 4: اولویت بالا
+            high_priority = signal.get('PRIORITY', 'LOW') in ['HIGH', 'MEDIUM']
+            
+            return (models_agree or consensus_flag) and high_confidence and not_hold and high_priority
+        except:
+            return False
     
     def save_categorized_signals(self, consensus_signals: List[Dict], non_consensus_signals: List[Dict]):
         """ذخیره سیگنال‌ها در فایل‌های جداگانه"""
@@ -1033,7 +1136,7 @@ class ConsensusSignalManager:
 
 class AdvancedForexAnalyzer:
     def __init__(self):
-        self.api_rate_limiter = AsyncRateLimiter(rate_limit=6, period=60)  # کاهش برای GitHub Actions
+        self.api_rate_limiter = AsyncRateLimiter(rate_limit=6, period=60)
         self.cache_manager = SmartCacheManager(CACHE_FILE, CACHE_DURATION_HOURS)
         self.technical_analyzer = EnhancedTechnicalAnalyzer()
         self.ai_manager = AdvancedHybridAIManager(google_api_key, CLOUDFLARE_AI_API_KEY)
@@ -1051,9 +1154,15 @@ class AdvancedForexAnalyzer:
             htf_df = await self.get_market_data_async(pair, HIGH_TIMEFRAME)
             ltf_df = await self.get_market_data_async(pair, LOW_TIMEFRAME)
             
-            if htf_df is None or ltf_df is None or htf_df.empty or ltf_df.empty:
-                logging.warning(f"داده‌های بازار برای {pair} دریافت نشد یا خالی است")
+            if htf_df is None or ltf_df is None:
+                logging.warning(f"داده‌های بازار برای {pair} دریافت نشد")
                 return None
+            
+            if htf_df.empty or ltf_df.empty:
+                logging.warning(f"داده‌های بازار برای {pair} خالی است")
+                return None
+            
+            logging.info(f"📊 داده‌های {pair} دریافت شد: HTF={len(htf_df)} کندل, LTF={len(ltf_df)} کندل")
             
             # تحلیل تکنیکال پیشرفته
             htf_df_processed = self.technical_analyzer.calculate_enhanced_indicators(htf_df)
@@ -1084,44 +1193,62 @@ class AdvancedForexAnalyzer:
             logging.error(f"خطا در تحلیل {pair}: {e}")
             return None
 
-    async def get_market_data_async(self, symbol: str, interval: str, retries: int = 2) -> Optional[pd.DataFrame]:
-        """دریافت داده‌های بازار به صورت آسنکرون - بهینه‌شده برای GitHub Actions"""
+    async def get_market_data_async(self, symbol: str, interval: str, retries: int = 3) -> Optional[pd.DataFrame]:
+        """دریافت داده‌های بازار به صورت آسنکرون"""
         for attempt in range(retries):
             try:
                 async with self.api_rate_limiter:
-                    url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
+                    # تبدیل نماد به فرمت مناسب برای API
+                    api_symbol = symbol.replace('/', '')
+                    url = f'https://api.twelvedata.com/time_series?symbol={api_symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
                     
                     async with aiohttp.ClientSession() as session:
-                        async with session.get(url, timeout=30) as response:  # کاهش timeout
+                        async with session.get(url, timeout=30) as response:
                             if response.status == 200:
                                 data = await response.json()
-                                if 'values' in data and data['values']:
-                                    df = pd.DataFrame(data['values'])
-                                    df = df.iloc[::-1].reset_index(drop=True)
-                                    
-                                    numeric_columns = ['open', 'high', 'low', 'close']
-                                    for col in numeric_columns:
-                                        if col in df.columns:
-                                            df[col] = pd.to_numeric(df[col], errors='coerce')
-                                    
-                                    if 'datetime' in df.columns:
-                                        df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
-                                    
-                                    df = df.dropna(subset=numeric_columns)
-                                    
-                                    if len(df) > 50:  # حداقل داده لازم
-                                        return df
-                                    else:
-                                        logging.warning(f"داده‌های {symbol} ناکافی است")
-                                        return None
-                                else:
+                                
+                                if 'values' not in data or not data['values']:
                                     logging.warning(f"داده‌های {symbol} خالی است")
                                     return None
-                            else:
-                                logging.warning(f"خطای HTTP {response.status} برای {symbol}")
-                                if response.status == 429:
-                                    await asyncio.sleep(15)  # افزایش زمان انتظار برای rate limit
                                 
+                                df = pd.DataFrame(data['values'])
+                                
+                                # معکوس کردن ترتیب داده‌ها (جدیدترین آخر)
+                                df = df.iloc[::-1].reset_index(drop=True)
+                                
+                                # تبدیل ستون‌های عددی
+                                numeric_columns = ['open', 'high', 'low', 'close']
+                                for col in numeric_columns:
+                                    if col in df.columns:
+                                        df[col] = pd.to_numeric(df[col], errors='coerce')
+                                
+                                # تبدیل تاریخ
+                                if 'datetime' in df.columns:
+                                    df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
+                                
+                                # حذف ردیف‌های با مقادیر NaN
+                                df = df.dropna(subset=numeric_columns)
+                                
+                                if len(df) > 20:  # کاهش حداقل داده لازم
+                                    logging.info(f"✅ داده‌های {symbol} ({interval}) با موفقیت دریافت شد: {len(df)} کندل")
+                                    return df
+                                else:
+                                    logging.warning(f"داده‌های {symbol} ناکافی است: {len(df)} کندل")
+                                    return None
+                            else:
+                                error_text = await response.text()
+                                logging.warning(f"خطای HTTP {response.status} برای {symbol}: {error_text}")
+                                
+                                if response.status == 429:  # Rate limit
+                                    wait_time = 15 * (attempt + 1)
+                                    logging.info(f"⏳ انتظار {wait_time} ثانیه به دلیل rate limit")
+                                    await asyncio.sleep(wait_time)
+                                else:
+                                    await asyncio.sleep(3)
+                                
+            except asyncio.TimeoutError:
+                logging.warning(f"Timeout در دریافت داده‌های {symbol} (تلاش {attempt + 1})")
+                await asyncio.sleep(5)
             except Exception as e:
                 logging.warning(f"خطا در دریافت داده‌های {symbol} (تلاش {attempt + 1}): {e}")
                 await asyncio.sleep(3)
@@ -1130,17 +1257,21 @@ class AdvancedForexAnalyzer:
         return None
 
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
-        """تحلیل همه جفت ارزها به صورت موازی - بهینه‌شده برای GitHub Actions"""
+        """تحلیل همه جفت ارزها به صورت موازی"""
         logging.info(f"🚀 شروع تحلیل موازی برای {len(pairs)} جفت ارز")
         
-        # محدود کردن concurrent tasks برای GitHub Actions
-        semaphore = asyncio.Semaphore(2)  # کاهش برای جلوگیری از overload
+        # محدود کردن concurrent tasks
+        semaphore = asyncio.Semaphore(3)  # افزایش برای بهبود عملکرد
         
         async def bounded_analyze(pair):
             async with semaphore:
-                result = await self.analyze_pair(pair)
-                await asyncio.sleep(2)  # افزایش تأخیر برای احترام به rate limits
-                return result
+                try:
+                    result = await self.analyze_pair(pair)
+                    await asyncio.sleep(1)  # کاهش تأخیر
+                    return result
+                except Exception as e:
+                    logging.error(f"خطا در تحلیل {pair}: {e}")
+                    return None
         
         tasks = [bounded_analyze(pair) for pair in pairs]
         results = await asyncio.gather(*tasks, return_exceptions=True)
@@ -1192,10 +1323,13 @@ class AdvancedForexAnalyzer:
         
         # ذخیره گزارش
         report_file = "comprehensive_analysis_report.json"
-        with open(report_file, 'w', encoding='utf-8') as f:
-            json.dump(report, f, indent=4, ensure_ascii=False)
+        try:
+            with open(report_file, 'w', encoding='utf-8') as f:
+                json.dump(report, f, indent=4, ensure_ascii=False)
+            logging.info(f"📋 گزارش جامع در {report_file} ذخیره شد")
+        except Exception as e:
+            logging.error(f"خطا در ذخیره گزارش: {e}")
         
-        logging.info(f"📋 گزارش جامع در {report_file} ذخیره شد")
         return report
     
     def _generate_market_summary(self, signals: List[Dict]) -> Dict:
@@ -1203,7 +1337,10 @@ class AdvancedForexAnalyzer:
         buy_signals = [s for s in signals if s.get('ACTION') == 'BUY']
         sell_signals = [s for s in signals if s.get('ACTION') == 'SELL']
         
-        avg_confidence = sum(float(s.get('CONFIDENCE', 0)) for s in signals) / len(signals) if signals else 0
+        try:
+            avg_confidence = sum(float(s.get('CONFIDENCE', 0)) for s in signals) / len(signals) if signals else 0
+        except:
+            avg_confidence = 0
         
         high_confidence_signals = [s for s in signals if float(s.get('CONFIDENCE', 0)) >= 8]
         medium_confidence_signals = [s for s in signals if 5 <= float(s.get('CONFIDENCE', 0)) < 8]
@@ -1223,31 +1360,34 @@ class AdvancedForexAnalyzer:
         if not signals:
             return {'total_score': 0, 'quality_rating': 'ضعیف'}
         
-        confidence_sum = sum(float(s.get('CONFIDENCE', 0)) for s in signals)
-        avg_confidence = confidence_sum / len(signals)
-        
-        consensus_count = sum(1 for s in signals if s.get('CONSENSUS', False))
-        consensus_ratio = consensus_count / len(signals) if signals else 0
-        
-        # محاسبه امتیاز کلی
-        total_score = (avg_confidence * 0.6) + (consensus_ratio * 40 * 0.4)  # مقیاس 0-100
-        
-        if total_score >= 80:
-            quality_rating = 'عالی'
-        elif total_score >= 60:
-            quality_rating = 'خوب'
-        elif total_score >= 40:
-            quality_rating = 'متوسط'
-        else:
-            quality_rating = 'ضعیف'
-        
-        return {
-            'total_score': round(total_score, 1),
-            'quality_rating': quality_rating,
-            'average_confidence': round(avg_confidence, 2),
-            'consensus_ratio': round(consensus_ratio, 2),
-            'signal_diversity': len(set(s.get('SYMBOL') for s in signals))
-        }
+        try:
+            confidence_sum = sum(float(s.get('CONFIDENCE', 0)) for s in signals)
+            avg_confidence = confidence_sum / len(signals)
+            
+            consensus_count = sum(1 for s in signals if s.get('CONSENSUS', False))
+            consensus_ratio = consensus_count / len(signals) if signals else 0
+            
+            # محاسبه امتیاز کلی
+            total_score = (avg_confidence * 0.6) + (consensus_ratio * 40 * 0.4)  # مقیاس 0-100
+            
+            if total_score >= 80:
+                quality_rating = 'عالی'
+            elif total_score >= 60:
+                quality_rating = 'خوب'
+            elif total_score >= 40:
+                quality_rating = 'متوسط'
+            else:
+                quality_rating = 'ضعیف'
+            
+            return {
+                'total_score': round(total_score, 1),
+                'quality_rating': quality_rating,
+                'average_confidence': round(avg_confidence, 2),
+                'consensus_ratio': round(consensus_ratio, 2),
+                'signal_diversity': len(set(s.get('SYMBOL') for s in signals))
+            }
+        except:
+            return {'total_score': 0, 'quality_rating': 'ضعیف'}
 
 # =================================================================================
 # --- تابع اصلی بهبود یافته برای GitHub Actions ---
@@ -1338,8 +1478,11 @@ async def github_actions_main():
             'market_summary': {'market_bias': 'خنثی', 'signal_quality': 'ضعیف'},
             'performance_metrics': {'total_score': 0, 'quality_rating': 'ضعیف'}
         }
-        with open("comprehensive_analysis_report.json", 'w', encoding='utf-8') as f:
-            json.dump(empty_report, f, indent=4, ensure_ascii=False)
+        try:
+            with open("comprehensive_analysis_report.json", 'w', encoding='utf-8') as f:
+                json.dump(empty_report, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            logging.error(f"خطا در ذخیره گزارش خالی: {e}")
 
     logging.info("🏁 پایان اجرای سیستم - آماده برای GitHub Actions")
 
