@@ -4261,3 +4261,142 @@ KeyError: 'value'
  groq: 42/10000 (9958 remaining)
 
 2025-10-01 11:44:37,770 - INFO - 🏁 System execution completed
+2025-10-01 12:38:02,036 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-10-01 12:38:02,037 - INFO - 🎯 Currency pairs to analyze: EUR/USD, GBP/USD, USD/CHF, EUR/JPY, AUD/JPY, GBP/JPY, EUR/AUD, NZD/CAD
+2025-10-01 12:38:02,038 - INFO - 🚀 Starting analysis for 8 currency pairs
+2025-10-01 12:38:02,038 - INFO - 🔍 Starting analysis for EUR/USD
+2025-10-01 12:38:02,038 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:02,052 - INFO - 🔍 Starting analysis for GBP/USD
+2025-10-01 12:38:02,052 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:02,053 - INFO - 🔍 Starting analysis for USD/CHF
+2025-10-01 12:38:02,053 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:02,053 - INFO - 🔍 Starting analysis for EUR/JPY
+2025-10-01 12:38:02,053 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:02,054 - INFO - 🔍 Starting analysis for AUD/JPY
+2025-10-01 12:38:02,054 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:02,054 - INFO - 🔍 Starting analysis for GBP/JPY
+2025-10-01 12:38:02,054 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:02,055 - INFO - 🔍 Starting analysis for EUR/AUD
+2025-10-01 12:38:02,055 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:02,055 - INFO - 🔍 Starting analysis for NZD/CAD
+2025-10-01 12:38:02,055 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:02,228 - INFO - ✅ Retrieved 500 candles for AUD/JPY (4h)
+2025-10-01 12:38:02,247 - INFO - ✅ Retrieved 500 candles for EUR/USD (4h)
+2025-10-01 12:38:02,253 - INFO - ✅ Retrieved 500 candles for GBP/USD (4h)
+2025-10-01 12:38:02,256 - INFO - ✅ Retrieved 500 candles for GBP/JPY (4h)
+2025-10-01 12:38:02,259 - INFO - ✅ Retrieved 500 candles for EUR/AUD (4h)
+2025-10-01 12:38:02,263 - INFO - ✅ Retrieved 500 candles for EUR/JPY (4h)
+2025-10-01 12:38:02,331 - INFO - ✅ Retrieved 500 candles for NZD/CAD (4h)
+2025-10-01 12:38:02,345 - INFO - ✅ Retrieved 500 candles for USD/CHF (4h)
+2025-10-01 12:38:02,361 - WARNING - ⚠️ No values in response for AUD/JPY
+2025-10-01 12:38:02,361 - WARNING - Attempt 1 failed for AUD/JPY - insufficient data
+2025-10-01 12:38:02,388 - WARNING - ⚠️ No values in response for GBP/USD
+2025-10-01 12:38:02,389 - WARNING - Attempt 1 failed for GBP/USD - insufficient data
+2025-10-01 12:38:02,392 - WARNING - ⚠️ No values in response for EUR/AUD
+2025-10-01 12:38:02,392 - WARNING - Attempt 1 failed for EUR/AUD - insufficient data
+2025-10-01 12:38:02,394 - WARNING - ⚠️ No values in response for EUR/USD
+2025-10-01 12:38:02,395 - WARNING - Attempt 1 failed for EUR/USD - insufficient data
+2025-10-01 12:38:02,397 - WARNING - ⚠️ No values in response for EUR/JPY
+2025-10-01 12:38:02,397 - WARNING - Attempt 1 failed for EUR/JPY - insufficient data
+2025-10-01 12:38:02,405 - WARNING - ⚠️ No values in response for GBP/JPY
+2025-10-01 12:38:02,405 - WARNING - Attempt 1 failed for GBP/JPY - insufficient data
+2025-10-01 12:38:02,457 - WARNING - ⚠️ No values in response for NZD/CAD
+2025-10-01 12:38:02,457 - WARNING - Attempt 1 failed for NZD/CAD - insufficient data
+2025-10-01 12:38:02,473 - WARNING - ⚠️ No values in response for USD/CHF
+2025-10-01 12:38:02,473 - WARNING - Attempt 1 failed for USD/CHF - insufficient data
+2025-10-01 12:38:04,521 - WARNING - ⚠️ No values in response for AUD/JPY
+2025-10-01 12:38:04,522 - WARNING - Attempt 2 failed for AUD/JPY - insufficient data
+2025-10-01 12:38:04,542 - WARNING - ⚠️ No values in response for GBP/JPY
+2025-10-01 12:38:04,543 - WARNING - Attempt 2 failed for GBP/JPY - insufficient data
+2025-10-01 12:38:04,554 - WARNING - ⚠️ No values in response for EUR/JPY
+2025-10-01 12:38:04,555 - WARNING - Attempt 2 failed for EUR/JPY - insufficient data
+2025-10-01 12:38:04,555 - WARNING - ⚠️ No values in response for EUR/AUD
+2025-10-01 12:38:04,556 - WARNING - ⚠️ No values in response for EUR/USD
+2025-10-01 12:38:04,556 - WARNING - Attempt 2 failed for EUR/AUD - insufficient data
+2025-10-01 12:38:04,556 - WARNING - Attempt 2 failed for EUR/USD - insufficient data
+2025-10-01 12:38:04,558 - WARNING - ⚠️ No values in response for GBP/USD
+2025-10-01 12:38:04,558 - WARNING - Attempt 2 failed for GBP/USD - insufficient data
+2025-10-01 12:38:04,602 - WARNING - ⚠️ No values in response for USD/CHF
+2025-10-01 12:38:04,602 - WARNING - Attempt 2 failed for USD/CHF - insufficient data
+2025-10-01 12:38:04,605 - WARNING - ⚠️ No values in response for NZD/CAD
+2025-10-01 12:38:04,605 - WARNING - Attempt 2 failed for NZD/CAD - insufficient data
+2025-10-01 12:38:06,657 - WARNING - ⚠️ No values in response for AUD/JPY
+2025-10-01 12:38:06,657 - WARNING - Attempt 3 failed for AUD/JPY - insufficient data
+2025-10-01 12:38:06,688 - WARNING - ⚠️ No values in response for GBP/USD
+2025-10-01 12:38:06,689 - WARNING - ⚠️ No values in response for EUR/AUD
+2025-10-01 12:38:06,689 - WARNING - ⚠️ No values in response for EUR/JPY
+2025-10-01 12:38:06,690 - WARNING - ⚠️ No values in response for EUR/USD
+2025-10-01 12:38:06,690 - WARNING - Attempt 3 failed for GBP/USD - insufficient data
+2025-10-01 12:38:06,690 - WARNING - Attempt 3 failed for EUR/AUD - insufficient data
+2025-10-01 12:38:06,690 - WARNING - Attempt 3 failed for EUR/JPY - insufficient data
+2025-10-01 12:38:06,690 - WARNING - Attempt 3 failed for EUR/USD - insufficient data
+2025-10-01 12:38:06,736 - WARNING - ⚠️ No values in response for USD/CHF
+2025-10-01 12:38:06,736 - WARNING - Attempt 3 failed for USD/CHF - insufficient data
+2025-10-01 12:38:06,739 - WARNING - ⚠️ No values in response for NZD/CAD
+2025-10-01 12:38:06,739 - WARNING - Attempt 3 failed for NZD/CAD - insufficient data
+2025-10-01 12:38:06,853 - WARNING - ⚠️ No values in response for GBP/JPY
+2025-10-01 12:38:06,853 - WARNING - Attempt 3 failed for GBP/JPY - insufficient data
+2025-10-01 12:38:08,659 - ERROR - ❌ All 3 attempts failed for AUD/JPY
+2025-10-01 12:38:08,660 - WARNING - ⚠️ Market data retrieval failed for AUD/JPY
+2025-10-01 12:38:08,691 - ERROR - ❌ All 3 attempts failed for GBP/USD
+2025-10-01 12:38:08,691 - WARNING - ⚠️ Market data retrieval failed for GBP/USD
+2025-10-01 12:38:08,691 - ERROR - ❌ All 3 attempts failed for EUR/AUD
+2025-10-01 12:38:08,691 - WARNING - ⚠️ Market data retrieval failed for EUR/AUD
+2025-10-01 12:38:08,691 - ERROR - ❌ All 3 attempts failed for EUR/JPY
+2025-10-01 12:38:08,691 - WARNING - ⚠️ Market data retrieval failed for EUR/JPY
+2025-10-01 12:38:08,692 - ERROR - ❌ All 3 attempts failed for EUR/USD
+2025-10-01 12:38:08,692 - WARNING - ⚠️ Market data retrieval failed for EUR/USD
+2025-10-01 12:38:08,737 - ERROR - ❌ All 3 attempts failed for USD/CHF
+2025-10-01 12:38:08,737 - WARNING - ⚠️ Market data retrieval failed for USD/CHF
+2025-10-01 12:38:08,740 - ERROR - ❌ All 3 attempts failed for NZD/CAD
+2025-10-01 12:38:08,740 - WARNING - ⚠️ Market data retrieval failed for NZD/CAD
+2025-10-01 12:38:08,854 - ERROR - ❌ All 3 attempts failed for GBP/JPY
+2025-10-01 12:38:08,854 - WARNING - ⚠️ Market data retrieval failed for GBP/JPY
+2025-10-01 12:38:08,854 - INFO - 📊 Analysis complete. 0 valid signals
+2025-10-01 12:38:08,854 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-10-01 12:38:08,854 - INFO - 📝 No signals to save
+2025-10-01 12:38:08,855 - INFO - 💾 Empty file created: strong_consensus_signals.json
+2025-10-01 12:38:08,855 - INFO - 💾 Empty file created: medium_consensus_signals.json
+2025-10-01 12:38:08,855 - INFO - 💾 Empty file created: weak_consensus_signals.json
+2025-10-01 12:38:08,855 - INFO - 📈 Results Summary:
+2025-10-01 12:38:08,855 - INFO - 🎯 Strong signals: 0
+2025-10-01 12:38:08,855 - INFO - 📊 Medium signals: 0
+2025-10-01 12:38:08,855 - INFO - 📈 Weak signals: 0
+2025-10-01 12:38:08,856 - INFO - 📊 API Usage Summary:
+ google_gemini: 21/1500 (1479 remaining)
+ cloudflare: 42/10000 (9958 remaining)
+ groq: 42/10000 (9958 remaining)
+
+2025-10-01 12:38:08,856 - INFO - 🏁 System execution completed
