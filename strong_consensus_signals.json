@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "USD/JPY",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-01T09:59:10.461676+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "147.20100",
+    "STOP_LOSS": "147.16834",
+    "TAKE_PROFIT": "147.25000",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on oversold conditions and potential for a short-term bounce. RSI and Stochastic are oversold, suggesting a possible reversal. Key support level at 147.16434 provides a potential floor."
+  }
+]

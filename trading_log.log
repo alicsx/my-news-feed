@@ -3987,3 +3987,47 @@ KeyError: 'value'
  groq: 34/10000 (9966 remaining)
 
 2025-10-01 09:38:44,360 - INFO - 🏁 System execution completed
+2025-10-01 09:59:00,595 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-10-01 09:59:00,596 - INFO - 🎯 Currency pairs to analyze: USD/JPY
+2025-10-01 09:59:00,597 - INFO - 🚀 Starting analysis for 1 currency pairs
+2025-10-01 09:59:00,597 - INFO - 🔍 Starting analysis for USD/JPY
+2025-10-01 09:59:00,597 - INFO - 📊 API Usage Summary:
+ google_gemini: 17/1500 (1483 remaining)
+ cloudflare: 34/10000 (9966 remaining)
+ groq: 34/10000 (9966 remaining)
+
+2025-10-01 09:59:00,991 - INFO - ✅ Retrieved 500 candles for USD/JPY (4h)
+2025-10-01 09:59:01,276 - INFO - ✅ Retrieved 500 candles for USD/JPY (1h)
+2025-10-01 09:59:01,277 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 09:59:01,328 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 09:59:01,372 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 09:59:01,375 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 09:59:01,375 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.0-flash-exp'), ('cloudflare', '@cf/meta/llama-3-8b-instruct'), ('groq', 'llama-3.1-8b-instant'), ('cloudflare', '@cf/mistralai/mistral-7b-instruct-v0.1'), ('groq', 'mixtral-8x7b-32768')]
+2025-10-01 09:59:01,376 - INFO - 🎯 Using 5 AI models for USD/JPY
+2025-10-01 09:59:01,483 - ERROR - ❌ Cloudflare API error for USD/JPY: 400 - {"success":false,"errors":[{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}
+2025-10-01 09:59:01,542 - ERROR - ❌ Groq API error for USD/JPY: 400 - {"error":{"message":"The model `mixtral-8x7b-32768` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.","type":"invalid_request_error","code":"model_decommissioned"}}
+
+2025-10-01 09:59:01,936 - INFO - ✅ Groq-llama-3.1-8b-instant signal for USD/JPY: BUY
+2025-10-01 09:59:03,129 - INFO - ✅ Gemini-gemini-2.0-flash-exp signal for USD/JPY: BUY
+2025-10-01 09:59:10,459 - INFO - ✅ Cloudflare-@cf/meta/llama-3-8b-instruct signal for USD/JPY: BUY
+2025-10-01 09:59:10,461 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-01 09:59:10,461 - INFO - ✅ Signal for USD/JPY: BUY (Agreement: 3/5)
+2025-10-01 09:59:10,462 - INFO - 📊 Analysis complete. 1 valid signals
+2025-10-01 09:59:10,462 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-10-01 09:59:10,462 - INFO - 💾 1 strong signals saved in root
+2025-10-01 09:59:10,462 - INFO - 💾 0 medium signals saved in root
+2025-10-01 09:59:10,462 - INFO - 💾 0 weak signals saved in root
+2025-10-01 09:59:10,462 - INFO - ✅ File strong_consensus_signals.json successfully created
+2025-10-01 09:59:10,462 - INFO - ✅ File medium_consensus_signals.json successfully created
+2025-10-01 09:59:10,463 - INFO - ✅ File weak_consensus_signals.json successfully created
+2025-10-01 09:59:10,463 - INFO - 📈 Results Summary:
+2025-10-01 09:59:10,463 - INFO - 🎯 Strong signals: 1
+2025-10-01 09:59:10,463 - INFO - 📊 Medium signals: 0
+2025-10-01 09:59:10,463 - INFO - 📈 Weak signals: 0
+2025-10-01 09:59:10,463 - INFO -  🟢 USD/JPY: BUY (Confidence: 7.0/10)
+2025-10-01 09:59:10,463 - INFO - 📊 API Usage Summary:
+ google_gemini: 18/1500 (1482 remaining)
+ cloudflare: 36/10000 (9964 remaining)
+ groq: 36/10000 (9964 remaining)
+
+2025-10-01 09:59:10,463 - INFO - 🏁 System execution completed
