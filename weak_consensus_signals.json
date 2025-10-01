@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "AUD/JPY",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-01T21:52:52.971351+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "97.23200",
+    "STOP_LOSS": "97.21000",
+    "TAKE_PROFIT": "97.26500",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on accumulation phase, bullish MACD signal, and bounce potential from key support within a ranging market."
+  }
+]
