@@ -31,7 +31,7 @@ if not all([google_api_key, TWELVEDATA_API_KEY]):
 # Main system configuration
 HIGH_TIMEFRAME = "4h"
 LOW_TIMEFRAME = "1h"
-CANDLES_TO_FETCH = 500  # Increased for better analysis
+CANDLES_TO_FETCH = 500
 CURRENCY_PAIRS_TO_ANALYZE = [
     "EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD", 
     "GBP/JPY", "EUR/JPY", "AUD/JPY", "NZD/USD", "USD/CAD"
@@ -685,7 +685,7 @@ class EnhancedTechnicalAnalyzer:
             return {'risk_level': 'MEDIUM', 'volatility_percent': 0, 'atr_value': 0, 'current_range_percent': 0}
 
 # =================================================================================
-# --- Smart API Manager (Keep existing implementation) ---
+# --- Smart API Manager ---
 # =================================================================================
 
 class SmartAPIManager:
@@ -933,7 +933,7 @@ CRITICAL:
             for i, (provider, model_name) in enumerate(selected_models):
                 result = results[i]
                 if isinstance(result, Exception):
-                    logging.error(f"Error in {provider}/{model_name} for {symbol}: {result}")
+                    logging.error(f"Error in {provider}/{model_name} for {symbol}: {str(result)}")
                     self.api_manager.mark_model_failed(provider, model_name)
                     failed_count += 1
                     self.api_manager.record_api_usage(provider)
@@ -947,7 +947,7 @@ CRITICAL:
             return self._combine_signals(symbol, valid_results, len(selected_models))
             
         except Exception as e:
-            logging.error(f"Error in AI analysis for {symbol}: {e}")
+            logging.error(f"Error in AI analysis for {symbol}: {str(e)}")
             return None
 
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
@@ -965,7 +965,7 @@ CRITICAL:
                 return None
                 
         except Exception as e:
-            logging.warning(f"Error in {provider}/{model_name} for {symbol}: {e}")
+            logging.warning(f"Error in {provider}/{model_name} for {symbol}: {str(e)}")
             return None
 
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
@@ -979,7 +979,7 @@ CRITICAL:
             )
             return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
         except Exception as e:
-            logging.warning(f"Gemini analysis error for {symbol}: {e}")
+            logging.warning(f"Gemini analysis error for {symbol}: {str(e)}")
             return None
 
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
@@ -1021,7 +1021,7 @@ CRITICAL:
                     return None
                     
         except Exception as e:
-            logging.warning(f"Cloudflare/{model_name} analysis error for {symbol}: {e}")
+            logging.warning(f"Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
             return None
 
     async def _get_groq_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
@@ -1060,7 +1060,7 @@ CRITICAL:
                     return None
                     
         except Exception as e:
-            logging.warning(f"Groq/{model_name} analysis error for {symbol}: {e}")
+            logging.warning(f"Groq/{model_name} analysis error for {symbol}: {str(e)}")
             return None
 
     def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
@@ -1085,14 +1085,14 @@ CRITICAL:
                     logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
                     
-            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format")
+            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format. Response: {response[:200]}...")
             return None
             
         except json.JSONDecodeError as e:
-            logging.error(f"JSON error in {ai_name} response for {symbol}: {e}")
+            logging.error(f"JSON error in {ai_name} response for {symbol}: {e}. Response: {response[:200]}...")
             return None
         except Exception as e:
-            logging.error(f"Error parsing {ai_name} response for {symbol}: {e}")
+            logging.error(f"Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
             return None
 
     def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
@@ -1254,7 +1254,7 @@ class ImprovedForexAnalyzer:
             return None
             
         except Exception as e:
-            logging.error(f"❌ Error analyzing {pair}: {e}")
+            logging.error(f"❌ Error analyzing {pair}: {str(e)}")
             return None
 
     async def get_market_data_with_retry(self, symbol: str, interval: str, max_retries: int = 3) -> Optional[pd.DataFrame]:
@@ -1267,7 +1267,7 @@ class ImprovedForexAnalyzer:
                 logging.warning(f"Attempt {attempt + 1} failed for {symbol} - insufficient data")
                 await asyncio.sleep(2)  # Wait before retry
             except Exception as e:
-                logging.warning(f"Attempt {attempt + 1} error for {symbol}: {e}")
+                logging.warning(f"Attempt {attempt + 1} error for {symbol}: {str(e)}")
                 await asyncio.sleep(2)
         
         logging.error(f"❌ All {max_retries} attempts failed for {symbol}")
@@ -1309,7 +1309,7 @@ class ImprovedForexAnalyzer:
                         return None
                         
         except Exception as e:
-            logging.error(f"❌ Market data error for {symbol}: {e}")
+            logging.error(f"❌ Market data error for {symbol}: {str(e)}")
             return None
 
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
