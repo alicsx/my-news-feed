@@ -4673,3 +4673,100 @@ KeyError: 'value'
  groq: 60/10000 (9940 remaining)
 
 2025-10-01 16:33:04,559 - INFO - 🏁 System execution completed
+2025-10-01 18:38:17,596 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-10-01 18:38:17,597 - INFO - 🔍 Using default currency pairs: EUR/USD, GBP/USD, USD/CHF
+2025-10-01 18:38:17,597 - INFO - 🎯 Currency pairs to analyze: EUR/USD, GBP/USD, USD/CHF
+2025-10-01 18:38:17,597 - INFO - 🚀 Starting analysis for 3 currency pairs
+2025-10-01 18:38:17,597 - INFO - 🔍 Starting analysis for EUR/USD
+2025-10-01 18:38:17,597 - INFO - 📊 API Usage Summary:
+ google_gemini: 30/1500 (1470 remaining)
+ cloudflare: 60/10000 (9940 remaining)
+ groq: 60/10000 (9940 remaining)
+
+2025-10-01 18:38:17,611 - INFO - 🔍 Starting analysis for GBP/USD
+2025-10-01 18:38:17,611 - INFO - 📊 API Usage Summary:
+ google_gemini: 30/1500 (1470 remaining)
+ cloudflare: 60/10000 (9940 remaining)
+ groq: 60/10000 (9940 remaining)
+
+2025-10-01 18:38:17,612 - INFO - 🔍 Starting analysis for USD/CHF
+2025-10-01 18:38:17,612 - INFO - 📊 API Usage Summary:
+ google_gemini: 30/1500 (1470 remaining)
+ cloudflare: 60/10000 (9940 remaining)
+ groq: 60/10000 (9940 remaining)
+
+2025-10-01 18:38:17,816 - INFO - ✅ Retrieved 500 candles for USD/CHF (4h)
+2025-10-01 18:38:17,838 - INFO - ✅ Retrieved 500 candles for EUR/USD (4h)
+2025-10-01 18:38:17,841 - INFO - ✅ Retrieved 500 candles for GBP/USD (4h)
+2025-10-01 18:38:18,009 - INFO - ✅ Retrieved 500 candles for USD/CHF (1h)
+2025-10-01 18:38:18,009 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 18:38:18,064 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 18:38:18,111 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 18:38:18,115 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 18:38:18,115 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.0-flash-exp'), ('cloudflare', '@cf/meta/llama-3-8b-instruct'), ('groq', 'llama-3.1-8b-instant'), ('cloudflare', '@cf/mistralai/mistral-7b-instruct-v0.1'), ('groq', 'mixtral-8x7b-32768')]
+2025-10-01 18:38:18,115 - INFO - 🎯 Using 5 AI models for USD/CHF
+2025-10-01 18:38:18,125 - INFO - ✅ Retrieved 500 candles for GBP/USD (1h)
+2025-10-01 18:38:18,129 - INFO - ✅ Retrieved 500 candles for EUR/USD (1h)
+2025-10-01 18:38:18,132 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 18:38:18,180 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 18:38:18,226 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 18:38:18,229 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 18:38:18,229 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.0-flash-exp'), ('cloudflare', '@cf/meta/llama-3-8b-instruct'), ('groq', 'llama-3.1-8b-instant'), ('cloudflare', '@cf/mistralai/mistral-7b-instruct-v0.1'), ('groq', 'mixtral-8x7b-32768')]
+2025-10-01 18:38:18,230 - INFO - 🎯 Using 5 AI models for GBP/USD
+2025-10-01 18:38:18,230 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 18:38:18,276 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 18:38:18,322 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 18:38:18,325 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 18:38:18,325 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.0-flash-exp'), ('cloudflare', '@cf/meta/llama-3-8b-instruct'), ('groq', 'llama-3.1-8b-instant'), ('cloudflare', '@cf/mistralai/mistral-7b-instruct-v0.1'), ('groq', 'mixtral-8x7b-32768')]
+2025-10-01 18:38:18,325 - INFO - 🎯 Using 5 AI models for EUR/USD
+2025-10-01 18:38:18,397 - ERROR - ❌ Groq API error for USD/CHF: 400 - {"error":{"message":"The model `mixtral-8x7b-32768` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.","type":"invalid_request_error","code":"model_decommissioned"}}
+
+2025-10-01 18:38:18,414 - ERROR - ❌ Cloudflare API error for GBP/USD: 400 - {"success":false,"errors":[{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}
+2025-10-01 18:38:18,416 - ERROR - ❌ Cloudflare API error for USD/CHF: 400 - {"success":false,"errors":[{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}
+2025-10-01 18:38:18,426 - ERROR - ❌ Groq API error for GBP/USD: 400 - {"error":{"message":"The model `mixtral-8x7b-32768` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.","type":"invalid_request_error","code":"model_decommissioned"}}
+
+2025-10-01 18:38:18,431 - ERROR - ❌ Cloudflare API error for EUR/USD: 400 - {"success":false,"errors":[{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}
+2025-10-01 18:38:18,435 - ERROR - ❌ Groq API error for EUR/USD: 400 - {"error":{"message":"The model `mixtral-8x7b-32768` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.","type":"invalid_request_error","code":"model_decommissioned"}}
+
+2025-10-01 18:38:18,790 - INFO - ✅ Groq-llama-3.1-8b-instant signal for EUR/USD: BUY
+2025-10-01 18:38:18,800 - INFO - ✅ Groq-llama-3.1-8b-instant signal for GBP/USD: BUY
+2025-10-01 18:38:18,846 - INFO - ✅ Groq-llama-3.1-8b-instant signal for USD/CHF: BUY
+2025-10-01 18:38:19,254 - INFO - ✅ Gemini-gemini-2.0-flash-exp signal for USD/CHF: BUY
+2025-10-01 18:38:19,462 - INFO - ✅ Gemini-gemini-2.0-flash-exp signal for GBP/USD: BUY
+2025-10-01 18:38:19,806 - INFO - ✅ Gemini-gemini-2.0-flash-exp signal for EUR/USD: BUY
+2025-10-01 18:38:26,995 - INFO - ✅ Cloudflare-@cf/meta/llama-3-8b-instruct signal for EUR/USD: BUY
+2025-10-01 18:38:26,997 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-01 18:38:26,997 - INFO - ✅ Signal for EUR/USD: BUY (Agreement: 3/5)
+2025-10-01 18:38:27,386 - INFO - ✅ Cloudflare-@cf/meta/llama-3-8b-instruct signal for USD/CHF: BUY
+2025-10-01 18:38:27,389 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-01 18:38:27,389 - INFO - ✅ Signal for USD/CHF: BUY (Agreement: 3/5)
+2025-10-01 18:38:28,566 - ERROR - ❌ JSON error in Cloudflare-@cf/meta/llama-3-8b-instruct response for GBP/USD: Expecting property name enclosed in double quotes: line 6 column 29 (char 121). Response: {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7,
+    "ENTRY": "1.34867",
+    "STOP_LOSS": "1.34683", // 1.5x ATR from current price
+    "TAKE_PROFIT": "1.35151", // 1.5x price targ...
+2025-10-01 18:38:28,569 - INFO - 📊 Results: 2 successful, 0 failed
+2025-10-01 18:38:28,569 - INFO - ✅ Signal for GBP/USD: BUY (Agreement: 2/5)
+2025-10-01 18:38:28,569 - INFO - 📊 Analysis complete. 3 valid signals
+2025-10-01 18:38:28,569 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-10-01 18:38:28,570 - INFO - 💾 2 strong signals saved in root
+2025-10-01 18:38:28,570 - INFO - 💾 1 medium signals saved in root
+2025-10-01 18:38:28,570 - INFO - 💾 0 weak signals saved in root
+2025-10-01 18:38:28,570 - INFO - ✅ File strong_consensus_signals.json successfully created
+2025-10-01 18:38:28,570 - INFO - ✅ File medium_consensus_signals.json successfully created
+2025-10-01 18:38:28,570 - INFO - ✅ File weak_consensus_signals.json successfully created
+2025-10-01 18:38:28,570 - INFO - 📈 Results Summary:
+2025-10-01 18:38:28,570 - INFO - 🎯 Strong signals: 2
+2025-10-01 18:38:28,571 - INFO - 📊 Medium signals: 1
+2025-10-01 18:38:28,571 - INFO - 📈 Weak signals: 0
+2025-10-01 18:38:28,571 - INFO -  🟢 EUR/USD: BUY (Confidence: 7.0/10)
+2025-10-01 18:38:28,571 - INFO -  🟢 GBP/USD: BUY (Confidence: 7.0/10)
+2025-10-01 18:38:28,571 - INFO -  🟢 USD/CHF: BUY (Confidence: 7.0/10)
+2025-10-01 18:38:28,571 - INFO - 📊 API Usage Summary:
+ google_gemini: 33/1500 (1467 remaining)
+ cloudflare: 66/10000 (9934 remaining)
+ groq: 66/10000 (9934 remaining)
+
+2025-10-01 18:38:28,571 - INFO - 🏁 System execution completed

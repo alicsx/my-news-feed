@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-01T18:38:28.569444+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.34867",
+    "STOP_LOSS": "1.34607",
+    "TAKE_PROFIT": "1.35252",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+  }
+]
