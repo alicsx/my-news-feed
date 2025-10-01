@@ -4818,3 +4818,98 @@ KeyError: 'value'
   groq: 68/10000 (9932 remaining)
 
 2025-10-01 20:26:18,918 - INFO - 🏁 System execution completed
+2025-10-01 20:28:51,544 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-10-01 20:28:51,545 - INFO - 🔍 Using default currency pairs: EUR/USD, GBP/USD, USD/CHF
+2025-10-01 20:28:51,545 - INFO - 🎯 Currency pairs to analyze: EUR/USD, GBP/USD, USD/CHF
+2025-10-01 20:28:51,545 - INFO - 🚀 Starting analysis for 3 currency pairs
+2025-10-01 20:28:51,545 - INFO - 🔍 Starting analysis for EUR/USD
+2025-10-01 20:28:51,545 - INFO - 📊 API Usage Summary:
+  google_gemini: 34/1500 (1466 remaining)
+  cloudflare: 68/10000 (9932 remaining)
+  groq: 68/10000 (9932 remaining)
+
+2025-10-01 20:28:51,546 - INFO - 🔍 Starting analysis for GBP/USD
+2025-10-01 20:28:51,546 - INFO - 📊 API Usage Summary:
+  google_gemini: 34/1500 (1466 remaining)
+  cloudflare: 68/10000 (9932 remaining)
+  groq: 68/10000 (9932 remaining)
+
+2025-10-01 20:28:51,546 - INFO - 🔍 Starting analysis for USD/CHF
+2025-10-01 20:28:51,547 - INFO - 📊 API Usage Summary:
+  google_gemini: 34/1500 (1466 remaining)
+  cloudflare: 68/10000 (9932 remaining)
+  groq: 68/10000 (9932 remaining)
+
+2025-10-01 20:28:51,831 - INFO - ✅ TwelveData: 500 candles for EUR/USD (4h)
+2025-10-01 20:28:59,189 - INFO - ✅ TwelveData: 500 candles for GBP/USD (4h)
+2025-10-01 20:29:06,694 - INFO - ✅ TwelveData: 500 candles for USD/CHF (4h)
+2025-10-01 20:29:14,204 - INFO - ✅ TwelveData: 500 candles for EUR/USD (1h)
+2025-10-01 20:29:14,204 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 20:29:14,255 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 20:29:14,299 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 20:29:14,302 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 20:29:14,303 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.0-flash-exp'), ('cloudflare', '@cf/meta/llama-3-8b-instruct'), ('groq', 'llama-3.1-8b-instant'), ('cloudflare', '@cf/mistralai/mistral-7b-instruct-v0.1'), ('groq', 'mixtral-8x7b-32768')]
+2025-10-01 20:29:14,303 - INFO - 🎯 Using 5 AI models for EUR/USD
+2025-10-01 20:29:14,402 - ERROR - ❌ Groq API error for EUR/USD: 400 - {"error":{"message":"The model `mixtral-8x7b-32768` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.","type":"invalid_request_error","code":"model_decommissioned"}}
+
+2025-10-01 20:29:14,471 - ERROR - ❌ Cloudflare API error for EUR/USD: 400 - {"success":false,"errors":[{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}
+2025-10-01 20:29:14,844 - INFO - ✅ Groq-llama-3.1-8b-instant signal for EUR/USD: BUY
+2025-10-01 20:29:15,810 - INFO - ✅ Gemini-gemini-2.0-flash-exp signal for EUR/USD: BUY
+2025-10-01 20:29:21,722 - INFO - ✅ TwelveData: 500 candles for GBP/USD (1h)
+2025-10-01 20:29:21,722 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 20:29:21,765 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 20:29:21,808 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 20:29:21,811 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 20:29:21,811 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.0-flash-exp'), ('cloudflare', '@cf/meta/llama-3-8b-instruct'), ('groq', 'llama-3.1-8b-instant'), ('cloudflare', '@cf/mistralai/mistral-7b-instruct-v0.1'), ('groq', 'mixtral-8x7b-32768')]
+2025-10-01 20:29:21,811 - INFO - 🎯 Using 5 AI models for GBP/USD
+2025-10-01 20:29:21,889 - ERROR - ❌ Groq API error for GBP/USD: 400 - {"error":{"message":"The model `mixtral-8x7b-32768` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.","type":"invalid_request_error","code":"model_decommissioned"}}
+
+2025-10-01 20:29:21,892 - ERROR - ❌ Cloudflare API error for GBP/USD: 400 - {"success":false,"errors":[{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}
+2025-10-01 20:29:22,282 - INFO - ✅ Groq-llama-3.1-8b-instant signal for GBP/USD: BUY
+2025-10-01 20:29:23,034 - INFO - ✅ Gemini-gemini-2.0-flash-exp signal for GBP/USD: BUY
+2025-10-01 20:29:23,139 - INFO - ✅ Cloudflare-@cf/meta/llama-3-8b-instruct signal for EUR/USD: BUY
+2025-10-01 20:29:23,141 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-01 20:29:23,141 - INFO - ✅ Signal for EUR/USD: BUY (Agreement: 3/5)
+2025-10-01 20:29:29,259 - INFO - ✅ TwelveData: 500 candles for USD/CHF (1h)
+2025-10-01 20:29:29,260 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 20:29:29,304 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 20:29:29,347 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 20:29:29,351 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 20:29:29,351 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.0-flash-exp'), ('cloudflare', '@cf/meta/llama-3-8b-instruct'), ('groq', 'llama-3.1-8b-instant'), ('cloudflare', '@cf/mistralai/mistral-7b-instruct-v0.1'), ('groq', 'mixtral-8x7b-32768')]
+2025-10-01 20:29:29,351 - INFO - 🎯 Using 5 AI models for USD/CHF
+2025-10-01 20:29:29,424 - ERROR - ❌ Cloudflare API error for USD/CHF: 400 - {"success":false,"errors":[{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}
+2025-10-01 20:29:29,428 - ERROR - ❌ Groq API error for USD/CHF: 400 - {"error":{"message":"The model `mixtral-8x7b-32768` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.","type":"invalid_request_error","code":"model_decommissioned"}}
+
+2025-10-01 20:29:29,783 - INFO - ✅ Groq-llama-3.1-8b-instant signal for USD/CHF: BUY
+2025-10-01 20:29:30,439 - INFO - ✅ Cloudflare-@cf/meta/llama-3-8b-instruct signal for GBP/USD: BUY
+2025-10-01 20:29:30,441 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-01 20:29:30,441 - INFO - ✅ Signal for GBP/USD: BUY (Agreement: 3/5)
+2025-10-01 20:29:30,510 - INFO - ✅ Gemini-gemini-2.0-flash-exp signal for USD/CHF: BUY
+2025-10-01 20:29:38,062 - INFO - ✅ Cloudflare-@cf/meta/llama-3-8b-instruct signal for USD/CHF: BUY
+2025-10-01 20:29:38,063 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-01 20:29:38,063 - INFO - ✅ Signal for USD/CHF: BUY (Agreement: 3/5)
+2025-10-01 20:29:38,064 - INFO - 📊 Analysis complete. 3 valid signals
+2025-10-01 20:29:38,064 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-10-01 20:29:38,064 - INFO - 💾 3 strong signals saved in root
+2025-10-01 20:29:38,064 - INFO - 💾 0 medium signals saved in root
+2025-10-01 20:29:38,065 - INFO - 💾 0 weak signals saved in root
+2025-10-01 20:29:38,065 - INFO - ✅ File strong_consensus_signals.json successfully created
+2025-10-01 20:29:38,065 - INFO - ✅ File medium_consensus_signals.json successfully created
+2025-10-01 20:29:38,065 - INFO - ✅ File weak_consensus_signals.json successfully created
+2025-10-01 20:29:38,065 - INFO - 📈 Results Summary:
+2025-10-01 20:29:38,065 - INFO - 🎯 Strong signals: 3
+2025-10-01 20:29:38,065 - INFO - 📊 Medium signals: 0
+2025-10-01 20:29:38,065 - INFO - 📈 Weak signals: 0
+2025-10-01 20:29:38,065 - INFO -   🟢 EUR/USD: BUY (Confidence: 7.0/10)
+2025-10-01 20:29:38,065 - INFO -   🟢 GBP/USD: BUY (Confidence: 7.0/10)
+2025-10-01 20:29:38,065 - INFO -   🟢 USD/CHF: BUY (Confidence: 7.0/10)
+2025-10-01 20:29:38,065 - INFO - 📊 Data Source Statistics:
+2025-10-01 20:29:38,065 - INFO -   twelvedata: 3 pairs
+2025-10-01 20:29:38,065 - INFO -   yahoo: 0 pairs
+2025-10-01 20:29:38,065 - INFO -   synthetic: 0 pairs
+2025-10-01 20:29:38,066 - INFO - 📊 API Usage Summary:
+  google_gemini: 37/1500 (1463 remaining)
+  cloudflare: 74/10000 (9926 remaining)
+  groq: 74/10000 (9926 remaining)
+
+2025-10-01 20:29:38,066 - INFO - 🏁 System execution completed
