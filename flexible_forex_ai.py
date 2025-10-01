@@ -14,6 +14,7 @@ from typing import Dict, List, Optional, Tuple
 import concurrent.futures
 import numpy as np
 from scipy import stats
+import traceback
 
 # =================================================================================
 # --- Advanced Main Configuration Section ---
@@ -42,24 +43,24 @@ USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
 # Updated AI models with more diversity
-GEMINI_MODEL = 'gemini-2.5-flash-exp'
+GEMINI_MODEL = 'gemini-2.0-flash-exp'
 
 # Enhanced Cloudflare models
 CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-4-scout-17b-16e-instruct",
-    "@cf/google/gemma-3-12b-it", 
-    "@cf/mistralai/mistral-small-3.1-24b-instruct",
-    "@cf/qwen/qwq-32b",
-    "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
+    "@cf/meta/llama-3-8b-instruct",
+    "@cf/mistralai/mistral-7b-instruct-v0.1", 
+    "@cf/qwen/qwen1.5-7b-chat-awq",
+    "@cf/google/gemma-2-9b-it",
+    "@cf/microsoft/codestral-22b-v0.1"
 ]
 
 # Enhanced Groq models
 GROQ_MODELS = [
-    "llama-3.3-70b-versatile",
-    "qwen/qwen3-32b",
-    "meta-llama/llama-4-maverick-17b-128e-instruct",
     "llama-3.1-8b-instant",
-    "mixtral-8x7b-32768"
+    "mixtral-8x7b-32768",
+    "gemma2-9b-it",
+    "llama-3.2-3b-preview",
+    "llama-3.2-1b-preview"
 ]
 
 # Daily API limits
@@ -847,7 +848,7 @@ class SmartAPIManager:
         return summary
 
 # =================================================================================
-# --- Enhanced AI Manager with Improved English Prompts ---
+# --- Enhanced AI Manager with Fixed Error Handling ---
 # =================================================================================
 
 class EnhancedAIManager:
@@ -933,7 +934,8 @@ CRITICAL:
             for i, (provider, model_name) in enumerate(selected_models):
                 result = results[i]
                 if isinstance(result, Exception):
-                    logging.error(f"Error in {provider}/{model_name} for {symbol}: {str(result)}")
+                    logging.error(f"❌ Error in {provider}/{model_name} for {symbol}: {str(result)}")
+                    logging.error(f"❌ Traceback: {traceback.format_exc()}")
                     self.api_manager.mark_model_failed(provider, model_name)
                     failed_count += 1
                     self.api_manager.record_api_usage(provider)
@@ -947,7 +949,8 @@ CRITICAL:
             return self._combine_signals(symbol, valid_results, len(selected_models))
             
         except Exception as e:
-            logging.error(f"Error in AI analysis for {symbol}: {str(e)}")
+            logging.error(f"❌ Error in AI analysis for {symbol}: {str(e)}")
+            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
@@ -965,7 +968,8 @@ CRITICAL:
                 return None
                 
         except Exception as e:
-            logging.warning(f"Error in {provider}/{model_name} for {symbol}: {str(e)}")
+            logging.error(f"❌ Error in {provider}/{model_name} for {symbol}: {str(e)}")
+            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
@@ -975,16 +979,21 @@ CRITICAL:
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
-                request_options={'timeout': 60}
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.1,
+                    max_output_tokens=500,
+                )
             )
             return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
         except Exception as e:
-            logging.warning(f"Gemini analysis error for {symbol}: {str(e)}")
+            logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
+            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Cloudflare AI"""
         if not self.cloudflare_api_key:
+            logging.warning(f"❌ Cloudflare API key not available for {symbol}")
             return None
             
         try:
@@ -1003,7 +1012,7 @@ CRITICAL:
                 "stream": False
             }
             
-            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "your_account_id")
+            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "default_account_id")
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_name}"
             
             async with aiohttp.ClientSession() as session:
@@ -1015,18 +1024,29 @@ CRITICAL:
                             content = data["result"]["response"]
                         elif "response" in data:
                             content = data["response"]
+                        else:
+                            logging.warning(f"❌ Unexpected Cloudflare response structure for {symbol}: {data}")
+                            return None
                             
                         if content:
                             return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
-                    return None
+                        else:
+                            logging.warning(f"❌ Empty content in Cloudflare response for {symbol}")
+                            return None
+                    else:
+                        error_text = await response.text()
+                        logging.error(f"❌ Cloudflare API error for {symbol}: {response.status} - {error_text}")
+                        return None
                     
         except Exception as e:
-            logging.warning(f"Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
+            logging.error(f"❌ Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
+            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     async def _get_groq_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Groq API"""
         if not self.groq_api_key:
+            logging.warning(f"❌ Groq API key not available for {symbol}")
             return None
             
         try:
@@ -1057,10 +1077,17 @@ CRITICAL:
                         if "choices" in data and len(data["choices"]) > 0:
                             content = data["choices"][0]["message"]["content"]
                             return self._parse_ai_response(content, symbol, f"Groq-{model_name}")
-                    return None
+                        else:
+                            logging.warning(f"❌ No choices in Groq response for {symbol}: {data}")
+                            return None
+                    else:
+                        error_text = await response.text()
+                        logging.error(f"❌ Groq API error for {symbol}: {response.status} - {error_text}")
+                        return None
                     
         except Exception as e:
-            logging.warning(f"Groq/{model_name} analysis error for {symbol}: {str(e)}")
+            logging.error(f"❌ Groq/{model_name} analysis error for {symbol}: {str(e)}")
+            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
@@ -1089,10 +1116,10 @@ CRITICAL:
             return None
             
         except json.JSONDecodeError as e:
-            logging.error(f"JSON error in {ai_name} response for {symbol}: {e}. Response: {response[:200]}...")
+            logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}. Response: {response[:200]}...")
             return None
         except Exception as e:
-            logging.error(f"Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
+            logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
             return None
 
     def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
@@ -1100,21 +1127,21 @@ CRITICAL:
         required_fields = ['SYMBOL', 'ACTION', 'CONFIDENCE']
         for field in required_fields:
             if field not in signal_data:
-                logging.warning(f"Required field {field} missing in signal for {symbol}")
+                logging.warning(f"❌ Required field {field} missing in signal for {symbol}")
                 return False
                 
         action = signal_data['ACTION'].upper()
         if action not in ['BUY', 'SELL', 'HOLD']:
-            logging.warning(f"Invalid ACTION for {symbol}: {action}")
+            logging.warning(f"❌ Invalid ACTION for {symbol}: {action}")
             return False
             
         try:
             confidence = float(signal_data['CONFIDENCE'])
             if not (1 <= confidence <= 10):
-                logging.warning(f"CONFIDENCE out of range for {symbol}: {confidence}")
+                logging.warning(f"❌ CONFIDENCE out of range for {symbol}: {confidence}")
                 return False
         except (ValueError, TypeError):
-            logging.warning(f"Invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
+            logging.warning(f"❌ Invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
             return False
             
         return True
@@ -1255,6 +1282,7 @@ class ImprovedForexAnalyzer:
             
         except Exception as e:
             logging.error(f"❌ Error analyzing {pair}: {str(e)}")
+            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     async def get_market_data_with_retry(self, symbol: str, interval: str, max_retries: int = 3) -> Optional[pd.DataFrame]:
@@ -1441,3 +1469,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+      
