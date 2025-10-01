@@ -325,7 +325,7 @@ class EnhancedTechnicalAnalyzer:
                 'momentum': {
                     'rsi': {'value': 50, 'signal': 'NEUTRAL'},
                     'macd': {'signal': 'NEUTRAL', 'histogram': 0},
-                    'stochastic': {'value': 50, 'signal': 'NEUTRAL'}
+                    'stochastic': {'k': 50, 'd': 50, 'signal': 'NEUTRAL'}
                 },
                 'key_levels': {
                     'support_1': current_price * 0.99,
@@ -865,26 +865,35 @@ class EnhancedAIManager:
         
         current_price = technical_analysis.get('current_price', 1.0850)
         
+        # Use .get() with default values to avoid KeyErrors
+        momentum_data = technical_analysis.get('momentum', {})
+        stochastic_data = momentum_data.get('stochastic', {})
+        htf_trend = technical_analysis.get('htf_trend', {})
+        ltf_trend = technical_analysis.get('ltf_trend', {})
+        key_levels = technical_analysis.get('key_levels', {})
+        market_structure = technical_analysis.get('market_structure', {})
+        risk_assessment = technical_analysis.get('risk_assessment', {})
+        
         return f"""IMPORTANT: You are a professional forex trading analyst. Analyze the technical setup and provide ONLY a valid JSON response.
 
 SYMBOL: {symbol}
 CURRENT PRICE: {current_price:.5f}
 
 TECHNICAL ANALYSIS SUMMARY:
-- HTF Trend (4H): {technical_analysis['htf_trend']['direction']} | Strength: {technical_analysis['htf_trend']['strength']} | ADX: {technical_analysis['htf_trend'].get('adx', 0):.1f}
-- LTF Trend (1H): {technical_analysis['ltf_trend']['direction']} | EMA Alignment: {technical_analysis['htf_trend'].get('ema_alignment', 0)}/4
-- Momentum Bias: {technical_analysis['momentum']['overall_bias']} | RSI: {technical_analysis['momentum']['rsi']['value']:.1f} ({technical_analysis['momentum']['rsi']['signal']})
-- MACD: {technical_analysis['momentum']['macd']['trend']} | Signal: {technical_analysis['momentum']['macd']['cross']}
-- Stochastic: {technical_analysis['momentum']['stochastic']['value']:.1f} ({technical_analysis['momentum']['stochastic']['signal']})
-- Key Support: {technical_analysis['key_levels']['support_1']:.5f} | Key Resistance: {technical_analysis['key_levels']['resistance_1']:.5f}
-- Market Structure: {technical_analysis['market_structure']['higher_timeframe_structure']}
-- Risk Level: {technical_analysis['risk_assessment']['risk_level']}
-- Volatility: {technical_analysis['volatility']:.5f} (ATR)
-- Market Phase: {technical_analysis['market_structure']['market_phase']}
+- HTF Trend (4H): {htf_trend.get('direction', 'NEUTRAL')} | Strength: {htf_trend.get('strength', 'UNKNOWN')} | ADX: {htf_trend.get('adx', 0):.1f}
+- LTF Trend (1H): {ltf_trend.get('direction', 'NEUTRAL')} | EMA Alignment: {htf_trend.get('ema_alignment', 0)}/4
+- Momentum Bias: {momentum_data.get('overall_bias', 'NEUTRAL')} | RSI: {momentum_data.get('rsi', {}).get('value', 50):.1f} ({momentum_data.get('rsi', {}).get('signal', 'NEUTRAL')})
+- MACD: {momentum_data.get('macd', {}).get('trend', 'NEUTRAL')} | Signal: {momentum_data.get('macd', {}).get('cross', 'NO_CROSS')}
+- Stochastic: {stochastic_data.get('k', 50):.1f} ({stochastic_data.get('signal', 'NEUTRAL')})
+- Key Support: {key_levels.get('support_1', current_price * 0.99):.5f} | Key Resistance: {key_levels.get('resistance_1', current_price * 1.01):.5f}
+- Market Structure: {market_structure.get('higher_timeframe_structure', 'UNKNOWN')}
+- Risk Level: {risk_assessment.get('risk_level', 'MEDIUM')}
+- Volatility: {technical_analysis.get('volatility', 0.001):.5f} (ATR)
+- Market Phase: {market_structure.get('market_phase', 'UNKNOWN')}
 
 CALCULATION INSTRUCTIONS:
 - Calculate realistic levels based on current price {current_price:.5f} and technical structure
-- Use ATR ({technical_analysis['risk_assessment']['atr_value']:.5f}) for stop loss calculation
+- Use ATR ({risk_assessment.get('atr_value', 0.001):.5f}) for stop loss calculation
 - For entry: Use single price, not range
 - For stop loss: Calculate based on 1.5x ATR or key levels
 - For take profit: Use risk-reward ratio 1.5-2.0
@@ -1469,4 +1478,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-      
