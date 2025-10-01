@@ -3570,3 +3570,86 @@
  groq: 8/10000 (9992 remaining)
 
 2025-10-01 02:09:10,245 - INFO - 🏁 System execution completed
+2025-10-01 04:31:26,893 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-10-01 04:31:26,894 - INFO - 🔍 Using default currency pairs: EUR/USD, GBP/USD, USD/JPY
+2025-10-01 04:31:26,894 - INFO - 🎯 Currency pairs to analyze: EUR/USD, GBP/USD, USD/JPY
+2025-10-01 04:31:26,894 - INFO - 🚀 Starting analysis for 3 currency pairs
+2025-10-01 04:31:26,894 - INFO - 🔍 Starting analysis for EUR/USD
+2025-10-01 04:31:26,895 - INFO - 📊 API Usage Summary:
+ google_gemini: 4/1500 (1496 remaining)
+ cloudflare: 8/10000 (9992 remaining)
+ groq: 8/10000 (9992 remaining)
+
+2025-10-01 04:31:26,907 - INFO - 🔍 Starting analysis for GBP/USD
+2025-10-01 04:31:26,907 - INFO - 📊 API Usage Summary:
+ google_gemini: 4/1500 (1496 remaining)
+ cloudflare: 8/10000 (9992 remaining)
+ groq: 8/10000 (9992 remaining)
+
+2025-10-01 04:31:26,908 - INFO - 🔍 Starting analysis for USD/JPY
+2025-10-01 04:31:26,908 - INFO - 📊 API Usage Summary:
+ google_gemini: 4/1500 (1496 remaining)
+ cloudflare: 8/10000 (9992 remaining)
+ groq: 8/10000 (9992 remaining)
+
+2025-10-01 04:31:27,062 - INFO - ✅ Retrieved 500 candles for GBP/USD (4h)
+2025-10-01 04:31:27,077 - INFO - ✅ Retrieved 500 candles for EUR/USD (4h)
+2025-10-01 04:31:27,134 - INFO - ✅ Retrieved 500 candles for USD/JPY (4h)
+2025-10-01 04:31:27,205 - INFO - ✅ Retrieved 500 candles for GBP/USD (1h)
+2025-10-01 04:31:27,205 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 04:31:27,257 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 04:31:27,302 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 04:31:27,305 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 04:31:27,305 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.5-flash-exp'), ('cloudflare', '@cf/meta/llama-4-scout-17b-16e-instruct'), ('groq', 'llama-3.3-70b-versatile'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('groq', 'qwen/qwen3-32b')]
+2025-10-01 04:31:27,305 - INFO - 🎯 Using 5 AI models for GBP/USD
+2025-10-01 04:31:27,305 - WARNING - Error in google_gemini/gemini-2.5-flash-exp for GBP/USD: 'value'
+2025-10-01 04:31:27,305 - WARNING - Error in cloudflare/@cf/meta/llama-4-scout-17b-16e-instruct for GBP/USD: 'value'
+2025-10-01 04:31:27,305 - WARNING - Error in groq/llama-3.3-70b-versatile for GBP/USD: 'value'
+2025-10-01 04:31:27,306 - WARNING - Error in cloudflare/@cf/google/gemma-3-12b-it for GBP/USD: 'value'
+2025-10-01 04:31:27,306 - WARNING - Error in groq/qwen/qwen3-32b for GBP/USD: 'value'
+2025-10-01 04:31:27,309 - INFO - ✅ Retrieved 500 candles for EUR/USD (1h)
+2025-10-01 04:31:27,312 - INFO - ✅ Retrieved 500 candles for USD/JPY (1h)
+2025-10-01 04:31:27,314 - INFO - 📊 Results: 0 successful, 0 failed
+2025-10-01 04:31:27,314 - INFO - 🔍 No trading signal for GBP/USD
+2025-10-01 04:31:27,315 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 04:31:27,359 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 04:31:27,403 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 04:31:27,406 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 04:31:27,406 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.5-flash-exp'), ('cloudflare', '@cf/meta/llama-4-scout-17b-16e-instruct'), ('groq', 'llama-3.3-70b-versatile'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('groq', 'qwen/qwen3-32b')]
+2025-10-01 04:31:27,406 - INFO - 🎯 Using 5 AI models for EUR/USD
+2025-10-01 04:31:27,406 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-01 04:31:27,450 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 04:31:27,494 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-01 04:31:27,498 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-01 04:31:27,498 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.5-flash-exp'), ('cloudflare', '@cf/meta/llama-4-scout-17b-16e-instruct'), ('groq', 'llama-3.3-70b-versatile'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('groq', 'qwen/qwen3-32b')]
+2025-10-01 04:31:27,498 - INFO - 🎯 Using 5 AI models for USD/JPY
+2025-10-01 04:31:27,498 - WARNING - Error in google_gemini/gemini-2.5-flash-exp for EUR/USD: 'value'
+2025-10-01 04:31:27,498 - WARNING - Error in cloudflare/@cf/meta/llama-4-scout-17b-16e-instruct for EUR/USD: 'value'
+2025-10-01 04:31:27,498 - WARNING - Error in groq/llama-3.3-70b-versatile for EUR/USD: 'value'
+2025-10-01 04:31:27,498 - WARNING - Error in cloudflare/@cf/google/gemma-3-12b-it for EUR/USD: 'value'
+2025-10-01 04:31:27,498 - WARNING - Error in groq/qwen/qwen3-32b for EUR/USD: 'value'
+2025-10-01 04:31:27,498 - WARNING - Error in google_gemini/gemini-2.5-flash-exp for USD/JPY: 'value'
+2025-10-01 04:31:27,498 - WARNING - Error in cloudflare/@cf/meta/llama-4-scout-17b-16e-instruct for USD/JPY: 'value'
+2025-10-01 04:31:27,499 - WARNING - Error in groq/llama-3.3-70b-versatile for USD/JPY: 'value'
+2025-10-01 04:31:27,499 - WARNING - Error in cloudflare/@cf/google/gemma-3-12b-it for USD/JPY: 'value'
+2025-10-01 04:31:27,499 - WARNING - Error in groq/qwen/qwen3-32b for USD/JPY: 'value'
+2025-10-01 04:31:27,500 - INFO - 📊 Results: 0 successful, 0 failed
+2025-10-01 04:31:27,500 - INFO - 🔍 No trading signal for EUR/USD
+2025-10-01 04:31:27,502 - INFO - 📊 Results: 0 successful, 0 failed
+2025-10-01 04:31:27,502 - INFO - 🔍 No trading signal for USD/JPY
+2025-10-01 04:31:27,502 - INFO - 📊 Analysis complete. 0 valid signals
+2025-10-01 04:31:27,502 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-10-01 04:31:27,502 - INFO - 📝 No signals to save
+2025-10-01 04:31:27,502 - INFO - 💾 Empty file created: strong_consensus_signals.json
+2025-10-01 04:31:27,502 - INFO - 💾 Empty file created: medium_consensus_signals.json
+2025-10-01 04:31:27,503 - INFO - 💾 Empty file created: weak_consensus_signals.json
+2025-10-01 04:31:27,503 - INFO - 📈 Results Summary:
+2025-10-01 04:31:27,503 - INFO - 🎯 Strong signals: 0
+2025-10-01 04:31:27,503 - INFO - 📊 Medium signals: 0
+2025-10-01 04:31:27,503 - INFO - 📈 Weak signals: 0
+2025-10-01 04:31:27,503 - INFO - 📊 API Usage Summary:
+ google_gemini: 7/1500 (1493 remaining)
+ cloudflare: 14/10000 (9986 remaining)
+ groq: 14/10000 (9986 remaining)
+
+2025-10-01 04:31:27,503 - INFO - 🏁 System execution completed
