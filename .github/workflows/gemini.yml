@@ -9,7 +9,7 @@ on:
       pairs:
         description: 'جفت ارزها (جدا شده با کاما)'
         required: false
-        default: 'EUR/USD,GBP/USD,USD/JPY'
+        default: 'EUR/USD,GBP/USD,USD/CHF,EUR/JPY,AUD/JPY,GBP/JPY,EUR/AUD,NZD/CAD'
       all_pairs:
         description: 'تحلیل همه جفت ارزها'
         required: false
