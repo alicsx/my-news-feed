@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-01T12:57:45.567829+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.17472",
+    "STOP_LOSS": "1.17208",
+    "TAKE_PROFIT": "1.17872",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-01T12:57:45.716132+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.35095",
+    "STOP_LOSS": "1.34845",
+    "TAKE_PROFIT": "1.35470",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-01T12:57:46.091311+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "0.79753",
+    "STOP_LOSS": "0.79531",
+    "TAKE_PROFIT": "0.80086",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+  }
+]
