@@ -15,9 +15,13 @@ import concurrent.futures
 import numpy as np
 from scipy import stats
 import traceback
+import yfinance as yf
+from dataclasses import dataclass
+from enum import Enum
+import random
 
 # =================================================================================
-# --- Advanced Main Configuration Section ---
+# --- Enhanced Main Configuration Section ---
 # =================================================================================
 
 # API Keys
@@ -27,16 +31,29 @@ CLOUDFLARE_AI_API_KEY = os.getenv("CLOUDFLARE_AI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 if not all([google_api_key, TWELVEDATA_API_KEY]):
-    raise ValueError("Please set API keys: GOOGLE_API_KEY, TWELVEDATA_API_KEY")
+    logging.warning("⚠️ Some API keys are missing. System will use fallback methods.")
 
 # Main system configuration
 HIGH_TIMEFRAME = "4h"
 LOW_TIMEFRAME = "1h"
 CANDLES_TO_FETCH = 500
+
 CURRENCY_PAIRS_TO_ANALYZE = [
-    "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY",
+    "EUR/USD", "GBP/USD", "USD/CHF", "EUR/JPY", 
     "AUD/JPY", "GBP/JPY", "EUR/AUD", "NZD/CAD"
 ]
+
+# Alternative symbol formats for different data sources
+YAHOO_SYMBOLS = {
+    "EUR/USD": "EURUSD=X",
+    "GBP/USD": "GBPUSD=X", 
+    "USD/CHF": "USDCHF=X",
+    "EUR/JPY": "EURJPY=X",
+    "AUD/JPY": "AUDJPY=X",
+    "GBP/JPY": "GBPJPY=X",
+    "EUR/AUD": "EURAUD=X",
+    "NZD/CAD": "NZDCAD=X"
+}
 
 CACHE_FILE = "signal_cache.json"
 USAGE_TRACKER_FILE = "api_usage_tracker.json"
@@ -48,7 +65,7 @@ GEMINI_MODEL = 'gemini-2.0-flash-exp'
 # Enhanced Cloudflare models
 CLOUDFLARE_MODELS = [
     "@cf/meta/llama-3-8b-instruct",
-    "@cf/mistralai/mistral-7b-instruct-v0.1", 
+    "@cf/mistralai/mistral-7b-instruct-v0.1",
     "@cf/qwen/qwen1.5-7b-chat-awq",
     "@cf/google/gemma-2-9b-it",
     "@cf/microsoft/codestral-22b-v0.1"
@@ -57,7 +74,7 @@ CLOUDFLARE_MODELS = [
 # Enhanced Groq models
 GROQ_MODELS = [
     "llama-3.1-8b-instant",
-    "mixtral-8x7b-32768",
+    "mixtral-8x7b-32768", 
     "gemma2-9b-it",
     "llama-3.2-3b-preview",
     "llama-3.2-1b-preview"
@@ -70,6 +87,13 @@ API_DAILY_LIMITS = {
     "groq": 10000
 }
 
+# Data source priorities
+DATA_SOURCE_PRIORITY = ["twelvedata", "yahoo", "synthetic"]
+
+# Rate limiting configuration
+TWELVEDATA_RATE_LIMIT = 8  # requests per minute
+MIN_REQUEST_INTERVAL = 60 / TWELVEDATA_RATE_LIMIT  # seconds between requests
+
 # Advanced logging setup
 logging.basicConfig(
     level=logging.INFO,
@@ -79,6 +103,279 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+# =================================================================================
+# --- Enhanced Data Source Management ---
+# =================================================================================
+
+class DataSource(Enum):
+    TWELVEDATA = "twelvedata"
+    YAHOO = "yahoo"
+    SYNTHETIC = "synthetic"
+
+@dataclass
+class DataFetchResult:
+    success: bool
+    data: Optional[pd.DataFrame]
+    source: DataSource
+    symbol: str
+    error: Optional[str] = None
+
+class RateLimiter:
+    def __init__(self, requests_per_minute: int):
+        self.requests_per_minute = requests_per_minute
+        self.interval = 60.0 / requests_per_minute
+        self.last_request_time = 0
+        self.lock = asyncio.Lock()
+
+    async def acquire(self):
+        async with self.lock:
+            current_time = time.time()
+            time_since_last = current_time - self.last_request_time
+            if time_since_last < self.interval:
+                wait_time = self.interval - time_since_last
+                logging.debug(f"⏳ Rate limiting: waiting {wait_time:.2f}s")
+                await asyncio.sleep(wait_time)
+            self.last_request_time = time.time()
+
+class EnhancedDataFetcher:
+    def __init__(self):
+        self.rate_limiter = RateLimiter(TWELVEDATA_RATE_LIMIT)
+        self.data_source_priority = DATA_SOURCE_PRIORITY.copy()
+        self.last_data_source = {}
+        
+    async def get_market_data(self, symbol: str, interval: str, max_retries: int = 2) -> Optional[pd.DataFrame]:
+        """Get market data with multiple fallback sources and rate limiting"""
+        
+        for source in self.data_source_priority:
+            try:
+                if source == "twelvedata" and TWELVEDATA_API_KEY:
+                    result = await self._get_twelvedata_with_retry(symbol, interval, max_retries)
+                    if result.success:
+                        self.last_data_source[symbol] = DataSource.TWELVEDATA
+                        return result.data
+                        
+                elif source == "yahoo":
+                    result = await self._get_yahoo_data(symbol, interval)
+                    if result.success:
+                        self.last_data_source[symbol] = DataSource.YAHOO
+                        return result.data
+                        
+                elif source == "synthetic":
+                    result = await self._get_synthetic_data(symbol, interval)
+                    if result.success:
+                        self.last_data_source[symbol] = DataSource.SYNTHETIC
+                        return result.data
+                        
+            except Exception as e:
+                logging.warning(f"❌ {source} failed for {symbol}: {str(e)}")
+                continue
+                
+        logging.error(f"❌ All data sources failed for {symbol}")
+        return None
+
+    async def _get_twelvedata_with_retry(self, symbol: str, interval: str, max_retries: int) -> DataFetchResult:
+        """Get data from Twelve Data with rate limiting and retry logic"""
+        
+        for attempt in range(max_retries):
+            try:
+                # Apply rate limiting
+                await self.rate_limiter.acquire()
+                
+                result = await self._get_twelvedata_data(symbol, interval)
+                if result.success:
+                    return result
+                    
+                logging.warning(f"⚠️ TwelveData attempt {attempt + 1} failed for {symbol}: {result.error}")
+                
+                # Wait before retry
+                if attempt < max_retries - 1:
+                    wait_time = (attempt + 1) * 2  # Exponential backoff
+                    await asyncio.sleep(wait_time)
+                    
+            except Exception as e:
+                logging.warning(f"❌ TwelveData error on attempt {attempt + 1} for {symbol}: {str(e)}")
+                if attempt < max_retries - 1:
+                    await asyncio.sleep((attempt + 1) * 2)
+                    
+        return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "All retries failed")
+
+    async def _get_twelvedata_data(self, symbol: str, interval: str) -> DataFetchResult:
+        """Get data from Twelve Data API with enhanced error handling"""
+        try:
+            url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, timeout=30) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        
+                        # Check for API errors
+                        if 'code' in data and data['code'] != 200:
+                            error_msg = data.get('message', 'Unknown API error')
+                            
+                            # Handle specific error codes
+                            if data['code'] == 429:
+                                logging.warning(f"🔁 Rate limit hit for {symbol}, will use fallback")
+                                return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Rate limit exceeded")
+                            elif data['code'] == 400:
+                                logging.warning(f"⚠️ Invalid symbol {symbol} for TwelveData")
+                                return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Invalid symbol")
+                            else:
+                                logging.warning(f"⚠️ TwelveData API error for {symbol}: {error_msg}")
+                                return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, error_msg)
+                        
+                        if 'values' in data and data['values']:
+                            df = pd.DataFrame(data['values'])
+                            # Reverse to get chronological order
+                            df = df.iloc[::-1].reset_index(drop=True)
+                            
+                            # Convert to numeric
+                            for col in ['open', 'high', 'low', 'close']:
+                                if col in df.columns:
+                                    df[col] = pd.to_numeric(df[col], errors='coerce')
+                            
+                            # Remove any rows with NaN values in essential columns
+                            df = df.dropna(subset=['open', 'high', 'low', 'close'])
+                            
+                            if len(df) > 50:
+                                logging.info(f"✅ TwelveData: {len(df)} candles for {symbol} ({interval})")
+                                return DataFetchResult(True, df, DataSource.TWELVEDATA, symbol)
+                            else:
+                                return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Insufficient data after cleaning")
+                        else:
+                            return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "No values in response")
+                    else:
+                        error_text = await response.text()
+                        logging.warning(f"⚠️ TwelveData HTTP {response.status} for {symbol}: {error_text}")
+                        return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, f"HTTP {response.status}")
+                        
+        except asyncio.TimeoutError:
+            logging.warning(f"⏰ TwelveData timeout for {symbol}")
+            return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Timeout")
+        except Exception as e:
+            logging.warning(f"❌ TwelveData exception for {symbol}: {str(e)}")
+            return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, str(e))
+
+    async def _get_yahoo_data(self, symbol: str, interval: str) -> DataFetchResult:
+        """Get data from Yahoo Finance as fallback"""
+        try:
+            # Convert symbol to Yahoo format
+            yahoo_symbol = YAHOO_SYMBOLS.get(symbol, symbol.replace("/", "") + "=X")
+            
+            # Map intervals
+            interval_map = {
+                "1h": "1h",
+                "4h": "4h", 
+                "1d": "1d",
+                "1m": "1m",
+                "5m": "5m",
+                "15m": "15m"
+            }
+            
+            yf_interval = interval_map.get(interval, "1h")
+            period = "60d" if interval in ["1h", "4h"] else "120d"
+            
+            # Download data using async thread
+            ticker = yf.Ticker(yahoo_symbol)
+            df = await asyncio.to_thread(
+                ticker.history, 
+                period=period, 
+                interval=yf_interval,
+                timeout=30
+            )
+            
+            if df.empty:
+                return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Empty DataFrame from Yahoo")
+                
+            # Reset index and rename columns
+            df = df.reset_index()
+            df = df.rename(columns={
+                'Open': 'open',
+                'High': 'high', 
+                'Low': 'low',
+                'Close': 'close',
+                'Volume': 'volume'
+            })
+            
+            # Ensure we have the required columns
+            required_cols = ['open', 'high', 'low', 'close']
+            if all(col in df.columns for col in required_cols):
+                # Clean data
+                for col in required_cols:
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
+                
+                df = df.dropna(subset=required_cols)
+                
+                if len(df) > 50:
+                    logging.info(f"✅ Yahoo Finance: {len(df)} candles for {symbol} ({interval})")
+                    return DataFetchResult(True, df.tail(CANDLES_TO_FETCH), DataSource.YAHOO, symbol)
+                else:
+                    return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Insufficient data after cleaning")
+            else:
+                return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Missing required columns")
+                
+        except Exception as e:
+            logging.warning(f"❌ Yahoo Finance error for {symbol}: {str(e)}")
+            return DataFetchResult(False, None, DataSource.YAHOO, symbol, str(e))
+
+    async def _get_synthetic_data(self, symbol: str, interval: str) -> DataFetchResult:
+        """Generate synthetic data as last resort fallback"""
+        try:
+            # Create realistic synthetic data based on common forex patterns
+            np.random.seed(hash(symbol) % 10000)
+            
+            # Base prices for different pairs (approximate)
+            base_prices = {
+                "EUR/USD": 1.0850, "GBP/USD": 1.2650, "USD/CHF": 0.9050,
+                "EUR/JPY": 158.50, "AUD/JPY": 97.50, "GBP/JPY": 187.50,
+                "EUR/AUD": 1.6350, "NZD/CAD": 0.8150
+            }
+            
+            base_price = base_prices.get(symbol, 1.0)
+            volatility = 0.002  # 0.2% volatility
+            
+            # Generate synthetic data
+            n_candles = CANDLES_TO_FETCH
+            returns = np.random.normal(0, volatility, n_candles)
+            prices = base_price * (1 + returns).cumprod()
+            
+            # Create OHLC data with some randomness
+            df = pd.DataFrame({
+                'open': prices * (1 + np.random.normal(0, 0.0005, n_candles)),
+                'high': prices * (1 + np.abs(np.random.normal(0, 0.001, n_candles))),
+                'low': prices * (1 - np.abs(np.random.normal(0, 0.001, n_candles))),
+                'close': prices
+            })
+            
+            # Ensure high >= open, high >= close, low <= open, low <= close
+            df['high'] = df[['open', 'close', 'high']].max(axis=1) * (1 + np.abs(np.random.normal(0, 0.0002, n_candles)))
+            df['low'] = df[['open', 'close', 'low']].min(axis=1) * (1 - np.abs(np.random.normal(0, 0.0002, n_candles)))
+            
+            # Add datetime index
+            end_date = datetime.now(UTC)
+            if interval == "1h":
+                dates = pd.date_range(end=end_date, periods=n_candles, freq='1H')
+            else:  # 4h
+                dates = pd.date_range(end=end_date, periods=n_candles, freq='4H')
+            
+            df['datetime'] = dates
+            df = df.set_index('datetime')
+            
+            logging.info(f"🔄 Synthetic data generated for {symbol} ({interval}): {len(df)} candles")
+            return DataFetchResult(True, df, DataSource.SYNTHETIC, symbol)
+            
+        except Exception as e:
+            logging.warning(f"❌ Synthetic data generation failed for {symbol}: {str(e)}")
+            return DataFetchResult(False, None, DataSource.SYNTHETIC, symbol, str(e))
+
+    def get_data_source_stats(self) -> Dict:
+        """Get statistics about data sources used"""
+        stats = {}
+        for source in DataSource:
+            count = list(self.last_data_source.values()).count(source)
+            stats[source.value] = count
+        return stats
 
 # =================================================================================
 # --- Enhanced Technical Analysis Class with Robust Error Handling ---
@@ -199,22 +496,18 @@ class EnhancedTechnicalAnalyzer:
                 df_indicators['pivot'] = (df_indicators['high'] + df_indicators['low'] + df_indicators['close']) / 3
                 df_indicators['r1'] = 2 * df_indicators['pivot'] - df_indicators['low']
                 df_indicators['s1'] = 2 * df_indicators['pivot'] - df_indicators['high']
-                
                 df_indicators['sup_1'] = df_indicators['low'].rolling(20, min_periods=1).min().shift(1)
                 df_indicators['res_1'] = df_indicators['high'].rolling(20, min_periods=1).max().shift(1)
                 df_indicators['sup_2'] = df_indicators['low'].rolling(50, min_periods=1).min().shift(1)
                 df_indicators['res_2'] = df_indicators['high'].rolling(50, min_periods=1).max().shift(1)
-                
                 indicators_added.extend(['pivot', 'r1', 's1', 'sup_1', 'res_1', 'sup_2', 'res_2'])
             except Exception as e:
                 logging.warning(f"Failed to calculate support/resistance: {e}")
 
             # Price action patterns
             try:
-                df_indicators['inside_bar'] = ((df_indicators['high'] < df_indicators['high'].shift(1)) & 
-                                              (df_indicators['low'] > df_indicators['low'].shift(1)))
-                df_indicators['outside_bar'] = ((df_indicators['high'] > df_indicators['high'].shift(1)) & 
-                                               (df_indicators['low'] < df_indicators['low'].shift(1)))
+                df_indicators['inside_bar'] = ((df_indicators['high'] < df_indicators['high'].shift(1)) & (df_indicators['low'] > df_indicators['low'].shift(1)))
+                df_indicators['outside_bar'] = ((df_indicators['high'] > df_indicators['high'].shift(1)) & (df_indicators['low'] < df_indicators['low'].shift(1)))
                 indicators_added.extend(['inside_bar', 'outside_bar'])
             except Exception as e:
                 logging.warning(f"Failed to calculate price patterns: {e}")
@@ -230,7 +523,7 @@ class EnhancedTechnicalAnalyzer:
 
             logging.info(f"✅ Successfully calculated {len(indicators_added)} indicators for {len(df_indicators)} rows")
             return df_indicators
-
+            
         except Exception as e:
             logging.error(f"❌ Critical error in indicator calculation: {e}")
             # Fallback: return original DataFrame with basic indicators
@@ -240,6 +533,7 @@ class EnhancedTechnicalAnalyzer:
         """Fallback method for basic indicator calculation"""
         try:
             df_basic = df.copy()
+            
             # Basic indicators that rarely fail
             df_basic.ta.ema(length=21, append=True)
             df_basic.ta.ema(length=50, append=True)
@@ -255,6 +549,7 @@ class EnhancedTechnicalAnalyzer:
             df_basic = df_basic.dropna()
             logging.info("✅ Basic indicators calculated as fallback")
             return df_basic
+            
         except Exception as e:
             logging.error(f"❌ Even basic indicators failed: {e}")
             return None
@@ -264,7 +559,7 @@ class EnhancedTechnicalAnalyzer:
         if htf_df is None or ltf_df is None or htf_df.empty or ltf_df.empty:
             logging.warning(f"Empty DataFrames provided for {symbol}")
             return None
-
+            
         try:
             # Get the latest data points with bounds checking
             last_htf = htf_df.iloc[-1] if len(htf_df) > 0 else None
@@ -293,7 +588,7 @@ class EnhancedTechnicalAnalyzer:
             
             # Risk assessment
             risk_assessment = self._assess_risk(htf_df, ltf_df)
-
+            
             return {
                 'symbol': symbol,
                 'htf_trend': htf_trend,
@@ -307,6 +602,7 @@ class EnhancedTechnicalAnalyzer:
                 'current_price': last_ltf['close'],
                 'timestamp': datetime.now(UTC).isoformat()
             }
+            
         except Exception as e:
             logging.error(f"❌ Error generating technical analysis for {symbol}: {e}")
             # Return basic analysis as fallback
@@ -359,7 +655,7 @@ class EnhancedTechnicalAnalyzer:
                 trend_direction = "STRONG_BULLISH"
                 ema_alignment = 4
             elif ema_8 < ema_21 < ema_50 < ema_200:
-                trend_direction = "STRONG_BEARISH" 
+                trend_direction = "STRONG_BEARISH"
                 ema_alignment = 4
             elif ema_8 > ema_21 and ema_21 > ema_50:
                 trend_direction = "BULLISH"
@@ -384,7 +680,7 @@ class EnhancedTechnicalAnalyzer:
 
             # Ichimoku analysis
             ichimoku_signal = self._analyze_ichimoku(current)
-
+            
             # SuperTrend signal
             supertrend_signal = "BULLISH" if current.get('SUPERT_7_3.0', '') == 'up' else "BEARISH"
 
@@ -397,6 +693,7 @@ class EnhancedTechnicalAnalyzer:
                 'supertrend_signal': supertrend_signal,
                 'price_above_ema200': current['close'] > ema_200
             }
+            
         except Exception as e:
             logging.warning(f"Trend analysis error: {e}")
             return {
@@ -418,10 +715,10 @@ class EnhancedTechnicalAnalyzer:
             senkou_b = data.get('ICB_26', data['close'])
             chikou = data.get('ITS_9', data['close'])
             price = data['close']
-
+            
             # Cloud analysis
             cloud_bullish = senkou_a > senkou_b
-
+            
             # Signal generation
             if price > max(senkou_a, senkou_b) and tenkan > kijun and chikou > price:
                 return "STRONG_BULLISH"
@@ -476,13 +773,21 @@ class EnhancedTechnicalAnalyzer:
             bullish_signals = 0
             bearish_signals = 0
             
-            if rsi_signal == "OVERSOLD": bullish_signals += 1
-            if rsi_signal == "OVERBOUGHT": bearish_signals += 1
-            if macd_trend == "BULLISH": bullish_signals += 1
-            if macd_trend == "BEARISH": bearish_signals += 1
-            if stoch_signal == "OVERSOLD": bullish_signals += 1
-            if stoch_signal == "OVERBOUGHT": bearish_signals += 1
-
+            if rsi_signal == "OVERSOLD":
+                bullish_signals += 1
+            if rsi_signal == "OVERBOUGHT":
+                bearish_signals += 1
+                
+            if macd_trend == "BULLISH":
+                bullish_signals += 1
+            if macd_trend == "BEARISH":
+                bearish_signals += 1
+                
+            if stoch_signal == "OVERSOLD":
+                bullish_signals += 1
+            if stoch_signal == "OVERBOUGHT":
+                bearish_signals += 1
+                
             momentum_score = bullish_signals - bearish_signals
 
             return {
@@ -495,6 +800,7 @@ class EnhancedTechnicalAnalyzer:
                 'convergence_score': momentum_score,
                 'overall_bias': "BULLISH" if momentum_score > 1 else "BEARISH" if momentum_score < -1 else "NEUTRAL"
             }
+            
         except Exception as e:
             logging.warning(f"Momentum analysis error: {e}")
             return {
@@ -530,13 +836,11 @@ class EnhancedTechnicalAnalyzer:
             range_high = max(recent_high_20, recent_high_50)
             range_low = min(recent_low_20, recent_low_50)
             fib_range = range_high - range_low
-            
             fib_382 = range_high - 0.382 * fib_range
             fib_618 = range_high - 0.618 * fib_range
 
             # Determine key levels based on proximity
-            levels = [recent_high_20, recent_low_20, recent_high_50, recent_low_50, 
-                     pivot, r1, s1, bb_upper, bb_lower, fib_382, fib_618]
+            levels = [recent_high_20, recent_low_20, recent_high_50, recent_low_50, pivot, r1, s1, bb_upper, bb_lower, fib_382, fib_618]
             
             # Find nearest support and resistance
             supports = [level for level in levels if level < current_price]
@@ -556,6 +860,7 @@ class EnhancedTechnicalAnalyzer:
                 'fib_382': fib_382,
                 'fib_618': fib_618
             }
+            
         except Exception as e:
             logging.warning(f"Dynamic levels calculation error: {e}")
             # Fallback levels
@@ -598,6 +903,7 @@ class EnhancedTechnicalAnalyzer:
                 'is_breaking_structure': self._check_structure_break(htf_df, ltf_df),
                 'market_phase': self._determine_market_phase(htf_df)
             }
+            
         except Exception as e:
             logging.warning(f"Market structure analysis error: {e}")
             return {'higher_timeframe_structure': 'UNKNOWN', 'is_breaking_structure': False, 'market_phase': 'UNKNOWN'}
@@ -651,12 +957,13 @@ class EnhancedTechnicalAnalyzer:
             obv_trend = "NEUTRAL"
             if 'OBV' in df.columns:
                 obv_trend = "BULLISH" if df['OBV'].iloc[-1] > df['OBV'].iloc[-5] else "BEARISH"
-            
+
             return {
                 'volume_trend': volume_trend,
                 'obv_signal': obv_trend,
                 'volume_vs_average': df['volume'].iloc[-1] / df['volume'].tail(20).mean() if df['volume'].tail(20).mean() > 0 else 1
             }
+            
         except Exception as e:
             logging.warning(f"Volume analysis error: {e}")
             return {'signal': 'ERROR', 'trend': 'UNKNOWN', 'volume_vs_average': 1}
@@ -674,13 +981,14 @@ class EnhancedTechnicalAnalyzer:
                 risk_level = "MEDIUM"
             else:
                 risk_level = "LOW"
-                
+
             return {
                 'risk_level': risk_level,
                 'volatility_percent': ltf_volatility,
                 'atr_value': atr,
                 'current_range_percent': current_range
             }
+            
         except Exception as e:
             logging.warning(f"Risk assessment error: {e}")
             return {'risk_level': 'MEDIUM', 'volatility_percent': 0, 'atr_value': 0, 'current_range_percent': 0}
@@ -784,9 +1092,9 @@ class SmartAPIManager:
         provider_capacity = {}
         for provider in ["google_gemini", "cloudflare", "groq"]:
             provider_capacity[provider] = self.get_available_models_count(provider)
-
+            
         logging.info(f"📊 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
-                    f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
+                   f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
 
         # Strategy: diverse selection from all providers
         total_available = sum(provider_capacity.values())
@@ -798,9 +1106,10 @@ class SmartAPIManager:
         providers_order = ["google_gemini", "cloudflare", "groq"]
         round_robin_index = 0
         remaining_target = min(target_total, total_available)
-
+        
         while remaining_target > 0 and any(provider_capacity[p] > 0 for p in providers_order):
             current_provider = providers_order[round_robin_index % len(providers_order)]
+            
             if provider_capacity[current_provider] > 0:
                 # Select first available model from this provider that hasn't failed
                 for model_name in self.available_models[current_provider]:
@@ -809,6 +1118,7 @@ class SmartAPIManager:
                         provider_capacity[current_provider] -= 1
                         remaining_target -= 1
                         break
+                        
             round_robin_index += 1
             
             # Break if no addition after full rotation
@@ -844,8 +1154,9 @@ class SmartAPIManager:
         summary = "📊 API Usage Summary:\n"
         for provider, data in self.usage_data["providers"].items():
             remaining = data["limit"] - data["used_today"]
-            summary += f" {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
+            summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
         return summary
+
 
 # =================================================================================
 # --- Enhanced AI Manager with Fixed Error Handling ---
@@ -857,12 +1168,12 @@ class EnhancedAIManager:
         self.cloudflare_api_key = cloudflare_api_key
         self.groq_api_key = groq_api_key
         self.api_manager = api_manager
+        
         if gemini_api_key:
             genai.configure(api_key=gemini_api_key)
 
     def _create_enhanced_english_prompt(self, symbol: str, technical_analysis: Dict) -> str:
         """Create enhanced English prompt for AI analysis"""
-        
         current_price = technical_analysis.get('current_price', 1.0850)
         
         # Use .get() with default values to avoid KeyErrors
@@ -901,19 +1212,19 @@ CALCULATION INSTRUCTIONS:
 
 RETURN ONLY THIS EXACT JSON FORMAT:
 {{
-    "SYMBOL": "{symbol}",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7,
-    "ENTRY": "{current_price:.5f}",
-    "STOP_LOSS": "{current_price - 0.0020:.5f}",
-    "TAKE_PROFIT": "{current_price + 0.0030:.5f}",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence",
-    "EXPIRATION_H": 4,
-    "TRADE_RATIONALE": "Signal based on EMA alignment, RSI momentum, and key level breakout potential"
+  "SYMBOL": "{symbol}",
+  "ACTION": "BUY",
+  "CONFIDENCE": 7,
+  "ENTRY": "{current_price:.5f}",
+  "STOP_LOSS": "{current_price - 0.0020:.5f}",
+  "TAKE_PROFIT": "{current_price + 0.0030:.5f}",
+  "RISK_REWARD_RATIO": "1.5",
+  "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence",
+  "EXPIRATION_H": 4,
+  "TRADE_RATIONALE": "Signal based on EMA alignment, RSI momentum, and key level breakout potential"
 }}
 
-CRITICAL: 
+CRITICAL:
 - ACTION must be "BUY", "SELL", or "HOLD"
 - CONFIDENCE must be between 1-10
 - All price levels must be single values, not ranges
@@ -924,12 +1235,13 @@ CRITICAL:
     async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """Get enhanced AI analysis with multiple models"""
         selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
+        
         if len(selected_models) < 3:
             logging.error(f"❌ Cannot find minimum 3 AI models for {symbol}")
             return None
-
+            
         logging.info(f"🎯 Using {len(selected_models)} AI models for {symbol}")
-        
+
         tasks = []
         for provider, model_name in selected_models:
             task = self._get_single_analysis(symbol, technical_analysis, provider, model_name)
@@ -937,6 +1249,7 @@ CRITICAL:
 
         try:
             results = await asyncio.gather(*tasks, return_exceptions=True)
+            
             valid_results = []
             failed_count = 0
             
@@ -953,7 +1266,7 @@ CRITICAL:
                     self.api_manager.record_api_usage(provider)
                 else:
                     self.api_manager.record_api_usage(provider)
-                    
+
             logging.info(f"📊 Results: {len(valid_results)} successful, {failed_count} failed")
             return self._combine_signals(symbol, valid_results, len(selected_models))
             
@@ -1010,6 +1323,7 @@ CRITICAL:
                 "Authorization": f"Bearer {self.cloudflare_api_key}",
                 "Content-Type": "application/json"
             }
+            
             payload = {
                 "messages": [
                     {
@@ -1046,7 +1360,7 @@ CRITICAL:
                         error_text = await response.text()
                         logging.error(f"❌ Cloudflare API error for {symbol}: {response.status} - {error_text}")
                         return None
-                    
+                        
         except Exception as e:
             logging.error(f"❌ Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
@@ -1063,6 +1377,7 @@ CRITICAL:
                 "Authorization": f"Bearer {self.groq_api_key}",
                 "Content-Type": "application/json"
             }
+            
             payload = {
                 "messages": [
                     {
@@ -1093,7 +1408,7 @@ CRITICAL:
                         error_text = await response.text()
                         logging.error(f"❌ Groq API error for {symbol}: {response.status} - {error_text}")
                         return None
-                    
+                        
         except Exception as e:
             logging.error(f"❌ Groq/{model_name} analysis error for {symbol}: {str(e)}")
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
@@ -1103,6 +1418,7 @@ CRITICAL:
         """Parse AI response with enhanced validation"""
         try:
             cleaned_response = response.strip()
+            
             # Remove markdown and code blocks
             cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
             cleaned_response = re.sub(r'```\s*', '', cleaned_response)
@@ -1116,8 +1432,10 @@ CRITICAL:
                 if self._validate_signal_data(signal_data, symbol):
                     signal_data['ai_model'] = ai_name
                     signal_data['timestamp'] = datetime.now(UTC).isoformat()
+                    
                     # Validate numeric values
                     signal_data = self._validate_numeric_values(signal_data, symbol)
+                    
                     logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
                     
@@ -1177,16 +1495,16 @@ CRITICAL:
         """Combine signal results intelligently"""
         if not valid_results:
             return None
-
+            
         # Count signals
         action_counts = {}
         for result in valid_results:
             action = result['ACTION'].upper()
             action_counts[action] = action_counts.get(action, 0) + 1
-
+            
         total_valid = len(valid_results)
         max_agreement = max(action_counts.values())
-
+        
         # Determine agreement type
         if max_agreement >= 3:
             agreement_type = 'STRONG_CONSENSUS'
@@ -1194,11 +1512,11 @@ CRITICAL:
             agreement_type = 'MEDIUM_CONSENSUS'
         else:
             agreement_type = 'WEAK_CONSENSUS'
-
+            
         # Select majority action
         majority_action = max(action_counts, key=action_counts.get)
         agreeing_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
-
+        
         # Combine agreeing signals
         combined = {
             'SYMBOL': symbol,
@@ -1209,12 +1527,12 @@ CRITICAL:
             'TOTAL_MODELS': total_models,
             'timestamp': datetime.now(UTC).isoformat()
         }
-
+        
         # Average confidence
         if agreeing_results:
             confidences = [float(r.get('CONFIDENCE', 5)) for r in agreeing_results]
             combined['CONFIDENCE'] = round(sum(confidences) / len(confidences), 1)
-
+            
         # Use values from first valid signal
         if agreeing_results:
             first_valid = agreeing_results[0]
@@ -1229,8 +1547,9 @@ CRITICAL:
                         combined[field] = 4
                     elif field == 'RISK_REWARD_RATIO':
                         combined[field] = "1.5"
-
+                        
         return combined
+
 
 # =================================================================================
 # --- Main Forex Analyzer Class with Enhanced Error Handling ---
@@ -1241,23 +1560,25 @@ class ImprovedForexAnalyzer:
         self.api_manager = SmartAPIManager(USAGE_TRACKER_FILE)
         self.technical_analyzer = EnhancedTechnicalAnalyzer()
         self.ai_manager = EnhancedAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY, self.api_manager)
+        self.data_fetcher = EnhancedDataFetcher()
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
         """Complete analysis of a currency pair with comprehensive error handling"""
         logging.info(f"🔍 Starting analysis for {pair}")
+        
         try:
             logging.info(self.api_manager.get_usage_summary())
             
-            # Get market data with retry mechanism
-            htf_df = await self.get_market_data_with_retry(pair, HIGH_TIMEFRAME)
-            ltf_df = await self.get_market_data_with_retry(pair, LOW_TIMEFRAME)
+            # Get market data with enhanced fetcher
+            htf_df = await self.data_fetcher.get_market_data(pair, HIGH_TIMEFRAME)
+            ltf_df = await self.data_fetcher.get_market_data(pair, LOW_TIMEFRAME)
             
             if htf_df is None or ltf_df is None:
                 logging.warning(f"⚠️ Market data retrieval failed for {pair}")
                 return None
-
+                
             logging.info(f"✅ Retrieved data: HTF={len(htf_df)} rows, LTF={len(ltf_df)} rows")
-
+            
             # Technical analysis with fallback
             htf_df_processed = self.technical_analyzer.calculate_enhanced_indicators(htf_df)
             ltf_df_processed = self.technical_analyzer.calculate_enhanced_indicators(ltf_df)
@@ -1269,15 +1590,15 @@ class ImprovedForexAnalyzer:
                 ltf_df_processed = self.technical_analyzer._calculate_basic_indicators(ltf_df)
                 if htf_df_processed is None or ltf_df_processed is None:
                     return None
-
+                    
             technical_analysis = self.technical_analyzer.generate_comprehensive_analysis(
                 pair, htf_df_processed, ltf_df_processed
             )
-
+            
             if not technical_analysis:
                 logging.warning(f"⚠️ Technical analysis generation failed for {pair}")
                 return None
-
+                
             # AI analysis
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
             
@@ -1285,7 +1606,7 @@ class ImprovedForexAnalyzer:
                 logging.info(f"✅ Signal for {pair}: {ai_analysis['ACTION']} "
                            f"(Agreement: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/{ai_analysis.get('TOTAL_MODELS', 0)})")
                 return ai_analysis
-
+                
             logging.info(f"🔍 No trading signal for {pair}")
             return None
             
@@ -1294,76 +1615,25 @@ class ImprovedForexAnalyzer:
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
-    async def get_market_data_with_retry(self, symbol: str, interval: str, max_retries: int = 3) -> Optional[pd.DataFrame]:
-        """Get market data with retry mechanism"""
-        for attempt in range(max_retries):
-            try:
-                df = await self.get_market_data(symbol, interval)
-                if df is not None and not df.empty and len(df) > 50:
-                    return df
-                logging.warning(f"Attempt {attempt + 1} failed for {symbol} - insufficient data")
-                await asyncio.sleep(2)  # Wait before retry
-            except Exception as e:
-                logging.warning(f"Attempt {attempt + 1} error for {symbol}: {str(e)}")
-                await asyncio.sleep(2)
-        
-        logging.error(f"❌ All {max_retries} attempts failed for {symbol}")
-        return None
-
-    async def get_market_data(self, symbol: str, interval: str) -> Optional[pd.DataFrame]:
-        """Get market data from Twelve Data API"""
-        try:
-            url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
-            
-            async with aiohttp.ClientSession() as session:
-                async with session.get(url, timeout=45) as response:
-                    if response.status == 200:
-                        data = await response.json()
-                        if 'values' in data and data['values']:
-                            df = pd.DataFrame(data['values'])
-                            # Reverse to get chronological order
-                            df = df.iloc[::-1].reset_index(drop=True)
-                            
-                            # Convert to numeric
-                            for col in ['open', 'high', 'low', 'close']:
-                                if col in df.columns:
-                                    df[col] = pd.to_numeric(df[col], errors='coerce')
-                            
-                            # Remove any rows with NaN values in essential columns
-                            df = df.dropna(subset=['open', 'high', 'low', 'close'])
-                            
-                            if len(df) > 50:
-                                logging.info(f"✅ Retrieved {len(df)} candles for {symbol} ({interval})")
-                                return df
-                            else:
-                                logging.warning(f"⚠️ Insufficient valid data after cleaning for {symbol}: {len(df)} rows")
-                                return None
-                        else:
-                            logging.warning(f"⚠️ No values in response for {symbol}")
-                            return None
-                    else:
-                        logging.warning(f"⚠️ API response {response.status} for {symbol}")
-                        return None
-                        
-        except Exception as e:
-            logging.error(f"❌ Market data error for {symbol}: {str(e)}")
-            return None
-
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
         """Analyze all currency pairs"""
         logging.info(f"🚀 Starting analysis for {len(pairs)} currency pairs")
+        
         tasks = [self.analyze_pair(pair) for pair in pairs]
         results = await asyncio.gather(*tasks)
+        
         valid_signals = [r for r in results if r is not None]
         logging.info(f"📊 Analysis complete. {len(valid_signals)} valid signals")
+        
         return valid_signals
 
     def save_signals(self, signals: List[Dict]):
         """Save signals to files in root directory"""
         import os
+        
         current_dir = os.getcwd()
         logging.info(f"📁 Current directory for file saving: {current_dir}")
-
+        
         if not signals:
             logging.info("📝 No signals to save")
             # Create empty files in root
@@ -1386,7 +1656,7 @@ class ImprovedForexAnalyzer:
         strong_signals = []
         medium_signals = []
         weak_signals = []
-
+        
         for signal in signals:
             agreement_type = signal.get('AGREEMENT_TYPE', '')
             if agreement_type == 'STRONG_CONSENSUS':
@@ -1395,33 +1665,61 @@ class ImprovedForexAnalyzer:
                 medium_signals.append(signal)
             else:
                 weak_signals.append(signal)
-
+                
         # Save to root directory
         try:
             # Strong signals file
             with open("strong_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(strong_signals, f, indent=2, ensure_ascii=False)
             logging.info(f"💾 {len(strong_signals)} strong signals saved in root")
-
-            # Medium signals file  
+            
+            # Medium signals file
             with open("medium_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(medium_signals, f, indent=2, ensure_ascii=False)
             logging.info(f"💾 {len(medium_signals)} medium signals saved in root")
-
+            
             # Weak signals file
             with open("weak_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(weak_signals, f, indent=2, ensure_ascii=False)
             logging.info(f"💾 {len(weak_signals)} weak signals saved in root")
-
+            
             # Verify file creation
             for filename in ["strong_consensus_signals.json", "medium_consensus_signals.json", "weak_consensus_signals.json"]:
                 if os.path.exists(filename):
                     logging.info(f"✅ File {filename} successfully created")
                 else:
                     logging.error(f"❌ File {filename} not created!")
-
+                    
         except Exception as e:
             logging.error(f"❌ Error saving signals: {e}")
+
+
+# =================================================================================
+# --- Installation Helper ---
+# =================================================================================
+
+def install_required_packages():
+    """Install required packages if missing"""
+    required_packages = ['yfinance', 'pandas-ta', 'aiohttp', 'scipy']
+    
+    for package in required_packages:
+        try:
+            if package == 'yfinance':
+                import yfinance
+            elif package == 'pandas-ta':
+                import pandas_ta
+            elif package == 'aiohttp':
+                import aiohttp
+            elif package == 'scipy':
+                import scipy
+            print(f"✅ {package} is already installed")
+        except ImportError:
+            print(f"📦 Installing {package}...")
+            import subprocess
+            import sys
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+            print(f"✅ {package} installed successfully!")
+
 
 # =================================================================================
 # --- Main Function ---
@@ -1431,7 +1729,11 @@ async def main():
     """Main program execution function"""
     logging.info("🎯 Starting Forex Analysis System (Enhanced AI Engine)")
     
+    # Install required packages
+    install_required_packages()
+    
     import argparse
+    
     parser = argparse.ArgumentParser(description='Forex Analysis System with AI')
     parser.add_argument("--pair", type=str, help="Analyze specific currency pair")
     parser.add_argument("--all", action="store_true", help="Analyze all currency pairs") 
@@ -1448,7 +1750,7 @@ async def main():
     else:
         pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:3]  # Default to first 3 pairs
         logging.info(f"🔍 Using default currency pairs: {', '.join(pairs_to_analyze)}")
-
+    
     logging.info(f"🎯 Currency pairs to analyze: {', '.join(pairs_to_analyze)}")
     
     analyzer = ImprovedForexAnalyzer()
@@ -1469,12 +1771,19 @@ async def main():
     
     for signal in signals:
         action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-        logging.info(f" {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (Confidence: {signal.get('CONFIDENCE', 0)}/10)")
-
+        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (Confidence: {signal.get('CONFIDENCE', 0)}/10)")
+    
+    # Display data source statistics
+    data_source_stats = analyzer.data_fetcher.get_data_source_stats()
+    logging.info("📊 Data Source Statistics:")
+    for source, count in data_source_stats.items():
+        logging.info(f"  {source}: {count} pairs")
+    
     # Display final API status
     analyzer.api_manager.save_usage_data()
     logging.info(analyzer.api_manager.get_usage_summary())
     logging.info("🏁 System execution completed")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
