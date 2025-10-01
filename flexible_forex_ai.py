@@ -60,24 +60,24 @@ USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
 # Updated AI models with more diversity
-GEMINI_MODEL = 'gemini-2.0-flash-exp'
+GEMINI_MODEL = 'gemini-2.5-flash'
 
 # Enhanced Cloudflare models
 CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-3-8b-instruct",
-    "@cf/mistralai/mistral-7b-instruct-v0.1",
-    "@cf/qwen/qwen1.5-7b-chat-awq",
-    "@cf/google/gemma-2-9b-it",
-    "@cf/microsoft/codestral-22b-v0.1"
+    "@cf/meta/llama-4-scout-17b-16e-instruct",  # جدیدترین
+    "@cf/meta/llama-3.3-70b-instruct-fp8-fast", # جدید
+    "@cf/meta/llama-3.1-8b-instruct-fast",      # جدید
+    "@cf/google/gemma-3-12b-it",                # جدید
+    "@cf/mistralai/mistral-small-3.1-24b-instruct" # جدید
 ]
 
 # Enhanced Groq models
 GROQ_MODELS = [
-    "llama-3.1-8b-instant",
-    "mixtral-8x7b-32768", 
-    "gemma2-9b-it",
-    "llama-3.2-3b-preview",
-    "llama-3.2-1b-preview"
+    "qwen/qwen3-32b",                                   # جدید
+    "llama-3.3-70b-versatile",                          # جدیدترین
+    "meta-llama/llama-4-maverick-17b-128e-instruct",    # جدید
+    "meta-llama/llama-4-scout-17b-16e-instruct",        # جدید
+    "llama-3.1-8b-instant"                              # جدید
 ]
 
 # Daily API limits
