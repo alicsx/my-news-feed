@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 2,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T03:03:49.802523+00:00",
-    "CONFIDENCE": 6.5,
-    "ENTRY": "1.17372",
-    "STOP_LOSS": "1.17172",
-    "TAKE_PROFIT": "1.17672",
+    "timestamp": "2025-10-02T04:30:50.249650+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.17342",
+    "STOP_LOSS": "1.17142",
+    "TAKE_PROFIT": "1.17642",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal and accumulation phase, indicating potential for an upward move from current support levels."
+    "ANALYSIS": "Technical analysis indicates a ranging market in an accumulation phase. While HTF/LTF trends and momentum are neutral, the MACD shows a bullish bias. Current price is at key resistance, suggesting a potential breakout to the upside."
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 2,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T03:04:03.886647+00:00",
-    "CONFIDENCE": 6.5,
-    "ENTRY": "1.34814",
-    "STOP_LOSS": "1.34614",
-    "TAKE_PROFIT": "1.35114",
+    "timestamp": "2025-10-02T04:30:58.158685+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.34776",
+    "STOP_LOSS": "1.34576",
+    "TAKE_PROFIT": "1.35076",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "LTF Strong Bullish trend and Accumulation phase suggest potential upside, despite conflicting MACD signal and ranging market structure. Entry at current price targets a breakout above resistance."
+    "ANALYSIS": "Technical analysis based on strong LTF bullish trend and accumulation phase, anticipating a breakout above key resistance."
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 2,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T03:04:08.234200+00:00",
+    "timestamp": "2025-10-02T04:31:07.420889+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "0.79631",
-    "STOP_LOSS": "0.79468",
-    "TAKE_PROFIT": "0.79876",
+    "ENTRY": "0.79663",
+    "STOP_LOSS": "0.79463",
+    "TAKE_PROFIT": "0.79963",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, accumulation phase, and proximity to key support, suggesting a potential bounce or breakout."
+    "ANALYSIS": "Technical analysis based on oversold stochastic and accumulation phase, anticipating a breakout from current resistance within a weak bullish HTF trend."
   }
 ]
