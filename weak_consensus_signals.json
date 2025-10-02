@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T12:53:07.018223+00:00",
-    "CONFIDENCE": 7.0,
-    "ENTRY": "1.17408",
-    "STOP_LOSS": "1.17236",
-    "TAKE_PROFIT": "1.17664",
-    "RISK_REWARD_RATIO": "1.5",
+    "timestamp": "2025-10-02T14:27:18.416257+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.17112",
+    "STOP_LOSS": "1.16932",
+    "TAKE_PROFIT": "1.17362",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on ranging market structure and potential accumulation phase breakout"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T12:53:14.936621+00:00",
-    "CONFIDENCE": 7.0,
-    "ENTRY": "1.34678",
-    "STOP_LOSS": "1.34447",
-    "TAKE_PROFIT": "1.35028",
-    "RISK_REWARD_RATIO": "1.8",
+    "timestamp": "2025-10-02T14:27:25.847044+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.34207",
+    "STOP_LOSS": "1.33957",
+    "TAKE_PROFIT": "1.34607",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on oversold conditions, ranging market structure, and potential bullish reversal"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T12:53:21.358894+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "0.79662",
-    "STOP_LOSS": "0.79454",
-    "TAKE_PROFIT": "0.80008",
+    "timestamp": "2025-10-02T14:27:33.861678+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "0.79802",
+    "STOP_LOSS": "0.79641",
+    "TAKE_PROFIT": "0.80053",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on weak bullish trend alignment, neutral momentum, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
 ]
