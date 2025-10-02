@@ -1,19 +1,19 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T14:27:18.416257+00:00",
+    "timestamp": "2025-10-02T16:33:49.923945+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.17112",
-    "STOP_LOSS": "1.16932",
-    "TAKE_PROFIT": "1.17362",
+    "ENTRY": "1.17091",
+    "STOP_LOSS": "1.17242",
+    "TAKE_PROFIT": "1.16742",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on ranging market structure and potential accumulation phase breakout"
+    "ANALYSIS": "Technical analysis based on bearish trend alignment and weak bullish momentum"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T14:27:25.847044+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.34207",
-    "STOP_LOSS": "1.33957",
-    "TAKE_PROFIT": "1.34607",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-02T16:33:54.277747+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.34345",
+    "STOP_LOSS": "1.34138",
+    "TAKE_PROFIT": "1.34613",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold conditions, ranging market structure, and potential bullish reversal"
+    "ANALYSIS": "Technical analysis based on oversold stochastic, neutral momentum, and ranging market structure"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,11 +38,11 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-02T14:27:33.861678+00:00",
+    "timestamp": "2025-10-02T16:34:01.403036+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "0.79802",
-    "STOP_LOSS": "0.79641",
-    "TAKE_PROFIT": "0.80053",
+    "ENTRY": "0.79856",
+    "STOP_LOSS": "0.79691",
+    "TAKE_PROFIT": "0.80207",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
