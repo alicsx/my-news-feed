@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-03T12:52:51.277329+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.17380",
-    "STOP_LOSS": "1.17251",
-    "TAKE_PROFIT": "1.17531",
-    "RISK_REWARD_RATIO": "1.5",
+    "timestamp": "2025-10-03T14:25:45.530285+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.17462",
+    "STOP_LOSS": "1.17244",
+    "TAKE_PROFIT": "1.17726",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal and neutral RSI momentum within a ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,29 +22,29 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-03T12:52:59.485553+00:00",
+    "timestamp": "2025-10-03T14:25:53.669960+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "1.34530",
-    "STOP_LOSS": "1.34302",
-    "TAKE_PROFIT": "1.34782",
-    "RISK_REWARD_RATIO": "1.5",
+    "ENTRY": "1.34657",
+    "STOP_LOSS": "1.34418",
+    "TAKE_PROFIT": "1.35018",
+    "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal and neutral RSI momentum within a ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal, EMA alignment, and key level breakout potential in an accumulation market phase"
   },
   {
     "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-03T12:53:10.712303+00:00",
+    "timestamp": "2025-10-03T14:26:01.607029+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79591",
-    "STOP_LOSS": "0.79414",
-    "TAKE_PROFIT": "0.79836",
+    "ENTRY": "0.79566",
+    "STOP_LOSS": "0.79741",
+    "TAKE_PROFIT": "0.79126",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on weak bullish trend alignment, neutral momentum, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bearish trend alignment and neutral momentum context"
   }
 ]
