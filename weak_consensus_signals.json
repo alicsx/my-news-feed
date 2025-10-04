@@ -6,11 +6,11 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-04T02:57:36.474489+00:00",
+    "timestamp": "2025-10-04T04:29:26.821773+00:00",
     "CONFIDENCE": 7.0,
     "ENTRY": "1.17423",
-    "STOP_LOSS": "1.17248",
-    "TAKE_PROFIT": "1.17738",
+    "STOP_LOSS": "1.17245",
+    "TAKE_PROFIT": "1.17769",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
@@ -22,11 +22,11 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-04T02:57:44.167675+00:00",
+    "timestamp": "2025-10-04T04:29:34.556521+00:00",
     "CONFIDENCE": 7.0,
     "ENTRY": "1.34816",
     "STOP_LOSS": "1.34644",
-    "TAKE_PROFIT": "1.35078",
+    "TAKE_PROFIT": "1.35072",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-04T02:57:51.116204+00:00",
+    "timestamp": "2025-10-04T04:29:42.072227+00:00",
     "CONFIDENCE": 6.0,
     "ENTRY": "0.79486",
     "STOP_LOSS": "0.79339",
-    "TAKE_PROFIT": "0.79713",
+    "TAKE_PROFIT": "0.79729",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, ranging market structure, and potential bullish reversal"
+    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend strength, and ranging market structure"
   }
 ]
