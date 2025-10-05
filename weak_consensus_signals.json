@@ -1,35 +1,19 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
-    "AGREEMENT_LEVEL": 1,
-    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
-    "VALID_MODELS": 1,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-05T16:29:26.904383+00:00",
-    "CONFIDENCE": 7.0,
-    "ENTRY": "1.17423",
-    "STOP_LOSS": "1.17248",
-    "TAKE_PROFIT": "1.17769",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
-  },
-  {
     "SYMBOL": "GBP/USD",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-05T16:29:26.780617+00:00",
-    "CONFIDENCE": 7.0,
+    "timestamp": "2025-10-05T18:33:55.332715+00:00",
+    "CONFIDENCE": 8.0,
     "ENTRY": "1.34816",
     "STOP_LOSS": "1.34644",
-    "TAKE_PROFIT": "1.35078",
-    "RISK_REWARD_RATIO": "1.5",
+    "TAKE_PROFIT": "1.35084",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, positive momentum convergence, and overbought stochastic indicating potential for mean reversion"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +22,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-05T16:29:27.437266+00:00",
+    "timestamp": "2025-10-05T18:34:03.943015+00:00",
     "CONFIDENCE": 6.0,
     "ENTRY": "0.79486",
     "STOP_LOSS": "0.79339",
-    "TAKE_PROFIT": "0.79729",
+    "TAKE_PROFIT": "0.79733",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend strength, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend strength, and accumulation market phase"
   }
 ]
