@@ -1,19 +1,19 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
+    "ACTION": "BUY",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T04:30:52.391074+00:00",
+    "timestamp": "2025-10-06T06:39:57.658106+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.17244",
-    "STOP_LOSS": "1.17456",
-    "TAKE_PROFIT": "1.16944",
+    "ENTRY": "1.17076",
+    "STOP_LOSS": "1.16910",
+    "TAKE_PROFIT": "1.17286",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bearish trend alignment and weak bullish momentum"
+    "ANALYSIS": "Technical analysis based on oversold stochastic, weak bearish trend, and ranging market structure"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T04:30:36.721636+00:00",
+    "timestamp": "2025-10-06T06:40:04.536090+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.34503",
-    "STOP_LOSS": "1.3464",
-    "TAKE_PROFIT": "1.34253",
+    "ENTRY": "1.34403",
+    "STOP_LOSS": "1.34537",
+    "TAKE_PROFIT": "1.33903",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum bias"
+    "ANALYSIS": "Technical analysis based on bearish trend alignment and neutral momentum"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,12 +38,12 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T04:31:00.077595+00:00",
+    "timestamp": "2025-10-06T06:40:12.080057+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79571",
-    "STOP_LOSS": "0.79394",
-    "TAKE_PROFIT": "0.79821",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "0.79670",
+    "STOP_LOSS": "0.79494",
+    "TAKE_PROFIT": "0.80012",
+    "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
   }
