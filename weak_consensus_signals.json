@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T20:29:06.242817+00:00",
+    "timestamp": "2025-10-06T22:24:19.195115+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.17130",
-    "STOP_LOSS": "1.16930",
-    "TAKE_PROFIT": "1.17380",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "1.17165",
+    "STOP_LOSS": "1.16937",
+    "TAKE_PROFIT": "1.17513",
+    "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral momentum, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,12 +22,12 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T20:29:12.742192+00:00",
+    "timestamp": "2025-10-06T22:24:26.580316+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "1.34854",
-    "STOP_LOSS": "1.34678",
-    "TAKE_PROFIT": "1.35098",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "1.34865",
+    "STOP_LOSS": "1.34688",
+    "TAKE_PROFIT": "1.35113",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   },
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T20:29:20.464648+00:00",
+    "timestamp": "2025-10-06T22:24:34.392830+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79483",
-    "STOP_LOSS": "0.79333",
-    "TAKE_PROFIT": "0.79733",
+    "ENTRY": "0.79480",
+    "STOP_LOSS": "0.79325",
+    "TAKE_PROFIT": "0.79730",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend, and accumulation market phase"
+    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend strength, and accumulation market phase"
   }
 ]
