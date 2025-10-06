@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T16:33:11.682185+00:00",
+    "timestamp": "2025-10-06T18:38:06.893087+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.17066",
-    "STOP_LOSS": "1.17224",
-    "TAKE_PROFIT": "1.16806",
+    "ENTRY": "1.17124",
+    "STOP_LOSS": "1.17273",
+    "TAKE_PROFIT": "1.16824",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bearish trend alignment and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bearish trend alignment and weak bullish momentum"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T16:33:21.354894+00:00",
+    "timestamp": "2025-10-06T18:38:12.300245+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "1.34695",
-    "STOP_LOSS": "1.34439",
-    "TAKE_PROFIT": "1.34945",
+    "ENTRY": "1.34851",
+    "STOP_LOSS": "1.34651",
+    "TAKE_PROFIT": "1.35101",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal and potential key level breakout"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,12 +38,12 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T16:33:28.168400+00:00",
+    "timestamp": "2025-10-06T18:38:19.563307+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79558",
-    "STOP_LOSS": "0.79394",
-    "TAKE_PROFIT": "0.79794",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "0.79525",
+    "STOP_LOSS": "0.79318",
+    "TAKE_PROFIT": "0.79895",
+    "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend strength, and ranging market structure"
   }
