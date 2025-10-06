@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-06T14:27:53.571805+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.16985",
+    "STOP_LOSS": "1.17141",
+    "TAKE_PROFIT": "1.16731",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bearish trend alignment and neutral momentum"
+  }
+]
