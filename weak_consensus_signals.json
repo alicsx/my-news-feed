@@ -6,11 +6,11 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T08:29:06.817452+00:00",
+    "timestamp": "2025-10-06T08:35:45.414755+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.16583",
-    "STOP_LOSS": "1.16341",
-    "TAKE_PROFIT": "1.16926",
+    "ENTRY": "1.16631",
+    "STOP_LOSS": "1.16435",
+    "TAKE_PROFIT": "1.17031",
     "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on oversold conditions, weak bearish trend, and potential range breakout"
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T08:29:14.766199+00:00",
+    "timestamp": "2025-10-06T08:36:06.362656+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.34212",
-    "STOP_LOSS": "1.34363",
-    "TAKE_PROFIT": "1.33912",
+    "ENTRY": "1.34304",
+    "STOP_LOSS": "1.34455",
+    "TAKE_PROFIT": "1.33904",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bearish trend alignment and neutral momentum bias"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum bias"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T08:29:22.447544+00:00",
+    "timestamp": "2025-10-06T08:36:27.784525+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "0.79920",
-    "STOP_LOSS": "0.79707",
-    "TAKE_PROFIT": "0.80207",
+    "ENTRY": "0.79876",
+    "STOP_LOSS": "0.79713",
+    "TAKE_PROFIT": "0.80093",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, EMA convergence, and potential key level breakout"
   }
 ]
