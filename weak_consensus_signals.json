@@ -1,19 +1,19 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
+    "ACTION": "BUY",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T18:38:06.893087+00:00",
+    "timestamp": "2025-10-06T20:29:06.242817+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.17124",
-    "STOP_LOSS": "1.17273",
-    "TAKE_PROFIT": "1.16824",
+    "ENTRY": "1.17130",
+    "STOP_LOSS": "1.16930",
+    "TAKE_PROFIT": "1.17380",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bearish trend alignment and weak bullish momentum"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral momentum, and ranging market structure"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,12 +22,12 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T18:38:12.300245+00:00",
+    "timestamp": "2025-10-06T20:29:12.742192+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "1.34851",
-    "STOP_LOSS": "1.34651",
-    "TAKE_PROFIT": "1.35101",
-    "RISK_REWARD_RATIO": "1.5",
+    "ENTRY": "1.34854",
+    "STOP_LOSS": "1.34678",
+    "TAKE_PROFIT": "1.35098",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   },
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T18:38:19.563307+00:00",
+    "timestamp": "2025-10-06T20:29:20.464648+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79525",
-    "STOP_LOSS": "0.79318",
-    "TAKE_PROFIT": "0.79895",
-    "RISK_REWARD_RATIO": "1.8",
+    "ENTRY": "0.79483",
+    "STOP_LOSS": "0.79333",
+    "TAKE_PROFIT": "0.79733",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend strength, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend, and accumulation market phase"
   }
 ]
