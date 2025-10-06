@@ -1,35 +1,35 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T01:58:49.974728+00:00",
+    "timestamp": "2025-10-06T03:09:14.634734+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.17225",
-    "STOP_LOSS": "1.16936",
-    "TAKE_PROFIT": "1.17493",
+    "ENTRY": "1.17274",
+    "STOP_LOSS": "1.17475",
+    "TAKE_PROFIT": "1.16974",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, weak bearish trend, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bearish trend alignment and weak bullish momentum"
   },
   {
     "SYMBOL": "GBP/USD",
-    "ACTION": "BUY",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T01:58:56.267262+00:00",
+    "timestamp": "2025-10-06T03:09:21.861327+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.34492",
-    "STOP_LOSS": "1.34344",
-    "TAKE_PROFIT": "1.34646",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on ranging market structure and potential accumulation phase breakout"
+    "ENTRY": "1.34571",
+    "STOP_LOSS": "1.34736",
+    "TAKE_PROFIT": "1.34321",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 2,
+    "ANALYSIS": "Technical analysis based on bearish trend alignment and negative momentum convergence"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-06T01:59:04.437923+00:00",
+    "timestamp": "2025-10-06T03:09:29.975058+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79612",
-    "STOP_LOSS": "0.79452",
-    "TAKE_PROFIT": "0.79884",
+    "ENTRY": "0.79570",
+    "STOP_LOSS": "0.79422",
+    "TAKE_PROFIT": "0.79782",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal and potential range breakout"
   }
 ]
