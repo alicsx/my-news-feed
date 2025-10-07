@@ -22466,3 +22466,224 @@ ValueError: Invalid operation: The `response.text` quick accessor requires the r
   groq: 60/10000 (9940 remaining)
 
 2025-10-07 16:33:28,628 - INFO - 🏁 System execution completed
+2025-10-07 18:38:13,037 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-10-07 18:38:13,038 - INFO - 🔍 Using default currency pairs: EUR/USD, GBP/USD, USD/CHF
+2025-10-07 18:38:13,038 - INFO - 🎯 Currency pairs to analyze: EUR/USD, GBP/USD, USD/CHF
+2025-10-07 18:38:13,038 - INFO - 🚀 Starting analysis for 3 currency pairs
+2025-10-07 18:38:13,038 - INFO - 🔍 Starting analysis for EUR/USD
+2025-10-07 18:38:13,039 - INFO - 📊 API Usage Summary:
+  google_gemini: 30/1500 (1470 remaining)
+  cloudflare: 60/10000 (9940 remaining)
+  groq: 60/10000 (9940 remaining)
+
+2025-10-07 18:38:13,039 - INFO - 🔍 Starting analysis for GBP/USD
+2025-10-07 18:38:13,039 - INFO - 📊 API Usage Summary:
+  google_gemini: 30/1500 (1470 remaining)
+  cloudflare: 60/10000 (9940 remaining)
+  groq: 60/10000 (9940 remaining)
+
+2025-10-07 18:38:13,039 - INFO - 🔍 Starting analysis for USD/CHF
+2025-10-07 18:38:13,040 - INFO - 📊 API Usage Summary:
+  google_gemini: 30/1500 (1470 remaining)
+  cloudflare: 60/10000 (9940 remaining)
+  groq: 60/10000 (9940 remaining)
+
+2025-10-07 18:38:13,265 - INFO - ✅ TwelveData: 500 candles for EUR/USD (4h)
+2025-10-07 18:38:20,737 - INFO - ✅ TwelveData: 500 candles for GBP/USD (4h)
+2025-10-07 18:38:28,182 - INFO - ✅ TwelveData: 500 candles for USD/CHF (4h)
+2025-10-07 18:38:35,686 - INFO - ✅ TwelveData: 500 candles for EUR/USD (1h)
+2025-10-07 18:38:35,687 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-07 18:38:35,739 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-07 18:38:35,784 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-07 18:38:35,788 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-07 18:38:35,788 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.5-flash'), ('cloudflare', '@cf/meta/llama-4-scout-17b-16e-instruct'), ('groq', 'qwen/qwen3-32b'), ('cloudflare', '@cf/meta/llama-3.3-70b-instruct-fp8-fast'), ('groq', 'llama-3.3-70b-versatile')]
+2025-10-07 18:38:35,788 - INFO - 🎯 Using 5 AI models for EUR/USD
+2025-10-07 18:38:36,398 - INFO - ✅ Groq-llama-3.3-70b-versatile signal for EUR/USD: SELL
+2025-10-07 18:38:37,241 - WARNING - ❌ Groq-qwen/qwen3-32b response for EUR/USD lacks valid JSON format. Response: <think>
+Okay, let's tackle this EUR/USD trade setup. The user wants a JSON response based on the provided technical analysis. First, I need to determine the action. The HTF trend is bearish but weak, ...
+2025-10-07 18:38:37,253 - ERROR - ❌ Cloudflare/@cf/meta/llama-4-scout-17b-16e-instruct analysis error for EUR/USD: slice(None, 200, None)
+2025-10-07 18:38:37,255 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1420, in _parse_ai_response
+    cleaned_response = response.strip()
+                       ^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'strip'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1355, in _get_cloudflare_analysis
+    return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1449, in _parse_ai_response
+    logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
+                                                                                           ~~~~~~~~^^^^^^
+KeyError: slice(None, 200, None)
+
+2025-10-07 18:38:38,826 - ERROR - ❌ Cloudflare/@cf/meta/llama-3.3-70b-instruct-fp8-fast analysis error for EUR/USD: slice(None, 200, None)
+2025-10-07 18:38:38,827 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1420, in _parse_ai_response
+    cleaned_response = response.strip()
+                       ^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'strip'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1355, in _get_cloudflare_analysis
+    return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1449, in _parse_ai_response
+    logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
+                                                                                           ~~~~~~~~^^^^^^
+KeyError: slice(None, 200, None)
+
+2025-10-07 18:38:39,839 - ERROR - ❌ Gemini analysis error for EUR/USD: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.
+2025-10-07 18:38:39,840 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1309, in _get_gemini_analysis
+    return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
+                                   ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/google/generativeai/types/generation_types.py", line 481, in text
+    raise ValueError(msg)
+ValueError: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.
+
+2025-10-07 18:38:39,842 - INFO - 📊 Results: 1 successful, 0 failed
+2025-10-07 18:38:39,842 - INFO - ✅ Signal for EUR/USD: SELL (Agreement: 1/5)
+2025-10-07 18:38:43,201 - INFO - ✅ TwelveData: 500 candles for GBP/USD (1h)
+2025-10-07 18:38:43,202 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-07 18:38:43,247 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-07 18:38:43,292 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-07 18:38:43,295 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-07 18:38:43,295 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.5-flash'), ('cloudflare', '@cf/meta/llama-4-scout-17b-16e-instruct'), ('groq', 'qwen/qwen3-32b'), ('cloudflare', '@cf/meta/llama-3.3-70b-instruct-fp8-fast'), ('groq', 'llama-3.3-70b-versatile')]
+2025-10-07 18:38:43,295 - INFO - 🎯 Using 5 AI models for GBP/USD
+2025-10-07 18:38:43,873 - INFO - ✅ Groq-llama-3.3-70b-versatile signal for GBP/USD: SELL
+2025-10-07 18:38:44,756 - WARNING - ❌ Groq-qwen/qwen3-32b response for GBP/USD lacks valid JSON format. Response: <think>
+Okay, let's tackle this GBP/USD trade setup. The user wants a JSON response based on the provided technical analysis. First, I need to determine the action. The HTF and LTF trends are both str...
+2025-10-07 18:38:45,147 - ERROR - ❌ Cloudflare/@cf/meta/llama-4-scout-17b-16e-instruct analysis error for GBP/USD: slice(None, 200, None)
+2025-10-07 18:38:45,148 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1420, in _parse_ai_response
+    cleaned_response = response.strip()
+                       ^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'strip'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1355, in _get_cloudflare_analysis
+    return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1449, in _parse_ai_response
+    logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
+                                                                                           ~~~~~~~~^^^^^^
+KeyError: slice(None, 200, None)
+
+2025-10-07 18:38:46,204 - ERROR - ❌ Cloudflare/@cf/meta/llama-3.3-70b-instruct-fp8-fast analysis error for GBP/USD: slice(None, 200, None)
+2025-10-07 18:38:46,205 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1420, in _parse_ai_response
+    cleaned_response = response.strip()
+                       ^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'strip'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1355, in _get_cloudflare_analysis
+    return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1449, in _parse_ai_response
+    logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
+                                                                                           ~~~~~~~~^^^^^^
+KeyError: slice(None, 200, None)
+
+2025-10-07 18:38:46,501 - ERROR - ❌ Gemini analysis error for GBP/USD: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.
+2025-10-07 18:38:46,502 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1309, in _get_gemini_analysis
+    return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
+                                   ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/google/generativeai/types/generation_types.py", line 481, in text
+    raise ValueError(msg)
+ValueError: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.
+
+2025-10-07 18:38:46,504 - INFO - 📊 Results: 1 successful, 0 failed
+2025-10-07 18:38:46,504 - INFO - ✅ Signal for GBP/USD: SELL (Agreement: 1/5)
+2025-10-07 18:38:50,709 - INFO - ✅ TwelveData: 500 candles for USD/CHF (1h)
+2025-10-07 18:38:50,710 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-07 18:38:50,754 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-07 18:38:50,798 - INFO - ✅ Successfully calculated 37 indicators for 467 rows
+2025-10-07 18:38:50,801 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-07 18:38:50,802 - INFO - 🎯 5 diverse models selected: [('google_gemini', 'gemini-2.5-flash'), ('cloudflare', '@cf/meta/llama-4-scout-17b-16e-instruct'), ('groq', 'qwen/qwen3-32b'), ('cloudflare', '@cf/meta/llama-3.3-70b-instruct-fp8-fast'), ('groq', 'llama-3.3-70b-versatile')]
+2025-10-07 18:38:50,802 - INFO - 🎯 Using 5 AI models for USD/CHF
+2025-10-07 18:38:51,323 - INFO - ✅ Groq-llama-3.3-70b-versatile signal for USD/CHF: BUY
+2025-10-07 18:38:52,221 - WARNING - ❌ Groq-qwen/qwen3-32b response for USD/CHF lacks valid JSON format. Response: <think>
+Okay, let's tackle this USD/CHF trade setup. The user wants a JSON response based on the provided technical analysis. First, I need to determine the action. The HTF trend is bullish but weak, ...
+2025-10-07 18:38:52,692 - ERROR - ❌ Cloudflare/@cf/meta/llama-4-scout-17b-16e-instruct analysis error for USD/CHF: slice(None, 200, None)
+2025-10-07 18:38:52,693 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1420, in _parse_ai_response
+    cleaned_response = response.strip()
+                       ^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'strip'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1355, in _get_cloudflare_analysis
+    return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1449, in _parse_ai_response
+    logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
+                                                                                           ~~~~~~~~^^^^^^
+KeyError: slice(None, 200, None)
+
+2025-10-07 18:38:53,784 - ERROR - ❌ Cloudflare/@cf/meta/llama-3.3-70b-instruct-fp8-fast analysis error for USD/CHF: slice(None, 200, None)
+2025-10-07 18:38:53,785 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1420, in _parse_ai_response
+    cleaned_response = response.strip()
+                       ^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'strip'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1355, in _get_cloudflare_analysis
+    return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1449, in _parse_ai_response
+    logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
+                                                                                           ~~~~~~~~^^^^^^
+KeyError: slice(None, 200, None)
+
+2025-10-07 18:38:54,588 - ERROR - ❌ Gemini analysis error for USD/CHF: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.
+2025-10-07 18:38:54,589 - ERROR - ❌ Traceback: Traceback (most recent call last):
+  File "/home/runner/work/my-news-feed/my-news-feed/flexible_forex_ai.py", line 1309, in _get_gemini_analysis
+    return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
+                                   ^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/google/generativeai/types/generation_types.py", line 481, in text
+    raise ValueError(msg)
+ValueError: Invalid operation: The `response.text` quick accessor requires the response to contain a valid `Part`, but none were returned. The candidate's [finish_reason](https://ai.google.dev/api/generate-content#finishreason) is 2.
+
+2025-10-07 18:38:54,591 - INFO - 📊 Results: 1 successful, 0 failed
+2025-10-07 18:38:54,591 - INFO - ✅ Signal for USD/CHF: BUY (Agreement: 1/5)
+2025-10-07 18:38:54,591 - INFO - 📊 Analysis complete. 3 valid signals
+2025-10-07 18:38:54,591 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-10-07 18:38:54,591 - INFO - 💾 0 strong signals saved in root
+2025-10-07 18:38:54,592 - INFO - 💾 0 medium signals saved in root
+2025-10-07 18:38:54,592 - INFO - 💾 3 weak signals saved in root
+2025-10-07 18:38:54,592 - INFO - ✅ File strong_consensus_signals.json successfully created
+2025-10-07 18:38:54,592 - INFO - ✅ File medium_consensus_signals.json successfully created
+2025-10-07 18:38:54,592 - INFO - ✅ File weak_consensus_signals.json successfully created
+2025-10-07 18:38:54,592 - INFO - 📈 Results Summary:
+2025-10-07 18:38:54,592 - INFO - 🎯 Strong signals: 0
+2025-10-07 18:38:54,592 - INFO - 📊 Medium signals: 0
+2025-10-07 18:38:54,592 - INFO - 📈 Weak signals: 3
+2025-10-07 18:38:54,592 - INFO -   🔴 EUR/USD: SELL (Confidence: 6.0/10)
+2025-10-07 18:38:54,592 - INFO -   🔴 GBP/USD: SELL (Confidence: 6.0/10)
+2025-10-07 18:38:54,592 - INFO -   🟢 USD/CHF: BUY (Confidence: 7.0/10)
+2025-10-07 18:38:54,593 - INFO - 📊 Data Source Statistics:
+2025-10-07 18:38:54,593 - INFO -   twelvedata: 3 pairs
+2025-10-07 18:38:54,593 - INFO -   yahoo: 0 pairs
+2025-10-07 18:38:54,593 - INFO -   synthetic: 0 pairs
+2025-10-07 18:38:54,593 - INFO - 📊 API Usage Summary:
+  google_gemini: 33/1500 (1467 remaining)
+  cloudflare: 66/10000 (9934 remaining)
+  groq: 66/10000 (9934 remaining)
+
+2025-10-07 18:38:54,593 - INFO - 🏁 System execution completed
