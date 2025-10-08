@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-08T06:39:17.546879+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.16093",
+    "STOP_LOSS": "1.15931",
+    "TAKE_PROFIT": "1.16279",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on oversold conditions, bullish divergence potential, and ranging market structure"
+  }
+]
