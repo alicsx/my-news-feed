@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-08T10:28:24.305020+00:00",
+    "CONFIDENCE": 8.0,
+    "ENTRY": "1.16232",
+    "STOP_LOSS": "1.16412",
+    "TAKE_PROFIT": "1.15812",
+    "RISK_REWARD_RATIO": "1.8",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and oversold stochastic conditions"
+  }
+]
