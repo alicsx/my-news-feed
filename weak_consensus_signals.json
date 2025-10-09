@@ -1,35 +1,35 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
-    "AGREEMENT_LEVEL": 1,
-    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
-    "VALID_MODELS": 1,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-09T06:39:42.913806+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.16226",
-    "STOP_LOSS": "1.16013",
-    "TAKE_PROFIT": "1.16479",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
-  },
-  {
-    "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-09T06:39:49.617196+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33745",
-    "STOP_LOSS": "1.33924",
-    "TAKE_PROFIT": "1.33245",
+    "timestamp": "2025-10-09T08:28:58.868492+00:00",
+    "CONFIDENCE": 8.0,
+    "ENTRY": "1.16109",
+    "STOP_LOSS": "1.16267",
+    "TAKE_PROFIT": "1.15829",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and bearish momentum indicators"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum bias"
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 1,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-09T08:29:06.774654+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.33527",
+    "STOP_LOSS": "1.33332",
+    "TAKE_PROFIT": "1.33777",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on oversold conditions, bullish divergence potential, and ranging market structure"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-09T06:39:57.702998+00:00",
+    "timestamp": "2025-10-09T08:29:14.522879+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "0.80250",
-    "STOP_LOSS": "0.80069",
-    "TAKE_PROFIT": "0.80513",
+    "ENTRY": "0.80310",
+    "STOP_LOSS": "0.80120",
+    "TAKE_PROFIT": "0.80630",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, EMA convergence, and potential breakout from key resistance"
   }
 ]
