@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T06:39:39.263220+00:00",
+    "timestamp": "2025-10-10T08:28:26.759913+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "1.15708",
-    "STOP_LOSS": "1.15941",
-    "TAKE_PROFIT": "1.15408",
+    "ENTRY": "1.15885",
+    "STOP_LOSS": "1.16106",
+    "TAKE_PROFIT": "1.15429",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum bias"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and overbought stochastic conditions"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,11 +22,11 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T06:39:46.325628+00:00",
+    "timestamp": "2025-10-10T08:28:34.818015+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "1.33085",
-    "STOP_LOSS": "1.33222",
-    "TAKE_PROFIT": "1.32735",
+    "ENTRY": "1.33088",
+    "STOP_LOSS": "1.33239",
+    "TAKE_PROFIT": "1.32738",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum bias"
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T06:39:53.953168+00:00",
-    "CONFIDENCE": 7.0,
-    "ENTRY": "0.80550",
-    "STOP_LOSS": "0.80395",
-    "TAKE_PROFIT": "0.80775",
-    "RISK_REWARD_RATIO": "1.5",
+    "timestamp": "2025-10-10T08:28:42.628839+00:00",
+    "CONFIDENCE": 8.0,
+    "ENTRY": "0.80505",
+    "STOP_LOSS": "0.80317",
+    "TAKE_PROFIT": "0.80780",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and oversold stochastic conditions"
   }
 ]
