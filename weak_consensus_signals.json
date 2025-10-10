@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T08:35:04.236299+00:00",
+    "timestamp": "2025-10-10T10:28:46.223199+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "1.15864",
-    "STOP_LOSS": "1.16085",
-    "TAKE_PROFIT": "1.15414",
+    "ENTRY": "1.15815",
+    "STOP_LOSS": "1.16036",
+    "TAKE_PROFIT": "1.15415",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and overbought stochastic conditions"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,11 +22,11 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T08:35:11.599321+00:00",
+    "timestamp": "2025-10-10T10:28:52.158196+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "1.33018",
-    "STOP_LOSS": "1.33269",
-    "TAKE_PROFIT": "1.32718",
+    "ENTRY": "1.32924",
+    "STOP_LOSS": "1.33078",
+    "TAKE_PROFIT": "1.32694",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum bias"
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T08:35:20.167412+00:00",
-    "CONFIDENCE": 8.0,
-    "ENTRY": "0.80494",
-    "STOP_LOSS": "0.80245",
-    "TAKE_PROFIT": "0.80744",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-10T10:29:01.348010+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "0.80544",
+    "STOP_LOSS": "0.80344",
+    "TAKE_PROFIT": "0.80844",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and oversold stochastic conditions"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
 ]
