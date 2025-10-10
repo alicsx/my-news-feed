@@ -6,12 +6,12 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T12:54:16.665402+00:00",
+    "timestamp": "2025-10-10T14:26:49.873621+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "1.15718",
-    "STOP_LOSS": "1.16034",
-    "TAKE_PROFIT": "1.15272",
-    "RISK_REWARD_RATIO": "1.8",
+    "ENTRY": "1.15669",
+    "STOP_LOSS": "1.15944",
+    "TAKE_PROFIT": "1.15309",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum bias"
   },
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T12:54:23.765239+00:00",
+    "timestamp": "2025-10-10T14:26:57.613644+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "1.32767",
-    "STOP_LOSS": "1.32992",
-    "TAKE_PROFIT": "1.32334",
+    "ENTRY": "1.32857",
+    "STOP_LOSS": "1.33014",
+    "TAKE_PROFIT": "1.32457",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment, EMA convergence, and oversold stochastic conditions"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T12:54:31.123105+00:00",
-    "CONFIDENCE": 8.0,
-    "ENTRY": "0.80547",
-    "STOP_LOSS": "0.80318",
-    "TAKE_PROFIT": "0.80922",
-    "RISK_REWARD_RATIO": "1.8",
+    "timestamp": "2025-10-10T14:27:04.198490+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "0.80583",
+    "STOP_LOSS": "0.80383",
+    "TAKE_PROFIT": "0.80833",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
 ]
