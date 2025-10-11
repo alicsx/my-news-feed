@@ -1,19 +1,19 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
+    "ACTION": "BUY",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T22:24:17.364765+00:00",
+    "timestamp": "2025-10-11T01:53:01.748418+00:00",
     "CONFIDENCE": 6.0,
     "ENTRY": "1.16131",
-    "STOP_LOSS": "1.16379",
-    "TAKE_PROFIT": "1.15811",
+    "STOP_LOSS": "1.15984",
+    "TAKE_PROFIT": "1.16456",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T22:24:24.748668+00:00",
+    "timestamp": "2025-10-11T01:53:09.029596+00:00",
     "CONFIDENCE": 6.0,
     "ENTRY": "1.33510",
-    "STOP_LOSS": "1.33650",
-    "TAKE_PROFIT": "1.33240",
+    "STOP_LOSS": "1.33740",
+    "TAKE_PROFIT": "1.33160",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend on 4H, overbought stochastic, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on strong bearish trend and overbought stochastic"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,7 +38,7 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-10T22:24:32.357511+00:00",
+    "timestamp": "2025-10-11T01:53:16.750746+00:00",
     "CONFIDENCE": 7.0,
     "ENTRY": "0.79942",
     "STOP_LOSS": "0.79702",
