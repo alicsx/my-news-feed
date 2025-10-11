@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-11T04:29:04.389446+00:00",
+    "timestamp": "2025-10-11T06:35:43.842837+00:00",
     "CONFIDENCE": 6.0,
     "ENTRY": "1.16131",
     "STOP_LOSS": "1.15984",
-    "TAKE_PROFIT": "1.16456",
+    "TAKE_PROFIT": "1.16406",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal and neutral RSI, considering ranging market structure"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,7 +22,7 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-11T04:29:11.979648+00:00",
+    "timestamp": "2025-10-11T06:35:44.952683+00:00",
     "CONFIDENCE": 6.0,
     "ENTRY": "1.33510",
     "STOP_LOSS": "1.33740",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-11T04:29:19.125231+00:00",
-    "CONFIDENCE": 8.0,
+    "timestamp": "2025-10-11T06:35:52.891948+00:00",
+    "CONFIDENCE": 7.0,
     "ENTRY": "0.79942",
     "STOP_LOSS": "0.79702",
     "TAKE_PROFIT": "0.80292",
     "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment, oversold RSI, and potential key level breakout"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, oversold RSI, and accumulation market phase"
   }
 ]
