@@ -6,11 +6,11 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-12T04:29:33.286002+00:00",
+    "timestamp": "2025-10-12T06:35:24.951264+00:00",
     "CONFIDENCE": 6.0,
     "ENTRY": "1.16131",
-    "STOP_LOSS": "1.15911",
-    "TAKE_PROFIT": "1.16511",
+    "STOP_LOSS": "1.15984",
+    "TAKE_PROFIT": "1.16406",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
@@ -22,7 +22,7 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-12T04:29:39.682377+00:00",
+    "timestamp": "2025-10-12T06:35:33.622177+00:00",
     "CONFIDENCE": 8.0,
     "ENTRY": "1.33510",
     "STOP_LOSS": "1.33740",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-12T04:29:47.333998+00:00",
+    "timestamp": "2025-10-12T06:35:39.749457+00:00",
     "CONFIDENCE": 7.0,
     "ENTRY": "0.79942",
     "STOP_LOSS": "0.79702",
     "TAKE_PROFIT": "0.80292",
     "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment, oversold RSI, and accumulation market phase"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, oversold conditions, and potential range breakout"
   }
 ]
