@@ -1,19 +1,19 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 1,
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T16:33:59.987685+00:00",
+    "timestamp": "2025-10-13T18:36:34.113720+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.15729",
-    "STOP_LOSS": "1.15581",
-    "TAKE_PROFIT": "1.15981",
+    "ENTRY": "1.15754",
+    "STOP_LOSS": "1.16008",
+    "TAKE_PROFIT": "1.15307",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, ranging market structure, and potential bullish reversal"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T16:33:59.652429+00:00",
+    "timestamp": "2025-10-13T18:36:39.736435+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "1.33316",
-    "STOP_LOSS": "1.33504",
-    "TAKE_PROFIT": "1.32884",
+    "ENTRY": "1.33396",
+    "STOP_LOSS": "1.33552",
+    "TAKE_PROFIT": "1.32946",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum bias"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and bearish momentum indicators"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,12 +38,12 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T16:34:08.507949+00:00",
+    "timestamp": "2025-10-13T18:36:46.523329+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "0.80407",
-    "STOP_LOSS": "0.80207",
-    "TAKE_PROFIT": "0.80707",
-    "RISK_REWARD_RATIO": "1.5",
+    "ENTRY": "0.80393",
+    "STOP_LOSS": "0.80169",
+    "TAKE_PROFIT": "0.80643",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
