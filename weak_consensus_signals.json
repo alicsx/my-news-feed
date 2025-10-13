@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T10:32:01.071478+00:00",
+    "timestamp": "2025-10-13T12:55:45.076581+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.15864",
-    "STOP_LOSS": "1.15617",
-    "TAKE_PROFIT": "1.16097",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "1.15622",
+    "STOP_LOSS": "1.15366",
+    "TAKE_PROFIT": "1.16031",
+    "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, moderate bearish trend, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on oversold conditions, ranging market structure, and potential for bullish reversal"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T10:32:08.573781+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33358",
-    "STOP_LOSS": "1.33509",
-    "TAKE_PROFIT": "1.32958",
+    "timestamp": "2025-10-13T12:55:51.569486+00:00",
+    "CONFIDENCE": 8.0,
+    "ENTRY": "1.33276",
+    "STOP_LOSS": "1.33534",
+    "TAKE_PROFIT": "1.32876",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend and neutral momentum bias"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum bias"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T10:32:16.718991+00:00",
-    "CONFIDENCE": 7.0,
-    "ENTRY": "0.80379",
-    "STOP_LOSS": "0.80179",
-    "TAKE_PROFIT": "0.80679",
-    "RISK_REWARD_RATIO": "1.5",
+    "timestamp": "2025-10-13T12:55:59.738887+00:00",
+    "CONFIDENCE": 8.0,
+    "ENTRY": "0.80500",
+    "STOP_LOSS": "0.80261",
+    "TAKE_PROFIT": "0.80740",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and potential breakout from key resistance"
   }
 ]
