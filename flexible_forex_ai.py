@@ -19,6 +19,10 @@ import yfinance as yf
 from dataclasses import dataclass
 from enum import Enum
 import random
+import hashlib
+from collections import deque
+import warnings
+warnings.filterwarnings('ignore')
 
 # =================================================================================
 # --- Enhanced Main Configuration Section ---
@@ -105,6 +109,53 @@ logging.basicConfig(
 )
 
 # =================================================================================
+# --- Enhanced Performance Monitoring System ---
+# =================================================================================
+
+class PerformanceMonitor:
+    """System performance monitoring and optimization"""
+    
+    def __init__(self):
+        self.analysis_times = deque(maxlen=100)
+        self.api_response_times = deque(maxlen=50)
+        self.error_rates = deque(maxlen=50)
+        self.successful_analyses = 0
+        self.failed_analyses = 0
+        
+    def record_analysis_time(self, symbol: str, duration: float):
+        """Record analysis duration"""
+        self.analysis_times.append((symbol, duration))
+        
+    def record_api_time(self, provider: str, duration: float):
+        """Record API response time"""
+        self.api_response_times.append((provider, duration))
+        
+    def record_success(self):
+        """Record successful analysis"""
+        self.successful_analyses += 1
+        
+    def record_failure(self):
+        """Record failed analysis"""
+        self.failed_analyses += 1
+        
+    def get_performance_stats(self) -> Dict:
+        """Get performance statistics"""
+        total_analyses = self.successful_analyses + self.failed_analyses
+        success_rate = (self.successful_analyses / total_analyses * 100) if total_analyses > 0 else 0
+        
+        avg_analysis_time = np.mean([t[1] for t in self.analysis_times]) if self.analysis_times else 0
+        avg_api_time = np.mean([t[1] for t in self.api_response_times]) if self.api_response_times else 0
+        
+        return {
+            "total_analyses": total_analyses,
+            "success_rate": round(success_rate, 2),
+            "avg_analysis_time_sec": round(avg_analysis_time, 2),
+            "avg_api_response_time_sec": round(avg_api_time, 2),
+            "recent_analysis_times": list(self.analysis_times)[-5:],
+            "recent_api_times": list(self.api_response_times)[-5:]
+        }
+
+# =================================================================================
 # --- Enhanced Data Source Management ---
 # =================================================================================
 
@@ -143,9 +194,20 @@ class EnhancedDataFetcher:
         self.rate_limiter = RateLimiter(TWELVEDATA_RATE_LIMIT)
         self.data_source_priority = DATA_SOURCE_PRIORITY.copy()
         self.last_data_source = {}
+        self.cache = {}
+        self.cache_ttl = 300  # 5 minutes cache
         
     async def get_market_data(self, symbol: str, interval: str, max_retries: int = 2) -> Optional[pd.DataFrame]:
         """Get market data with multiple fallback sources and rate limiting"""
+        
+        # Check cache first
+        cache_key = f"{symbol}_{interval}"
+        current_time = time.time()
+        if cache_key in self.cache:
+            cached_data, timestamp = self.cache[cache_key]
+            if current_time - timestamp < self.cache_ttl:
+                logging.info(f"📦 Using cached data for {symbol} ({interval})")
+                return cached_data
         
         for source in self.data_source_priority:
             try:
@@ -153,18 +215,21 @@ class EnhancedDataFetcher:
                     result = await self._get_twelvedata_with_retry(symbol, interval, max_retries)
                     if result.success:
                         self.last_data_source[symbol] = DataSource.TWELVEDATA
+                        self.cache[cache_key] = (result.data, current_time)
                         return result.data
                         
                 elif source == "yahoo":
                     result = await self._get_yahoo_data(symbol, interval)
                     if result.success:
                         self.last_data_source[symbol] = DataSource.YAHOO
+                        self.cache[cache_key] = (result.data, current_time)
                         return result.data
                         
                 elif source == "synthetic":
                     result = await self._get_synthetic_data(symbol, interval)
                     if result.success:
                         self.last_data_source[symbol] = DataSource.SYNTHETIC
+                        self.cache[cache_key] = (result.data, current_time)
                         return result.data
                         
             except Exception as e:
@@ -378,10 +443,10 @@ class EnhancedDataFetcher:
         return stats
 
 # =================================================================================
-# --- Enhanced Technical Analysis Class with Robust Error Handling ---
+# --- Advanced Technical Analysis with Machine Learning Features ---
 # =================================================================================
 
-class EnhancedTechnicalAnalyzer:
+class AdvancedTechnicalAnalyzer:
     def __init__(self):
         self.indicators_config = {
             'trend': ['ema_8', 'ema_21', 'ema_50', 'ema_200', 'wma_34', 'hma_55', 'adx_14', 'ichimoku'],
@@ -390,6 +455,7 @@ class EnhancedTechnicalAnalyzer:
             'volume': ['obv', 'cmf_20', 'vwap'],
             'advanced': ['supertrend', 'parabolic_sar', 'donchian_20', 'pivot_points']
         }
+        self.ml_features = {}
 
     def calculate_enhanced_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
         """Calculate comprehensive technical indicators with robust error handling"""
@@ -512,9 +578,27 @@ class EnhancedTechnicalAnalyzer:
             except Exception as e:
                 logging.warning(f"Failed to calculate price patterns: {e}")
 
+            # Advanced ML features
+            try:
+                # Price volatility features
+                df_indicators['price_range'] = (df_indicators['high'] - df_indicators['low']) / df_indicators['close']
+                df_indicators['price_change'] = df_indicators['close'].pct_change()
+                df_indicators['volatility_20'] = df_indicators['price_change'].rolling(20).std()
+                
+                # Momentum features
+                df_indicators['momentum_5'] = df_indicators['close'] / df_indicators['close'].shift(5) - 1
+                df_indicators['momentum_10'] = df_indicators['close'] / df_indicators['close'].shift(10) - 1
+                
+                # Mean reversion features
+                df_indicators['z_score_20'] = (df_indicators['close'] - df_indicators['close'].rolling(20).mean()) / df_indicators['close'].rolling(20).std()
+                
+                indicators_added.extend(['price_range', 'price_change', 'volatility_20', 'momentum_5', 'momentum_10', 'z_score_20'])
+            except Exception as e:
+                logging.warning(f"Failed to calculate ML features: {e}")
+
             # Remove rows with too many NaN values but keep recent data
             initial_count = len(df_indicators)
-            df_indicators = df_indicators.dropna(thresh=len(df_indicators.columns) - 10)  # Allow up to 10 NaN columns
+            df_indicators = df_indicators.dropna(thresh=len(df_indicators.columns) - 15)  # Allow up to 15 NaN columns
             
             if len(df_indicators) < 50:
                 logging.warning(f"Too many NaN values after cleaning: {len(df_indicators)} rows left")
@@ -589,6 +673,9 @@ class EnhancedTechnicalAnalyzer:
             # Risk assessment
             risk_assessment = self._assess_risk(htf_df, ltf_df)
             
+            # ML-based signal strength
+            ml_signal = self._calculate_ml_signal(htf_df, ltf_df)
+            
             return {
                 'symbol': symbol,
                 'htf_trend': htf_trend,
@@ -598,6 +685,7 @@ class EnhancedTechnicalAnalyzer:
                 'market_structure': market_structure,
                 'volume_analysis': volume_analysis,
                 'risk_assessment': risk_assessment,
+                'ml_signal': ml_signal,
                 'volatility': last_ltf.get('ATRr_14', 0.001),
                 'current_price': last_ltf['close'],
                 'timestamp': datetime.now(UTC).isoformat()
@@ -607,6 +695,68 @@ class EnhancedTechnicalAnalyzer:
             logging.error(f"❌ Error generating technical analysis for {symbol}: {e}")
             # Return basic analysis as fallback
             return self._generate_basic_analysis(symbol, htf_df, ltf_df)
+
+    def _calculate_ml_signal(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
+        """Calculate machine learning based signal strength"""
+        try:
+            if ltf_df.empty or len(ltf_df) < 50:
+                return {"signal_strength": 0, "confidence": 0, "features": {}}
+            
+            # Feature engineering for ML signal
+            features = {}
+            
+            # Trend strength features
+            if 'ADX_14' in ltf_df.columns:
+                features['adx_strength'] = ltf_df['ADX_14'].iloc[-1] / 100.0
+            else:
+                features['adx_strength'] = 0
+                
+            # Momentum convergence
+            rsi = ltf_df.get('RSI_14', 50)
+            macd_hist = ltf_df.get('MACDh_12_26_9', 0)
+            stoch_k = ltf_df.get('STOCHk_14_3_3', 50)
+            
+            # Normalize features
+            rsi_signal = abs(rsi.iloc[-1] - 50) / 50.0 if isinstance(rsi, pd.Series) else 0
+            macd_signal = abs(macd_hist.iloc[-1]) if isinstance(macd_hist, pd.Series) else 0
+            stoch_signal = abs(stoch_k.iloc[-1] - 50) / 50.0 if isinstance(stoch_k, pd.Series) else 0
+            
+            features['momentum_convergence'] = (rsi_signal + macd_signal + stoch_signal) / 3.0
+            
+            # Volatility adjusted signal
+            volatility = ltf_df['close'].pct_change().std() * 100 if len(ltf_df) > 1 else 1
+            features['volatility_factor'] = min(volatility / 2.0, 1.0)  # Normalize to 0-1
+            
+            # Price position features
+            if 'BBU_20_2.0' in ltf_df.columns and 'BBL_20_2.0' in ltf_df.columns:
+                bb_upper = ltf_df['BBU_20_2.0'].iloc[-1]
+                bb_lower = ltf_df['BBL_20_2.0'].iloc[-1]
+                current_price = ltf_df['close'].iloc[-1]
+                bb_position = (current_price - bb_lower) / (bb_upper - bb_lower) if bb_upper != bb_lower else 0.5
+                features['bb_position'] = abs(bb_position - 0.5) * 2  # Convert to 0-1 scale
+            else:
+                features['bb_position'] = 0
+                
+            # Calculate composite signal strength
+            signal_strength = (
+                features['adx_strength'] * 0.3 +
+                features['momentum_convergence'] * 0.4 +
+                features['bb_position'] * 0.2 +
+                features['volatility_factor'] * 0.1
+            )
+            
+            # Confidence based on data quality
+            confidence = min(len(ltf_df) / 200.0, 1.0)  # Higher confidence with more data
+            
+            return {
+                "signal_strength": round(signal_strength, 3),
+                "confidence": round(confidence, 3),
+                "features": features
+            }
+            
+        except Exception as e:
+            logging.warning(f"ML signal calculation error: {e}")
+            return {"signal_strength": 0, "confidence": 0, "features": {}}
 
     def _generate_basic_analysis(self, symbol: str, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
         """Fallback basic analysis"""
@@ -632,6 +782,7 @@ class EnhancedTechnicalAnalyzer:
                 'market_structure': {'higher_timeframe_structure': 'UNKNOWN'},
                 'volume_analysis': {'signal': 'NO_DATA'},
                 'risk_assessment': {'risk_level': 'MEDIUM'},
+                'ml_signal': {'signal_strength': 0, 'confidence': 0, 'features': {}},
                 'volatility': 0.001,
                 'current_price': current_price,
                 'timestamp': datetime.now(UTC).isoformat()
@@ -1184,6 +1335,7 @@ class EnhancedAIManager:
         key_levels = technical_analysis.get('key_levels', {})
         market_structure = technical_analysis.get('market_structure', {})
         risk_assessment = technical_analysis.get('risk_assessment', {})
+        ml_signal = technical_analysis.get('ml_signal', {})
         
         return f"""IMPORTANT: You are a professional forex trading analyst. Analyze the technical setup and provide ONLY a valid JSON response.
 
@@ -1196,6 +1348,7 @@ TECHNICAL ANALYSIS SUMMARY:
 - Momentum Bias: {momentum_data.get('overall_bias', 'NEUTRAL')} | RSI: {momentum_data.get('rsi', {}).get('value', 50):.1f} ({momentum_data.get('rsi', {}).get('signal', 'NEUTRAL')})
 - MACD: {momentum_data.get('macd', {}).get('trend', 'NEUTRAL')} | Signal: {momentum_data.get('macd', {}).get('cross', 'NO_CROSS')}
 - Stochastic: {stochastic_data.get('k', 50):.1f} ({stochastic_data.get('signal', 'NEUTRAL')})
+- ML Signal Strength: {ml_signal.get('signal_strength', 0):.3f} | Confidence: {ml_signal.get('confidence', 0):.3f}
 - Key Support: {key_levels.get('support_1', current_price * 0.99):.5f} | Key Resistance: {key_levels.get('resistance_1', current_price * 1.01):.5f}
 - Market Structure: {market_structure.get('higher_timeframe_structure', 'UNKNOWN')}
 - Risk Level: {risk_assessment.get('risk_level', 'MEDIUM')}
@@ -1209,6 +1362,7 @@ CALCULATION INSTRUCTIONS:
 - For stop loss: Calculate based on 1.5x ATR or key levels
 - For take profit: Use risk-reward ratio 1.5-2.0
 - Consider market structure and phase in your analysis
+- Factor in ML signal strength and confidence
 
 RETURN ONLY THIS EXACT JSON FORMAT:
 {{
@@ -1295,7 +1449,7 @@ CRITICAL:
             return None
 
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Gemini"""
+        """Get analysis from Gemini with improved error handling"""
         try:
             model = genai.GenerativeModel(model_name)
             response = await asyncio.to_thread(
@@ -1306,14 +1460,27 @@ CRITICAL:
                     max_output_tokens=500,
                 )
             )
-            return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
+            
+            # Handle Gemini response safely
+            if hasattr(response, 'text') and response.text:
+                return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
+            else:
+                logging.warning(f"❌ Gemini returned empty response for {symbol}")
+                # Try to get any available content from response
+                try:
+                    response_dict = response.__dict__
+                    return self._parse_ai_response(response_dict, symbol, f"Gemini-{model_name}")
+                except Exception as e:
+                    logging.error(f"❌ Cannot extract content from Gemini response for {symbol}: {e}")
+                    return None
+                    
         except Exception as e:
             logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Cloudflare AI"""
+        """Get analysis from Cloudflare AI with improved response handling"""
         if not self.cloudflare_api_key:
             logging.warning(f"❌ Cloudflare API key not available for {symbol}")
             return None
@@ -1343,13 +1510,17 @@ CRITICAL:
                     if response.status == 200:
                         data = await response.json()
                         content = ""
+                        
+                        # Handle different response structures from Cloudflare
                         if "result" in data and "response" in data["result"]:
                             content = data["result"]["response"]
                         elif "response" in data:
                             content = data["response"]
+                        elif "result" in data and isinstance(data["result"], str):
+                            content = data["result"]
                         else:
-                            logging.warning(f"❌ Unexpected Cloudflare response structure for {symbol}: {data}")
-                            return None
+                            # If we can't extract content, use the whole response
+                            content = data
                             
                         if content:
                             return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
@@ -1414,16 +1585,22 @@ CRITICAL:
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
-    def _parse_ai_response(self, response: str, symbol: str, ai_name: str) -> Optional[Dict]:
-        """Parse AI response with enhanced validation"""
+    def _parse_ai_response(self, response, symbol: str, ai_name: str) -> Optional[Dict]:
+        """Parse AI response with enhanced validation and robust error handling"""
         try:
-            cleaned_response = response.strip()
+            # Handle both string and dictionary responses
+            if isinstance(response, dict):
+                # If response is already a dict, use it directly
+                cleaned_response = json.dumps(response, ensure_ascii=False)
+            else:
+                # If response is string, clean it
+                cleaned_response = response.strip()
+                
+                # Remove markdown and code blocks
+                cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
+                cleaned_response = re.sub(r'```\s*', '', cleaned_response)
             
-            # Remove markdown and code blocks
-            cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
-            cleaned_response = re.sub(r'```\s*', '', cleaned_response)
-            
-            # Find JSON
+            # Find JSON in response
             json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
             if json_match:
                 json_str = json_match.group(0)
@@ -1439,14 +1616,41 @@ CRITICAL:
                     logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
                     
-            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format. Response: {response[:200]}...")
+            # Log the problematic response safely
+            try:
+                if isinstance(response, dict):
+                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
+                else:
+                    response_preview = str(response)[:200] if response else "Empty response"
+            except:
+                response_preview = "Unable to preview response"
+                
+            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format. Response: {response_preview}...")
             return None
             
         except json.JSONDecodeError as e:
-            logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}. Response: {response[:200]}...")
+            # Safely log JSON decode errors
+            try:
+                if isinstance(response, dict):
+                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
+                else:
+                    response_preview = str(response)[:200] if response else "Empty response"
+            except:
+                response_preview = "Unable to preview response"
+                
+            logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}. Response: {response_preview}...")
             return None
         except Exception as e:
-            logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response[:200]}...")
+            # Safely log any other errors
+            try:
+                if isinstance(response, dict):
+                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
+                else:
+                    response_preview = str(response)[:200] if response else "Empty response"
+            except:
+                response_preview = "Unable to preview response"
+                
+            logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response_preview}...")
             return None
 
     def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
@@ -1558,13 +1762,15 @@ CRITICAL:
 class ImprovedForexAnalyzer:
     def __init__(self):
         self.api_manager = SmartAPIManager(USAGE_TRACKER_FILE)
-        self.technical_analyzer = EnhancedTechnicalAnalyzer()
+        self.technical_analyzer = AdvancedTechnicalAnalyzer()
         self.ai_manager = EnhancedAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY, self.api_manager)
         self.data_fetcher = EnhancedDataFetcher()
+        self.performance_monitor = PerformanceMonitor()
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
         """Complete analysis of a currency pair with comprehensive error handling"""
         logging.info(f"🔍 Starting analysis for {pair}")
+        start_time = time.time()
         
         try:
             logging.info(self.api_manager.get_usage_summary())
@@ -1575,6 +1781,7 @@ class ImprovedForexAnalyzer:
             
             if htf_df is None or ltf_df is None:
                 logging.warning(f"⚠️ Market data retrieval failed for {pair}")
+                self.performance_monitor.record_failure()
                 return None
                 
             logging.info(f"✅ Retrieved data: HTF={len(htf_df)} rows, LTF={len(ltf_df)} rows")
@@ -1589,6 +1796,7 @@ class ImprovedForexAnalyzer:
                 htf_df_processed = self.technical_analyzer._calculate_basic_indicators(htf_df)
                 ltf_df_processed = self.technical_analyzer._calculate_basic_indicators(ltf_df)
                 if htf_df_processed is None or ltf_df_processed is None:
+                    self.performance_monitor.record_failure()
                     return None
                     
             technical_analysis = self.technical_analyzer.generate_comprehensive_analysis(
@@ -1597,20 +1805,27 @@ class ImprovedForexAnalyzer:
             
             if not technical_analysis:
                 logging.warning(f"⚠️ Technical analysis generation failed for {pair}")
+                self.performance_monitor.record_failure()
                 return None
                 
             # AI analysis
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
             
             if ai_analysis:
+                analysis_duration = time.time() - start_time
+                self.performance_monitor.record_analysis_time(pair, analysis_duration)
+                self.performance_monitor.record_success()
+                
                 logging.info(f"✅ Signal for {pair}: {ai_analysis['ACTION']} "
                            f"(Agreement: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/{ai_analysis.get('TOTAL_MODELS', 0)})")
                 return ai_analysis
                 
+            self.performance_monitor.record_failure()
             logging.info(f"🔍 No trading signal for {pair}")
             return None
             
         except Exception as e:
+            self.performance_monitor.record_failure()
             logging.error(f"❌ Error analyzing {pair}: {str(e)}")
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
@@ -1624,6 +1839,10 @@ class ImprovedForexAnalyzer:
         
         valid_signals = [r for r in results if r is not None]
         logging.info(f"📊 Analysis complete. {len(valid_signals)} valid signals")
+        
+        # Log performance statistics
+        perf_stats = self.performance_monitor.get_performance_stats()
+        logging.info(f"📈 Performance Statistics: {json.dumps(perf_stats, indent=2)}")
         
         return valid_signals
 
@@ -1778,6 +1997,14 @@ async def main():
     logging.info("📊 Data Source Statistics:")
     for source, count in data_source_stats.items():
         logging.info(f"  {source}: {count} pairs")
+    
+    # Display performance statistics
+    perf_stats = analyzer.performance_monitor.get_performance_stats()
+    logging.info("🚀 Performance Statistics:")
+    logging.info(f"  Total Analyses: {perf_stats['total_analyses']}")
+    logging.info(f"  Success Rate: {perf_stats['success_rate']}%")
+    logging.info(f"  Avg Analysis Time: {perf_stats['avg_analysis_time_sec']}s")
+    logging.info(f"  Avg API Response Time: {perf_stats['avg_api_response_time_sec']}s")
     
     # Display final API status
     analyzer.api_manager.save_usage_data()
