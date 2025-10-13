@@ -1469,7 +1469,7 @@ CRITICAL:
                 if "no valid Part" in str(e) or "finish_reason" in str(e):
                      logging.warning(f"⚠️ Gemini response structure issue for {symbol}, trying alternative extraction")
                      # Try to extract content from response candidates
-                    if hasattr(response, 'candidates') and response.candidates:
+                     if hasattr(response, 'candidates') and response.candidates:
                         for candidate in response.candidates:
                             if hasattr(candidate, 'content') and candidate.content:
                                 for part in candidate.content.parts:
