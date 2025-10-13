@@ -1,3 +1,4 @@
+ 
 import google.generativeai as genai
 import os
 import re
@@ -1461,24 +1462,30 @@ CRITICAL:
                 )
             )
             
-            # Handle Gemini response safely
+        # Handle Gemini response safely - FIXED VERSION
+        try:
             if hasattr(response, 'text') and response.text:
                 return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
+        except ValueError as e:
+            if "no valid Part" in str(e) or "finish_reason" in str(e):
+                logging.warning(f"⚠️ Gemini response structure issue for {symbol}, trying alternative extraction")
+                # Try to extract content from response candidates
+                if hasattr(response, 'candidates') and response.candidates:
+                    for candidate in response.candidates:
+                        if hasattr(candidate, 'content') and candidate.content:
+                            for part in candidate.content.parts:
+                                if hasattr(part, 'text') and part.text:
+                                    return self._parse_ai_response(part.text, symbol, f"Gemini-{model_name}")
+                return None
             else:
-                logging.warning(f"❌ Gemini returned empty response for {symbol}")
-                # Try to get any available content from response
-                try:
-                    response_dict = response.__dict__
-                    return self._parse_ai_response(response_dict, symbol, f"Gemini-{model_name}")
-                except Exception as e:
-                    logging.error(f"❌ Cannot extract content from Gemini response for {symbol}: {e}")
-                    return None
-                    
-        except Exception as e:
-            logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
-            logging.error(f"❌ Traceback: {traceback.format_exc()}")
-            return None
-
+                raise e
+                
+        logging.warning(f"❌ Gemini returned empty response for {symbol}")
+        return None
+            
+    except Exception as e:
+        logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
+        return None
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Cloudflare AI with improved response handling"""
         if not self.cloudflare_api_key:
