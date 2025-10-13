@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T12:55:45.076581+00:00",
+    "timestamp": "2025-10-13T14:28:53.485650+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.15622",
-    "STOP_LOSS": "1.15366",
-    "TAKE_PROFIT": "1.16031",
-    "RISK_REWARD_RATIO": "1.8",
+    "ENTRY": "1.15640",
+    "STOP_LOSS": "1.15429",
+    "TAKE_PROFIT": "1.16029",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold conditions, ranging market structure, and potential for bullish reversal"
+    "ANALYSIS": "Technical analysis based on oversold stochastic, moderate bearish trend, and ranging market structure"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,11 +22,11 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T12:55:51.569486+00:00",
+    "timestamp": "2025-10-13T14:29:01.133819+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "1.33276",
-    "STOP_LOSS": "1.33534",
-    "TAKE_PROFIT": "1.32876",
+    "ENTRY": "1.33234",
+    "STOP_LOSS": "1.33485",
+    "TAKE_PROFIT": "1.32884",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum bias"
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T12:55:59.738887+00:00",
-    "CONFIDENCE": 8.0,
-    "ENTRY": "0.80500",
-    "STOP_LOSS": "0.80261",
-    "TAKE_PROFIT": "0.80740",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-13T14:29:08.171446+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "0.80542",
+    "STOP_LOSS": "0.80308",
+    "TAKE_PROFIT": "0.80813",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and potential breakout from key resistance"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
 ]
