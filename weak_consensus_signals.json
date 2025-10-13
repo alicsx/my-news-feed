@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T08:38:31.008549+00:00",
+    "timestamp": "2025-10-13T10:32:01.071478+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.15836",
-    "STOP_LOSS": "1.15639",
-    "TAKE_PROFIT": "1.16059",
+    "ENTRY": "1.15864",
+    "STOP_LOSS": "1.15617",
+    "TAKE_PROFIT": "1.16097",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish LTF trend alignment, neutral momentum bias, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on oversold stochastic, moderate bearish trend, and ranging market structure"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T08:38:38.296626+00:00",
+    "timestamp": "2025-10-13T10:32:08.573781+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.33182",
-    "STOP_LOSS": "1.33336",
-    "TAKE_PROFIT": "1.32846",
+    "ENTRY": "1.33358",
+    "STOP_LOSS": "1.33509",
+    "TAKE_PROFIT": "1.32958",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend and bearish momentum convergence"
+    "ANALYSIS": "Technical analysis based on strong bearish trend and neutral momentum bias"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,12 +38,12 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 1,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T08:38:45.931682+00:00",
+    "timestamp": "2025-10-13T10:32:16.718991+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "0.80386",
-    "STOP_LOSS": "0.80141",
-    "TAKE_PROFIT": "0.80641",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "0.80379",
+    "STOP_LOSS": "0.80179",
+    "TAKE_PROFIT": "0.80679",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
