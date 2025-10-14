@@ -1475,9 +1475,9 @@ CRITICAL:
                                 for part in candidate.content.parts:
                                     if hasattr(part, 'text') and part.text:
                                         return self._parse_ai_response(part.text, symbol, f"Gemini-{model_name}")
-                    return None
+                     return None
                 else:
-                    raise e
+                     raise e
                 
             logging.warning(f"❌ Gemini returned empty response for {symbol}")
             return None
