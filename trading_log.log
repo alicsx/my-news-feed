@@ -40224,3 +40224,74 @@ Okay, let's tackle this USD/CHF trade setup. The user wants a JSON response base
   groq: 22/10000 (9978 remaining)
 
 2025-10-14 08:34:40,949 - INFO - 🏁 System execution completed
+2025-10-14 09:06:44,832 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-10-14 09:06:44,833 - INFO - 🎯 Currency pairs to analyze: EUR/USD
+2025-10-14 09:06:44,833 - INFO - 🚀 Starting analysis for 1 currency pairs
+2025-10-14 09:06:44,833 - INFO - 🔍 Starting analysis for EUR/USD
+2025-10-14 09:06:44,833 - INFO - 📊 API Usage Summary:
+  google_gemini: 11/1500 (1489 remaining)
+  cloudflare: 22/10000 (9978 remaining)
+  groq: 22/10000 (9978 remaining)
+
+2025-10-14 09:06:45,110 - INFO - ✅ TwelveData: 500 candles for EUR/USD (4h)
+2025-10-14 09:06:52,603 - INFO - ✅ TwelveData: 500 candles for EUR/USD (1h)
+2025-10-14 09:06:52,604 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-14 09:06:52,658 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2025-10-14 09:06:52,705 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2025-10-14 09:06:52,709 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-14 09:06:52,709 - INFO - 🎯 Selected groq/llama-3.3-70b-versatile (family: llama)
+2025-10-14 09:06:52,709 - INFO - 🎯 Selected groq/qwen/qwen3-32b (family: qwen)
+2025-10-14 09:06:52,709 - INFO - 🎯 Selected cloudflare/@cf/google/gemma-3-12b-it (family: gemma)
+2025-10-14 09:06:52,709 - INFO - 🎯 Selected cloudflare/@cf/mistralai/mistral-small-3.1-24b-instruct (family: mistral)
+2025-10-14 09:06:52,709 - INFO - 🎯 Selected google_gemini/gemini-2.5-flash (family: gemini)
+2025-10-14 09:06:52,709 - INFO - 🎯 5 diverse models selected: [('groq', 'llama-3.3-70b-versatile'), ('groq', 'qwen/qwen3-32b'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('cloudflare', '@cf/mistralai/mistral-small-3.1-24b-instruct'), ('google_gemini', 'gemini-2.5-flash')]
+2025-10-14 09:06:52,709 - INFO - 🎯 Using 5 AI models for EUR/USD
+2025-10-14 09:06:53,558 - INFO - ✅ Groq-llama-3.3-70b-versatile signal for EUR/USD: SELL
+2025-10-14 09:06:55,820 - INFO - ✅ Cloudflare-@cf/google/gemma-3-12b-it signal for EUR/USD: SELL
+2025-10-14 09:06:56,097 - INFO - ✅ Cloudflare-@cf/mistralai/mistral-small-3.1-24b-instruct signal for EUR/USD: SELL
+2025-10-14 09:06:56,494 - WARNING - ⚠️ Gemini response structure issue for EUR/USD, trying alternative extraction
+2025-10-14 09:07:13,106 - WARNING - ❌ Groq-qwen/qwen3-32b response for EUR/USD lacks valid JSON format. Response: <think>
+Okay, let's tackle this EUR/USD trade setup. The user wants a JSON response based on the provided technical analysis. First, I need to determine the action. The HTF and LTF trends are both str...
+2025-10-14 09:07:13,108 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-14 09:07:13,108 - INFO - ✅ Signal for EUR/USD: SELL (Agreement: 3/5)
+2025-10-14 09:07:13,109 - INFO - 📊 Analysis complete. 1 valid signals
+2025-10-14 09:07:13,109 - INFO - 📈 Performance Statistics: {
+  "total_analyses": 1,
+  "success_rate": 100.0,
+  "avg_analysis_time_sec": 28.28,
+  "avg_api_response_time_sec": 0,
+  "recent_analysis_times": [
+    [
+      "EUR/USD",
+      28.275370597839355
+    ]
+  ],
+  "recent_api_times": []
+}
+2025-10-14 09:07:13,109 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-10-14 09:07:13,109 - INFO - 💾 1 strong signals saved in root
+2025-10-14 09:07:13,109 - INFO - 💾 0 medium signals saved in root
+2025-10-14 09:07:13,110 - INFO - 💾 0 weak signals saved in root
+2025-10-14 09:07:13,110 - INFO - ✅ File strong_consensus_signals.json successfully created
+2025-10-14 09:07:13,110 - INFO - ✅ File medium_consensus_signals.json successfully created
+2025-10-14 09:07:13,110 - INFO - ✅ File weak_consensus_signals.json successfully created
+2025-10-14 09:07:13,110 - INFO - 📈 Results Summary:
+2025-10-14 09:07:13,110 - INFO - 🎯 Strong signals: 1
+2025-10-14 09:07:13,110 - INFO - 📊 Medium signals: 0
+2025-10-14 09:07:13,110 - INFO - 📈 Weak signals: 0
+2025-10-14 09:07:13,110 - INFO -   🔴 EUR/USD: SELL (Confidence: 6.7/10)
+2025-10-14 09:07:13,110 - INFO - 📊 Data Source Statistics:
+2025-10-14 09:07:13,110 - INFO -   twelvedata: 1 pairs
+2025-10-14 09:07:13,110 - INFO -   yahoo: 0 pairs
+2025-10-14 09:07:13,110 - INFO -   synthetic: 0 pairs
+2025-10-14 09:07:13,110 - INFO - 🚀 Performance Statistics:
+2025-10-14 09:07:13,111 - INFO -   Total Analyses: 1
+2025-10-14 09:07:13,111 - INFO -   Success Rate: 100.0%
+2025-10-14 09:07:13,111 - INFO -   Avg Analysis Time: 28.28s
+2025-10-14 09:07:13,111 - INFO -   Avg API Response Time: 0s
+2025-10-14 09:07:13,111 - INFO - 📊 API Usage Summary:
+  google_gemini: 12/1500 (1488 remaining)
+  cloudflare: 24/10000 (9976 remaining)
+  groq: 24/10000 (9976 remaining)
+
+2025-10-14 09:07:13,111 - INFO - 🏁 System execution completed
