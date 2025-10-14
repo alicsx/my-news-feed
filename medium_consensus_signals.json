@@ -1,18 +1,18 @@
 [
   {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T12:57:47.421451+00:00",
-    "CONFIDENCE": 7.0,
-    "ENTRY": "1.32563",
-    "STOP_LOSS": "1.32778",
-    "TAKE_PROFIT": "1.31913",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-14T14:29:45.071011+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "0.80280",
+    "STOP_LOSS": "0.80044",
+    "TAKE_PROFIT": "0.80620",
+    "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and oversold stochastic"
+    "ANALYSIS": "Technical analysis based on weak bullish trend alignment, neutral momentum, and ranging market structure"
   }
 ]

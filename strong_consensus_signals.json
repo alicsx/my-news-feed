@@ -6,29 +6,29 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T12:57:40.378146+00:00",
-    "CONFIDENCE": 7.3,
-    "ENTRY": "1.15552",
-    "STOP_LOSS": "1.15738",
-    "TAKE_PROFIT": "1.15152",
+    "timestamp": "2025-10-14T14:29:31.864371+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.15827",
+    "STOP_LOSS": "1.16076",
+    "TAKE_PROFIT": "1.15427",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and bearish momentum indicators"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
   },
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T12:57:48.868052+00:00",
-    "CONFIDENCE": 7.0,
-    "ENTRY": "0.80424",
-    "STOP_LOSS": "0.80235",
-    "TAKE_PROFIT": "0.80679",
+    "timestamp": "2025-10-14T14:29:38.141714+00:00",
+    "CONFIDENCE": 6.7,
+    "ENTRY": "1.32952",
+    "STOP_LOSS": "1.33126",
+    "TAKE_PROFIT": "1.32552",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, positive momentum convergence, and key level breakout potential"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum bias"
   }
 ]
