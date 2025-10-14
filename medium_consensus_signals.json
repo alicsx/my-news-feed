@@ -1,18 +1,50 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
+    "ACTION": "HOLD",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-14T18:38:27.411137+00:00",
+    "CONFIDENCE": 4.5,
+    "ENTRY": "1.16068",
+    "STOP_LOSS": "1.16029",
+    "TAKE_PROFIT": "1.16273",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Despite bullish MACD, overall market structure is ranging and Stochastic is overbought. Moderate HTF bearish trend warrants a hold with caution, monitoring for potential reversal."
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T16:33:56.185433+00:00",
+    "timestamp": "2025-10-14T18:38:28.377914+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.16090",
-    "STOP_LOSS": "1.16249",
-    "TAKE_PROFIT": "1.15841",
-    "RISK_REWARD_RATIO": "1.5",
+    "ENTRY": "1.33307",
+    "STOP_LOSS": "1.33129",
+    "TAKE_PROFIT": "1.33557",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend on 4H and overbought stochastic"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal and neutral RSI momentum within a ranging market structure"
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-14T18:38:42.192442+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "0.80079",
+    "STOP_LOSS": "0.79979",
+    "TAKE_PROFIT": "0.80479",
+    "RISK_REWARD_RATIO": "1.67",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Despite ranging market structure, the strong HTF bullish trend and oversold Stochastic signal suggest potential for a short-term upward move. EMA alignment on the LTF further supports a bullish bias, although momentum is currently neutral."
   }
 ]
