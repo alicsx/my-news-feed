@@ -6,13 +6,13 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T09:07:13.108822+00:00",
+    "timestamp": "2025-10-14T10:29:27.187584+00:00",
     "CONFIDENCE": 6.7,
-    "ENTRY": "1.15579",
-    "STOP_LOSS": "1.15815",
-    "TAKE_PROFIT": "1.15229",
+    "ENTRY": "1.15534",
+    "STOP_LOSS": "1.15719",
+    "TAKE_PROFIT": "1.15134",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and bearish momentum indicators"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum bias"
   }
 ]
