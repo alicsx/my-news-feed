@@ -1,18 +1,18 @@
 [
   {
     "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
+    "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-13T21:06:57.473724+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.15697",
-    "STOP_LOSS": "1.15920",
-    "TAKE_PROFIT": "1.15447",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-14T06:11:04.561905+00:00",
+    "CONFIDENCE": 6.5,
+    "ENTRY": "1.15859",
+    "STOP_LOSS": "1.15690",
+    "TAKE_PROFIT": "1.16049",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and oversold stochastic conditions"
+    "ANALYSIS": "Technical analysis based on bullish MACD and oversold stochastic"
   }
 ]
