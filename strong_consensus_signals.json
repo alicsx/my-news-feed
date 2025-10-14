@@ -6,13 +6,29 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T10:29:27.187584+00:00",
-    "CONFIDENCE": 6.7,
-    "ENTRY": "1.15534",
-    "STOP_LOSS": "1.15719",
-    "TAKE_PROFIT": "1.15134",
+    "timestamp": "2025-10-14T12:57:40.378146+00:00",
+    "CONFIDENCE": 7.3,
+    "ENTRY": "1.15552",
+    "STOP_LOSS": "1.15738",
+    "TAKE_PROFIT": "1.15152",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum bias"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and bearish momentum indicators"
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-14T12:57:48.868052+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "0.80424",
+    "STOP_LOSS": "0.80235",
+    "TAKE_PROFIT": "0.80679",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, positive momentum convergence, and key level breakout potential"
   }
 ]
