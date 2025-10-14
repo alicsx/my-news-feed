@@ -6,29 +6,13 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T06:39:04.352129+00:00",
+    "timestamp": "2025-10-14T07:35:58.955911+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.15655",
-    "STOP_LOSS": "1.15881",
-    "TAKE_PROFIT": "1.15355",
+    "ENTRY": "1.15611",
+    "STOP_LOSS": "1.15764",
+    "TAKE_PROFIT": "1.15349",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T06:39:12.091062+00:00",
-    "CONFIDENCE": 8.0,
-    "ENTRY": "1.32807",
-    "STOP_LOSS": "1.33022",
-    "TAKE_PROFIT": "1.32307",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and oversold momentum convergence"
   }
 ]
