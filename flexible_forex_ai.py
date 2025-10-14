@@ -1145,7 +1145,7 @@ class AdvancedTechnicalAnalyzer:
             return {'risk_level': 'MEDIUM', 'volatility_percent': 0, 'atr_value': 0, 'current_range_percent': 0}
 
 # =================================================================================
-# --- Smart API Manager ---
+# --- Smart API Manager with Enhanced Model Selection ---
 # =================================================================================
 
 class SmartAPIManager:
@@ -1235,8 +1235,15 @@ class SmartAPIManager:
         """Check if model failed"""
         return (provider, model_name) in self.failed_models
 
+    def _find_model_provider(self, model_name: str) -> Optional[str]:
+        """Find which provider a model belongs to"""
+        for provider, models in self.available_models.items():
+            if model_name in models:
+                return provider
+        return None
+
     def select_diverse_models(self, target_total: int = 5, min_required: int = 3) -> List[Tuple[str, str]]:
-        """Select diverse models from different providers"""
+        """Select diverse models from different providers with intelligent fallback"""
         selected_models = []
         
         # Calculate provider capacity
@@ -1247,49 +1254,81 @@ class SmartAPIManager:
         logging.info(f"📊 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
                    f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
 
-        # Strategy: diverse selection from all providers
+        # Strategy: prioritize diversity across providers
         total_available = sum(provider_capacity.values())
         if total_available == 0:
             logging.error("❌ No providers available")
             return selected_models
 
-        # Balanced distribution between providers
+        # Model family mapping for intelligent fallback
+        model_families = {
+            "llama": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", 
+                     "@cf/meta/llama-4-scout-17b-16e-instruct", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"],
+            "qwen": ["qwen/qwen3-32b"],
+            "gemma": ["@cf/google/gemma-3-12b-it"],
+            "mistral": ["@cf/mistralai/mistral-small-3.1-24b-instruct"],
+            "gemini": ["gemini-2.5-flash"]
+        }
+        
+        # Track used families to ensure diversity
+        used_families = set()
+        
+        # First pass: select one model from each family
+        for family, models in model_families.items():
+            if len(selected_models) >= target_total:
+                break
+            
+            for model in models:
+                # Find which provider this model belongs to
+                provider = self._find_model_provider(model)
+                if (provider and provider_capacity[provider] > 0 and 
+                    not self.is_model_failed(provider, model) and
+                    family not in used_families):
+                    
+                    selected_models.append((provider, model))
+                    provider_capacity[provider] -= 1
+                    used_families.add(family)
+                    logging.info(f"🎯 Selected {provider}/{model} (family: {family})")
+                    break
+
+        # Second pass: fill remaining slots with any available models
         providers_order = ["google_gemini", "cloudflare", "groq"]
         round_robin_index = 0
-        remaining_target = min(target_total, total_available)
+        remaining_target = target_total - len(selected_models)
         
         while remaining_target > 0 and any(provider_capacity[p] > 0 for p in providers_order):
             current_provider = providers_order[round_robin_index % len(providers_order)]
             
             if provider_capacity[current_provider] > 0:
-                # Select first available model from this provider that hasn't failed
+                # Select first available model from this provider that hasn't failed and isn't already selected
                 for model_name in self.available_models[current_provider]:
-                    if (current_provider, model_name) not in selected_models and not self.is_model_failed(current_provider, model_name):
+                    if ((current_provider, model_name) not in selected_models and 
+                        not self.is_model_failed(current_provider, model_name)):
                         selected_models.append((current_provider, model_name))
                         provider_capacity[current_provider] -= 1
                         remaining_target -= 1
+                        logging.info(f"🎯 Added {current_provider}/{model_name} as fallback")
                         break
-                        
+                    
             round_robin_index += 1
             
-            # Break if no addition after full rotation
-            if round_robin_index > len(providers_order) * 2:
+            # Safety break
+            if round_robin_index > len(providers_order) * 3:
                 break
 
-        # Fallback if minimum not reached
+        # Final fallback: if minimum not reached, use any available model even if failed before
         if len(selected_models) < min_required:
-            logging.warning(f"⚠️ Only {len(selected_models)} models selected. Activating fallback...")
-            additional_models = []
+            logging.warning(f"⚠️ Only {len(selected_models)} models selected. Activating emergency fallback...")
             for provider in providers_order:
                 if self.can_use_provider(provider):
                     for model_name in self.available_models[provider]:
-                        if (provider, model_name) not in selected_models and not self.is_model_failed(provider, model_name):
-                            additional_models.append((provider, model_name))
-                            if len(additional_models) >= (min_required - len(selected_models)):
+                        if (provider, model_name) not in selected_models:
+                            selected_models.append((provider, model_name))
+                            logging.info(f"🚨 Emergency fallback: {provider}/{model_name}")
+                            if len(selected_models) >= min_required:
                                 break
-                    if len(selected_models) + len(additional_models) >= min_required:
+                    if len(selected_models) >= min_required:
                         break
-            selected_models.extend(additional_models)
 
         logging.info(f"🎯 {len(selected_models)} diverse models selected: {selected_models}")
         return selected_models
@@ -1387,7 +1426,7 @@ CRITICAL:
 """
 
     async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """Get enhanced AI analysis with multiple models"""
+        """Get enhanced AI analysis with multiple models and robust error handling"""
         selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
         
         if len(selected_models) < 3:
@@ -1419,11 +1458,18 @@ CRITICAL:
                     valid_results.append(result)
                     self.api_manager.record_api_usage(provider)
                 else:
+                    # Record usage even for None results
                     self.api_manager.record_api_usage(provider)
 
             logging.info(f"📊 Results: {len(valid_results)} successful, {failed_count} failed")
-            return self._combine_signals(symbol, valid_results, len(selected_models))
             
+            # If we have at least some valid results, proceed
+            if valid_results:
+                return self._combine_signals(symbol, valid_results, len(selected_models))
+            else:
+                logging.warning(f"⚠️ No valid AI results for {symbol}")
+                return None
+                
         except Exception as e:
             logging.error(f"❌ Error in AI analysis for {symbol}: {str(e)}")
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
@@ -1761,7 +1807,6 @@ CRITICAL:
                         
         return combined
 
-
 # =================================================================================
 # --- Main Forex Analyzer Class with Enhanced Error Handling ---
 # =================================================================================
@@ -2021,3 +2066,5 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
+      
