@@ -6,29 +6,13 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T20:29:36.633879+00:00",
+    "timestamp": "2025-10-14T22:26:07.077118+00:00",
     "CONFIDENCE": 4.5,
-    "ENTRY": "1.33150",
-    "STOP_LOSS": "1.33050",
-    "TAKE_PROFIT": "1.33400",
+    "ENTRY": "1.33211",
+    "STOP_LOSS": "1.33066",
+    "TAKE_PROFIT": "1.33466",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite a bullish MACD, the overall market structure is ranging and the short-term trend is neutral. Stochastic is overbought, suggesting a potential pullback. A hold is advised, monitoring for a breakout from the 1.33106 support or 1.33189 resistance."
-  },
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-14T20:29:43.521348+00:00",
-    "CONFIDENCE": 4.0,
-    "ENTRY": "0.80141",
-    "STOP_LOSS": "0.80031",
-    "TAKE_PROFIT": "0.80341",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 8,
-    "ANALYSIS": "Market is ranging with neutral momentum and a low risk level. The 4H trend is neutral, and the 1H trend is bearish, suggesting a holding position until a clearer trend emerges."
+    "ANALYSIS": "Despite bullish MACD and neutral momentum, the 4H trend remains strongly bearish and the market structure is ranging. Stochastic is overbought, suggesting a potential pullback. ML signal strength is moderate. Holding current position pending trend confirmation."
   }
 ]
