@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-15T08:30:38.709658+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "0.79969",
+    "STOP_LOSS": "0.80123",
+    "TAKE_PROFIT": "0.79523",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bearish LTF trend and neutral momentum bias"
+  }
+]
