@@ -1,35 +1,19 @@
 [
   {
-    "SYMBOL": "EUR/USD",
+    "SYMBOL": "GBP/USD",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-15T03:12:26.492226+00:00",
+    "timestamp": "2025-10-15T04:31:35.954255+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "1.16229",
-    "STOP_LOSS": "1.16012",
-    "TAKE_PROFIT": "1.16493",
+    "ENTRY": "1.33479",
+    "STOP_LOSS": "1.33249",
+    "TAKE_PROFIT": "1.33729",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment, positive momentum convergence, and overbought stochastic indicating potential reversal"
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "HOLD",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-15T03:12:33.890900+00:00",
-    "CONFIDENCE": 4.5,
-    "ENTRY": "1.33515",
-    "STOP_LOSS": "1.33384",
-    "TAKE_PROFIT": "1.33766",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite bullish MACD, the market is ranging and overbought (Stochastic). The HTF trend is bearish, suggesting caution. ML signal is weak. Holding position and observing for a breakout."
+    "ANALYSIS": "Technical analysis based on bullish LTF trend, EMA alignment, and potential key level breakout"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +22,13 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-15T03:12:43.142486+00:00",
+    "timestamp": "2025-10-15T04:31:42.631656+00:00",
     "CONFIDENCE": 4.5,
-    "ENTRY": "0.80010",
-    "STOP_LOSS": "0.79950",
-    "TAKE_PROFIT": "0.80160",
+    "ENTRY": "0.80021",
+    "STOP_LOSS": "0.80009",
+    "TAKE_PROFIT": "0.80217",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Market structure is ranging and in accumulation phase. While LTF shows bearish bias, HTF is neutral with moderate strength. ML signal is weak. A buy is not warranted at this time, holding current position."
+    "ANALYSIS": "Market is ranging with neutral momentum and moderate HTF trend. ML signal is weak. Current price is near key support, suggesting a holding position pending further breakout confirmation."
   }
 ]
