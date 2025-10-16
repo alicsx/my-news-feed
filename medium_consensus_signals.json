@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-16T06:39:33.326989+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "0.79587",
+    "STOP_LOSS": "0.79787",
+    "TAKE_PROFIT": "0.79387",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Despite bullish MACD and ML signal, the strong bearish 4H trend, strong bearish 1H trend, ranging market structure, and neutral momentum bias suggest a potential shorting opportunity.  Key support level offers a reasonable entry point."
+  }
+]
