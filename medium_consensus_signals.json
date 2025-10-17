@@ -1,18 +1,1 @@
-[
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T03:09:37.391909+00:00",
-    "CONFIDENCE": 8.0,
-    "ENTRY": "0.79058",
-    "STOP_LOSS": "0.79268",
-    "TAKE_PROFIT": "0.78858",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite oversold readings, the 4H bearish trend and strong bearish momentum on the 1H chart, combined with ranging market structure and accumulation phase, suggest a potential short opportunity. ML signal supports bearish bias."
-  }
-]
+[]
