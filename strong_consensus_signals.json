@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T08:36:02.468676+00:00",
-    "CONFIDENCE": 7.0,
-    "ENTRY": "1.17001",
-    "STOP_LOSS": "1.16835",
-    "TAKE_PROFIT": "1.17251",
+    "timestamp": "2025-10-17T10:29:28.708842+00:00",
+    "CONFIDENCE": 7.3,
+    "ENTRY": "1.16922",
+    "STOP_LOSS": "1.16739",
+    "TAKE_PROFIT": "1.17181",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum bias"
+    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,12 +22,12 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T08:36:09.308267+00:00",
+    "timestamp": "2025-10-17T10:29:36.327273+00:00",
     "CONFIDENCE": 7.3,
-    "ENTRY": "1.34151",
-    "STOP_LOSS": "1.33929",
-    "TAKE_PROFIT": "1.34403",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "1.34308",
+    "STOP_LOSS": "1.33953",
+    "TAKE_PROFIT": "1.34658",
+    "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum"
   },
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T08:36:16.934493+00:00",
+    "timestamp": "2025-10-17T10:29:50.712007+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "0.78970",
-    "STOP_LOSS": "0.79123",
-    "TAKE_PROFIT": "0.78635",
+    "ENTRY": "0.78958",
+    "STOP_LOSS": "0.79100",
+    "TAKE_PROFIT": "0.78658",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment, oversold RSI, and key level resistance"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum convergence"
   }
 ]
