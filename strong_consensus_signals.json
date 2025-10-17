@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T08:29:19.914877+00:00",
-    "CONFIDENCE": 6.7,
-    "ENTRY": "1.17047",
-    "STOP_LOSS": "1.16815",
-    "TAKE_PROFIT": "1.17295",
+    "timestamp": "2025-10-17T08:36:02.468676+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.17001",
+    "STOP_LOSS": "1.16835",
+    "TAKE_PROFIT": "1.17251",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum"
+    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum bias"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T08:29:26.872536+00:00",
+    "timestamp": "2025-10-17T08:36:09.308267+00:00",
     "CONFIDENCE": 7.3,
-    "ENTRY": "1.34201",
-    "STOP_LOSS": "1.33949",
-    "TAKE_PROFIT": "1.34652",
-    "RISK_REWARD_RATIO": "1.8",
+    "ENTRY": "1.34151",
+    "STOP_LOSS": "1.33929",
+    "TAKE_PROFIT": "1.34403",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and accumulation market phase"
+    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T08:29:39.716683+00:00",
+    "timestamp": "2025-10-17T08:36:16.934493+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "0.78960",
+    "ENTRY": "0.78970",
     "STOP_LOSS": "0.79123",
-    "TAKE_PROFIT": "0.78620",
+    "TAKE_PROFIT": "0.78635",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment, oversold RSI, and bearish MACD signal"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment, oversold RSI, and key level resistance"
   }
 ]
