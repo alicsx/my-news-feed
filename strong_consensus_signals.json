@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T10:29:28.708842+00:00",
-    "CONFIDENCE": 7.3,
-    "ENTRY": "1.16922",
-    "STOP_LOSS": "1.16739",
-    "TAKE_PROFIT": "1.17181",
+    "timestamp": "2025-10-17T12:55:45.810304+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.16754",
+    "STOP_LOSS": "1.16512",
+    "TAKE_PROFIT": "1.17029",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum"
+    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and oversold stochastic conditions"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,14 +22,14 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T10:29:36.327273+00:00",
-    "CONFIDENCE": 7.3,
-    "ENTRY": "1.34308",
-    "STOP_LOSS": "1.33953",
-    "TAKE_PROFIT": "1.34658",
-    "RISK_REWARD_RATIO": "1.8",
+    "timestamp": "2025-10-17T12:55:52.914079+00:00",
+    "CONFIDENCE": 6.3,
+    "ENTRY": "1.34118",
+    "STOP_LOSS": "1.33918",
+    "TAKE_PROFIT": "1.34373",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and neutral momentum"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +38,13 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-17T10:29:50.712007+00:00",
+    "timestamp": "2025-10-17T12:56:00.720295+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "0.78958",
-    "STOP_LOSS": "0.79100",
-    "TAKE_PROFIT": "0.78658",
+    "ENTRY": "0.79222",
+    "STOP_LOSS": "0.79406",
+    "TAKE_PROFIT": "0.78822",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and negative momentum convergence"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum"
   }
 ]
