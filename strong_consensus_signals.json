@@ -6,12 +6,12 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-20T04:33:15.158459+00:00",
+    "timestamp": "2025-10-20T06:40:34.645340+00:00",
     "CONFIDENCE": 6.7,
-    "ENTRY": "1.16694",
-    "STOP_LOSS": "1.16482",
-    "TAKE_PROFIT": "1.16944",
-    "RISK_REWARD_RATIO": "1.5",
+    "ENTRY": "1.16621",
+    "STOP_LOSS": "1.16408",
+    "TAKE_PROFIT": "1.16883",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   },
@@ -22,13 +22,13 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-20T04:33:22.770699+00:00",
-    "CONFIDENCE": 7.3,
-    "ENTRY": "1.34394",
-    "STOP_LOSS": "1.34242",
-    "TAKE_PROFIT": "1.34647",
-    "RISK_REWARD_RATIO": "1.5",
+    "timestamp": "2025-10-20T06:40:46.418710+00:00",
+    "CONFIDENCE": 7.7,
+    "ENTRY": "1.34239",
+    "STOP_LOSS": "1.33909",
+    "TAKE_PROFIT": "1.34609",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and potential key level breakout"
+    "ANALYSIS": "Technical analysis based on strong bullish trend alignment, EMA convergence, and positive momentum indicators"
   }
 ]
