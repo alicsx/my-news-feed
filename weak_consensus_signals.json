@@ -6,12 +6,12 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-20T02:08:57.103714+00:00",
+    "timestamp": "2025-10-20T04:33:30.188224+00:00",
     "CONFIDENCE": 8.0,
-    "ENTRY": "0.79305",
-    "STOP_LOSS": "0.79472",
-    "TAKE_PROFIT": "0.78835",
-    "RISK_REWARD_RATIO": "1.8",
+    "ENTRY": "0.79290",
+    "STOP_LOSS": "0.79439",
+    "TAKE_PROFIT": "0.78850",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bearish trend and neutral momentum"
   }
