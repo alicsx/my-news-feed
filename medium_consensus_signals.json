@@ -1,18 +1,1 @@
-[
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-20T10:30:51.795835+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "0.79303",
-    "STOP_LOSS": "0.79148",
-    "TAKE_PROFIT": "0.79548",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
-  }
-]
+[]
