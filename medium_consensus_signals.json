@@ -1,18 +1,50 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-21T08:31:43.239039+00:00",
+    "CONFIDENCE": 4.0,
+    "ENTRY": "1.16252",
+    "STOP_LOSS": "1.16152",
+    "TAKE_PROFIT": "1.16452",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "The market is currently ranging with a weak overall trend. While there's a slight bearish bias on the 1H timeframe, the momentum indicators are neutral and the ML signal is weak. A buy is not warranted at this time."
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-21T08:31:51.729273+00:00",
+    "CONFIDENCE": 4.0,
+    "ENTRY": "1.33820",
+    "STOP_LOSS": "1.33782",
+    "TAKE_PROFIT": "1.34020",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "The market structure is ranging with weak trend momentum across higher timeframes. While the 1H trend is bearish, the overall picture suggests consolidation rather than a strong directional move. The ML signal is weak, reinforcing a cautious approach."
+  },
+  {
     "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T06:40:39.466556+00:00",
+    "timestamp": "2025-10-21T08:32:01.310578+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79250",
-    "STOP_LOSS": "0.78961",
-    "TAKE_PROFIT": "0.79614",
+    "ENTRY": "0.79307",
+    "STOP_LOSS": "0.79140",
+    "TAKE_PROFIT": "0.79557",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral momentum, and ranging market structure"
   }
 ]
