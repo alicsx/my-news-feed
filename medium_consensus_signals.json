@@ -1,34 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
+    "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T04:32:07.189420+00:00",
+    "timestamp": "2025-10-21T06:40:39.466556+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.16320",
-    "STOP_LOSS": "1.16149",
-    "TAKE_PROFIT": "1.16593",
+    "ENTRY": "0.79250",
+    "STOP_LOSS": "0.78961",
+    "TAKE_PROFIT": "0.79614",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend strength, and accumulation market phase"
-  },
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T04:33:18.590652+00:00",
-    "CONFIDENCE": 5.0,
-    "ENTRY": "0.79328",
-    "STOP_LOSS": "0.79246",
-    "TAKE_PROFIT": "0.79528",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite a strong bearish HTF trend and overbought Stochastic, MACD is bullish and the ML signal suggests accumulation. The LTF trend is neutral and market structure is ranging, indicating a potential consolidation phase before further movement. A cautious hold is advised, monitoring for a breakout."
+    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
   }
 ]
