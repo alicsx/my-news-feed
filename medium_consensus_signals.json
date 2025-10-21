@@ -1,50 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T08:37:46.666987+00:00",
-    "CONFIDENCE": 4.0,
-    "ENTRY": "1.16229",
-    "STOP_LOSS": "1.16193",
-    "TAKE_PROFIT": "1.16487",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 8,
-    "ANALYSIS": "The market is ranging with weak trend momentum. While there's a slight bearish bias on the 1H chart, the overall picture suggests consolidation.  ML signal is weak and confidence is high, suggesting a cautious approach.  Waiting for a clearer breakout is advised."
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "HOLD",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T08:37:53.027373+00:00",
-    "CONFIDENCE": 4.5,
-    "ENTRY": "1.33840",
-    "STOP_LOSS": "1.33796",
-    "TAKE_PROFIT": "1.34020",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 8,
-    "ANALYSIS": "The market is ranging with weak trend momentum. While there's a slight bearish bias on the 1H chart, the overall technical picture suggests a holding position is appropriate. Accumulation phase indicates potential for future movement."
-  },
-  {
     "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T08:38:00.392609+00:00",
+    "timestamp": "2025-10-21T10:30:21.129986+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79323",
-    "STOP_LOSS": "0.79150",
-    "TAKE_PROFIT": "0.79596",
+    "ENTRY": "0.79494",
+    "STOP_LOSS": "0.79644",
+    "TAKE_PROFIT": "0.79149",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral momentum, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on strong bearish trend and overbought stochastic"
   }
 ]
