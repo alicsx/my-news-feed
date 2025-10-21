@@ -52571,3 +52571,183 @@ Okay, let's tackle this USD/CHF trade setup. The user wants a JSON response base
   groq: 42/10000 (9958 remaining)
 
 2025-10-21 12:58:32,123 - INFO - 🏁 System execution completed
+2025-10-21 14:25:33,258 - INFO - 🎯 Starting Forex Analysis System (Enhanced AI Engine)
+2025-10-21 14:25:33,259 - INFO - 🔍 Using default currency pairs: EUR/USD, GBP/USD, USD/CHF
+2025-10-21 14:25:33,259 - INFO - 🎯 Currency pairs to analyze: EUR/USD, GBP/USD, USD/CHF
+2025-10-21 14:25:33,259 - INFO - 🚀 Starting analysis for 3 currency pairs
+2025-10-21 14:25:33,259 - INFO - 🔍 Starting analysis for EUR/USD
+2025-10-21 14:25:33,259 - INFO - 📊 API Usage Summary:
+  google_gemini: 21/1500 (1479 remaining)
+  cloudflare: 42/10000 (9958 remaining)
+  groq: 42/10000 (9958 remaining)
+
+2025-10-21 14:25:33,260 - INFO - 🔍 Starting analysis for GBP/USD
+2025-10-21 14:25:33,260 - INFO - 📊 API Usage Summary:
+  google_gemini: 21/1500 (1479 remaining)
+  cloudflare: 42/10000 (9958 remaining)
+  groq: 42/10000 (9958 remaining)
+
+2025-10-21 14:25:33,260 - INFO - 🔍 Starting analysis for USD/CHF
+2025-10-21 14:25:33,260 - INFO - 📊 API Usage Summary:
+  google_gemini: 21/1500 (1479 remaining)
+  cloudflare: 42/10000 (9958 remaining)
+  groq: 42/10000 (9958 remaining)
+
+2025-10-21 14:25:33,454 - INFO - ✅ TwelveData: 500 candles for EUR/USD (4h)
+2025-10-21 14:25:40,910 - INFO - ✅ TwelveData: 500 candles for GBP/USD (4h)
+2025-10-21 14:25:48,549 - INFO - ✅ TwelveData: 500 candles for USD/CHF (4h)
+2025-10-21 14:25:55,905 - INFO - ✅ TwelveData: 500 candles for EUR/USD (1h)
+2025-10-21 14:25:55,905 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-21 14:25:55,961 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2025-10-21 14:25:56,010 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2025-10-21 14:25:56,014 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-21 14:25:56,014 - INFO - 🎯 Selected groq/llama-3.3-70b-versatile (family: llama)
+2025-10-21 14:25:56,014 - INFO - 🎯 Selected groq/qwen/qwen3-32b (family: qwen)
+2025-10-21 14:25:56,014 - INFO - 🎯 Selected cloudflare/@cf/google/gemma-3-12b-it (family: gemma)
+2025-10-21 14:25:56,014 - INFO - 🎯 Selected cloudflare/@cf/mistralai/mistral-small-3.1-24b-instruct (family: mistral)
+2025-10-21 14:25:56,014 - INFO - 🎯 Selected google_gemini/gemini-2.5-flash (family: gemini)
+2025-10-21 14:25:56,014 - INFO - 🎯 5 diverse models selected: [('groq', 'llama-3.3-70b-versatile'), ('groq', 'qwen/qwen3-32b'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('cloudflare', '@cf/mistralai/mistral-small-3.1-24b-instruct'), ('google_gemini', 'gemini-2.5-flash')]
+2025-10-21 14:25:56,014 - INFO - 🎯 Using 5 AI models for EUR/USD
+2025-10-21 14:25:57,455 - WARNING - ❌ Groq-qwen/qwen3-32b response for EUR/USD lacks valid JSON format. Response: <think>
+Okay, let's tackle this EUR/USD trade setup. The user wants a JSON response based on the provided technical analysis. First, I need to determine the action. The HTF and LTF trends are both str...
+2025-10-21 14:25:58,418 - INFO - ✅ Groq-llama-3.3-70b-versatile signal for EUR/USD: SELL
+2025-10-21 14:25:58,735 - INFO - ✅ Cloudflare-@cf/google/gemma-3-12b-it signal for EUR/USD: SELL
+2025-10-21 14:25:59,499 - INFO - ✅ Cloudflare-@cf/mistralai/mistral-small-3.1-24b-instruct signal for EUR/USD: HOLD
+2025-10-21 14:26:02,871 - WARNING - ⚠️ Gemini response structure issue for EUR/USD, trying alternative extraction
+2025-10-21 14:26:02,872 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-21 14:26:02,872 - INFO - ✅ Signal for EUR/USD: SELL (Agreement: 2/5)
+2025-10-21 14:26:03,459 - INFO - ✅ TwelveData: 500 candles for GBP/USD (1h)
+2025-10-21 14:26:03,459 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-21 14:26:03,507 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2025-10-21 14:26:03,555 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2025-10-21 14:26:03,559 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-21 14:26:03,559 - INFO - 🎯 Selected groq/llama-3.3-70b-versatile (family: llama)
+2025-10-21 14:26:03,559 - INFO - 🎯 Selected groq/qwen/qwen3-32b (family: qwen)
+2025-10-21 14:26:03,559 - INFO - 🎯 Selected cloudflare/@cf/google/gemma-3-12b-it (family: gemma)
+2025-10-21 14:26:03,559 - INFO - 🎯 Selected cloudflare/@cf/mistralai/mistral-small-3.1-24b-instruct (family: mistral)
+2025-10-21 14:26:03,559 - INFO - 🎯 Selected google_gemini/gemini-2.5-flash (family: gemini)
+2025-10-21 14:26:03,559 - INFO - 🎯 5 diverse models selected: [('groq', 'llama-3.3-70b-versatile'), ('groq', 'qwen/qwen3-32b'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('cloudflare', '@cf/mistralai/mistral-small-3.1-24b-instruct'), ('google_gemini', 'gemini-2.5-flash')]
+2025-10-21 14:26:03,559 - INFO - 🎯 Using 5 AI models for GBP/USD
+2025-10-21 14:26:06,234 - WARNING - ❌ Groq-qwen/qwen3-32b response for GBP/USD lacks valid JSON format. Response: <think>
+Okay, let's tackle this GBP/USD trade setup. The user wants a JSON response based on the provided technical analysis. First, I need to determine the action. The HTF trend is neutral, but the L...
+2025-10-21 14:26:06,469 - INFO - ✅ Groq-llama-3.3-70b-versatile signal for GBP/USD: SELL
+2025-10-21 14:26:06,704 - INFO - ✅ Cloudflare-@cf/google/gemma-3-12b-it signal for GBP/USD: SELL
+2025-10-21 14:26:06,878 - INFO - ✅ Cloudflare-@cf/mistralai/mistral-small-3.1-24b-instruct signal for GBP/USD: SELL
+2025-10-21 14:26:10,963 - INFO - ✅ TwelveData: 500 candles for USD/CHF (1h)
+2025-10-21 14:26:10,964 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2025-10-21 14:26:11,011 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2025-10-21 14:26:11,059 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2025-10-21 14:26:11,062 - INFO - 📊 Provider capacity: Gemini=1, Cloudflare=5, Groq=5
+2025-10-21 14:26:11,063 - INFO - 🎯 Selected groq/llama-3.3-70b-versatile (family: llama)
+2025-10-21 14:26:11,063 - INFO - 🎯 Selected groq/qwen/qwen3-32b (family: qwen)
+2025-10-21 14:26:11,063 - INFO - 🎯 Selected cloudflare/@cf/google/gemma-3-12b-it (family: gemma)
+2025-10-21 14:26:11,063 - INFO - 🎯 Selected cloudflare/@cf/mistralai/mistral-small-3.1-24b-instruct (family: mistral)
+2025-10-21 14:26:11,063 - INFO - 🎯 Selected google_gemini/gemini-2.5-flash (family: gemini)
+2025-10-21 14:26:11,063 - INFO - 🎯 5 diverse models selected: [('groq', 'llama-3.3-70b-versatile'), ('groq', 'qwen/qwen3-32b'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('cloudflare', '@cf/mistralai/mistral-small-3.1-24b-instruct'), ('google_gemini', 'gemini-2.5-flash')]
+2025-10-21 14:26:11,063 - INFO - 🎯 Using 5 AI models for USD/CHF
+2025-10-21 14:26:13,747 - INFO - ✅ Cloudflare-@cf/google/gemma-3-12b-it signal for USD/CHF: BUY
+2025-10-21 14:26:14,542 - WARNING - ❌ Groq-qwen/qwen3-32b response for USD/CHF lacks valid JSON format. Response: <think>
+Okay, let's tackle this USD/CHF trade setup. The user wants a JSON response based on the provided technical analysis. First, I need to determine the action. The HTF trend is strong bearish, bu...
+2025-10-21 14:26:15,005 - INFO - ✅ Cloudflare-@cf/mistralai/mistral-small-3.1-24b-instruct signal for USD/CHF: BUY
+2025-10-21 14:26:15,554 - INFO - ✅ Groq-llama-3.3-70b-versatile signal for USD/CHF: BUY
+2025-10-21 14:26:18,426 - ERROR - ❌ Gemini analysis error for GBP/USD: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 10
+Please retry in 41.624850948s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 10
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 41
+}
+]
+2025-10-21 14:26:18,428 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-21 14:26:18,428 - INFO - ✅ Signal for GBP/USD: SELL (Agreement: 3/5)
+2025-10-21 14:26:19,569 - ERROR - ❌ Gemini analysis error for USD/CHF: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits.
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 10
+Please retry in 40.485263691s. [violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerMinutePerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 10
+}
+, links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, retry_delay {
+  seconds: 40
+}
+]
+2025-10-21 14:26:19,571 - INFO - 📊 Results: 3 successful, 0 failed
+2025-10-21 14:26:19,571 - INFO - ✅ Signal for USD/CHF: BUY (Agreement: 3/5)
+2025-10-21 14:26:19,572 - INFO - 📊 Analysis complete. 3 valid signals
+2025-10-21 14:26:19,572 - INFO - 📈 Performance Statistics: {
+  "total_analyses": 3,
+  "success_rate": 100.0,
+  "avg_analysis_time_sec": 40.36,
+  "avg_api_response_time_sec": 0,
+  "recent_analysis_times": [
+    [
+      "EUR/USD",
+      29.613030433654785
+    ],
+    [
+      "GBP/USD",
+      45.167802810668945
+    ],
+    [
+      "USD/CHF",
+      46.310731649398804
+    ]
+  ],
+  "recent_api_times": []
+}
+2025-10-21 14:26:19,572 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2025-10-21 14:26:19,572 - INFO - 💾 2 strong signals saved in root
+2025-10-21 14:26:19,572 - INFO - 💾 1 medium signals saved in root
+2025-10-21 14:26:19,573 - INFO - 💾 0 weak signals saved in root
+2025-10-21 14:26:19,573 - INFO - ✅ File strong_consensus_signals.json successfully created
+2025-10-21 14:26:19,573 - INFO - ✅ File medium_consensus_signals.json successfully created
+2025-10-21 14:26:19,573 - INFO - ✅ File weak_consensus_signals.json successfully created
+2025-10-21 14:26:19,573 - INFO - 📈 Results Summary:
+2025-10-21 14:26:19,573 - INFO - 🎯 Strong signals: 2
+2025-10-21 14:26:19,573 - INFO - 📊 Medium signals: 1
+2025-10-21 14:26:19,573 - INFO - 📈 Weak signals: 0
+2025-10-21 14:26:19,573 - INFO -   🔴 EUR/USD: SELL (Confidence: 6.0/10)
+2025-10-21 14:26:19,573 - INFO -   🔴 GBP/USD: SELL (Confidence: 5.7/10)
+2025-10-21 14:26:19,573 - INFO -   🟢 USD/CHF: BUY (Confidence: 7.3/10)
+2025-10-21 14:26:19,573 - INFO - 📊 Data Source Statistics:
+2025-10-21 14:26:19,573 - INFO -   twelvedata: 3 pairs
+2025-10-21 14:26:19,573 - INFO -   yahoo: 0 pairs
+2025-10-21 14:26:19,573 - INFO -   synthetic: 0 pairs
+2025-10-21 14:26:19,574 - INFO - 🚀 Performance Statistics:
+2025-10-21 14:26:19,574 - INFO -   Total Analyses: 3
+2025-10-21 14:26:19,574 - INFO -   Success Rate: 100.0%
+2025-10-21 14:26:19,574 - INFO -   Avg Analysis Time: 40.36s
+2025-10-21 14:26:19,574 - INFO -   Avg API Response Time: 0s
+2025-10-21 14:26:19,574 - INFO - 📊 API Usage Summary:
+  google_gemini: 24/1500 (1476 remaining)
+  cloudflare: 48/10000 (9952 remaining)
+  groq: 48/10000 (9952 remaining)
+
+2025-10-21 14:26:19,574 - INFO - 🏁 System execution completed
