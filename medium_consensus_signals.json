@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T18:38:38.323911+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.16059",
-    "STOP_LOSS": "1.16275",
-    "TAKE_PROFIT": "1.15809",
+    "timestamp": "2025-10-21T20:31:07.620383+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.15994",
+    "STOP_LOSS": "1.16101",
+    "TAKE_PROFIT": "1.15849",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bearish trend alignment and neutral momentum"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and oversold momentum convergence"
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,13 +22,29 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T18:38:45.883759+00:00",
-    "CONFIDENCE": 4.5,
-    "ENTRY": "1.33743",
-    "STOP_LOSS": "1.33593",
-    "TAKE_PROFIT": "1.34093",
+    "timestamp": "2025-10-21T20:31:14.876063+00:00",
+    "CONFIDENCE": 4.0,
+    "ENTRY": "1.33677",
+    "STOP_LOSS": "1.33587",
+    "TAKE_PROFIT": "1.33877",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Market is ranging with neutral momentum and weak trend. ML signal strength is low. Awaiting confirmation before initiating a trade."
+    "ANALYSIS": "The current technical setup indicates a ranging market with neutral to slightly bearish momentum. While there are some positive signals (RSI near neutral, ML confidence high), the overall trend is weak and market structure is ranging.  A buy is not warranted at this time."
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-21T20:31:22.566928+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "0.79630",
+    "STOP_LOSS": "0.79452",
+    "TAKE_PROFIT": "0.80010",
+    "RISK_REWARD_RATIO": "1.8",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, positive momentum convergence, and overbought stochastic indicating potential reversal"
   }
 ]
