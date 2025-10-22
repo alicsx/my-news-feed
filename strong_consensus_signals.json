@@ -1,33 +1,17 @@
 [
   {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T18:40:29.543419+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33595",
-    "STOP_LOSS": "1.33743",
-    "TAKE_PROFIT": "1.33245",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T18:40:37.272902+00:00",
+    "timestamp": "2025-10-22T20:31:15.654959+00:00",
     "CONFIDENCE": 6.3,
-    "ENTRY": "0.79556",
-    "STOP_LOSS": "0.79323",
-    "TAKE_PROFIT": "0.79841",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "0.79600",
+    "STOP_LOSS": "0.79412",
+    "TAKE_PROFIT": "0.79850",
+    "RISK_REWARD_RATIO": "1.8",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }

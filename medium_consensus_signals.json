@@ -6,13 +6,29 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T18:40:22.266011+00:00",
+    "timestamp": "2025-10-22T20:31:01.073238+00:00",
     "CONFIDENCE": 4.5,
-    "ENTRY": "1.16123",
-    "STOP_LOSS": "1.16023",
-    "TAKE_PROFIT": "1.16323",
+    "ENTRY": "1.16101",
+    "STOP_LOSS": "1.16024",
+    "TAKE_PROFIT": "1.16274",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite MACD bullish signal, the overall market structure is ranging and Stochastic is overbought. The weak HTF trend and neutral LTF trend suggest a cautious approach. ML signal strength is low. Holding current position pending further confirmation."
+    "ANALYSIS": "Despite bullish MACD and neutral momentum indicators, the 4H trend is strongly bearish and the market structure is ranging. Low ML signal strength suggests caution. Maintaining current position is advised."
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-22T20:31:08.869128+00:00",
+    "CONFIDENCE": 4.5,
+    "ENTRY": "1.33609",
+    "STOP_LOSS": "1.33597",
+    "TAKE_PROFIT": "1.33787",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Despite a bullish MACD signal, the overall market structure is ranging and the HTF trend is bearish. The ML signal strength is low, suggesting caution. Holding current position until a clear trend emerges."
   }
 ]
