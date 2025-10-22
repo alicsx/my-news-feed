@@ -6,14 +6,14 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T20:31:01.073238+00:00",
+    "timestamp": "2025-10-22T22:22:14.786951+00:00",
     "CONFIDENCE": 4.5,
-    "ENTRY": "1.16101",
-    "STOP_LOSS": "1.16024",
-    "TAKE_PROFIT": "1.16274",
+    "ENTRY": "1.16171",
+    "STOP_LOSS": "1.16061",
+    "TAKE_PROFIT": "1.16371",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite bullish MACD and neutral momentum indicators, the 4H trend is strongly bearish and the market structure is ranging. Low ML signal strength suggests caution. Maintaining current position is advised."
+    "ANALYSIS": "Despite MACD bullish signal, the overall market structure is ranging and the Stochastic is overbought. The HTF trend is bearish, suggesting caution. ML signal is weak. Holding current position is prudent."
   },
   {
     "SYMBOL": "GBP/USD",
@@ -22,13 +22,29 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T20:31:08.869128+00:00",
+    "timestamp": "2025-10-22T22:22:22.204223+00:00",
     "CONFIDENCE": 4.5,
-    "ENTRY": "1.33609",
-    "STOP_LOSS": "1.33597",
-    "TAKE_PROFIT": "1.33787",
+    "ENTRY": "1.33590",
+    "STOP_LOSS": "1.33473",
+    "TAKE_PROFIT": "1.33810",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite a bullish MACD signal, the overall market structure is ranging and the HTF trend is bearish. The ML signal strength is low, suggesting caution. Holding current position until a clear trend emerges."
+    "ANALYSIS": "Market is ranging, with a neutral LTF trend and neutral momentum indicators. MACD is bullish but no cross has occurred. ML signal is weak, suggesting caution. Current price is near key support/resistance."
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-22T22:22:29.882711+00:00",
+    "CONFIDENCE": 4.0,
+    "ENTRY": "0.79574",
+    "STOP_LOSS": "0.79474",
+    "TAKE_PROFIT": "0.79774",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Current technical setup indicates a ranging market with neutral momentum. While there's a slight bearish MACD signal, the overall trend is neutral. A breakout from either support or resistance is needed to establish a clear direction."
   }
 ]
