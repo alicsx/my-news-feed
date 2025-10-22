@@ -6,13 +6,13 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T16:36:30.067574+00:00",
+    "timestamp": "2025-10-22T18:40:22.266011+00:00",
     "CONFIDENCE": 4.5,
-    "ENTRY": "1.16202",
-    "STOP_LOSS": "1.16186",
-    "TAKE_PROFIT": "1.16402",
+    "ENTRY": "1.16123",
+    "STOP_LOSS": "1.16023",
+    "TAKE_PROFIT": "1.16323",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite bullish MACD and neutral momentum, the overall market structure is ranging and the HTF trend is bearish. Stochastic is overbought, suggesting a potential pullback. ML signal is weak. Holding current position with tight stop-loss."
+    "ANALYSIS": "Despite MACD bullish signal, the overall market structure is ranging and Stochastic is overbought. The weak HTF trend and neutral LTF trend suggest a cautious approach. ML signal strength is low. Holding current position pending further confirmation."
   }
 ]
