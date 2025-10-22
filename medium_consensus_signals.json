@@ -1,34 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T08:38:28.638409+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.15925",
-    "STOP_LOSS": "1.16081",
-    "TAKE_PROFIT": "1.15625",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
-  },
-  {
     "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T08:38:35.366759+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33152",
-    "STOP_LOSS": "1.33336",
-    "TAKE_PROFIT": "1.32752",
-    "RISK_REWARD_RATIO": "1.8",
+    "timestamp": "2025-10-22T10:31:29.915484+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.33087",
+    "STOP_LOSS": "1.33287",
+    "TAKE_PROFIT": "1.32637",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and oversold momentum convergence"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment, oversold momentum, and ranging market structure"
   }
 ]
