@@ -1,18 +1,34 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-22T04:32:06.784999+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.16067",
+    "STOP_LOSS": "1.16253",
+    "TAKE_PROFIT": "1.15807",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
+  },
+  {
     "SYMBOL": "GBP/USD",
     "ACTION": "HOLD",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T02:05:22.596659+00:00",
+    "timestamp": "2025-10-22T04:32:13.969420+00:00",
     "CONFIDENCE": 4.0,
-    "ENTRY": "1.33727",
-    "STOP_LOSS": "1.33627",
-    "TAKE_PROFIT": "1.33927",
+    "ENTRY": "1.33761",
+    "STOP_LOSS": "1.33661",
+    "TAKE_PROFIT": "1.33961",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "The market is ranging with weak HTF trend and neutral momentum indicators. ML signal is weak. Maintaining current position is advised."
+    "ANALYSIS": "Market is ranging and showing neutral momentum. While MACD is bullish, the overall technical picture suggests a hold position. ML signal is weak."
   }
 ]
