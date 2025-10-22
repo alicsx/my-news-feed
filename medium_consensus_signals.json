@@ -1,18 +1,18 @@
 [
   {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "BUY",
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-22T14:30:31.943200+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33524",
-    "STOP_LOSS": "1.33306",
-    "TAKE_PROFIT": "1.33774",
+    "timestamp": "2025-10-22T16:36:30.067574+00:00",
+    "CONFIDENCE": 4.5,
+    "ENTRY": "1.16202",
+    "STOP_LOSS": "1.16186",
+    "TAKE_PROFIT": "1.16402",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD cross and potential range breakout"
+    "ANALYSIS": "Despite bullish MACD and neutral momentum, the overall market structure is ranging and the HTF trend is bearish. Stochastic is overbought, suggesting a potential pullback. ML signal is weak. Holding current position with tight stop-loss."
   }
 ]
