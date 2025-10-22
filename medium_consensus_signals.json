@@ -1,34 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T22:23:37.000615+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.16050",
-    "STOP_LOSS": "1.16200",
-    "TAKE_PROFIT": "1.15700",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
-  },
-  {
     "SYMBOL": "GBP/USD",
-    "ACTION": "BUY",
+    "ACTION": "HOLD",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-21T22:23:44.689975+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33695",
-    "STOP_LOSS": "1.33419",
-    "TAKE_PROFIT": "1.34041",
-    "RISK_REWARD_RATIO": "1.8",
+    "timestamp": "2025-10-22T02:05:22.596659+00:00",
+    "CONFIDENCE": 4.0,
+    "ENTRY": "1.33727",
+    "STOP_LOSS": "1.33627",
+    "TAKE_PROFIT": "1.33927",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, weak trend strength, and accumulation market phase"
+    "ANALYSIS": "The market is ranging with weak HTF trend and neutral momentum indicators. ML signal is weak. Maintaining current position is advised."
   }
 ]
