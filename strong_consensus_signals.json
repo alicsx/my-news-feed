@@ -1,33 +1,17 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-23T08:30:35.159604+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.16039",
-    "STOP_LOSS": "1.16223",
-    "TAKE_PROFIT": "1.15739",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bearish trend alignment and neutral momentum"
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-23T08:30:50.592753+00:00",
+    "timestamp": "2025-10-23T08:37:33.504514+00:00",
     "CONFIDENCE": 6.3,
-    "ENTRY": "0.79716",
-    "STOP_LOSS": "0.79558",
-    "TAKE_PROFIT": "0.80034",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "0.79750",
+    "STOP_LOSS": "0.79592",
+    "TAKE_PROFIT": "0.80008",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
