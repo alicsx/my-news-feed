@@ -6,13 +6,13 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-23T06:39:52.299455+00:00",
+    "timestamp": "2025-10-23T08:30:42.647640+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.33504",
-    "STOP_LOSS": "1.33604",
-    "TAKE_PROFIT": "1.33204",
-    "RISK_REWARD_RATIO": "1.5",
+    "ENTRY": "1.33559",
+    "STOP_LOSS": "1.33709",
+    "TAKE_PROFIT": "1.33209",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite bullish MACD and Stochastic, the overall HTF and LTF trends are bearish, with a ranging market structure and neutral momentum indicators. ML signal weak. Considering the key resistance and current bearish bias, a short trade is favored."
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and weak bullish momentum"
   }
 ]
