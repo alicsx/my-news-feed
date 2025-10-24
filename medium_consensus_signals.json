@@ -1,18 +1,34 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T10:31:02.942881+00:00",
+    "timestamp": "2025-10-24T12:57:39.167097+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79605",
-    "STOP_LOSS": "0.79480",
-    "TAKE_PROFIT": "0.79880",
+    "ENTRY": "1.33421",
+    "STOP_LOSS": "1.33568",
+    "TAKE_PROFIT": "1.33188",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Despite bullish MACD and Stochastic, HTF and LTF trends are bearish, and market structure is ranging. ML signal is weak.  A sell is favored given the stronger bearish trend and potential for consolidation breakdown."
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-24T12:57:46.714453+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "0.79456",
+    "STOP_LOSS": "0.79607",
+    "TAKE_PROFIT": "0.79106",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on strong bearish trend in LTF and neutral momentum bias"
   }
 ]
