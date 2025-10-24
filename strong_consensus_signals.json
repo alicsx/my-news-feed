@@ -1,34 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T08:29:40.290600+00:00",
-    "CONFIDENCE": 4.0,
-    "ENTRY": "1.16074",
-    "STOP_LOSS": "1.15904",
-    "TAKE_PROFIT": "1.16224",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on neutral trend alignment and ranging market structure"
-  },
-  {
     "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T08:29:47.130810+00:00",
+    "timestamp": "2025-10-24T08:35:44.253460+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "1.33025",
-    "STOP_LOSS": "1.33209",
-    "TAKE_PROFIT": "1.32625",
+    "ENTRY": "1.33188",
+    "STOP_LOSS": "1.33398",
+    "TAKE_PROFIT": "1.32838",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and bearish momentum convergence"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
   }
 ]
