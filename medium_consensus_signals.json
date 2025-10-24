@@ -1,34 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T08:35:39.381698+00:00",
-    "CONFIDENCE": 4.0,
-    "ENTRY": "1.16098",
-    "STOP_LOSS": "1.16081",
-    "TAKE_PROFIT": "1.16248",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite a weak HTF bearish trend, the LTF is neutral and momentum indicators are also neutral. The market is ranging and in an accumulation phase, suggesting a holding position or waiting for a clearer signal."
-  },
-  {
     "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
+    "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T08:35:56.103530+00:00",
-    "CONFIDENCE": 4.0,
-    "ENTRY": "0.79590",
-    "STOP_LOSS": "0.79490",
-    "TAKE_PROFIT": "0.80090",
-    "RISK_REWARD_RATIO": "1.5",
+    "timestamp": "2025-10-24T10:31:02.942881+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "0.79605",
+    "STOP_LOSS": "0.79480",
+    "TAKE_PROFIT": "0.79880",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite some bullish indicators (MACD, RSI near neutral), the overall market structure is ranging and the HTF trend is neutral with weak strength. The ML signal is weak, suggesting caution.  A holding position is warranted while waiting for a clearer directional signal."
+    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
   }
 ]
