@@ -1,34 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T04:31:29.165809+00:00",
-    "CONFIDENCE": 4.0,
-    "ENTRY": "1.16067",
-    "STOP_LOSS": "1.16167",
-    "TAKE_PROFIT": "1.16467",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "The market is ranging with a weak bearish 4H trend and neutral momentum. ML signal is weak and confidence is high. Trading in this environment carries low risk."
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T04:31:48.160956+00:00",
+    "timestamp": "2025-10-24T06:38:56.967461+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79600",
-    "STOP_LOSS": "0.79426",
-    "TAKE_PROFIT": "0.79874",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "0.79588",
+    "STOP_LOSS": "0.79447",
+    "TAKE_PROFIT": "0.79737",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal and potential range breakout"
   }
 ]
