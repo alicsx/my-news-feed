@@ -6,30 +6,14 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T03:07:04.400007+00:00",
+    "timestamp": "2025-10-24T04:31:29.165809+00:00",
     "CONFIDENCE": 4.0,
-    "ENTRY": "1.16084",
-    "STOP_LOSS": "1.16284",
-    "TAKE_PROFIT": "1.16584",
+    "ENTRY": "1.16067",
+    "STOP_LOSS": "1.16167",
+    "TAKE_PROFIT": "1.16467",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Despite bearish HTF trend, LTF is neutral with EMA alignment. MACD shows bearish cross, but RSI and Stochastic are neutral. Market structure is ranging and in an accumulation phase. Low risk level and low volatility suggest holding current position."
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T03:07:11.570859+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33207",
-    "STOP_LOSS": "1.33357",
-    "TAKE_PROFIT": "1.32807",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
+    "ANALYSIS": "The market is ranging with a weak bearish 4H trend and neutral momentum. ML signal is weak and confidence is high. Trading in this environment carries low risk."
   },
   {
     "SYMBOL": "USD/CHF",
@@ -38,13 +22,13 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T03:07:19.256754+00:00",
-    "CONFIDENCE": 6.5,
-    "ENTRY": "0.79577",
-    "STOP_LOSS": "0.79377",
-    "TAKE_PROFIT": "0.79877",
-    "RISK_REWARD_RATIO": "1.5",
+    "timestamp": "2025-10-24T04:31:48.160956+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "0.79600",
+    "STOP_LOSS": "0.79426",
+    "TAKE_PROFIT": "0.79874",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD crossover and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
   }
 ]
