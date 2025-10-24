@@ -1,18 +1,18 @@
 [
   {
-    "SYMBOL": "USD/CHF",
+    "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-24T18:36:00.845020+00:00",
+    "timestamp": "2025-10-24T20:30:37.402306+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79562",
-    "STOP_LOSS": "0.79708",
-    "TAKE_PROFIT": "0.79212",
-    "RISK_REWARD_RATIO": "1.7",
+    "ENTRY": "1.33166",
+    "STOP_LOSS": "1.33366",
+    "TAKE_PROFIT": "1.32766",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and neutral momentum bias"
+    "ANALYSIS": "Despite bullish MACD signal, the strong bearish HTF and LTF trends, combined with ranging market structure and neutral momentum indicators suggest a potential shorting opportunity. ML signal is weak."
   }
 ]
