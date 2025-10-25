@@ -1,18 +1,1 @@
-[
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 2,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-25T10:27:41.101161+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33051",
-    "STOP_LOSS": "1.33241",
-    "TAKE_PROFIT": "1.32651",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
-  }
-]
+[]
