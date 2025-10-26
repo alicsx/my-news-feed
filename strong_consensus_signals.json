@@ -6,7 +6,7 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-26T14:23:25.960646+00:00",
+    "timestamp": "2025-10-26T16:31:30.803280+00:00",
     "CONFIDENCE": 6.3,
     "ENTRY": "1.16246",
     "STOP_LOSS": "1.16046",
@@ -22,7 +22,7 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-26T14:23:32.921207+00:00",
+    "timestamp": "2025-10-26T16:31:39.535291+00:00",
     "CONFIDENCE": 6.0,
     "ENTRY": "1.33051",
     "STOP_LOSS": "1.33241",
@@ -30,5 +30,21 @@
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-26T16:31:51.939253+00:00",
+    "CONFIDENCE": 5.7,
+    "ENTRY": "0.79440",
+    "STOP_LOSS": "0.79628",
+    "TAKE_PROFIT": "0.79040",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and weak bullish momentum"
   }
 ]
