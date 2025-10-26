@@ -1,18 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 2,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-26T04:31:42.304836+00:00",
-    "CONFIDENCE": 6.5,
-    "ENTRY": "1.16246",
-    "STOP_LOSS": "1.16046",
-    "TAKE_PROFIT": "1.16546",
-    "RISK_REWARD_RATIO": "1.5",
+    "timestamp": "2025-10-26T06:38:37.328241+00:00",
+    "CONFIDENCE": 5.5,
+    "ENTRY": "0.79440",
+    "STOP_LOSS": "0.79628",
+    "TAKE_PROFIT": "0.79040",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and weak bullish momentum"
   }
 ]
