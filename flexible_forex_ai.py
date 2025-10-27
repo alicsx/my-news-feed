@@ -1361,6 +1361,7 @@ class EnhancedAIManager:
         
         if gemini_api_key:
             genai.configure(api_key=gemini_api_key)
+
     def _extract_gemini_text(self, resp) -> Optional[str]:
         # حالت استاندارد (بعضی نسخه‌ها .text دارند)
         if getattr(resp, "text", None):
@@ -1509,7 +1510,10 @@ CRITICAL:
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Gemini with improved error handling"""
         try:
-            model = genai.GenerativeModel(model_name,system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose.")
+            model = genai.GenerativeModel(
+                model_name,
+                system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose."
+            )
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
@@ -1519,33 +1523,14 @@ CRITICAL:
                     response_mime_type="application/json",
                 )
             )
+
             raw = self._extract_gemini_text(response)
             if not raw:
                 logging.warning(f"❌ Gemini returned empty content for {symbol}")
                 return None
 
-return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
-            # Handle Gemini response safely
-            try:
-                if hasattr(response, 'text') and response.text:
-                    return self._parse_ai_response(response.text, symbol, f"Gemini-{model_name}")
-            except ValueError as e:
-                if "no valid Part" in str(e) or "finish_reason" in str(e):
-                     logging.warning(f"⚠️ Gemini response structure issue for {symbol}, trying alternative extraction")
-                     # Try to extract content from response candidates
-                     if hasattr(response, 'candidates') and response.candidates:
-                        for candidate in response.candidates:
-                            if hasattr(candidate, 'content') and candidate.content:
-                                for part in candidate.content.parts:
-                                    if hasattr(part, 'text') and part.text:
-                                        return self._parse_ai_response(part.text, symbol, f"Gemini-{model_name}")
-                     return None
-                else:
-                     raise e
-                
-            logging.warning(f"❌ Gemini returned empty response for {symbol}")
-            return None
-            
+            return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
+
         except Exception as e:
             logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
             return None
@@ -2084,5 +2069,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-      
