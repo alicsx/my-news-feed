@@ -1,34 +1,18 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
+    "VALID_MODELS": 2,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-27T04:37:51.514775+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33145",
-    "STOP_LOSS": "1.32919",
-    "TAKE_PROFIT": "1.33391",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-27T06:44:11.958149+00:00",
+    "CONFIDENCE": 6.5,
+    "ENTRY": "1.16308",
+    "STOP_LOSS": "1.16118",
+    "TAKE_PROFIT": "1.16568",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
-  },
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-27T04:37:58.557826+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "0.79622",
-    "STOP_LOSS": "0.79454",
-    "TAKE_PROFIT": "0.79896",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
 ]

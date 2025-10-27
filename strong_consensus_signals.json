@@ -1,18 +1,1 @@
-[
-  {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-27T04:37:43.805143+00:00",
-    "CONFIDENCE": 5.7,
-    "ENTRY": "1.16221",
-    "STOP_LOSS": "1.16076",
-    "TAKE_PROFIT": "1.16486",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish LTF trend alignment and ranging market structure"
-  }
-]
+[]
