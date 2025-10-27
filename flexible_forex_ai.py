@@ -1514,6 +1514,8 @@ CRITICAL:
                 model_name,
                 system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose."
             )
+
+            # کوشش اصلی
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
@@ -1524,9 +1526,33 @@ CRITICAL:
                 )
             )
 
+            # اگر کاندیدا هست بررسی finish_reason
+            try:
+                if getattr(response, "candidates", None):
+                    # 1 = STOP
+                    fr = getattr(response.candidates[0], "finish_reason", None)
+                    if fr is not None and fr != 1:
+                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol}, skipping content")
+                        return None
+            except Exception:
+                pass
+
             raw = self._extract_gemini_text(response)
             if not raw:
                 logging.warning(f"❌ Gemini returned empty content for {symbol}")
+                # Fallback دوم با دمای پایین‌تر و توکن کمتر
+                response2 = await asyncio.to_thread(
+                    model.generate_content,
+                    prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.0,
+                        max_output_tokens=300,
+                        response_mime_type="application/json",
+                    )
+                )
+                raw = self._extract_gemini_text(response2)
+
+            if not raw:
                 return None
 
             return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
@@ -1642,72 +1668,100 @@ CRITICAL:
             return None
 
     def _parse_ai_response(self, response, symbol: str, ai_name: str) -> Optional[Dict]:
-        """Parse AI response with enhanced validation and robust error handling"""
+    """Parse AI response with enhanced validation and robust error handling"""
+    try:
+        # Handle both string and dictionary responses
+        if isinstance(response, dict):
+            # If response is already a dict, use it directly
+            cleaned_response = json.dumps(response, ensure_ascii=False)
+        else:
+            # If response is string, clean it
+            cleaned_response = (response or "").strip()
+
+            # Remove markdown and code blocks
+            cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
+            cleaned_response = re.sub(r'```\s*', '', cleaned_response)
+
+            # پاک کردن بلاک‌های تفکر مدل‌ها مثل <think>...</think>
+            cleaned_response = re.sub(
+                r'<think>.*?</think>',
+                '',
+                cleaned_response,
+                flags=re.DOTALL | re.IGNORECASE
+            )
+            # اگر پاسخ با <think> شروع شده و تگ بسته پیدا نشد، تا اولین آکولاد حذف کن
+            if cleaned_response.lstrip().lower().startswith('<think>'):
+                brace_idx = cleaned_response.find('{')
+                if brace_idx != -1:
+                    cleaned_response = cleaned_response[brace_idx:]
+
+            # حذف تگ‌های شبه-XML عمومی (در صورت باقی‌ماندن)
+            cleaned_response = re.sub(r'</?[^>]+>', '', cleaned_response)
+
+            # حذف پیش‌متن‌های رایج قبل از JSON (system:, assistant:, user:, inst:, instruction:, thought:)
+            cleaned_response = re.sub(
+                r'^\s*(system|assistant|user|inst|instruction|thought)\s*:\s*.*?(?=\{)',
+                '',
+                cleaned_response,
+                flags=re.IGNORECASE | re.DOTALL
+            )
+
+            # اگر هنوز قبل از اولین '{' نویز هست، آن را حذف کن
+            if '{' in cleaned_response:
+                cleaned_response = cleaned_response[cleaned_response.find('{'):]
+
+        # Find JSON in response
+        json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
+        if json_match:
+            json_str = json_match.group(0)
+            signal_data = json.loads(json_str)
+
+            if self._validate_signal_data(signal_data, symbol):
+                signal_data['ai_model'] = ai_name
+                signal_data['timestamp'] = datetime.now(UTC).isoformat()
+
+                # Validate numeric values
+                signal_data = self._validate_numeric_values(signal_data, symbol)
+
+                logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
+                return signal_data
+
+        # Log the problematic response safely
         try:
-            # Handle both string and dictionary responses
             if isinstance(response, dict):
-                # If response is already a dict, use it directly
-                cleaned_response = json.dumps(response, ensure_ascii=False)
+                response_preview = json.dumps(response, ensure_ascii=False)[:200]
             else:
-                # If response is string, clean it
-                cleaned_response = response.strip()
-                
-                # Remove markdown and code blocks
-                cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
-                cleaned_response = re.sub(r'```\s*', '', cleaned_response)
-            
-            # Find JSON in response
-            json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
-            if json_match:
-                json_str = json_match.group(0)
-                signal_data = json.loads(json_str)
-                
-                if self._validate_signal_data(signal_data, symbol):
-                    signal_data['ai_model'] = ai_name
-                    signal_data['timestamp'] = datetime.now(UTC).isoformat()
-                    
-                    # Validate numeric values
-                    signal_data = self._validate_numeric_values(signal_data, symbol)
-                    
-                    logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
-                    return signal_data
-                    
-            # Log the problematic response safely
-            try:
-                if isinstance(response, dict):
-                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
-                else:
-                    response_preview = str(response)[:200] if response else "Empty response"
-            except:
-                response_preview = "Unable to preview response"
-                
-            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format. Response: {response_preview}...")
-            return None
-            
-        except json.JSONDecodeError as e:
-            # Safely log JSON decode errors
-            try:
-                if isinstance(response, dict):
-                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
-                else:
-                    response_preview = str(response)[:200] if response else "Empty response"
-            except:
-                response_preview = "Unable to preview response"
-                
-            logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}. Response: {response_preview}...")
-            return None
-        except Exception as e:
-            # Safely log any other errors
-            try:
-                if isinstance(response, dict):
-                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
-                else:
-                    response_preview = str(response)[:200] if response else "Empty response"
-            except:
-                response_preview = "Unable to preview response"
-                
-            logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response_preview}...")
-            return None
+                response_preview = str(response)[:200] if response else "Empty response"
+        except:
+            response_preview = "Unable to preview response"
+
+        logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format. Response: {response_preview}...")
+        return None
+
+    except json.JSONDecodeError as e:
+        # Safely log JSON decode errors
+        try:
+            if isinstance(response, dict):
+                response_preview = json.dumps(response, ensure_ascii=False)[:200]
+            else:
+                response_preview = str(response)[:200] if response else "Empty response"
+        except:
+            response_preview = "Unable to preview response"
+
+        logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}. Response: {response_preview}...")
+        return None
+    except Exception as e:
+        # Safely log any other errors
+        try:
+            if isinstance(response, dict):
+                response_preview = json.dumps(response, ensure_ascii=False)[:200]
+            else:
+                response_preview = str(response)[:200] if response else "Empty response"
+        except:
+            response_preview = "Unable to preview response"
+
+        logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response_preview}...")
+        return None
 
     def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
         """Validate signal data"""
