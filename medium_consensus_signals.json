@@ -1,34 +1,34 @@
 [
   {
     "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
+    "ACTION": "HOLD",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 2,
+    "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-26T22:26:25.465699+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33051",
-    "STOP_LOSS": "1.33231",
-    "TAKE_PROFIT": "1.32651",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-27T02:12:19.186521+00:00",
+    "CONFIDENCE": 4.5,
+    "ENTRY": "1.33225",
+    "STOP_LOSS": "1.33061",
+    "TAKE_PROFIT": "1.33424",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
+    "ANALYSIS": "The market is currently ranging and exhibiting neutral momentum despite a bullish MACD signal.  The 4H trend is bearish, but the LTF is neutral and EMAs are aligned. Accumulation phase suggests potential for a short-term reversal, but confirmation is needed.  A hold is advised until a clearer directional bias emerges."
   },
   {
     "SYMBOL": "USD/CHF",
-    "ACTION": "SELL",
+    "ACTION": "BUY",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 2,
+    "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-26T22:26:33.423062+00:00",
-    "CONFIDENCE": 5.5,
-    "ENTRY": "0.79440",
-    "STOP_LOSS": "0.79628",
-    "TAKE_PROFIT": "0.79040",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-27T02:12:26.761706+00:00",
+    "CONFIDENCE": 6.5,
+    "ENTRY": "0.79570",
+    "STOP_LOSS": "0.79326",
+    "TAKE_PROFIT": "0.79820",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and weak bullish momentum"
+    "ANALYSIS": "Technical analysis based on bullish MACD crossover and EMA alignment in a ranging market structure"
   }
 ]
