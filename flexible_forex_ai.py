@@ -1361,6 +1361,18 @@ class EnhancedAIManager:
         
         if gemini_api_key:
             genai.configure(api_key=gemini_api_key)
+    def _extract_gemini_text(self, resp) -> Optional[str]:
+        # حالت استاندارد (بعضی نسخه‌ها .text دارند)
+        if getattr(resp, "text", None):
+            return resp.text
+        # حالت کاندیدا/پارت‌ها
+        if getattr(resp, "candidates", None):
+            for c in resp.candidates:
+                if getattr(c, "content", None) and getattr(c.content, "parts", None):
+                    for p in c.content.parts:
+                        if getattr(p, "text", None):
+                            return p.text
+        return None
 
     def _create_enhanced_english_prompt(self, symbol: str, technical_analysis: Dict) -> str:
         """Create enhanced English prompt for AI analysis"""
@@ -1497,16 +1509,22 @@ CRITICAL:
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Gemini with improved error handling"""
         try:
-            model = genai.GenerativeModel(model_name)
+            model = genai.GenerativeModel(model_name,system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose.")
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
                 generation_config=genai.types.GenerationConfig(
                     temperature=0.1,
                     max_output_tokens=500,
+                    response_mime_type="application/json",
                 )
             )
-            
+            raw = self._extract_gemini_text(response)
+if not raw:
+    logging.warning(f"❌ Gemini returned empty content for {symbol}")
+    return None
+
+return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
             # Handle Gemini response safely
             try:
                 if hasattr(response, 'text') and response.text:
