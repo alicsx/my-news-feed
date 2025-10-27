@@ -1520,9 +1520,9 @@ CRITICAL:
                 )
             )
             raw = self._extract_gemini_text(response)
-if not raw:
-    logging.warning(f"❌ Gemini returned empty content for {symbol}")
-    return None
+            if not raw:
+                logging.warning(f"❌ Gemini returned empty content for {symbol}")
+                return None
 
 return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
             # Handle Gemini response safely
