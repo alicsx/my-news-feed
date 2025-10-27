@@ -6,13 +6,13 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-27T08:31:01.091054+00:00",
-    "CONFIDENCE": 6.7,
-    "ENTRY": "0.79660",
-    "STOP_LOSS": "0.79492",
-    "TAKE_PROFIT": "0.80008",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-27T08:38:25.077858+00:00",
+    "CONFIDENCE": 6.3,
+    "ENTRY": "0.79649",
+    "STOP_LOSS": "0.79460",
+    "TAKE_PROFIT": "0.79929",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment, positive momentum convergence, and key level breakout potential in an accumulation market phase"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
   }
 ]
