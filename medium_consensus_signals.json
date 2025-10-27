@@ -1,18 +1,18 @@
 [
   {
     "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
+    "ACTION": "HOLD",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 2,
+    "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-27T10:33:26.941908+00:00",
-    "CONFIDENCE": 5.5,
-    "ENTRY": "1.33431",
-    "STOP_LOSS": "1.33647",
-    "TAKE_PROFIT": "1.32931",
-    "RISK_REWARD_RATIO": "1.7",
+    "timestamp": "2025-10-27T12:58:06.852433+00:00",
+    "CONFIDENCE": 4.5,
+    "ENTRY": "1.33467",
+    "STOP_LOSS": "1.33367",
+    "TAKE_PROFIT": "1.33667",
+    "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend on higher timeframe and overbought stochastic"
+    "ANALYSIS": "Despite bullish MACD, the overall trend is bearish on the higher timeframe and market structure is ranging. Stochastic is overbought. A hold is advised until further confirmation."
   }
 ]
