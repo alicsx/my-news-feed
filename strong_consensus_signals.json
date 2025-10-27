@@ -1,34 +1,18 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-27T14:29:45.395412+00:00",
-    "CONFIDENCE": 6.3,
-    "ENTRY": "1.16379",
-    "STOP_LOSS": "1.16181",
-    "TAKE_PROFIT": "1.16634",
-    "RISK_REWARD_RATIO": "1.5",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-27T14:29:59.898145+00:00",
-    "CONFIDENCE": 6.3,
-    "ENTRY": "0.79615",
-    "STOP_LOSS": "0.79470",
-    "TAKE_PROFIT": "0.79935",
-    "RISK_REWARD_RATIO": "1.8",
+    "timestamp": "2025-10-27T16:36:01.137341+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "0.79588",
+    "STOP_LOSS": "0.79426",
+    "TAKE_PROFIT": "0.79826",
+    "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+    "ANALYSIS": "Technical analysis based on bullish LTF trend and potential range breakout"
   }
 ]

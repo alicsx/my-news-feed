@@ -1,18 +1,34 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-27T16:36:41.988169+00:00",
+    "CONFIDENCE": 6.5,
+    "ENTRY": "1.16402",
+    "STOP_LOSS": "1.16210",
+    "TAKE_PROFIT": "1.16653",
+    "RISK_REWARD_RATIO": "1.5",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence"
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-27T14:29:52.141266+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "1.33300",
-    "STOP_LOSS": "1.33122",
-    "TAKE_PROFIT": "1.33550",
+    "timestamp": "2025-10-27T16:35:53.151466+00:00",
+    "CONFIDENCE": 4.5,
+    "ENTRY": "1.33328",
+    "STOP_LOSS": "1.33163",
+    "TAKE_PROFIT": "1.33728",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish MACD signal, neutral RSI, and ranging market structure"
+    "ANALYSIS": "The market is currently ranging, despite bullish MACD and neutral momentum indicators. The weak HTF trend and accumulation phase suggest caution. Maintaining the current position is recommended."
   }
 ]
