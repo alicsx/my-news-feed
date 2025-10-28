@@ -6,13 +6,16 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-28T18:49:08.169050+00:00",
-    "CONFIDENCE": 6.7,
-    "ENTRY": "1.16615",
-    "STOP_LOSS": "1.16493",
-    "TAKE_PROFIT": "1.16883",
+    "timestamp": "2025-10-28T19:21:21.384045+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.16637",
+    "STOP_LOSS": "1.16471",
+    "TAKE_PROFIT": "1.16874",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment, EMA convergence, and potential key level breakout"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, positive momentum convergence, and overbought stochastic indicating potential for mean reversion",
+    "POSITION_UNITS": 25797.3069,
+    "LEVERAGE_EST": 7.03,
+    "RISK_USD": 100.0
   }
 ]
