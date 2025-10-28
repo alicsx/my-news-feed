@@ -1955,7 +1955,7 @@ CRITICAL:
                         combined[field] = "1.5"
                         
         return combined
-```0
+
 
 # =================================================================================
 # --- Main Forex Analyzer Class with Enhanced Error Handling ---
