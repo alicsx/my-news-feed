@@ -6,29 +6,13 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-28T14:30:23.248591+00:00",
+    "timestamp": "2025-10-28T16:37:16.819692+00:00",
     "CONFIDENCE": 6.7,
-    "ENTRY": "1.16544",
-    "STOP_LOSS": "1.16323",
-    "TAKE_PROFIT": "1.16893",
+    "ENTRY": "1.16616",
+    "STOP_LOSS": "1.16452",
+    "TAKE_PROFIT": "1.16884",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on bullish trend alignment, EMA convergence, and accumulation market phase"
-  },
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "SELL",
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-28T14:30:20.541083+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "0.79437",
-    "STOP_LOSS": "0.79659",
-    "TAKE_PROFIT": "0.78937",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on strong bearish trend alignment and moderate ADX strength"
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, EMA convergence, and potential key level breakout"
   }
 ]
