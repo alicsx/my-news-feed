@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-28T10:32:28.359655+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "1.33198",
+    "STOP_LOSS": "1.32962",
+    "TAKE_PROFIT": "1.33523",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on oversold stochastic, weak bearish trend, and accumulation market phase"
+  }
+]

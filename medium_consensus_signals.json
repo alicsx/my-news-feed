@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-28T10:32:21.387087+00:00",
+    "CONFIDENCE": 7.0,
+    "ENTRY": "1.16593",
+    "STOP_LOSS": "1.16356",
+    "TAKE_PROFIT": "1.16842",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bullish trend alignment, EMA convergence, and neutral momentum"
+  }
+]
