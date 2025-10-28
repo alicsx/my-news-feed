@@ -696,7 +696,7 @@ class AdvancedTechnicalAnalyzer:
             # Return basic analysis as fallback
             return self._generate_basic_analysis(symbol, htf_df, ltf_df)
 
-except Exception as e:
+        except Exception as e:
             logging.error(f"❌ Error generating technical analysis for {symbol}: {e}")
             # Return basic analysis as fallback
             return self._generate_basic_analysis(symbol, htf_df, ltf_df)
