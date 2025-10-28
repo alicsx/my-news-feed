@@ -1508,51 +1508,116 @@ CRITICAL:
             return None
 
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Gemini with improved error handling"""
+        """Get analysis from Gemini with improved error handling (handles MAX_TOKENS & empty parts)"""
         try:
             model = genai.GenerativeModel(
                 model_name,
                 system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose."
             )
 
-            # کوشش اصلی
+            def _has_blocked_safety(d):
+                try:
+                    pf = d.get("prompt_feedback")
+                    if pf and pf.get("block_reason"):
+                        return True
+                    # بعضی نسخه‌ها به‌جای بالا از safety_ratings/citation_metadata استفاده می‌کنند
+                    cands = d.get("candidates") or []
+                    if cands and isinstance(cands, list):
+                        br = cands[0].get("finish_reason")
+                        # 7 یا 3 در بعضی enumها: محتوای ممنوع یا Safety
+                        if br in (7, 3):
+                            return True
+                except:
+                    pass
+                return False
+
+            # تلاش 1: تنظیمات معمول
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
                 generation_config=genai.types.GenerationConfig(
                     temperature=0.1,
-                    max_output_tokens=500,
+                    max_output_tokens=700,          # کمی بالاتر از 500
                     response_mime_type="application/json",
                 )
             )
 
-            # اگر کاندیدا هست بررسی finish_reason
+            # ساخت dict برای بررسی دقیق
+            as_dict = None
+            try:
+                as_dict = response.to_dict()
+            except Exception:
+                as_dict = None
+
+            # اگر Safety بلاک کرد، سریع خارج شو
+            if as_dict and _has_blocked_safety(as_dict):
+                logging.warning(f"⚠️ Gemini safety blocked for {symbol}")
+                return None
+
+            # اگر finish_reason != STOP، ولی parts داریم، همچنان سعی کن متن را استخراج و parse کنی
+            # (finish_reason=2 => MAX_TOKENS؛ گاهی با این وجود JSON کامل آمده)
             try:
                 if getattr(response, "candidates", None):
-                    # 1 = STOP
                     fr = getattr(response.candidates[0], "finish_reason", None)
                     if fr is not None and fr != 1:
-                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol}, skipping content")
-                        return None
+                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (will still try to parse if parts exist)")
             except Exception:
                 pass
 
             raw = self._extract_gemini_text(response)
+
+            # اگر خالی بود، یک fallback: یا پرامپت کوتاه‌تر + توکن بیشتر/کمتر
             if not raw:
-                logging.warning(f"❌ Gemini returned empty content for {symbol}")
-                # Fallback دوم با دمای پایین‌تر و توکن کمتر
+                logging.warning(f"ℹ️ Gemini empty parts on attempt 1 for {symbol}, retrying with shorter prompt")
+                short_prompt = prompt
+                try:
+                    # کوتاه‌سازی ساده: فقط بخش‌های کلیدی را نگه داریم
+                    # (اگر دنبال کم‌ترین تغییر هستی، همین حد کافی است)
+                    keep_keys = [
+                        "SYMBOL", "CURRENT PRICE", "TECHNICAL ANALYSIS SUMMARY",
+                        "CALCULATION INSTRUCTIONS", "RETURN ONLY THIS EXACT JSON FORMAT", "CRITICAL"
+                    ]
+                    lines = [ln for ln in prompt.splitlines() if any(k in ln for k in keep_keys)]
+                    # اگر خیلی کوتاه شد، حداقل خطوط اصلی را نگه دار
+                    if len(lines) < 12:
+                        lines = prompt.splitlines()[:60]
+                    short_prompt = "\n".join(lines)
+                except Exception:
+                    short_prompt = prompt
+
                 response2 = await asyncio.to_thread(
                     model.generate_content,
-                    prompt,
+                    short_prompt,
                     generation_config=genai.types.GenerationConfig(
                         temperature=0.0,
-                        max_output_tokens=300,
+                        max_output_tokens=800,      # کمی بیشتر تا شانس اتمام JSON بالاتر برود
                         response_mime_type="application/json",
                     )
                 )
+                # Safety دوباره چک شود
+                try:
+                    as_dict2 = response2.to_dict()
+                    if _has_blocked_safety(as_dict2):
+                        logging.warning(f"⚠️ Gemini safety blocked on retry for {symbol}")
+                        return None
+                except Exception:
+                    pass
+
                 raw = self._extract_gemini_text(response2)
 
             if not raw:
+                # آخرین تلاش: اگر candidates/parts نیست ولی بدنه‌ای در دیکشنری هست، مستقیم از دیکشنری بردار
+                try:
+                    d = response2.to_dict() if 'response2' in locals() else (response.to_dict() if as_dict is None else as_dict)
+                    c0 = (d or {}).get("candidates", [{}])[0]
+                    parts = ((c0.get("content") or {}).get("parts")) or []
+                    if parts and isinstance(parts, list) and "text" in parts[0]:
+                        raw = parts[0]["text"]
+                except Exception:
+                    pass
+
+            if not raw:
+                logging.warning(f"❌ Gemini returned no usable content for {symbol} after retries")
                 return None
 
             return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
