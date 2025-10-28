@@ -1363,16 +1363,45 @@ class EnhancedAIManager:
             genai.configure(api_key=gemini_api_key)
 
     def _extract_gemini_text(self, resp) -> Optional[str]:
-        # حالت استاندارد (بعضی نسخه‌ها .text دارند)
-        if getattr(resp, "text", None):
-            return resp.text
-        # حالت کاندیدا/پارت‌ها
-        if getattr(resp, "candidates", None):
-            for c in resp.candidates:
-                if getattr(c, "content", None) and getattr(c.content, "parts", None):
-                    for p in c.content.parts:
-                        if getattr(p, "text", None):
-                            return p.text
+        """
+        Safely extract text from a Gemini response without ever blindly touching resp.text.
+        Order:
+          1) resp.to_dict() -> candidates[...].content.parts[].text
+          2) resp.candidates -> content.parts[].text (SDK objects)
+          3) (last resort) resp.text inside try/except
+        """
+        # 1) Use to_dict() first (safest, no property accessors that can raise)
+        try:
+            d = resp.to_dict()
+            cands = d.get("candidates") or []
+            for c in cands:
+                parts = ((c.get("content") or {}).get("parts")) or []
+                for p in parts:
+                    t = p.get("text")
+                    if t:
+                        return t
+        except Exception:
+            pass
+
+        # 2) Fallback to SDK object attributes, but DON'T call resp.text
+        try:
+            if getattr(resp, "candidates", None):
+                for c in resp.candidates:
+                    if getattr(c, "content", None) and getattr(c.content, "parts", None):
+                        for p in c.content.parts:
+                            # p.text may be an attribute, but not a property that raises here
+                            if getattr(p, "text", None):
+                                return p.text
+        except Exception:
+            pass
+
+        # 3) Final fallback: try resp.text but swallow its "no valid Part" error
+        try:
+            if hasattr(resp, "text"):
+                return resp.text  # might still be fine if SDK populated it
+        except Exception:
+            return None
+
         return None
 
     def _create_enhanced_english_prompt(self, symbol: str, technical_analysis: Dict) -> str:
@@ -1482,11 +1511,120 @@ CRITICAL:
             else:
                 logging.warning(f"⚠️ No valid AI results for {symbol}")
                 return None
-                
+    async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
+        """Get analysis from Gemini with improved error handling (handles MAX_TOKENS & empty parts)"""
+        try:
+            model = genai.GenerativeModel(
+                model_name,
+                system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose."
+            )
+
+            def _has_blocked_safety(d):
+                try:
+                    pf = d.get("prompt_feedback")
+                    if pf and pf.get("block_reason"):
+                        return True
+                    cands = d.get("candidates") or []
+                    if cands and isinstance(cands, list):
+                        br = cands[0].get("finish_reason")
+                        # در برخی enumها 7 یا 3 یعنی safety/block
+                        if br in (7, 3):
+                            return True
+                except:
+                    pass
+                return False
+
+            # Attempt 1
+            response = await asyncio.to_thread(
+                model.generate_content,
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.1,
+                    max_output_tokens=700,
+                    response_mime_type="application/json",
+                )
+            )
+
+            as_dict = None
+            try:
+                as_dict = response.to_dict()
+            except Exception:
+                as_dict = None
+
+            if as_dict and _has_blocked_safety(as_dict):
+                logging.warning(f"⚠️ Gemini safety blocked for {symbol}")
+                return None
+
+            # Log finish_reason but DO NOT discard content if parts exist
+            try:
+                if getattr(response, "candidates", None):
+                    fr = getattr(response.candidates[0], "finish_reason", None)
+                    if fr is not None and fr != 1:
+                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (will still try to parse if parts exist)")
+            except Exception:
+                pass
+
+            raw = self._extract_gemini_text(response)
+
+            # Retry with shorter prompt if empty
+            if not raw:
+                logging.warning(f"ℹ️ Gemini empty parts on attempt 1 for {symbol}, retrying with shorter prompt")
+                short_prompt = prompt
+                try:
+                    keep_keys = [
+                        "SYMBOL", "CURRENT PRICE", "TECHNICAL ANALYSIS SUMMARY",
+                        "CALCULATION INSTRUCTIONS", "RETURN ONLY THIS EXACT JSON FORMAT", "CRITICAL"
+                    ]
+                    lines = [ln for ln in prompt.splitlines() if any(k in ln for k in keep_keys)]
+                    if len(lines) < 12:
+                        lines = prompt.splitlines()[:60]
+                    short_prompt = "\n".join(lines)
+                except Exception:
+                    short_prompt = prompt
+
+                response2 = await asyncio.to_thread(
+                    model.generate_content,
+                    short_prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.0,
+                        max_output_tokens=800,
+                        response_mime_type="application/json",
+                    )
+                )
+
+                try:
+                    as_dict2 = response2.to_dict()
+                    if _has_blocked_safety(as_dict2):
+                        logging.warning(f"⚠️ Gemini safety blocked on retry for {symbol}")
+                        return None
+                except Exception:
+                    pass
+
+                raw = self._extract_gemini_text(response2)
+
+                # آخرین تلاش: اگر باز هم None بود و candidates داشت، مستقیم از to_dict parts بخوانیم
+                if not raw:
+                    try:
+                        d = response2.to_dict()
+                    except Exception:
+                        d = as_dict or None
+                    if d:
+                        c0 = (d or {}).get("candidates", [{}])[0]
+                        parts = ((c0.get("content") or {}).get("parts")) or []
+                        if parts and isinstance(parts, list) and "text" in parts[0]:
+                            raw = parts[0]["text"]
+
+            if not raw:
+                logging.warning(f"❌ Gemini returned no usable content for {symbol} after retries")
+                return None
+
+            return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
+
         except Exception as e:
-            logging.error(f"❌ Error in AI analysis for {symbol}: {str(e)}")
-            logging.error(f"❌ Traceback: {traceback.format_exc()}")
-            return None
+            # مهم: اینجا دیگه هیچ تماس مستقیمی با response.text نداریم، پس همون خطای قبلی تکرار نمی‌شه
+            logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
+            return None            
+        
 
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
         """Get analysis from single AI model"""
@@ -1507,124 +1645,7 @@ CRITICAL:
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
-    async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Gemini with improved error handling (handles MAX_TOKENS & empty parts)"""
-        try:
-            model = genai.GenerativeModel(
-                model_name,
-                system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose."
-            )
-
-            def _has_blocked_safety(d):
-                try:
-                    pf = d.get("prompt_feedback")
-                    if pf and pf.get("block_reason"):
-                        return True
-                    # بعضی نسخه‌ها به‌جای بالا از safety_ratings/citation_metadata استفاده می‌کنند
-                    cands = d.get("candidates") or []
-                    if cands and isinstance(cands, list):
-                        br = cands[0].get("finish_reason")
-                        # 7 یا 3 در بعضی enumها: محتوای ممنوع یا Safety
-                        if br in (7, 3):
-                            return True
-                except:
-                    pass
-                return False
-
-            # تلاش 1: تنظیمات معمول
-            response = await asyncio.to_thread(
-                model.generate_content,
-                prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.1,
-                    max_output_tokens=700,          # کمی بالاتر از 500
-                    response_mime_type="application/json",
-                )
-            )
-
-            # ساخت dict برای بررسی دقیق
-            as_dict = None
-            try:
-                as_dict = response.to_dict()
-            except Exception:
-                as_dict = None
-
-            # اگر Safety بلاک کرد، سریع خارج شو
-            if as_dict and _has_blocked_safety(as_dict):
-                logging.warning(f"⚠️ Gemini safety blocked for {symbol}")
-                return None
-
-            # اگر finish_reason != STOP، ولی parts داریم، همچنان سعی کن متن را استخراج و parse کنی
-            # (finish_reason=2 => MAX_TOKENS؛ گاهی با این وجود JSON کامل آمده)
-            try:
-                if getattr(response, "candidates", None):
-                    fr = getattr(response.candidates[0], "finish_reason", None)
-                    if fr is not None and fr != 1:
-                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (will still try to parse if parts exist)")
-            except Exception:
-                pass
-
-            raw = self._extract_gemini_text(response)
-
-            # اگر خالی بود، یک fallback: یا پرامپت کوتاه‌تر + توکن بیشتر/کمتر
-            if not raw:
-                logging.warning(f"ℹ️ Gemini empty parts on attempt 1 for {symbol}, retrying with shorter prompt")
-                short_prompt = prompt
-                try:
-                    # کوتاه‌سازی ساده: فقط بخش‌های کلیدی را نگه داریم
-                    # (اگر دنبال کم‌ترین تغییر هستی، همین حد کافی است)
-                    keep_keys = [
-                        "SYMBOL", "CURRENT PRICE", "TECHNICAL ANALYSIS SUMMARY",
-                        "CALCULATION INSTRUCTIONS", "RETURN ONLY THIS EXACT JSON FORMAT", "CRITICAL"
-                    ]
-                    lines = [ln for ln in prompt.splitlines() if any(k in ln for k in keep_keys)]
-                    # اگر خیلی کوتاه شد، حداقل خطوط اصلی را نگه دار
-                    if len(lines) < 12:
-                        lines = prompt.splitlines()[:60]
-                    short_prompt = "\n".join(lines)
-                except Exception:
-                    short_prompt = prompt
-
-                response2 = await asyncio.to_thread(
-                    model.generate_content,
-                    short_prompt,
-                    generation_config=genai.types.GenerationConfig(
-                        temperature=0.0,
-                        max_output_tokens=800,      # کمی بیشتر تا شانس اتمام JSON بالاتر برود
-                        response_mime_type="application/json",
-                    )
-                )
-                # Safety دوباره چک شود
-                try:
-                    as_dict2 = response2.to_dict()
-                    if _has_blocked_safety(as_dict2):
-                        logging.warning(f"⚠️ Gemini safety blocked on retry for {symbol}")
-                        return None
-                except Exception:
-                    pass
-
-                raw = self._extract_gemini_text(response2)
-
-            if not raw:
-                # آخرین تلاش: اگر candidates/parts نیست ولی بدنه‌ای در دیکشنری هست، مستقیم از دیکشنری بردار
-                try:
-                    d = response2.to_dict() if 'response2' in locals() else (response.to_dict() if as_dict is None else as_dict)
-                    c0 = (d or {}).get("candidates", [{}])[0]
-                    parts = ((c0.get("content") or {}).get("parts")) or []
-                    if parts and isinstance(parts, list) and "text" in parts[0]:
-                        raw = parts[0]["text"]
-                except Exception:
-                    pass
-
-            if not raw:
-                logging.warning(f"❌ Gemini returned no usable content for {symbol} after retries")
-                return None
-
-            return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
-
-        except Exception as e:
-            logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
-            return None
+    
 
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Cloudflare AI with improved response handling"""
