@@ -1511,6 +1511,9 @@ CRITICAL:
             else:
                 logging.warning(f"⚠️ No valid AI results for {symbol}")
                 return None
+
+
+                
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Gemini with improved error handling (handles MAX_TOKENS & empty parts)"""
         try:
@@ -1623,7 +1626,7 @@ CRITICAL:
         except Exception as e:
             # مهم: اینجا دیگه هیچ تماس مستقیمی با response.text نداریم، پس همون خطای قبلی تکرار نمی‌شه
             logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
-            return None            
+            return None
         
 
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
