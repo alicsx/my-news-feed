@@ -1347,7 +1347,6 @@ class SmartAPIManager:
             summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
         return summary
 
-
 # =================================================================================
 # --- Enhanced AI Manager with Fixed Error Handling ---
 # =================================================================================
@@ -1512,6 +1511,10 @@ CRITICAL:
                 logging.warning(f"⚠️ No valid AI results for {symbol}")
                 return None
 
+        except Exception as e:
+            logging.error(f"❌ Error in AI analysis for {symbol}: {str(e)}")
+            logging.error(f"❌ Traceback: {traceback.format_exc()}")
+            return None
 
                 
     async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
@@ -1952,6 +1955,7 @@ CRITICAL:
                         combined[field] = "1.5"
                         
         return combined
+```0
 
 # =================================================================================
 # --- Main Forex Analyzer Class with Enhanced Error Handling ---
