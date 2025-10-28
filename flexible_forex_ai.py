@@ -1346,9 +1346,8 @@ class SmartAPIManager:
             remaining = data["limit"] - data["used_today"]
             summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
         return summary
-
 # =================================================================================
-# --- Enhanced AI Manager with Fixed Error Handling ---
+# --- Enhanced AI Manager with Fixed Error Handling + Token-Aware Gemini + Short-Prompt ---
 # =================================================================================
 
 class EnhancedAIManager:
@@ -1361,15 +1360,77 @@ class EnhancedAIManager:
         if gemini_api_key:
             genai.configure(api_key=gemini_api_key)
 
+    # -----------------------------
+    # 🔧 Helper: Gemini model caps
+    # -----------------------------
+    def _gemini_model_caps(self, model_name: str) -> Dict[str, int]:
+        """
+        بر اساس نام مدل سقف تقریبی توکن کانتکست رو برمی‌گردونه.
+        اگر مدل ناشناخته بود، 8192 رو فرض می‌کنیم.
+        """
+        name = (model_name or "").lower()
+        if "2.5-pro" in name or "2.0-pro" in name:
+            return {"context": 32768}
+        if "2.5-flash" in name or "flash" in name:
+            return {"context": 16384}
+        if "1.5-pro" in name or "1.5-flash" in name:
+            return {"context": 8192}
+        return {"context": 8192}
+
+    # -------------------------------------
+    # 🔧 Helper: calc safe max_output_tokens
+    # -------------------------------------
+    def _calc_gemini_max_tokens(self, model, model_name: str, prompt: str, min_gen: int = 384, pad: int = 256) -> int:
+        """
+        تعداد توکن‌های پرامپت را می‌شمارد و بر اساس سقف مدل، max_output_tokens امن می‌سازد.
+        - min_gen: حداقل خروجی که می‌خواهیم
+        - pad: حاشیهٔ امن برای نوسانات شمارش
+        """
+        try:
+            caps = self._gemini_model_caps(model_name)
+            ctx = caps.get("context", 8192)
+            t = model.count_tokens(prompt)
+            prompt_tokens = 0
+            if hasattr(t, "total_tokens"):
+                prompt_tokens = int(t.total_tokens or 0)
+            elif isinstance(t, dict):
+                prompt_tokens = int(t.get("total_tokens", 0))
+            gen = max(min_gen, ctx - prompt_tokens - pad)
+            gen = max(256, min(gen, 1200))
+            return gen
+        except Exception:
+            return 700
+
+    # ---------------------------------
+    # 🔧 Helper: make a short prompt
+    # ---------------------------------
+    def _shorten_prompt_for_gemini(self, prompt: str) -> str:
+        """
+        یک پرامپت کوتاه‌تر و فشرده از پرامپت اصلی می‌سازد تا احتمال finish_reason=2 کم شود.
+        فقط اطلاعات کلیدی را نگه می‌داریم.
+        """
+        try:
+            keep_keys = {
+                "SYMBOL", "CURRENT PRICE", "TECHNICAL ANALYSIS SUMMARY",
+                "CALCULATION INSTRUCTIONS", "RETURN ONLY THIS EXACT JSON FORMAT", "CRITICAL"
+            }
+            lines = [ln for ln in prompt.splitlines() if any(k in ln for k in keep_keys)]
+            if len(lines) < 12:
+                # اگر خیلی کوتاه شد، 80 خط اول را نگه دار
+                lines = prompt.splitlines()[:80]
+            return "\n".join(lines)
+        except Exception:
+            return prompt
+
     def _extract_gemini_text(self, resp) -> Optional[str]:
         """
-        Safely extract text from a Gemini response without ever blindly touching resp.text.
+        Safely extract text from a Gemini response بدون دسترسی مستقیم و کورکورانه به resp.text.
         Order:
           1) resp.to_dict() -> candidates[...].content.parts[].text
           2) resp.candidates -> content.parts[].text (SDK objects)
-          3) (last resort) resp.text inside try/except
+          3) (no blind resp.text)
         """
-        # 1) Use to_dict() first (safest, no property accessors that can raise)
+        # 1) to_dict
         try:
             d = resp.to_dict()
             cands = d.get("candidates") or []
@@ -1382,32 +1443,24 @@ class EnhancedAIManager:
         except Exception:
             pass
 
-        # 2) Fallback to SDK object attributes, but DON'T call resp.text
+        # 2) SDK attrs
         try:
             if getattr(resp, "candidates", None):
                 for c in resp.candidates:
                     if getattr(c, "content", None) and getattr(c.content, "parts", None):
                         for p in c.content.parts:
-                            # p.text may be an attribute, but not a property that raises here
                             if getattr(p, "text", None):
                                 return p.text
         except Exception:
             pass
 
-        # 3) Final fallback: try resp.text but swallow its "no valid Part" error
-        try:
-            if hasattr(resp, "text"):
-                return resp.text  # might still be fine if SDK populated it
-        except Exception:
-            return None
-
+        # 3) nothing
         return None
 
     def _create_enhanced_english_prompt(self, symbol: str, technical_analysis: Dict) -> str:
         """Create enhanced English prompt for AI analysis"""
         current_price = technical_analysis.get('current_price', 1.0850)
         
-        # Use .get() with default values to avoid KeyErrors
         momentum_data = technical_analysis.get('momentum', {})
         stochastic_data = momentum_data.get('stochastic', {})
         htf_trend = technical_analysis.get('htf_trend', {})
@@ -1499,138 +1552,20 @@ CRITICAL:
                     valid_results.append(result)
                     self.api_manager.record_api_usage(provider)
                 else:
-                    # Record usage even for None results
                     self.api_manager.record_api_usage(provider)
 
             logging.info(f"📊 Results: {len(valid_results)} successful, {failed_count} failed")
             
-            # If we have at least some valid results, proceed
             if valid_results:
                 return self._combine_signals(symbol, valid_results, len(selected_models))
             else:
                 logging.warning(f"⚠️ No valid AI results for {symbol}")
                 return None
-
+                
         except Exception as e:
             logging.error(f"❌ Error in AI analysis for {symbol}: {str(e)}")
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
-
-                
-    async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Gemini with improved error handling (handles MAX_TOKENS & empty parts)"""
-        try:
-            model = genai.GenerativeModel(
-                model_name,
-                system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose."
-            )
-
-            def _has_blocked_safety(d):
-                try:
-                    pf = d.get("prompt_feedback")
-                    if pf and pf.get("block_reason"):
-                        return True
-                    cands = d.get("candidates") or []
-                    if cands and isinstance(cands, list):
-                        br = cands[0].get("finish_reason")
-                        # در برخی enumها 7 یا 3 یعنی safety/block
-                        if br in (7, 3):
-                            return True
-                except:
-                    pass
-                return False
-
-            # Attempt 1
-            response = await asyncio.to_thread(
-                model.generate_content,
-                prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.1,
-                    max_output_tokens=700,
-                    response_mime_type="application/json",
-                )
-            )
-
-            as_dict = None
-            try:
-                as_dict = response.to_dict()
-            except Exception:
-                as_dict = None
-
-            if as_dict and _has_blocked_safety(as_dict):
-                logging.warning(f"⚠️ Gemini safety blocked for {symbol}")
-                return None
-
-            # Log finish_reason but DO NOT discard content if parts exist
-            try:
-                if getattr(response, "candidates", None):
-                    fr = getattr(response.candidates[0], "finish_reason", None)
-                    if fr is not None and fr != 1:
-                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (will still try to parse if parts exist)")
-            except Exception:
-                pass
-
-            raw = self._extract_gemini_text(response)
-
-            # Retry with shorter prompt if empty
-            if not raw:
-                logging.warning(f"ℹ️ Gemini empty parts on attempt 1 for {symbol}, retrying with shorter prompt")
-                short_prompt = prompt
-                try:
-                    keep_keys = [
-                        "SYMBOL", "CURRENT PRICE", "TECHNICAL ANALYSIS SUMMARY",
-                        "CALCULATION INSTRUCTIONS", "RETURN ONLY THIS EXACT JSON FORMAT", "CRITICAL"
-                    ]
-                    lines = [ln for ln in prompt.splitlines() if any(k in ln for k in keep_keys)]
-                    if len(lines) < 12:
-                        lines = prompt.splitlines()[:60]
-                    short_prompt = "\n".join(lines)
-                except Exception:
-                    short_prompt = prompt
-
-                response2 = await asyncio.to_thread(
-                    model.generate_content,
-                    short_prompt,
-                    generation_config=genai.types.GenerationConfig(
-                        temperature=0.0,
-                        max_output_tokens=800,
-                        response_mime_type="application/json",
-                    )
-                )
-
-                try:
-                    as_dict2 = response2.to_dict()
-                    if _has_blocked_safety(as_dict2):
-                        logging.warning(f"⚠️ Gemini safety blocked on retry for {symbol}")
-                        return None
-                except Exception:
-                    pass
-
-                raw = self._extract_gemini_text(response2)
-
-                # آخرین تلاش: اگر باز هم None بود و candidates داشت، مستقیم از to_dict parts بخوانیم
-                if not raw:
-                    try:
-                        d = response2.to_dict()
-                    except Exception:
-                        d = as_dict or None
-                    if d:
-                        c0 = (d or {}).get("candidates", [{}])[0]
-                        parts = ((c0.get("content") or {}).get("parts")) or []
-                        if parts and isinstance(parts, list) and "text" in parts[0]:
-                            raw = parts[0]["text"]
-
-            if not raw:
-                logging.warning(f"❌ Gemini returned no usable content for {symbol} after retries")
-                return None
-
-            return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
-
-        except Exception as e:
-            # مهم: اینجا دیگه هیچ تماس مستقیمی با response.text نداریم، پس همون خطای قبلی تکرار نمی‌شه
-            logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
-            return None
-        
 
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
         """Get analysis from single AI model"""
@@ -1651,7 +1586,131 @@ CRITICAL:
             logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
-    
+    # ---------------------------------------------------------
+    # ✅ Gemini with token-aware + schema + MIME + plain fallbacks
+    # ---------------------------------------------------------
+    async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
+        """
+        Gemini with:
+          1) token-aware max_output_tokens
+          2) response_schema for structured output (افزایش شانس داشتن Part)
+          3) fallback: MIME=application/json بدون schema
+          4) fallback نهایی: بدون MIME (plain text) + short prompt
+        """
+        try:
+            model = genai.GenerativeModel(
+                model_name,
+                system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose."
+            )
+
+            # 1) محاسبهٔ خروجی امن
+            max_out = self._calc_gemini_max_tokens(model, model_name, prompt, min_gen=384, pad=256)
+
+            # 2) تلاش اول: Structured Output (schema)
+            response_schema = {
+                "type": "object",
+                "properties": {
+                    "SYMBOL": {"type": "string"},
+                    "ACTION": {"type": "string", "enum": ["BUY", "SELL", "HOLD"]},
+                    "CONFIDENCE": {"type": "number"},
+                    "ENTRY": {"type": "string"},
+                    "STOP_LOSS": {"type": "string"},
+                    "TAKE_PROFIT": {"type": "string"},
+                    "RISK_REWARD_RATIO": {"type": "string"},
+                    "ANALYSIS": {"type": "string"},
+                    "EXPIRATION_H": {"type": "number"},
+                    "TRADE_RATIONALE": {"type": "string"}
+                },
+                "required": ["SYMBOL", "ACTION", "CONFIDENCE"]
+            }
+
+            resp1 = await asyncio.to_thread(
+                model.generate_content,
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.1,
+                    max_output_tokens=max_out,
+                    response_mime_type="application/json",
+                    response_schema=response_schema
+                )
+            )
+
+            def _resp_is_empty_or_blocked(rsp) -> bool:
+                try:
+                    d = rsp.to_dict()
+                except Exception:
+                    d = {}
+                pf = (d or {}).get("prompt_feedback") or {}
+                if pf.get("block_reason"):
+                    return True
+                cands = (d or {}).get("candidates") or []
+                if not cands:
+                    return True
+                parts = ((cands[0].get("content") or {}).get("parts")) or []
+                return len(parts) == 0
+
+            raw = self._extract_gemini_text(resp1)
+            try:
+                if getattr(resp1, "candidates", None):
+                    fr = getattr(resp1.candidates[0], "finish_reason", None)
+                    if fr is not None and fr != 1:
+                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (schema attempt)")
+            except Exception:
+                pass
+
+            if raw and not _resp_is_empty_or_blocked(resp1):
+                return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
+
+            # 3) تلاش دوم: MIME=application/json بدون schema
+            resp2 = await asyncio.to_thread(
+                model.generate_content,
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.05,
+                    max_output_tokens=max_out,
+                    response_mime_type="application/json",
+                )
+            )
+            try:
+                if getattr(resp2, "candidates", None):
+                    fr = getattr(resp2.candidates[0], "finish_reason", None)
+                    if fr is not None and fr != 1:
+                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (json-mime attempt)")
+            except Exception:
+                pass
+
+            raw = self._extract_gemini_text(resp2)
+            if raw:
+                return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
+
+            # 4) تلاش سوم: بدون MIME (plain) + پرامپت کوتاه‌تر
+            short_prompt = self._shorten_prompt_for_gemini(prompt)
+            resp3 = await asyncio.to_thread(
+                model.generate_content,
+                short_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.0,
+                    max_output_tokens=max(min(1200, max_out + 200), 500),
+                )
+            )
+            try:
+                if getattr(resp3, "candidates", None):
+                    fr = getattr(resp3.candidates[0], "finish_reason", None)
+                    if fr is not None and fr != 1:
+                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (plain attempt)")
+            except Exception:
+                pass
+
+            raw = self._extract_gemini_text(resp3)
+            if not raw:
+                logging.warning(f"❌ Gemini returned no usable content for {symbol} after all fallbacks")
+                return None
+
+            return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
+
+        except Exception as e:
+            logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
+            return None
 
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Cloudflare AI with improved response handling"""
@@ -1685,7 +1744,6 @@ CRITICAL:
                         data = await response.json()
                         content = ""
                         
-                        # Handle different response structures from Cloudflare
                         if "result" in data and "response" in data["result"]:
                             content = data["result"]["response"]
                         elif "response" in data:
@@ -1693,7 +1751,6 @@ CRITICAL:
                         elif "result" in data and isinstance(data["result"], str):
                             content = data["result"]
                         else:
-                            # If we can't extract content, use the whole response
                             content = data
                             
                         if content:
@@ -1762,35 +1819,27 @@ CRITICAL:
     def _parse_ai_response(self, response, symbol: str, ai_name: str) -> Optional[Dict]:
         """Parse AI response with enhanced validation and robust error handling"""
         try:
-            # Handle both string and dictionary responses
             if isinstance(response, dict):
-                # If response is already a dict, use it directly
                 cleaned_response = json.dumps(response, ensure_ascii=False)
             else:
-                # If response is string, clean it
                 cleaned_response = (response or "").strip()
 
-                # Remove markdown and code blocks
                 cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
                 cleaned_response = re.sub(r'```\s*', '', cleaned_response)
 
-                # پاک کردن بلاک‌های تفکر مدل‌ها مثل <think>...</think>
                 cleaned_response = re.sub(
                     r'<think>.*?</think>',
                     '',
                     cleaned_response,
                     flags=re.DOTALL | re.IGNORECASE
                 )
-                # اگر پاسخ با <think> شروع شده و تگ بسته پیدا نشد، تا اولین آکولاد حذف کن
                 if cleaned_response.lstrip().lower().startswith('<think>'):
                     brace_idx = cleaned_response.find('{')
                     if brace_idx != -1:
                         cleaned_response = cleaned_response[brace_idx:]
 
-                # حذف تگ‌های شبه-XML عمومی (در صورت باقی‌ماندن)
                 cleaned_response = re.sub(r'</?[^>]+>', '', cleaned_response)
 
-                # حذف پیش‌متن‌های رایج قبل از JSON (system:, assistant:, user:, inst:, instruction:, thought:)
                 cleaned_response = re.sub(
                     r'^\s*(system|assistant|user|inst|instruction|thought)\s*:\s*.*?(?=\{)',
                     '',
@@ -1798,11 +1847,9 @@ CRITICAL:
                     flags=re.IGNORECASE | re.DOTALL
                 )
 
-                # اگر هنوز قبل از اولین '{' نویز هست، آن را حذف کن
                 if '{' in cleaned_response:
                     cleaned_response = cleaned_response[cleaned_response.find('{'):]
 
-            # Find JSON in response
             json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
             if json_match:
                 json_str = json_match.group(0)
@@ -1812,13 +1859,11 @@ CRITICAL:
                     signal_data['ai_model'] = ai_name
                     signal_data['timestamp'] = datetime.now(UTC).isoformat()
 
-                    # Validate numeric values
                     signal_data = self._validate_numeric_values(signal_data, symbol)
 
                     logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
 
-            # Log the problematic response safely
             try:
                 if isinstance(response, dict):
                     response_preview = json.dumps(response, ensure_ascii=False)[:200]
@@ -1831,7 +1876,6 @@ CRITICAL:
             return None
 
         except json.JSONDecodeError as e:
-            # Safely log JSON decode errors
             try:
                 if isinstance(response, dict):
                     response_preview = json.dumps(response, ensure_ascii=False)[:200]
@@ -1843,7 +1887,6 @@ CRITICAL:
             logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}. Response: {response_preview}...")
             return None
         except Exception as e:
-            # Safely log any other errors
             try:
                 if isinstance(response, dict):
                     response_preview = json.dumps(response, ensure_ascii=False)[:200]
@@ -1887,7 +1930,6 @@ CRITICAL:
             if field in signal_data:
                 value = signal_data[field]
                 if value is None or value == "null" or str(value).strip() == "":
-                    # Default values for essential fields
                     if field == 'EXPIRATION_H':
                         signal_data[field] = 4
                     elif field == 'RISK_REWARD_RATIO':
@@ -1902,7 +1944,6 @@ CRITICAL:
         if not valid_results:
             return None
             
-        # Count signals
         action_counts = {}
         for result in valid_results:
             action = result['ACTION'].upper()
@@ -1911,7 +1952,6 @@ CRITICAL:
         total_valid = len(valid_results)
         max_agreement = max(action_counts.values())
         
-        # Determine agreement type
         if max_agreement >= 3:
             agreement_type = 'STRONG_CONSENSUS'
         elif max_agreement == 2:
@@ -1919,11 +1959,9 @@ CRITICAL:
         else:
             agreement_type = 'WEAK_CONSENSUS'
             
-        # Select majority action
         majority_action = max(action_counts, key=action_counts.get)
         agreeing_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
         
-        # Combine agreeing signals
         combined = {
             'SYMBOL': symbol,
             'ACTION': majority_action,
@@ -1934,19 +1972,16 @@ CRITICAL:
             'timestamp': datetime.now(UTC).isoformat()
         }
         
-        # Average confidence
         if agreeing_results:
             confidences = [float(r.get('CONFIDENCE', 5)) for r in agreeing_results]
             combined['CONFIDENCE'] = round(sum(confidences) / len(confidences), 1)
             
-        # Use values from first valid signal
         if agreeing_results:
             first_valid = agreeing_results[0]
             for field in ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO', 'EXPIRATION_H', 'ANALYSIS']:
                 if field in first_valid and first_valid[field] not in [None, "null", ""]:
                     combined[field] = first_valid[field]
                 else:
-                    # Default values
                     if field == 'ANALYSIS':
                         combined[field] = f"{majority_action} signal based on agreement of {max_agreement} out of {total_models} AI models"
                     elif field == 'EXPIRATION_H':
@@ -1955,7 +1990,7 @@ CRITICAL:
                         combined[field] = "1.5"
                         
         return combined
-
+        
 
 # =================================================================================
 # --- Main Forex Analyzer Class with Enhanced Error Handling ---
