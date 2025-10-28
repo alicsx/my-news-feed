@@ -1,18 +1,1 @@
-[
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "AGREEMENT_LEVEL": 1,
-    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-28T02:01:33.036540+00:00",
-    "CONFIDENCE": 6.0,
-    "ENTRY": "0.79405",
-    "STOP_LOSS": "0.79243",
-    "TAKE_PROFIT": "0.79678",
-    "RISK_REWARD_RATIO": "1.7",
-    "EXPIRATION_H": 4,
-    "ANALYSIS": "Technical analysis based on oversold stochastic, weak bearish trend, and ranging market structure"
-  }
-]
+[]
