@@ -6,16 +6,16 @@
     "AGREEMENT_TYPE": "WEAK_CONSENSUS",
     "VALID_MODELS": 2,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-28T20:33:20.270437+00:00",
+    "timestamp": "2025-10-28T22:28:18.752149+00:00",
     "CONFIDENCE": 6.0,
-    "ENTRY": "0.79330",
-    "STOP_LOSS": "0.79475",
-    "TAKE_PROFIT": "0.78930",
+    "ENTRY": "0.79341",
+    "STOP_LOSS": "0.79497",
+    "TAKE_PROFIT": "0.78941",
     "RISK_REWARD_RATIO": "1.7",
     "EXPIRATION_H": 4,
     "ANALYSIS": "Technical analysis based on strong bearish trend alignment and oversold stochastic",
-    "POSITION_UNITS": 29532.8575,
-    "LEVERAGE_EST": 5.47,
+    "POSITION_UNITS": 27450.9804,
+    "LEVERAGE_EST": 5.09,
     "RISK_USD": 100.0
   }
 ]
