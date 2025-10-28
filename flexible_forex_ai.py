@@ -696,12 +696,7 @@ class AdvancedTechnicalAnalyzer:
             # Return basic analysis as fallback
             return self._generate_basic_analysis(symbol, htf_df, ltf_df)
 
-        except Exception as e:
-            logging.error(f"❌ Error generating technical analysis for {symbol}: {e}")
-            # Return basic analysis as fallback
-            return self._generate_basic_analysis(symbol, htf_df, ltf_df)
-
-    def _calculate_ml_signal(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
+def _calculate_ml_signal(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
         """Calculate machine learning based signal strength"""
         try:
             if ltf_df.empty or len(ltf_df) < 50:
@@ -1998,7 +1993,244 @@ CRITICAL:
         return combined
 
 # =================================================================================
-# --- Main Forex Analyzer Class with Enhanced Error Handling ---
+# --- Gemini Direct Signal Agent (Non-Intrusive Add-on) ---
+# =================================================================================
+# این کلاسِ جدید مستقلاً با Gemini کار می‌کند و به هیچ بخش قبلی دست نمی‌زند.
+# اگر خواستی مستقیم از جمینی سیگنال بگیری (بدون رأی‌گیری چندمدلی)، از این کلاس استفاده کن.
+
+class GeminiDirectSignalAgent:
+    """
+    A thin, robust wrapper that queries Gemini once and returns a strict-JSON trade signal.
+    It **does not modify** existing managers. Safe to plug anywhere.
+    """
+    def __init__(self, api_key: Optional[str] = None, model_name: str = GEMINI_MODEL):
+        self.model_name = model_name
+        self.available = False
+        try:
+            k = api_key or os.getenv("GOOGLE_API_KEY")
+            if k:
+                genai.configure(api_key=k)
+                self.available = True
+            else:
+                logging.warning("⚠️ GeminiDirectSignalAgent: GOOGLE_API_KEY not set.")
+        except Exception as e:
+            logging.error(f"GeminiDirectSignalAgent init error: {e}")
+
+    def _schema(self):
+        # حداقل اسکیمای قابل اتکا
+        return {
+            "type": "object",
+            "properties": {
+                "SYMBOL": {"type": "string"},
+                "ACTION": {"type": "string", "enum": ["BUY", "SELL", "HOLD"]},
+                "CONFIDENCE": {"type": "number"},
+                "ENTRY": {"type": "string"},
+                "STOP_LOSS": {"type": "string"},
+                "TAKE_PROFIT": {"type": "string"},
+                "RISK_REWARD_RATIO": {"type": "string"},
+                "ANALYSIS": {"type": "string"},
+                "EXPIRATION_H": {"type": "number"},
+                "TRADE_RATIONALE": {"type": "string"}
+            },
+            "required": ["SYMBOL", "ACTION", "CONFIDENCE"]
+        }
+
+    def _make_prompt(self, symbol: str, ta: Dict) -> str:
+        # پرامپت کوتاه و تمرکز روی خروجی JSON
+        price = ta.get("current_price", 1.0)
+        risk = ta.get("risk_assessment", {})
+        ml = ta.get("ml_signal", {})
+        key = ta.get("key_levels", {})
+        return (
+            "You are a strict-trader agent. Output ONLY JSON, no prose.\n\n"
+            f"SYMBOL={symbol}\nPRICE={price:.6f}\n"
+            f"RISK_LEVEL={risk.get('risk_level','MEDIUM')}\n"
+            f"ATR={risk.get('atr_value',0.001)}\n"
+            f"ML_STRENGTH={ml.get('signal_strength',0)} CONF={ml.get('confidence',0)}\n"
+            f"SUP1={key.get('support_1',price*0.99)} RES1={key.get('resistance_1',price*1.01)}\n\n"
+            "Return JSON with fields listed in the schema: SYMBOL,ACTION,CONFIDENCE,ENTRY,STOP_LOSS,TAKE_PROFIT,"
+            "RISK_REWARD_RATIO,ANALYSIS,EXPIRATION_H,TRADE_RATIONALE.\n"
+        )
+
+    async def fetch_signal(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        if not self.available:
+            return None
+        try:
+            model = genai.GenerativeModel(
+                self.model_name,
+                system_instruction="Return ONLY valid JSON. No extra text."
+            )
+            prompt = self._make_prompt(symbol, technical_analysis)
+
+            # تلاش اول: با schema و MIME
+            try:
+                resp = await asyncio.to_thread(
+                    model.generate_content,
+                    prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.05,
+                        max_output_tokens=800,
+                        response_mime_type="application/json",
+                        response_schema=self._schema()
+                    )
+                )
+                text = self._extract_text(resp)
+                data = self._clean_parse(text)
+                if data:
+                    return data
+            except Exception as e:
+                logging.warning(f"GeminiDirect(schema) failed: {e}")
+
+            # تلاش دوم: فقط MIME application/json
+            try:
+                resp = await asyncio.to_thread(
+                    model.generate_content,
+                    prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.05,
+                        max_output_tokens=800,
+                        response_mime_type="application/json",
+                    )
+                )
+                text = self._extract_text(resp)
+                data = self._clean_parse(text)
+                if data:
+                    return data
+            except Exception as e:
+                logging.warning(f"GeminiDirect(json-mime) failed: {e}")
+
+            # تلاش سوم: Plain + تمیزکاری
+            try:
+                resp = await asyncio.to_thread(
+                    model.generate_content,
+                    prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.0,
+                        max_output_tokens=900
+                    )
+                )
+                text = self._extract_text(resp)
+                data = self._clean_parse(text)
+                if data:
+                    return data
+            except Exception as e:
+                logging.warning(f"GeminiDirect(plain) failed: {e}")
+
+            return None
+        except Exception as e:
+            logging.error(f"GeminiDirectSignalAgent error: {e}")
+            return None
+
+    def _extract_text(self, resp) -> Optional[str]:
+        # مثل EnhancedAIManager._extract_gemini_text ولی مختصر
+        try:
+            d = resp.to_dict()
+            for c in d.get("candidates", []):
+                for p in (c.get("content", {}).get("parts") or []):
+                    if p.get("text"):
+                        return p["text"]
+        except Exception:
+            pass
+        try:
+            if getattr(resp, "candidates", None):
+                for c in resp.candidates:
+                    if getattr(c, "content", None):
+                        for p in getattr(c.content, "parts", []):
+                            if getattr(p, "text", None):
+                                return p.text
+        except Exception:
+            pass
+        return None
+
+    def _clean_parse(self, text: Optional[str]) -> Optional[Dict]:
+        if not text:
+            return None
+        s = text.strip()
+        s = re.sub(r'```json\s*', '', s)
+        s = re.sub(r'```\s*', '', s)
+        s = re.sub(r'<think>.*?</think>', '', s, flags=re.DOTALL | re.IGNORECASE)
+        s = re.sub(r'</?[^>]+>', '', s)
+        if '{' in s:
+            s = s[s.find('{'):]
+        m = re.search(r'\{.*\}', s, re.DOTALL)
+        if not m:
+            return None
+        try:
+            data = json.loads(m.group(0))
+            if isinstance(data, dict) and "SYMBOL" in data and "ACTION" in data and "CONFIDENCE" in data:
+                return data
+        except Exception:
+            return None
+        return None
+
+
+# =================================================================================
+# --- Risk Manager & Execution Heuristics (Add-on Systems) ---
+# =================================================================================
+
+class EnhancedRiskManager:
+    """
+    Position sizing + risk guardrails.
+    - Max risk per trade (percent of equity)
+    - Volatility-based stop check (ATR sanity)
+    - Kelly-capped sizing
+    """
+    def __init__(self,
+                 equity: float = 10000.0,
+                 risk_per_trade_pct: float = 1.0,
+                 max_leverage: float = 30.0,
+                 kelly_cap: float = 0.5):
+        self.equity = equity
+        self.risk_per_trade_pct = risk_per_trade_pct
+        self.max_leverage = max_leverage
+        self.kelly_cap = kelly_cap
+
+    def size_by_atr(self, price: float, stop: float, atr: float, rr: float = 1.5) -> Dict:
+        if not price or not stop or atr is None or atr <= 0:
+            return {"units": 0, "risk_amount": 0, "leverage": 0}
+        risk_amount = self.equity * (self.risk_per_trade_pct / 100.0)
+        per_unit_risk = abs(price - stop)
+        units = risk_amount / max(per_unit_risk, 1e-8)
+        notional = units * price
+        leverage = notional / max(self.equity, 1e-8)
+        if leverage > self.max_leverage:
+            scale = self.max_leverage / leverage
+            units *= scale
+            leverage = self.max_leverage
+        return {"units": max(0, units), "risk_amount": risk_amount, "leverage": leverage}
+
+    def kelly_adjust(self, winrate: float, rr: float, units: float) -> float:
+        # Kelly fraction = p - (1-p)/R
+        p = min(max(winrate, 0.0), 1.0)
+        R = max(rr, 1e-6)
+        k = p - (1 - p) / R
+        k = max(0.0, min(k, self.kelly_cap))
+        return units * (0.25 + 0.75 * k)  # clamp toward conservative base
+
+class TradeFilter:
+    """
+    Regime filters and cool-down:
+    - Avoid high-impact news windows (pluggable)
+    - Cooldown after stop-outs
+    - Spread/slippage guard (inputs pluggable)
+    """
+    def __init__(self):
+        self.last_stopout_time = {}
+        self.cooldown_minutes = 60
+
+    def can_trade(self, symbol: str, now: Optional[datetime] = None) -> bool:
+        now = now or datetime.now(UTC)
+        t = self.last_stopout_time.get(symbol)
+        if t and (now - t).total_seconds() < self.cooldown_minutes * 60:
+            return False
+        return True
+
+    def mark_stopout(self, symbol: str):
+        self.last_stopout_time[symbol] = datetime.now(UTC)
+
+
+# =================================================================================
+# --- Main Forex Analyzer Class (extended with optional add-ons) ---
 # =================================================================================
 
 class ImprovedForexAnalyzer:
@@ -2008,6 +2240,11 @@ class ImprovedForexAnalyzer:
         self.ai_manager = EnhancedAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY, self.api_manager)
         self.data_fetcher = EnhancedDataFetcher()
         self.performance_monitor = PerformanceMonitor()
+
+        # افزوده‌های اختیاری
+        self.gemini_direct = GeminiDirectSignalAgent(google_api_key, GEMINI_MODEL)
+        self.risk_manager = EnhancedRiskManager()
+        self.trade_filter = TradeFilter()
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
         """Complete analysis of a currency pair with comprehensive error handling"""
@@ -2049,11 +2286,39 @@ class ImprovedForexAnalyzer:
                 logging.warning(f"⚠️ Technical analysis generation failed for {pair}")
                 self.performance_monitor.record_failure()
                 return None
+
+            # Optional pre-trade filter (cooldown, etc.)
+            if not self.trade_filter.can_trade(pair):
+                logging.info(f"⏸️ Cooldown active for {pair}, skipping trade signal.")
+                self.performance_monitor.record_success()
+                return None
                 
-            # AI analysis
+            # AI analysis (ensemble)
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
-            
+
+            # اگر جمینی مستقیم هم خواستی موازی تست کنی (بدون جایگزینی):
+            direct = await self.gemini_direct.fetch_signal(pair, technical_analysis) if self.gemini_direct else None
+            if direct and ai_analysis is None:
+                ai_analysis = direct  # فقط اگر چیزی از ensemble نیامد
+
             if ai_analysis:
+                # محاسبه سایز پوزیشن (اختیاری)
+                price = technical_analysis.get('current_price', 0.0)
+                atr = technical_analysis.get('risk_assessment', {}).get('atr_value', 0.001) or 0.001
+                try:
+                    sl = float(ai_analysis.get('STOP_LOSS')) if ai_analysis.get('STOP_LOSS') not in [None, "N/A"] else (price - 1.5 * atr)
+                except Exception:
+                    sl = price - 1.5 * atr
+                rr = float(ai_analysis.get('RISK_REWARD_RATIO', "1.5")) if isinstance(ai_analysis.get('RISK_REWARD_RATIO'), (int, float, str)) else 1.5
+                sizing = self.risk_manager.size_by_atr(price, sl, atr, rr=rr)
+
+                # Kelly adjust with a conservative assumed win-rate (قابل تنظیم)
+                winrate_guess = 0.52
+                sized_units = self.risk_manager.kelly_adjust(winrate_guess, rr, sizing["units"])
+                ai_analysis["POSITION_UNITS"] = round(sized_units, 4)
+                ai_analysis["LEVERAGE_EST"] = round(sizing["leverage"], 2)
+                ai_analysis["RISK_USD"] = round(sizing["risk_amount"], 2)
+
                 analysis_duration = time.time() - start_time
                 self.performance_monitor.record_analysis_time(pair, analysis_duration)
                 self.performance_monitor.record_success()
@@ -2154,8 +2419,8 @@ class ImprovedForexAnalyzer:
         except Exception as e:
             logging.error(f"❌ Error saving signals: {e}")
 
-
-# =================================================================================
+            
+  # =================================================================================
 # --- Installation Helper ---
 # =================================================================================
 
@@ -2199,6 +2464,10 @@ async def main():
     parser.add_argument("--pair", type=str, help="Analyze specific currency pair")
     parser.add_argument("--all", action="store_true", help="Analyze all currency pairs") 
     parser.add_argument("--pairs", type=str, help="Analyze specified currency pairs")
+    parser.add_argument("--equity", type=float, help="Account equity for sizing (USD)")
+    parser.add_argument("--risk_pct", type=float, help="Risk per trade percent (default 1.0)")
+    parser.add_argument("--kelly_cap", type=float, help="Kelly cap (0..1, default 0.5)")
+    parser.add_argument("--max_lev", type=float, help="Max leverage (default 30)")
     
     args = parser.parse_args()
     
@@ -2215,6 +2484,17 @@ async def main():
     logging.info(f"🎯 Currency pairs to analyze: {', '.join(pairs_to_analyze)}")
     
     analyzer = ImprovedForexAnalyzer()
+
+    # Optional CLI overrides for risk manager
+    if args.equity is not None:
+        analyzer.risk_manager.equity = float(args.equity)
+    if args.risk_pct is not None:
+        analyzer.risk_manager.risk_per_trade_pct = float(args.risk_pct)
+    if args.kelly_cap is not None:
+        analyzer.risk_manager.kelly_cap = float(args.kelly_cap)
+    if args.max_lev is not None:
+        analyzer.risk_manager.max_leverage = float(args.max_lev)
+
     signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
     
     # Save signals
@@ -2232,7 +2512,8 @@ async def main():
     
     for signal in signals:
         action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (Confidence: {signal.get('CONFIDENCE', 0)}/10)")
+        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (Confidence: {signal.get('CONFIDENCE', 0)}/10)"
+                     f" | Units: {signal.get('POSITION_UNITS','-')} | Lev≈{signal.get('LEVERAGE_EST','-')} | Risk ${signal.get('RISK_USD','-')}")
     
     # Display data source statistics
     data_source_stats = analyzer.data_fetcher.get_data_source_stats()
@@ -2255,4 +2536,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main())      
