@@ -696,6 +696,11 @@ class AdvancedTechnicalAnalyzer:
             # Return basic analysis as fallback
             return self._generate_basic_analysis(symbol, htf_df, ltf_df)
 
+except Exception as e:
+            logging.error(f"❌ Error generating technical analysis for {symbol}: {e}")
+            # Return basic analysis as fallback
+            return self._generate_basic_analysis(symbol, htf_df, ltf_df)
+
     def _calculate_ml_signal(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
         """Calculate machine learning based signal strength"""
         try:
@@ -1346,6 +1351,7 @@ class SmartAPIManager:
             remaining = data["limit"] - data["used_today"]
             summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
         return summary
+
 # =================================================================================
 # --- Enhanced AI Manager with Fixed Error Handling + Token-Aware Gemini + Short-Prompt ---
 # =================================================================================
@@ -1990,7 +1996,6 @@ CRITICAL:
                         combined[field] = "1.5"
                         
         return combined
-        
 
 # =================================================================================
 # --- Main Forex Analyzer Class with Enhanced Error Handling ---
