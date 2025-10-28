@@ -696,7 +696,7 @@ class AdvancedTechnicalAnalyzer:
             # Return basic analysis as fallback
             return self._generate_basic_analysis(symbol, htf_df, ltf_df)
 
-def _calculate_ml_signal(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
+    def _calculate_ml_signal(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
         """Calculate machine learning based signal strength"""
         try:
             if ltf_df.empty or len(ltf_df) < 50:
