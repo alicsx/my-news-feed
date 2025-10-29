@@ -64,7 +64,7 @@ USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
 # Updated AI models with more diversity - FIXED GEMINI MODEL
-GEMINI_MODEL = 'gemini-1.5-flash'  # Changed to more stable version
+GEMINI_MODEL = 'gemini-2.5-flash'  # Changed to more stable version
 
 # Enhanced Cloudflare models
 CLOUDFLARE_MODELS = [
