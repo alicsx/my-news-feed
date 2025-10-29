@@ -63,8 +63,9 @@ CACHE_FILE = "signal_cache.json"
 USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
-# Updated AI models with more diversity - FIXED GEMINI MODEL
-GEMINI_MODEL = 'gemini-2.5-flash'  # Changed to more stable version
+# FIXED: Use correct Gemini models
+GEMINI_MODEL = 'gemini-1.5-flash'  # This is the correct model name
+GEMINI_FALLBACK_MODEL = 'gemini-1.0-pro'
 
 # Enhanced Cloudflare models
 CLOUDFLARE_MODELS = [
@@ -107,6 +108,149 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+# =================================================================================
+# --- NEW: Dynamic Model Discovery System ---
+# =================================================================================
+
+class DynamicModelDiscoverer:
+    """Discover available models from AI providers dynamically"""
+    
+    def __init__(self):
+        self.available_models = {
+            "google_gemini": [],
+            "cloudflare": [],
+            "groq": []
+        }
+        self.fallback_models = {
+            "google_gemini": [GEMINI_MODEL, GEMINI_FALLBACK_MODEL],
+            "cloudflare": CLOUDFLARE_MODELS,
+            "groq": GROQ_MODELS
+        }
+        
+    async def discover_models(self) -> Dict[str, List[str]]:
+        """Discover available models from all providers"""
+        discovery_tasks = [
+            self._discover_gemini_models(),
+            self._discover_cloudflare_models(),
+            self._discover_groq_models()
+        ]
+        
+        results = await asyncio.gather(*discovery_tasks, return_exceptions=True)
+        
+        # Process results
+        for i, result in enumerate(results):
+            provider = list(self.available_models.keys())[i]
+            if isinstance(result, Exception):
+                logging.warning(f"❌ Model discovery failed for {provider}: {result}")
+                # Use fallback models
+                self.available_models[provider] = self.fallback_models[provider]
+            elif result:
+                self.available_models[provider] = result
+            else:
+                self.available_models[provider] = self.fallback_models[provider]
+                
+        logging.info(f"🎯 Discovered models: Gemini({len(self.available_models['google_gemini'])}), "
+                   f"Cloudflare({len(self.available_models['cloudflare'])}), "
+                   f"Groq({len(self.available_models['groq'])})")
+                   
+        return self.available_models
+    
+    async def _discover_gemini_models(self) -> List[str]:
+        """Discover available Gemini models"""
+        if not google_api_key:
+            return self.fallback_models["google_gemini"]
+            
+        try:
+            genai.configure(api_key=google_api_key)
+            models = genai.list_models()
+            
+            available_models = []
+            for model in models:
+                model_name = model.name
+                # Filter for relevant models
+                if 'gemini' in model_name.lower() and 'generateContent' in model.supported_generation_methods:
+                    available_models.append(model_name.split('/')[-1])  # Extract model name only
+            
+            # Prioritize our preferred models
+            preferred_models = [GEMINI_MODEL, GEMINI_FALLBACK_MODEL]
+            for preferred in preferred_models:
+                if preferred in available_models:
+                    available_models.remove(preferred)
+                    available_models.insert(0, preferred)
+                    
+            return available_models if available_models else self.fallback_models["google_gemini"]
+            
+        except Exception as e:
+            logging.warning(f"❌ Gemini model discovery failed: {e}")
+            return self.fallback_models["google_gemini"]
+    
+    async def _discover_cloudflare_models(self) -> List[str]:
+        """Discover available Cloudflare models"""
+        if not CLOUDFLARE_AI_API_KEY:
+            return self.fallback_models["cloudflare"]
+            
+        try:
+            headers = {
+                "Authorization": f"Bearer {CLOUDFLARE_AI_API_KEY}",
+                "Content-Type": "application/json"
+            }
+            
+            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "default_account_id")
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/models"
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, headers=headers, timeout=30) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        models = [model.get("id") for model in data.get("result", []) if model.get("id")]
+                        
+                        # Prioritize our preferred models
+                        for preferred in self.fallback_models["cloudflare"]:
+                            if preferred in models:
+                                models.remove(preferred)
+                                models.insert(0, preferred)
+                                
+                        return models if models else self.fallback_models["cloudflare"]
+                    else:
+                        return self.fallback_models["cloudflare"]
+                        
+        except Exception as e:
+            logging.warning(f"❌ Cloudflare model discovery failed: {e}")
+            return self.fallback_models["cloudflare"]
+    
+    async def _discover_groq_models(self) -> List[str]:
+        """Discover available Groq models"""
+        if not GROQ_API_KEY:
+            return self.fallback_models["groq"]
+            
+        try:
+            headers = {
+                "Authorization": f"Bearer {GROQ_API_KEY}",
+                "Content-Type": "application/json"
+            }
+            
+            url = "https://api.groq.com/openai/v1/models"
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, headers=headers, timeout=30) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        models = [model["id"] for model in data.get("data", [])]
+                        
+                        # Prioritize our preferred models
+                        for preferred in self.fallback_models["groq"]:
+                            if preferred in models:
+                                models.remove(preferred)
+                                models.insert(0, preferred)
+                                
+                        return models if models else self.fallback_models["groq"]
+                    else:
+                        return self.fallback_models["groq"]
+                        
+        except Exception as e:
+            logging.warning(f"❌ Groq model discovery failed: {e}")
+            return self.fallback_models["groq"]
 
 # =================================================================================
 # --- Enhanced Performance Monitoring System ---
@@ -1145,15 +1289,24 @@ class AdvancedTechnicalAnalyzer:
             return {'risk_level': 'MEDIUM', 'volatility_percent': 0, 'atr_value': 0, 'current_range_percent': 0}
 
 # =================================================================================
-# --- Smart API Manager with Enhanced Model Selection ---
+# --- Smart API Manager with Enhanced Model Selection & Dynamic Discovery ---
 # =================================================================================
 
 class SmartAPIManager:
-    def __init__(self, usage_file: str):
+    def __init__(self, usage_file: str, model_discoverer: DynamicModelDiscoverer):
         self.usage_file = usage_file
+        self.model_discoverer = model_discoverer
         self.usage_data = self.load_usage_data()
-        self.available_models = self.initialize_available_models()
+        self.available_models = {}
         self.failed_models = set()
+        self.models_initialized = False
+
+    async def initialize_models(self):
+        """Initialize available models dynamically"""
+        if not self.models_initialized:
+            self.available_models = await self.model_discoverer.discover_models()
+            self.models_initialized = True
+            logging.info("🎯 AI Models initialized dynamically")
 
     def load_usage_data(self) -> Dict:
         """Load API usage data"""
@@ -1201,14 +1354,6 @@ class SmartAPIManager:
         except Exception as e:
             logging.error(f"Error saving API usage data: {e}")
 
-    def initialize_available_models(self) -> Dict:
-        """Initialize available models"""
-        return {
-            "google_gemini": [GEMINI_MODEL],
-            "cloudflare": CLOUDFLARE_MODELS.copy(),
-            "groq": GROQ_MODELS.copy()
-        }
-
     def can_use_provider(self, provider: str) -> bool:
         """Check if provider can be used"""
         if provider not in self.usage_data["providers"]:
@@ -1223,7 +1368,7 @@ class SmartAPIManager:
             return 0
         provider_data = self.usage_data["providers"][provider]
         remaining = provider_data["limit"] - provider_data["used_today"]
-        available_models = len(self.available_models[provider])
+        available_models = len(self.available_models.get(provider, []))
         return min(remaining, available_models)
 
     def mark_model_failed(self, provider: str, model_name: str):
@@ -1260,38 +1405,29 @@ class SmartAPIManager:
             logging.error("❌ No providers available")
             return selected_models
 
-        # Model family mapping for intelligent fallback
-        model_families = {
-            "llama": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", 
-                     "@cf/meta/llama-4-scout-17b-16e-instruct", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"],
-            "qwen": ["qwen/qwen3-32b"],
-            "gemma": ["@cf/google/gemma-3-12b-it"],
-            "mistral": ["@cf/mistralai/mistral-small-3.1-24b-instruct"],
-            "gemini": ["gemini-1.5-flash"]
+        # NEW: Intelligent model selection based on capabilities
+        model_capabilities = {
+            "high_accuracy": ["gemini-1.5-flash", "llama-3.3-70b-versatile", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"],
+            "fast_inference": ["gemini-1.0-pro", "llama-3.1-8b-instant", "@cf/meta/llama-3.1-8b-instruct-fast"],
+            "balanced": ["qwen/qwen3-32b", "@cf/meta/llama-4-scout-17b-16e-instruct"]
         }
         
-        # Track used families to ensure diversity
-        used_families = set()
-        
-        # First pass: select one model from each family
-        for family, models in model_families.items():
+        # First pass: select one model from each capability category
+        for capability, models in model_capabilities.items():
             if len(selected_models) >= target_total:
                 break
             
             for model in models:
-                # Find which provider this model belongs to
                 provider = self._find_model_provider(model)
                 if (provider and provider_capacity[provider] > 0 and 
-                    not self.is_model_failed(provider, model) and
-                    family not in used_families):
+                    not self.is_model_failed(provider, model)):
                     
                     selected_models.append((provider, model))
                     provider_capacity[provider] -= 1
-                    used_families.add(family)
-                    logging.info(f"🎯 Selected {provider}/{model} (family: {family})")
+                    logging.info(f"🎯 Selected {provider}/{model} (capability: {capability})")
                     break
 
-        # Second pass: fill remaining slots with any available models
+        # Second pass: fill with any available models
         providers_order = ["google_gemini", "cloudflare", "groq"]
         round_robin_index = 0
         remaining_target = target_total - len(selected_models)
@@ -1300,8 +1436,7 @@ class SmartAPIManager:
             current_provider = providers_order[round_robin_index % len(providers_order)]
             
             if provider_capacity[current_provider] > 0:
-                # Select first available model from this provider that hasn't failed and isn't already selected
-                for model_name in self.available_models[current_provider]:
+                for model_name in self.available_models.get(current_provider, []):
                     if ((current_provider, model_name) not in selected_models and 
                         not self.is_model_failed(current_provider, model_name)):
                         selected_models.append((current_provider, model_name))
@@ -1321,7 +1456,7 @@ class SmartAPIManager:
             logging.warning(f"⚠️ Only {len(selected_models)} models selected. Activating emergency fallback...")
             for provider in providers_order:
                 if self.can_use_provider(provider):
-                    for model_name in self.available_models[provider]:
+                    for model_name in self.available_models.get(provider, []):
                         if (provider, model_name) not in selected_models:
                             selected_models.append((provider, model_name))
                             logging.info(f"🚨 Emergency fallback: {provider}/{model_name}")
@@ -1362,36 +1497,57 @@ class EnhancedAIManager:
             genai.configure(api_key=gemini_api_key)
 
     def _create_optimized_prompt(self, symbol: str, technical_analysis: Dict) -> str:
-        """Create optimized prompt with minimal token usage"""
+        """Create optimized prompt with advanced trading context"""
         current_price = technical_analysis.get('current_price', 1.0850)
-        
-        momentum_data = technical_analysis.get('momentum', {})
-        htf_trend = technical_analysis.get('htf_trend', {})
+        trend = technical_analysis.get('htf_trend', {})
+        momentum = technical_analysis.get('momentum', {})
         key_levels = technical_analysis.get('key_levels', {})
+        risk = technical_analysis.get('risk_assessment', {})
+        ml_signal = technical_analysis.get('ml_signal', {})
         
-        # Ultra-concise prompt to avoid token limits
-        return f"""JSON ONLY:
-SYMBOL: {symbol}
-PRICE: {current_price:.5f}
-TREND: {htf_trend.get('direction', 'NEUTRAL')}
-RSI: {momentum_data.get('rsi', {}).get('value', 50):.1f}
-SUPPORT: {key_levels.get('support_1', current_price * 0.99):.5f}
-RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
+        # Advanced prompt with comprehensive context
+        return f"""SYMBOL: {symbol}
+CURRENT_PRICE: {current_price:.5f}
+TREND: {trend.get('direction', 'NEUTRAL')} (Strength: {trend.get('strength', 'UNKNOWN')})
+RSI: {momentum.get('rsi', {}).get('value', 50):.1f} ({momentum.get('rsi', {}).get('signal', 'NEUTRAL')})
+MACD: {momentum.get('macd', {}).get('trend', 'NEUTRAL')}
+KEY_SUPPORT: {key_levels.get('support_1', current_price * 0.99):.5f}
+KEY_RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
+VOLATILITY: {risk.get('volatility_percent', 0):.2f}%
+RISK_LEVEL: {risk.get('risk_level', 'MEDIUM')}
+ML_SIGNAL_STRENGTH: {ml_signal.get('signal_strength', 0):.2f}
 
+ANALYSIS CONTEXT:
+- Market Structure: {technical_analysis.get('market_structure', {}).get('higher_timeframe_structure', 'UNKNOWN')}
+- Trend Alignment: {'ALIGNED' if trend.get('direction', 'NEUTRAL') == technical_analysis.get('ltf_trend', {}).get('direction', 'NEUTRAL') else 'MISALIGNED'}
+- Momentum Bias: {momentum.get('overall_bias', 'NEUTRAL')}
+- Key Levels: Support at {key_levels.get('support_1', 0):.5f}, Resistance at {key_levels.get('resistance_1', 0):.5f}
+- Volume Trend: {technical_analysis.get('volume_analysis', {}).get('volume_trend', 'UNKNOWN')}
+
+TRADING STRATEGY GUIDELINES:
+1. Only take BUY/SELL if trend and momentum align
+2. Consider risk-reward ratio > 1.5
+3. Place stops beyond key support/resistance
+4. Adjust position size based on volatility
+5. Consider time of day and market sessions
+
+Return ONLY JSON with exact structure:
 {{
   "SYMBOL": "{symbol}",
   "ACTION": "BUY|SELL|HOLD",
-  "CONFIDENCE": 7,
-  "ENTRY": "{current_price:.5f}",
-  "STOP_LOSS": "{current_price - 0.0020:.5f}",
-  "TAKE_PROFIT": "{current_price + 0.0030:.5f}",
-  "RISK_REWARD_RATIO": "1.5",
-  "ANALYSIS": "Technical analysis",
-  "EXPIRATION_H": 4
+  "CONFIDENCE": 1-10,
+  "ENTRY": "price",
+  "STOP_LOSS": "price", 
+  "TAKE_PROFIT": "price",
+  "RISK_REWARD_RATIO": "number",
+  "ANALYSIS": "brief reasoning",
+  "EXPIRATION_H": 4,
+  "TRADE_RATIONALE": "detailed explanation"
 }}"""
 
     async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """Get enhanced AI analysis with multiple models and robust error handling"""
+        await self.api_manager.initialize_models()  # Ensure models are initialized
         selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
         
         if len(selected_models) < 3:
@@ -1455,19 +1611,18 @@ RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
             return None
 
     async def _get_gemini_analysis_optimized(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Optimized Gemini analysis with minimal token usage"""
+        """Optimized Gemini analysis with proper error handling"""
         try:
+            # FIXED: Use correct model initialization
             model = genai.GenerativeModel(model_name)
             
-            # Use very conservative token limits
             generation_config = genai.types.GenerationConfig(
                 temperature=0.1,
-                max_output_tokens=300,  # Reduced from 800
+                max_output_tokens=500,
                 top_p=0.8,
                 top_k=40
             )
             
-            # Simple approach without complex schema
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
@@ -1482,6 +1637,10 @@ RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
             
         except Exception as e:
             logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
+            # Try fallback model
+            if model_name != GEMINI_FALLBACK_MODEL:
+                logging.info(f"🔄 Trying fallback model: {GEMINI_FALLBACK_MODEL}")
+                return await self._get_gemini_analysis_optimized(symbol, prompt, GEMINI_FALLBACK_MODEL)
             return None
 
     def _extract_response_text(self, response) -> Optional[str]:
@@ -1514,7 +1673,7 @@ RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
                 "messages": [
                     {
                         "role": "system", 
-                        "content": "Return ONLY valid JSON format."
+                        "content": "Return ONLY valid JSON format. No additional text."
                     },
                     {"role": "user", "content": prompt}
                 ],
@@ -1569,13 +1728,13 @@ RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
                 "messages": [
                     {
                         "role": "system",
-                        "content": "Return ONLY valid JSON format."
+                        "content": "Return ONLY valid JSON format. No additional text."
                     },
                     {"role": "user", "content": prompt}
                 ],
                 "model": model_name,
                 "temperature": 0.1,
-                "max_tokens": 500,
+                "max_tokens": 600,
                 "stream": False
             }
             
@@ -1685,9 +1844,12 @@ RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
             return None
             
         action_counts = {}
+        confidence_sum = {}
+        
         for result in valid_results:
             action = result['ACTION'].upper()
             action_counts[action] = action_counts.get(action, 0) + 1
+            confidence_sum[action] = confidence_sum.get(action, 0) + float(result.get('CONFIDENCE', 5))
             
         total_valid = len(valid_results)
         max_agreement = max(action_counts.values())
@@ -1700,11 +1862,15 @@ RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
             agreement_type = 'WEAK_CONSENSUS'
             
         majority_action = max(action_counts, key=action_counts.get)
+        avg_confidence = confidence_sum[majority_action] / max_agreement
+        
+        # NEW: Enhanced signal combination with weighted analysis
         agreeing_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
         
         combined = {
             'SYMBOL': symbol,
             'ACTION': majority_action,
+            'CONFIDENCE': round(avg_confidence, 1),
             'AGREEMENT_LEVEL': max_agreement,
             'AGREEMENT_TYPE': agreement_type,
             'VALID_MODELS': total_valid,
@@ -1712,150 +1878,48 @@ RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
             'timestamp': datetime.now(UTC).isoformat()
         }
         
+        # Calculate weighted averages for price levels
         if agreeing_results:
-            confidences = [float(r.get('CONFIDENCE', 5)) for r in agreeing_results]
-            combined['CONFIDENCE'] = round(sum(confidences) / len(confidences), 1)
+            entries = [float(r.get('ENTRY', 0)) for r in agreeing_results if r.get('ENTRY') not in [None, "N/A"]]
+            stops = [float(r.get('STOP_LOSS', 0)) for r in agreeing_results if r.get('STOP_LOSS') not in [None, "N/A"]]
+            takes = [float(r.get('TAKE_PROFIT', 0)) for r in agreeing_results if r.get('TAKE_PROFIT') not in [None, "N/A"]]
             
-        if agreeing_results:
-            first_valid = agreeing_results[0]
-            for field in ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO', 'EXPIRATION_H', 'ANALYSIS']:
-                if field in first_valid and first_valid[field] not in [None, "null", ""]:
-                    combined[field] = first_valid[field]
-                else:
-                    if field == 'ANALYSIS':
-                        combined[field] = f"{majority_action} signal based on agreement of {max_agreement} out of {total_models} AI models"
-                    elif field == 'EXPIRATION_H':
-                        combined[field] = 4
-                    elif field == 'RISK_REWARD_RATIO':
-                        combined[field] = "1.5"
-                        
+            if entries:
+                combined['ENTRY'] = round(sum(entries) / len(entries), 5)
+            if stops:
+                combined['STOP_LOSS'] = round(sum(stops) / len(stops), 5)
+            if takes:
+                combined['TAKE_PROFIT'] = round(sum(takes) / len(takes), 5)
+                
+            # Use the most comprehensive analysis
+            best_analysis = max(agreeing_results, key=lambda x: len(x.get('ANALYSIS', '')))
+            combined['ANALYSIS'] = best_analysis.get('ANALYSIS', f"{majority_action} signal based on agreement of {max_agreement} out of {total_models} AI models")
+            combined['TRADE_RATIONALE'] = best_analysis.get('TRADE_RATIONALE', combined['ANALYSIS'])
+            
+        # Set defaults for missing fields
+        if 'ENTRY' not in combined:
+            combined['ENTRY'] = "N/A"
+        if 'STOP_LOSS' not in combined:
+            combined['STOP_LOSS'] = "N/A" 
+        if 'TAKE_PROFIT' not in combined:
+            combined['TAKE_PROFIT'] = "N/A"
+        if 'RISK_REWARD_RATIO' not in combined:
+            combined['RISK_REWARD_RATIO'] = "1.5"
+        if 'EXPIRATION_H' not in combined:
+            combined['EXPIRATION_H'] = 4
+            
         return combined
 
- # =================================================================================
-# --- Gemini Direct Signal Agent (Non-Intrusive Add-on) ---
+# =================================================================================
+# --- Advanced Risk Manager with Smart TP/SL Calculation ---
 # =================================================================================
 
-class GeminiDirectSignalAgent:
+class AdvancedRiskManager:
     """
-    A thin, robust wrapper that queries Gemini once and returns a strict-JSON trade signal.
-    It **does not modify** existing managers. Safe to plug anywhere.
+    Advanced position sizing and risk management with intelligent TP/SL calculation
+    Uses multiple methods: ATR, Support/Resistance, Market Structure
     """
-    def __init__(self, api_key: Optional[str] = None, model_name: str = GEMINI_MODEL):
-        self.model_name = model_name
-        self.available = False
-        try:
-            k = api_key or os.getenv("GOOGLE_API_KEY")
-            if k:
-                genai.configure(api_key=k)
-                self.available = True
-            else:
-                logging.warning("⚠️ GeminiDirectSignalAgent: GOOGLE_API_KEY not set.")
-        except Exception as e:
-            logging.error(f"GeminiDirectSignalAgent init error: {e}")
-
-    def _make_prompt(self, symbol: str, ta: Dict) -> str:
-        # پرامپت کوتاه و تمرکز روی خروجی JSON
-        price = ta.get("current_price", 1.0)
-        risk = ta.get("risk_assessment", {})
-        ml = ta.get("ml_signal", {})
-        key = ta.get("key_levels", {})
-        return (
-            "You are a strict-trader agent. Output ONLY JSON, no prose.\n\n"
-            f"SYMBOL={symbol}\nPRICE={price:.6f}\n"
-            f"RISK_LEVEL={risk.get('risk_level','MEDIUM')}\n"
-            f"ATR={risk.get('atr_value',0.001)}\n"
-            f"ML_STRENGTH={ml.get('signal_strength',0)} CONF={ml.get('confidence',0)}\n"
-            f"SUP1={key.get('support_1',price*0.99)} RES1={key.get('resistance_1',price*1.01)}\n\n"
-            "Return JSON with fields: SYMBOL,ACTION,CONFIDENCE,ENTRY,STOP_LOSS,TAKE_PROFIT,"
-            "RISK_REWARD_RATIO,ANALYSIS,EXPIRATION_H,TRADE_RATIONALE.\n"
-        )
-
-    async def fetch_signal(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        if not self.available:
-            return None
-        try:
-            model = genai.GenerativeModel(
-                self.model_name,
-                system_instruction="Return ONLY valid JSON. No extra text."
-            )
-            prompt = self._make_prompt(symbol, technical_analysis)
-
-            # Simple approach with minimal configuration
-            try:
-                resp = await asyncio.to_thread(
-                    model.generate_content,
-                    prompt,
-                    generation_config=genai.types.GenerationConfig(
-                        temperature=0.05,
-                        max_output_tokens=400,
-                    )
-                )
-                text = self._extract_text(resp)
-                data = self._clean_parse(text)
-                if data:
-                    return data
-            except Exception as e:
-                logging.warning(f"GeminiDirect failed: {e}")
-
-            return None
-        except Exception as e:
-            logging.error(f"GeminiDirectSignalAgent error: {e}")
-            return None
-
-    def _extract_text(self, resp) -> Optional[str]:
-        # Extract text from Gemini response
-        try:
-            d = resp.to_dict()
-            for c in d.get("candidates", []):
-                for p in (c.get("content", {}).get("parts") or []):
-                    if p.get("text"):
-                        return p["text"]
-        except Exception:
-            pass
-        try:
-            if getattr(resp, "candidates", None):
-                for c in resp.candidates:
-                    if getattr(c, "content", None):
-                        for p in getattr(c.content, "parts", []):
-                            if getattr(p, "text", None):
-                                return p.text
-        except Exception:
-            pass
-        return None
-
-    def _clean_parse(self, text: Optional[str]) -> Optional[Dict]:
-        if not text:
-            return None
-        s = text.strip()
-        s = re.sub(r'```json\s*', '', s)
-        s = re.sub(r'```\s*', '', s)
-        s = re.sub(r'<think>.*?</think>', '', s, flags=re.DOTALL | re.IGNORECASE)
-        s = re.sub(r'</?[^>]+>', '', s)
-        if '{' in s:
-            s = s[s.find('{'):]
-        m = re.search(r'\{.*\}', s, re.DOTALL)
-        if not m:
-            return None
-        try:
-            data = json.loads(m.group(0))
-            if isinstance(data, dict) and "SYMBOL" in data and "ACTION" in data and "CONFIDENCE" in data:
-                return data
-        except Exception:
-            return None
-        return None
-
-
-# =================================================================================
-# --- Risk Manager & Execution Heuristics (Add-on Systems) ---
-# =================================================================================
-
-class EnhancedRiskManager:
-    """
-    Position sizing + risk guardrails.
-    - Max risk per trade (percent of equity)
-    - Volatility-based stop check (ATR sanity)
-    - Kelly-capped sizing
-    """
+    
     def __init__(self,
                  equity: float = 10000.0,
                  risk_per_trade_pct: float = 1.0,
@@ -1866,76 +1930,618 @@ class EnhancedRiskManager:
         self.max_leverage = max_leverage
         self.kelly_cap = kelly_cap
 
-    def size_by_atr(self, price: float, stop: float, atr: float, rr: float = 1.5) -> Dict:
-        if not price or not stop or atr is None or atr <= 0:
-            return {"units": 0, "risk_amount": 0, "leverage": 0}
+    def calculate_intelligent_stop_loss(self, action: str, current_price: float, 
+                                      technical_analysis: Dict, atr: float) -> float:
+        """Calculate intelligent stop loss using multiple methods"""
+        key_levels = technical_analysis.get('key_levels', {})
+        trend = technical_analysis.get('htf_trend', {})
+        
+        if action == "BUY":
+            # Method 1: Below nearest support
+            sl_support = key_levels.get('support_1', current_price * 0.99)
+            
+            # Method 2: ATR-based (2 ATR below)
+            sl_atr = current_price - (2 * atr)
+            
+            # Method 3: Recent swing low
+            recent_low = key_levels.get('support_2', current_price * 0.98)
+            
+            # Choose the most conservative (highest) stop loss for BUY
+            stop_loss = max(sl_support, sl_atr, recent_low)
+            
+            # Add small buffer
+            stop_loss = stop_loss - (atr * 0.1)
+            
+        else:  # SELL
+            # Method 1: Above nearest resistance
+            sl_resistance = key_levels.get('resistance_1', current_price * 1.01)
+            
+            # Method 2: ATR-based (2 ATR above)
+            sl_atr = current_price + (2 * atr)
+            
+            # Method 3: Recent swing high
+            recent_high = key_levels.get('resistance_2', current_price * 1.02)
+            
+            # Choose the most conservative (lowest) stop loss for SELL
+            stop_loss = min(sl_resistance, sl_atr, recent_high)
+            
+            # Add small buffer
+            stop_loss = stop_loss + (atr * 0.1)
+            
+        return round(stop_loss, 5)
+
+    def calculate_intelligent_take_profit(self, action: str, entry_price: float, stop_loss: float,
+                                        technical_analysis: Dict, atr: float) -> float:
+        """Calculate intelligent take profit using multiple methods"""
+        key_levels = technical_analysis.get('key_levels', {})
+        risk_amount = abs(entry_price - stop_loss)
+        
+        if action == "BUY":
+            # Method 1: Risk-Reward Ratio (1.5:1 minimum)
+            tp_rr = entry_price + (risk_amount * 1.8)  # Slightly better than 1.5
+            
+            # Method 2: Key resistance level
+            tp_resistance = key_levels.get('resistance_1', entry_price * 1.03)
+            
+            # Method 3: ATR-based (3 ATR above)
+            tp_atr = entry_price + (3 * atr)
+            
+            # Choose the most appropriate take profit
+            take_profit = min(tp_rr, tp_resistance, tp_atr)
+            
+        else:  # SELL
+            # Method 1: Risk-Reward Ratio (1.5:1 minimum)
+            tp_rr = entry_price - (risk_amount * 1.8)
+            
+            # Method 2: Key support level
+            tp_support = key_levels.get('support_1', entry_price * 0.97)
+            
+            # Method 3: ATR-based (3 ATR below)
+            tp_atr = entry_price - (3 * atr)
+            
+            # Choose the most appropriate take profit
+            take_profit = max(tp_rr, tp_support, tp_atr)
+            
+        return round(take_profit, 5)
+
+    def calculate_position_size(self, entry_price: float, stop_loss: float, 
+                              atr: float, rr_ratio: float = 1.5) -> Dict:
+        """Calculate position size with multiple risk management methods"""
+        if not entry_price or not stop_loss or atr <= 0:
+            return {"units": 0, "risk_amount": 0, "leverage": 0, "position_risk_pct": 0}
+            
+        # Calculate risk per unit
+        risk_per_unit = abs(entry_price - stop_loss)
+        if risk_per_unit <= 0:
+            return {"units": 0, "risk_amount": 0, "leverage": 0, "position_risk_pct": 0}
+        
+        # Base risk amount
         risk_amount = self.equity * (self.risk_per_trade_pct / 100.0)
-        per_unit_risk = abs(price - stop)
-        units = risk_amount / max(per_unit_risk, 1e-8)
-        notional = units * price
+        
+        # Calculate units based on risk
+        units = risk_amount / risk_per_unit
+        
+        # Calculate notional value and leverage
+        notional = units * entry_price
         leverage = notional / max(self.equity, 1e-8)
+        
+        # Apply leverage cap
         if leverage > self.max_leverage:
             scale = self.max_leverage / leverage
             units *= scale
             leverage = self.max_leverage
-        return {"units": max(0, units), "risk_amount": risk_amount, "leverage": leverage}
+            risk_amount *= scale
+            
+        # Volatility adjustment - reduce position in high volatility
+        volatility_factor = min(1.0, 0.5 / max(atr / entry_price, 0.001))
+        units *= volatility_factor
+        
+        # Kelly Criterion adjustment (conservative)
+        assumed_win_rate = 0.55  # Conservative assumption
+        kelly_fraction = assumed_win_rate - (1 - assumed_win_rate) / rr_ratio
+        kelly_fraction = max(0.0, min(kelly_fraction, self.kelly_cap))
+        units *= (0.3 + 0.7 * kelly_fraction)  # Blend with conservative base
+        
+        position_risk_pct = (risk_amount / self.equity) * 100
+        
+        return {
+            "units": round(units, 2),
+            "risk_amount": round(risk_amount, 2),
+            "leverage": round(leverage, 2),
+            "position_risk_pct": round(position_risk_pct, 2),
+            "risk_per_unit": round(risk_per_unit, 5)
+        }
 
-    def kelly_adjust(self, winrate: float, rr: float, units: float) -> float:
-        # Kelly fraction = p - (1-p)/R
-        p = min(max(winrate, 0.0), 1.0)
-        R = max(rr, 1e-6)
-        k = p - (1 - p) / R
-        k = max(0.0, min(k, self.kelly_cap))
-        return units * (0.25 + 0.75 * k)  # clamp toward conservative base
+    def validate_signal_risk(self, signal: Dict, technical_analysis: Dict) -> Dict:
+        """Validate and enhance signal with proper risk management"""
+        if not signal or signal.get('ACTION') == 'HOLD':
+            return signal
+            
+        current_price = technical_analysis.get('current_price', 0)
+        atr = technical_analysis.get('volatility', 0.001) or 0.001
+        action = signal.get('ACTION')
+        
+        # Calculate intelligent stop loss and take profit
+        stop_loss = self.calculate_intelligent_stop_loss(action, current_price, technical_analysis, atr)
+        take_profit = self.calculate_intelligent_take_profit(action, current_price, stop_loss, technical_analysis, atr)
+        
+        # Update signal with calculated levels
+        signal['STOP_LOSS'] = f"{stop_loss:.5f}"
+        signal['TAKE_PROFIT'] = f"{take_profit:.5f}"
+        
+        # Calculate actual risk-reward ratio
+        risk = abs(current_price - stop_loss)
+        reward = abs(take_profit - current_price)
+        actual_rr = reward / risk if risk > 0 else 1.5
+        signal['ACTUAL_RR_RATIO'] = round(actual_rr, 2)
+        
+        # Calculate position size
+        rr_ratio = float(signal.get('RISK_REWARD_RATIO', 1.5))
+        position_info = self.calculate_position_size(current_price, stop_loss, atr, rr_ratio)
+        
+        # Add position sizing information
+        signal.update({
+            'POSITION_UNITS': position_info['units'],
+            'LEVERAGE_EST': position_info['leverage'],
+            'RISK_USD': position_info['risk_amount'],
+            'POSITION_RISK_PCT': position_info['position_risk_pct'],
+            'RISK_PER_UNIT': position_info['risk_per_unit']
+        })
+        
+        # Add risk assessment
+        risk_level = technical_analysis.get('risk_assessment', {}).get('risk_level', 'MEDIUM')
+        signal['RISK_ASSESSMENT'] = risk_level
+        
+        return signal
 
-class TradeFilter:
+# =================================================================================
+# --- Enhanced Signal Quality Scoring System ---
+# =================================================================================
+
+class SignalQualityScorer:
+    """Evaluate signal quality based on multiple factors"""
+    
+    def __init__(self):
+        self.weights = {
+            'ai_agreement': 0.25,
+            'technical_alignment': 0.20,
+            'risk_reward': 0.15,
+            'trend_strength': 0.15,
+            'volatility_appropriateness': 0.10,
+            'momentum_confirmation': 0.10,
+            'market_structure': 0.05
+        }
+    
+    def calculate_signal_score(self, signal: Dict, technical_analysis: Dict) -> float:
+        """Calculate comprehensive signal quality score (0-100)"""
+        if signal.get('ACTION') == 'HOLD':
+            return 0.0
+            
+        scores = {}
+        
+        # 1. AI Agreement Score
+        agreement_level = signal.get('AGREEMENT_LEVEL', 0)
+        total_models = signal.get('TOTAL_MODELS', 1)
+        scores['ai_agreement'] = (agreement_level / total_models) * 100
+        
+        # 2. Technical Alignment Score
+        scores['technical_alignment'] = self._calculate_technical_alignment(signal, technical_analysis)
+        
+        # 3. Risk-Reward Score
+        rr_ratio = float(signal.get('ACTUAL_RR_RATIO', 1.0))
+        scores['risk_reward'] = min(rr_ratio * 33.33, 100)  # 3:1 RR = 100 score
+        
+        # 4. Trend Strength Score
+        trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
+        strength_scores = {'VERY_STRONG': 100, 'STRONG': 80, 'MODERATE': 60, 'WEAK': 30, 'UNKNOWN': 0}
+        scores['trend_strength'] = strength_scores.get(trend_strength, 0)
+        
+        # 5. Volatility Appropriateness Score
+        scores['volatility_appropriateness'] = self._calculate_volatility_score(technical_analysis)
+        
+        # 6. Momentum Confirmation Score
+        scores['momentum_confirmation'] = self._calculate_momentum_score(signal, technical_analysis)
+        
+        # 7. Market Structure Score
+        scores['market_structure'] = self._calculate_market_structure_score(technical_analysis)
+        
+        # Calculate weighted total score
+        total_score = 0
+        for factor, weight in self.weights.items():
+            total_score += scores.get(factor, 0) * weight
+            
+        return round(total_score, 1)
+    
+    def _calculate_technical_alignment(self, signal: Dict, technical_analysis: Dict) -> float:
+        """Calculate technical alignment score"""
+        action = signal.get('ACTION')
+        trend_direction = technical_analysis.get('htf_trend', {}).get('direction', 'NEUTRAL')
+        momentum_bias = technical_analysis.get('momentum', {}).get('overall_bias', 'NEUTRAL')
+        
+        alignment_score = 0
+        
+        # Trend alignment
+        if (action == 'BUY' and 'BULLISH' in trend_direction) or (action == 'SELL' and 'BEARISH' in trend_direction):
+            alignment_score += 40
+        elif trend_direction == 'NEUTRAL':
+            alignment_score += 20
+            
+        # Momentum alignment
+        if (action == 'BUY' and momentum_bias == 'BULLISH') or (action == 'SELL' and momentum_bias == 'BEARISH'):
+            alignment_score += 30
+        elif momentum_bias == 'NEUTRAL':
+            alignment_score += 15
+            
+        # Price position alignment
+        current_price = technical_analysis.get('current_price', 0)
+        support = technical_analysis.get('key_levels', {}).get('support_1', 0)
+        resistance = technical_analysis.get('key_levels', {}).get('resistance_1', 0)
+        
+        if action == 'BUY' and current_price > support:
+            alignment_score += 30
+        elif action == 'SELL' and current_price < resistance:
+            alignment_score += 30
+            
+        return min(alignment_score, 100)
+    
+    def _calculate_volatility_score(self, technical_analysis: Dict) -> float:
+        """Calculate volatility appropriateness score"""
+        volatility = technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
+        atr = technical_analysis.get('volatility', 0.001)
+        
+        # Ideal volatility range for trading (0.5% to 2%)
+        if 0.5 <= volatility <= 2.0:
+            return 100
+        elif 0.3 <= volatility <= 3.0:
+            return 70
+        elif 0.1 <= volatility <= 5.0:
+            return 40
+        else:
+            return 10
+    
+    def _calculate_momentum_score(self, signal: Dict, technical_analysis: Dict) -> float:
+        """Calculate momentum confirmation score"""
+        momentum = technical_analysis.get('momentum', {})
+        action = signal.get('ACTION')
+        
+        score = 50  # Base score
+        
+        # RSI alignment
+        rsi_signal = momentum.get('rsi', {}).get('signal', 'NEUTRAL')
+        if (action == 'BUY' and rsi_signal == 'OVERSOLD') or (action == 'SELL' and rsi_signal == 'OVERBOUGHT'):
+            score += 20
+        elif rsi_signal == 'NEUTRAL':
+            score += 10
+            
+        # MACD alignment
+        macd_trend = momentum.get('macd', {}).get('trend', 'NEUTRAL')
+        if (action == 'BUY' and macd_trend == 'BULLISH') or (action == 'SELL' and macd_trend == 'BEARISH'):
+            score += 15
+            
+        # Stochastic alignment
+        stoch_signal = momentum.get('stochastic', {}).get('signal', 'NEUTRAL')
+        if (action == 'BUY' and stoch_signal == 'OVERSOLD') or (action == 'SELL' and stoch_signal == 'OVERBOUGHT'):
+            score += 15
+            
+        return min(score, 100)
+    
+    def _calculate_market_structure_score(self, technical_analysis: Dict) -> float:
+        """Calculate market structure score"""
+        market_structure = technical_analysis.get('market_structure', {})
+        structure = market_structure.get('higher_timeframe_structure', 'UNKNOWN')
+        is_breaking = market_structure.get('is_breaking_structure', False)
+        
+        if structure in ['UPTREND', 'DOWNTREND'] and not is_breaking:
+            return 100
+        elif structure in ['UPTREND', 'DOWNTREND'] and is_breaking:
+            return 60
+        elif structure == 'RANGING':
+            return 40
+        else:
+            return 20
+
+# =================================================================================
+# --- Gemini Direct Signal Agent (Enhanced) ---
+# =================================================================================
+
+class GeminiDirectSignalAgent:
     """
-    Regime filters and cool-down:
-    - Avoid high-impact news windows (pluggable)
-    - Cooldown after stop-outs
-    - Spread/slippage guard (inputs pluggable)
+    Enhanced direct Gemini signal agent with improved error handling and signal quality
+    """
+    def __init__(self, api_key: Optional[str] = None, model_name: str = GEMINI_MODEL):
+        self.model_name = model_name
+        self.fallback_model = GEMINI_FALLBACK_MODEL
+        self.available = False
+        try:
+            k = api_key or os.getenv("GOOGLE_API_KEY")
+            if k:
+                genai.configure(api_key=k)
+                self.available = True
+                logging.info(f"✅ GeminiDirectSignalAgent initialized with {model_name}")
+            else:
+                logging.warning("⚠️ GeminiDirectSignalAgent: GOOGLE_API_KEY not set.")
+        except Exception as e:
+            logging.error(f"❌ GeminiDirectSignalAgent init error: {e}")
+
+    def _create_enhanced_prompt(self, symbol: str, ta: Dict) -> str:
+        """Create enhanced prompt for better signal generation"""
+        price = ta.get("current_price", 1.0)
+        trend = ta.get("htf_trend", {})
+        risk = ta.get("risk_assessment", {})
+        ml = ta.get("ml_signal", {})
+        key = ta.get("key_levels", {})
+        momentum = ta.get("momentum", {})
+        
+        return f"""As an expert forex trading analyst, analyze {symbol} and provide ONLY JSON output.
+
+MARKET DATA:
+- Price: {price:.5f}
+- Trend: {trend.get('direction', 'NEUTRAL')} ({trend.get('strength', 'UNKNOWN')})
+- RSI: {momentum.get('rsi', {}).get('value', 50):.1f} ({momentum.get('rsi', {}).get('signal', 'NEUTRAL')})
+- Key Support: {key.get('support_1', price*0.99):.5f}
+- Key Resistance: {key.get('resistance_1', price*1.01):.5f}
+- Volatility: {risk.get('volatility_percent', 0):.2f}%
+- Risk Level: {risk.get('risk_level', 'MEDIUM')}
+- ML Signal Strength: {ml.get('signal_strength', 0):.2f}
+
+TRADING RULES:
+1. Only trade if trend and momentum align
+2. Minimum risk-reward ratio: 1.5
+3. Consider market structure and key levels
+4. Avoid trading in extreme volatility
+5. Prefer signals with technical confirmation
+
+Return EXACT JSON format:
+{{
+  "SYMBOL": "{symbol}",
+  "ACTION": "BUY|SELL|HOLD",
+  "CONFIDENCE": 1-10,
+  "ENTRY": "exact_price",
+  "STOP_LOSS": "exact_price",
+  "TAKE_PROFIT": "exact_price", 
+  "RISK_REWARD_RATIO": "number",
+  "ANALYSIS": "brief_technical_reasoning",
+  "EXPIRATION_H": 4,
+  "TRADE_RATIONALE": "detailed_explanation"
+}}"""
+
+    async def fetch_signal(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """Fetch direct signal from Gemini with enhanced reliability"""
+        if not self.available:
+            return None
+            
+        try:
+            prompt = self._create_enhanced_prompt(symbol, technical_analysis)
+            
+            # Try primary model first
+            model = genai.GenerativeModel(self.model_name)
+            
+            try:
+                response = await asyncio.to_thread(
+                    model.generate_content,
+                    prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.1,
+                        max_output_tokens=600,
+                    )
+                )
+                
+                text = self._extract_text(response)
+                data = self._clean_parse(text)
+                if data and self._validate_direct_signal(data, symbol):
+                    logging.info(f"✅ GeminiDirect signal for {symbol}: {data.get('ACTION', 'HOLD')}")
+                    return data
+                    
+            except Exception as e:
+                logging.warning(f"⚠️ GeminiDirect primary model failed: {e}")
+                # Try fallback model
+                if self.model_name != self.fallback_model:
+                    logging.info(f"🔄 Trying fallback model: {self.fallback_model}")
+                    model = genai.GenerativeModel(self.fallback_model)
+                    response = await asyncio.to_thread(
+                        model.generate_content,
+                        prompt,
+                        generation_config=genai.types.GenerationConfig(
+                            temperature=0.1,
+                            max_output_tokens=600,
+                        )
+                    )
+                    text = self._extract_text(response)
+                    data = self._clean_parse(text)
+                    if data and self._validate_direct_signal(data, symbol):
+                        logging.info(f"✅ GeminiDirect (fallback) signal for {symbol}: {data.get('ACTION', 'HOLD')}")
+                        return data
+
+            return None
+            
+        except Exception as e:
+            logging.error(f"❌ GeminiDirectSignalAgent error for {symbol}: {e}")
+            return None
+
+    def _extract_text(self, resp) -> Optional[str]:
+        """Enhanced text extraction from Gemini response"""
+        try:
+            # Method 1: Direct text attribute
+            if hasattr(resp, 'text') and resp.text:
+                return resp.text
+                
+            # Method 2: Candidates with parts
+            if hasattr(resp, 'candidates') and resp.candidates:
+                for candidate in resp.candidates:
+                    if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
+                        text_parts = []
+                        for part in candidate.content.parts:
+                            if hasattr(part, 'text') and part.text:
+                                text_parts.append(part.text)
+                        if text_parts:
+                            return ''.join(text_parts)
+                            
+            # Method 3: Try to_dict method
+            if hasattr(resp, 'to_dict'):
+                resp_dict = resp.to_dict()
+                if 'candidates' in resp_dict:
+                    for candidate in resp_dict['candidates']:
+                        if 'content' in candidate and 'parts' in candidate['content']:
+                            text_parts = []
+                            for part in candidate['content']['parts']:
+                                if 'text' in part:
+                                    text_parts.append(part['text'])
+                            if text_parts:
+                                return ''.join(text_parts)
+                                
+            return None
+            
+        except Exception as e:
+            logging.warning(f"Error extracting Gemini response text: {e}")
+            return None
+
+    def _clean_parse(self, text: Optional[str]) -> Optional[Dict]:
+        """Enhanced JSON parsing with validation"""
+        if not text:
+            return None
+            
+        try:
+            # Clean the text
+            cleaned = text.strip()
+            cleaned = re.sub(r'```json\s*', '', cleaned)
+            cleaned = re.sub(r'```\s*', '', cleaned)
+            cleaned = re.sub(r'<think>.*?</think>', '', cleaned, flags=re.DOTALL | re.IGNORECASE)
+            cleaned = re.sub(r'</?[^>]+>', '', cleaned)
+            
+            # Find JSON
+            if '{' in cleaned:
+                cleaned = cleaned[cleaned.find('{'):]
+            json_match = re.search(r'\{.*\}', cleaned, re.DOTALL)
+            if not json_match:
+                return None
+                
+            data = json.loads(json_match.group(0))
+            return data
+            
+        except Exception as e:
+            logging.warning(f"GeminiDirect JSON parsing error: {e}")
+            return None
+
+    def _validate_direct_signal(self, signal_data: Dict, symbol: str) -> bool:
+        """Validate direct signal data"""
+        required = ['SYMBOL', 'ACTION', 'CONFIDENCE']
+        for field in required:
+            if field not in signal_data:
+                logging.warning(f"❌ GeminiDirect missing field {field} for {symbol}")
+                return False
+                
+        action = signal_data['ACTION'].upper()
+        if action not in ['BUY', 'SELL', 'HOLD']:
+            logging.warning(f"❌ GeminiDirect invalid ACTION for {symbol}: {action}")
+            return False
+            
+        try:
+            confidence = float(signal_data['CONFIDENCE'])
+            if not (1 <= confidence <= 10):
+                logging.warning(f"❌ GeminiDirect CONFIDENCE out of range for {symbol}: {confidence}")
+                return False
+        except (ValueError, TypeError):
+            logging.warning(f"❌ GeminiDirect invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
+            return False
+            
+        return True
+
+# =================================================================================
+# --- Enhanced Trade Filter with Market Condition Analysis ---
+# =================================================================================
+
+class EnhancedTradeFilter:
+    """
+    Advanced trade filtering with market condition analysis
     """
     def __init__(self):
         self.last_stopout_time = {}
-        self.cooldown_minutes = 60
+        self.cooldown_minutes = 120  # 2 hours cooldown after stopout
+        self.min_volatility = 0.3    # Minimum volatility % for trading
+        self.max_volatility = 3.0    # Maximum volatility % for trading
 
-    def can_trade(self, symbol: str, now: Optional[datetime] = None) -> bool:
+    def can_trade(self, symbol: str, technical_analysis: Dict, now: Optional[datetime] = None) -> bool:
+        """Check if trading is allowed based on multiple factors"""
         now = now or datetime.now(UTC)
-        t = self.last_stopout_time.get(symbol)
-        if t and (now - t).total_seconds() < self.cooldown_minutes * 60:
+        
+        # Cooldown check
+        if not self._check_cooldown(symbol, now):
+            logging.info(f"⏸️ {symbol} in cooldown period")
+            return False
+            
+        # Volatility check
+        if not self._check_volatility(technical_analysis):
+            logging.info(f"📊 {symbol} volatility outside acceptable range")
+            return False
+            
+        # Market hours consideration (optional)
+        if not self._check_market_hours(now):
+            logging.info(f"⏰ {symbol} outside optimal trading hours")
+            return False
+            
+        # Trend strength check
+        if not self._check_trend_strength(technical_analysis):
+            logging.info(f"📈 {symbol} trend too weak for trading")
+            return False
+            
+        return True
+
+    def _check_cooldown(self, symbol: str, now: datetime) -> bool:
+        """Check if symbol is in cooldown period"""
+        last_stopout = self.last_stopout_time.get(symbol)
+        if last_stopout and (now - last_stopout).total_seconds() < self.cooldown_minutes * 60:
             return False
         return True
 
-    def mark_stopout(self, symbol: str):
-        self.last_stopout_time[symbol] = datetime.now(UTC)
+    def _check_volatility(self, technical_analysis: Dict) -> bool:
+        """Check if volatility is within acceptable range"""
+        volatility = technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
+        return self.min_volatility <= volatility <= self.max_volatility
 
+    def _check_market_hours(self, now: datetime) -> bool:
+        """Check if current time is within optimal trading hours"""
+        # London + New York overlap (13:00-17:00 UTC) is optimal
+        hour = now.hour
+        return 13 <= hour <= 17  # 1 PM - 5 PM UTC
+
+    def _check_trend_strength(self, technical_analysis: Dict) -> bool:
+        """Check if trend is strong enough for trading"""
+        trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
+        return trend_strength in ['MODERATE', 'STRONG', 'VERY_STRONG']
+
+    def mark_stopout(self, symbol: str):
+        """Record stopout for cooldown period"""
+        self.last_stopout_time[symbol] = datetime.now(UTC)
+        logging.info(f"🛑 Stopout recorded for {symbol}, cooldown activated")
 
 # =================================================================================
-# --- Main Forex Analyzer Class (extended with optional add-ons) ---
+# --- Main Forex Analyzer Class (Fully Enhanced) ---
 # =================================================================================
 
 class ImprovedForexAnalyzer:
     def __init__(self):
-        self.api_manager = SmartAPIManager(USAGE_TRACKER_FILE)
+        self.model_discoverer = DynamicModelDiscoverer()
+        self.api_manager = SmartAPIManager(USAGE_TRACKER_FILE, self.model_discoverer)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
         self.ai_manager = EnhancedAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY, self.api_manager)
         self.data_fetcher = EnhancedDataFetcher()
         self.performance_monitor = PerformanceMonitor()
 
-        # افزوده‌های اختیاری
+        # Enhanced components
         self.gemini_direct = GeminiDirectSignalAgent(google_api_key, GEMINI_MODEL)
-        self.risk_manager = EnhancedRiskManager()
-        self.trade_filter = TradeFilter()
+        self.risk_manager = AdvancedRiskManager()
+        self.signal_scorer = SignalQualityScorer()
+        self.trade_filter = EnhancedTradeFilter()
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
         """Complete analysis of a currency pair with comprehensive error handling"""
-        logging.info(f"🔍 Starting analysis for {pair}")
+        logging.info(f"🔍 Starting enhanced analysis for {pair}")
         start_time = time.time()
         
         try:
             logging.info(self.api_manager.get_usage_summary())
             
-            # Get market data with enhanced fetcher
+            # Get market data
             htf_df = await self.data_fetcher.get_market_data(pair, HIGH_TIMEFRAME)
             ltf_df = await self.data_fetcher.get_market_data(pair, LOW_TIMEFRAME)
             
@@ -1946,13 +2552,12 @@ class ImprovedForexAnalyzer:
                 
             logging.info(f"✅ Retrieved data: HTF={len(htf_df)} rows, LTF={len(ltf_df)} rows")
             
-            # Technical analysis with fallback
+            # Technical analysis
             htf_df_processed = self.technical_analyzer.calculate_enhanced_indicators(htf_df)
             ltf_df_processed = self.technical_analyzer.calculate_enhanced_indicators(ltf_df)
             
             if htf_df_processed is None or ltf_df_processed is None:
                 logging.warning(f"⚠️ Technical analysis failed for {pair}")
-                # Try basic analysis as fallback
                 htf_df_processed = self.technical_analyzer._calculate_basic_indicators(htf_df)
                 ltf_df_processed = self.technical_analyzer._calculate_basic_indicators(ltf_df)
                 if htf_df_processed is None or ltf_df_processed is None:
@@ -1968,44 +2573,49 @@ class ImprovedForexAnalyzer:
                 self.performance_monitor.record_failure()
                 return None
 
-            # Optional pre-trade filter (cooldown, etc.)
-            if not self.trade_filter.can_trade(pair):
-                logging.info(f"⏸️ Cooldown active for {pair}, skipping trade signal.")
+            # Trade filter check
+            if not self.trade_filter.can_trade(pair, technical_analysis):
+                logging.info(f"⏸️ Trade filter blocked {pair}")
                 self.performance_monitor.record_success()
                 return None
                 
             # AI analysis (ensemble)
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
 
-            # اگر جمینی مستقیم هم خواستی موازی تست کنی (بدون جایگزینی):
-            direct = await self.gemini_direct.fetch_signal(pair, technical_analysis) if self.gemini_direct.available else None
-            if direct and ai_analysis is None:
-                ai_analysis = direct  # فقط اگر چیزی از ensemble نیامد
+            # Gemini direct as backup
+            if not ai_analysis and self.gemini_direct.available:
+                logging.info(f"🔄 Trying GeminiDirect as backup for {pair}")
+                direct_signal = await self.gemini_direct.fetch_signal(pair, technical_analysis)
+                if direct_signal:
+                    ai_analysis = direct_signal
+                    ai_analysis['AGREEMENT_LEVEL'] = 1
+                    ai_analysis['AGREEMENT_TYPE'] = 'DIRECT_SIGNAL'
+                    ai_analysis['VALID_MODELS'] = 1
+                    ai_analysis['TOTAL_MODELS'] = 1
 
             if ai_analysis:
-                # محاسبه سایز پوزیشن (اختیاری)
-                price = technical_analysis.get('current_price', 0.0)
-                atr = technical_analysis.get('risk_assessment', {}).get('atr_value', 0.001) or 0.001
-                try:
-                    sl = float(ai_analysis.get('STOP_LOSS')) if ai_analysis.get('STOP_LOSS') not in [None, "N/A"] else (price - 1.5 * atr)
-                except Exception:
-                    sl = price - 1.5 * atr
-                rr = float(ai_analysis.get('RISK_REWARD_RATIO', "1.5")) if isinstance(ai_analysis.get('RISK_REWARD_RATIO'), (int, float, str)) else 1.5
-                sizing = self.risk_manager.size_by_atr(price, sl, atr, rr=rr)
-
-                # Kelly adjust with a conservative assumed win-rate (قابل تنظیم)
-                winrate_guess = 0.52
-                sized_units = self.risk_manager.kelly_adjust(winrate_guess, rr, sizing["units"])
-                ai_analysis["POSITION_UNITS"] = round(sized_units, 4)
-                ai_analysis["LEVERAGE_EST"] = round(sizing["leverage"], 2)
-                ai_analysis["RISK_USD"] = round(sizing["risk_amount"], 2)
-
+                # Enhanced risk management and position sizing
+                ai_analysis = self.risk_manager.validate_signal_risk(ai_analysis, technical_analysis)
+                
+                # Calculate signal quality score
+                quality_score = self.signal_scorer.calculate_signal_score(ai_analysis, technical_analysis)
+                ai_analysis['QUALITY_SCORE'] = quality_score
+                
+                # Add technical context
+                ai_analysis['TECHNICAL_CONTEXT'] = {
+                    'trend': technical_analysis.get('htf_trend', {}).get('direction', 'NEUTRAL'),
+                    'rsi': technical_analysis.get('momentum', {}).get('rsi', {}).get('value', 50),
+                    'key_support': technical_analysis.get('key_levels', {}).get('support_1', 0),
+                    'key_resistance': technical_analysis.get('key_levels', {}).get('resistance_1', 0),
+                    'volatility': technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
+                }
+                
                 analysis_duration = time.time() - start_time
                 self.performance_monitor.record_analysis_time(pair, analysis_duration)
                 self.performance_monitor.record_success()
                 
-                logging.info(f"✅ Signal for {pair}: {ai_analysis['ACTION']} "
-                           f"(Agreement: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/{ai_analysis.get('TOTAL_MODELS', 0)})")
+                logging.info(f"✅ Enhanced signal for {pair}: {ai_analysis['ACTION']} "
+                           f"(Quality: {quality_score}/100, Agreement: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/{ai_analysis.get('TOTAL_MODELS', 0)})")
                 return ai_analysis
                 
             self.performance_monitor.record_failure()
@@ -2019,14 +2629,21 @@ class ImprovedForexAnalyzer:
             return None
 
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
-        """Analyze all currency pairs"""
-        logging.info(f"🚀 Starting analysis for {len(pairs)} currency pairs")
+        """Analyze all currency pairs with enhanced processing"""
+        logging.info(f"🚀 Starting enhanced analysis for {len(pairs)} currency pairs")
+        
+        # Initialize models first
+        await self.api_manager.initialize_models()
         
         tasks = [self.analyze_pair(pair) for pair in pairs]
         results = await asyncio.gather(*tasks)
         
         valid_signals = [r for r in results if r is not None]
-        logging.info(f"📊 Analysis complete. {len(valid_signals)} valid signals")
+        
+        # Sort by quality score
+        valid_signals.sort(key=lambda x: x.get('QUALITY_SCORE', 0), reverse=True)
+        
+        logging.info(f"📊 Enhanced analysis complete. {len(valid_signals)} valid signals")
         
         # Log performance statistics
         perf_stats = self.performance_monitor.get_performance_stats()
@@ -2035,7 +2652,7 @@ class ImprovedForexAnalyzer:
         return valid_signals
 
     def save_signals(self, signals: List[Dict]):
-        """Save signals to files in root directory"""
+        """Save signals to files with enhanced categorization"""
         import os
         
         current_dir = os.getcwd()
@@ -2043,7 +2660,7 @@ class ImprovedForexAnalyzer:
         
         if not signals:
             logging.info("📝 No signals to save")
-            # Create empty files in root
+            # Create empty files
             empty_data = []
             try:
                 files_to_create = [
@@ -2059,39 +2676,57 @@ class ImprovedForexAnalyzer:
                 logging.error(f"❌ Error creating empty files: {e}")
             return
 
-        # Categorize signals
+        # Enhanced categorization with quality scoring
         strong_signals = []
         medium_signals = []
         weak_signals = []
         
         for signal in signals:
             agreement_type = signal.get('AGREEMENT_TYPE', '')
-            if agreement_type == 'STRONG_CONSENSUS':
+            quality_score = signal.get('QUALITY_SCORE', 0)
+            
+            # Enhanced categorization logic
+            if (agreement_type == 'STRONG_CONSENSUS' and quality_score >= 70) or quality_score >= 80:
                 strong_signals.append(signal)
-            elif agreement_type == 'MEDIUM_CONSENSUS':
+            elif (agreement_type == 'MEDIUM_CONSENSUS' and quality_score >= 50) or quality_score >= 60:
                 medium_signals.append(signal)
             else:
                 weak_signals.append(signal)
                 
-        # Save to root directory
+        # Save to files with enhanced information
         try:
-            # Strong signals file
+            # Strong signals
             with open("strong_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(strong_signals, f, indent=2, ensure_ascii=False)
-            logging.info(f"💾 {len(strong_signals)} strong signals saved in root")
+            logging.info(f"💾 {len(strong_signals)} strong signals saved")
             
-            # Medium signals file
+            # Medium signals  
             with open("medium_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(medium_signals, f, indent=2, ensure_ascii=False)
-            logging.info(f"💾 {len(medium_signals)} medium signals saved in root")
+            logging.info(f"💾 {len(medium_signals)} medium signals saved")
             
-            # Weak signals file
+            # Weak signals
             with open("weak_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(weak_signals, f, indent=2, ensure_ascii=False)
-            logging.info(f"💾 {len(weak_signals)} weak signals saved in root")
+            logging.info(f"💾 {len(weak_signals)} weak signals saved")
+            
+            # Create summary file
+            summary = {
+                "timestamp": datetime.now(UTC).isoformat(),
+                "total_signals": len(signals),
+                "strong_signals": len(strong_signals),
+                "medium_signals": len(medium_signals),
+                "weak_signals": len(weak_signals),
+                "performance_stats": self.performance_monitor.get_performance_stats()
+            }
+            
+            with open("analysis_summary.json", 'w', encoding='utf-8') as f:
+                json.dump(summary, f, indent=2, ensure_ascii=False)
+            logging.info("💾 Analysis summary saved")
             
             # Verify file creation
-            for filename in ["strong_consensus_signals.json", "medium_consensus_signals.json", "weak_consensus_signals.json"]:
+            for filename in ["strong_consensus_signals.json", "medium_consensus_signals.json", 
+                           "weak_consensus_signals.json", "analysis_summary.json"]:
                 if os.path.exists(filename):
                     logging.info(f"✅ File {filename} successfully created")
                 else:
@@ -2099,7 +2734,6 @@ class ImprovedForexAnalyzer:
                     
         except Exception as e:
             logging.error(f"❌ Error saving signals: {e}")
-
 
 # =================================================================================
 # --- Installation Helper ---
@@ -2127,28 +2761,27 @@ def install_required_packages():
             subprocess.check_call([sys.executable, "-m", "pip", "install", package])
             print(f"✅ {package} installed successfully!")
 
-
 # =================================================================================
 # --- Main Function ---
 # =================================================================================
 
 async def main():
     """Main program execution function"""
-    logging.info("🎯 Starting Forex Analysis System (Enhanced AI Engine)")
+    logging.info("🎯 Starting Enhanced Forex Analysis System (Advanced AI Engine)")
     
     # Install required packages
     install_required_packages()
     
     import argparse
     
-    parser = argparse.ArgumentParser(description='Forex Analysis System with AI')
+    parser = argparse.ArgumentParser(description='Enhanced Forex Analysis System with AI')
     parser.add_argument("--pair", type=str, help="Analyze specific currency pair")
     parser.add_argument("--all", action="store_true", help="Analyze all currency pairs") 
     parser.add_argument("--pairs", type=str, help="Analyze specified currency pairs")
-    parser.add_argument("--equity", type=float, help="Account equity for sizing (USD)")
-    parser.add_argument("--risk_pct", type=float, help="Risk per trade percent (default 1.0)")
-    parser.add_argument("--kelly_cap", type=float, help="Kelly cap (0..1, default 0.5)")
-    parser.add_argument("--max_lev", type=float, help="Max leverage (default 30)")
+    parser.add_argument("--equity", type=float, default=10000.0, help="Account equity for sizing (USD)")
+    parser.add_argument("--risk_pct", type=float, default=1.0, help="Risk per trade percent (default 1.0)")
+    parser.add_argument("--kelly_cap", type=float, default=0.5, help="Kelly cap (0..1, default 0.5)")
+    parser.add_argument("--max_lev", type=float, default=30.0, help="Max leverage (default 30)")
     
     args = parser.parse_args()
     
@@ -2159,62 +2792,68 @@ async def main():
     elif args.all:
         pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
     else:
-        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:3]  # Default to first 3 pairs
+        pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:4]  # Default to first 4 pairs
         logging.info(f"🔍 Using default currency pairs: {', '.join(pairs_to_analyze)}")
     
     logging.info(f"🎯 Currency pairs to analyze: {', '.join(pairs_to_analyze)}")
     
     analyzer = ImprovedForexAnalyzer()
 
-    # Optional CLI overrides for risk manager
-    if args.equity is not None:
-        analyzer.risk_manager.equity = float(args.equity)
-    if args.risk_pct is not None:
-        analyzer.risk_manager.risk_per_trade_pct = float(args.risk_pct)
-    if args.kelly_cap is not None:
-        analyzer.risk_manager.kelly_cap = float(args.kelly_cap)
-    if args.max_lev is not None:
-        analyzer.risk_manager.max_leverage = float(args.max_lev)
+    # Configure risk manager with CLI arguments
+    analyzer.risk_manager.equity = args.equity
+    analyzer.risk_manager.risk_per_trade_pct = args.risk_pct
+    analyzer.risk_manager.kelly_cap = args.kelly_cap
+    analyzer.risk_manager.max_leverage = args.max_lev
+
+    logging.info(f"⚙️ Risk Configuration: Equity=${args.equity:.0f}, Risk={args.risk_pct}%, "
+               f"Kelly Cap={args.kelly_cap}, Max Leverage={args.max_lev}x")
 
     signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
     
     # Save signals
     analyzer.save_signals(signals)
     
-    # Display results
-    logging.info("📈 Results Summary:")
-    strong_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'STRONG_CONSENSUS'])
-    medium_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'MEDIUM_CONSENSUS'])
-    weak_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'WEAK_CONSENSUS'])
+    # Enhanced results display
+    logging.info("📈 Enhanced Results Summary:")
+    strong_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'STRONG_CONSENSUS' or s.get('QUALITY_SCORE', 0) >= 70])
+    medium_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'MEDIUM_CONSENSUS' or 50 <= s.get('QUALITY_SCORE', 0) < 70])
+    weak_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'WEAK_CONSENSUS' or s.get('QUALITY_SCORE', 0) < 50])
+    
+    avg_quality = sum(s.get('QUALITY_SCORE', 0) for s in signals) / len(signals) if signals else 0
     
     logging.info(f"🎯 Strong signals: {strong_count}")
     logging.info(f"📊 Medium signals: {medium_count}") 
     logging.info(f"📈 Weak signals: {weak_count}")
+    logging.info(f"📋 Average Quality Score: {avg_quality:.1f}/100")
     
     for signal in signals:
         action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "⚪"
-        logging.info(f"  {action_icon} {signal['SYMBOL']}: {signal['ACTION']} (Confidence: {signal.get('CONFIDENCE', 0)}/10)"
-                     f" | Units: {signal.get('POSITION_UNITS','-')} | Lev≈{signal.get('LEVERAGE_EST','-')} | Risk ${signal.get('RISK_USD','-')}")
+        quality_score = signal.get('QUALITY_SCORE', 0)
+        quality_icon = "🔥" if quality_score >= 80 else "✅" if quality_score >= 60 else "⚠️"
+        
+        logging.info(f"  {action_icon} {quality_icon} {signal['SYMBOL']}: {signal['ACTION']} "
+                   f"(Quality: {quality_score}/10, Conf: {signal.get('CONFIDENCE', 0)}/10)"
+                   f" | Entry: {signal.get('ENTRY', 'N/A')} | SL: {signal.get('STOP_LOSS', 'N/A')} | TP: {signal.get('TAKE_PROFIT', 'N/A')}"
+                   f" | RR: {signal.get('ACTUAL_RR_RATIO', 'N/A')}:1")
     
-    # Display data source statistics
+    # Display enhanced statistics
     data_source_stats = analyzer.data_fetcher.get_data_source_stats()
     logging.info("📊 Data Source Statistics:")
     for source, count in data_source_stats.items():
         logging.info(f"  {source}: {count} pairs")
     
-    # Display performance statistics
+    # Performance statistics
     perf_stats = analyzer.performance_monitor.get_performance_stats()
-    logging.info("🚀 Performance Statistics:")
+    logging.info("🚀 Enhanced Performance Statistics:")
     logging.info(f"  Total Analyses: {perf_stats['total_analyses']}")
     logging.info(f"  Success Rate: {perf_stats['success_rate']}%")
     logging.info(f"  Avg Analysis Time: {perf_stats['avg_analysis_time_sec']}s")
     logging.info(f"  Avg API Response Time: {perf_stats['avg_api_response_time_sec']}s")
     
-    # Display final API status
+    # Final API status
     analyzer.api_manager.save_usage_data()
     logging.info(analyzer.api_manager.get_usage_summary())
-    logging.info("🏁 System execution completed")
-
+    logging.info("🏁 Enhanced system execution completed successfully!")
 
 if __name__ == "__main__":
-    asyncio.run(main())          
+    asyncio.run(main())
