@@ -63,25 +63,25 @@ CACHE_FILE = "signal_cache.json"
 USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
-# Updated AI models with more diversity
-GEMINI_MODEL = 'gemini-2.5-flash'
+# Updated AI models with more diversity - FIXED GEMINI MODEL
+GEMINI_MODEL = 'gemini-1.5-flash'  # Changed to more stable version
 
 # Enhanced Cloudflare models
 CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-4-scout-17b-16e-instruct",  # جدیدترین
-    "@cf/meta/llama-3.3-70b-instruct-fp8-fast", # جدید
-    "@cf/meta/llama-3.1-8b-instruct-fast",      # جدید
-    "@cf/google/gemma-3-12b-it",                # جدید
-    "@cf/mistralai/mistral-small-3.1-24b-instruct" # جدید
+    "@cf/meta/llama-4-scout-17b-16e-instruct",
+    "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "@cf/meta/llama-3.1-8b-instruct-fast",
+    "@cf/google/gemma-3-12b-it",
+    "@cf/mistralai/mistral-small-3.1-24b-instruct"
 ]
 
 # Enhanced Groq models
 GROQ_MODELS = [
-    "qwen/qwen3-32b",                                   # جدید
-    "llama-3.3-70b-versatile",                          # جدیدترین
-    "meta-llama/llama-4-maverick-17b-128e-instruct",    # جدید
-    "meta-llama/llama-4-scout-17b-16e-instruct",        # جدید
-    "llama-3.1-8b-instant"                              # جدید
+    "qwen/qwen3-32b",
+    "llama-3.3-70b-versatile",
+    "meta-llama/llama-4-maverick-17b-128e-instruct",
+    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "llama-3.1-8b-instant"
 ]
 
 # Daily API limits
@@ -1267,7 +1267,7 @@ class SmartAPIManager:
             "qwen": ["qwen/qwen3-32b"],
             "gemma": ["@cf/google/gemma-3-12b-it"],
             "mistral": ["@cf/mistralai/mistral-small-3.1-24b-instruct"],
-            "gemini": ["gemini-2.5-flash"]
+            "gemini": ["gemini-1.5-flash"]
         }
         
         # Track used families to ensure diversity
@@ -1348,7 +1348,7 @@ class SmartAPIManager:
         return summary
 
 # =================================================================================
-# --- Enhanced AI Manager with Fixed Error Handling + Token-Aware Gemini + Short-Prompt ---
+# --- Enhanced AI Manager with Fixed Gemini Token Issues ---
 # =================================================================================
 
 class EnhancedAIManager:
@@ -1361,164 +1361,34 @@ class EnhancedAIManager:
         if gemini_api_key:
             genai.configure(api_key=gemini_api_key)
 
-    # -----------------------------
-    # 🔧 Helper: Gemini model caps
-    # -----------------------------
-    def _gemini_model_caps(self, model_name: str) -> Dict[str, int]:
-        """
-        بر اساس نام مدل سقف تقریبی توکن کانتکست رو برمی‌گردونه.
-        اگر مدل ناشناخته بود، 8192 رو فرض می‌کنیم.
-        """
-        name = (model_name or "").lower()
-        if "2.5-pro" in name or "2.0-pro" in name:
-            return {"context": 32768}
-        if "2.5-flash" in name or "flash" in name:
-            return {"context": 16384}
-        if "1.5-pro" in name or "1.5-flash" in name:
-            return {"context": 8192}
-        return {"context": 8192}
-
-    # -------------------------------------
-    # 🔧 Helper: calc safe max_output_tokens
-    # -------------------------------------
-    def _calc_gemini_max_tokens(self, model, model_name: str, prompt: str, min_gen: int = 384, pad: int = 256) -> int:
-        """
-        تعداد توکن‌های پرامپت را می‌شمارد و بر اساس سقف مدل، max_output_tokens امن می‌سازد.
-        - min_gen: حداقل خروجی که می‌خواهیم
-        - pad: حاشیهٔ امن برای نوسانات شمارش
-        """
-        try:
-            caps = self._gemini_model_caps(model_name)
-            ctx = caps.get("context", 8192)
-            t = model.count_tokens(prompt)
-            prompt_tokens = 0
-            if hasattr(t, "total_tokens"):
-                prompt_tokens = int(t.total_tokens or 0)
-            elif isinstance(t, dict):
-                prompt_tokens = int(t.get("total_tokens", 0))
-            gen = max(min_gen, ctx - prompt_tokens - pad)
-            gen = max(256, min(gen, 1200))
-            return gen
-        except Exception:
-            return 700
-
-    # ---------------------------------
-    # 🔧 Helper: make a short prompt
-    # ---------------------------------
-    def _shorten_prompt_for_gemini(self, prompt: str) -> str:
-        """
-        یک پرامپت کوتاه‌تر و فشرده از پرامپت اصلی می‌سازد تا احتمال finish_reason=2 کم شود.
-        فقط اطلاعات کلیدی را نگه می‌داریم.
-        """
-        try:
-            keep_keys = {
-                "SYMBOL", "CURRENT PRICE", "TECHNICAL ANALYSIS SUMMARY",
-                "CALCULATION INSTRUCTIONS", "RETURN ONLY THIS EXACT JSON FORMAT", "CRITICAL"
-            }
-            lines = [ln for ln in prompt.splitlines() if any(k in ln for k in keep_keys)]
-            if len(lines) < 12:
-                # اگر خیلی کوتاه شد، 80 خط اول را نگه دار
-                lines = prompt.splitlines()[:80]
-            return "\n".join(lines)
-        except Exception:
-            return prompt
-
-    def _extract_gemini_text(self, resp) -> Optional[str]:
-        """
-        Safely extract text from a Gemini response بدون دسترسی مستقیم و کورکورانه به resp.text.
-        Order:
-          1) resp.to_dict() -> candidates[...].content.parts[].text
-          2) resp.candidates -> content.parts[].text (SDK objects)
-          3) (no blind resp.text)
-        """
-        # 1) to_dict
-        try:
-            d = resp.to_dict()
-            cands = d.get("candidates") or []
-            for c in cands:
-                parts = ((c.get("content") or {}).get("parts")) or []
-                for p in parts:
-                    t = p.get("text")
-                    if t:
-                        return t
-        except Exception:
-            pass
-
-        # 2) SDK attrs
-        try:
-            if getattr(resp, "candidates", None):
-                for c in resp.candidates:
-                    if getattr(c, "content", None) and getattr(c.content, "parts", None):
-                        for p in c.content.parts:
-                            if getattr(p, "text", None):
-                                return p.text
-        except Exception:
-            pass
-
-        # 3) nothing
-        return None
-
-    def _create_enhanced_english_prompt(self, symbol: str, technical_analysis: Dict) -> str:
-        """Create enhanced English prompt for AI analysis"""
+    def _create_optimized_prompt(self, symbol: str, technical_analysis: Dict) -> str:
+        """Create optimized prompt with minimal token usage"""
         current_price = technical_analysis.get('current_price', 1.0850)
         
         momentum_data = technical_analysis.get('momentum', {})
-        stochastic_data = momentum_data.get('stochastic', {})
         htf_trend = technical_analysis.get('htf_trend', {})
-        ltf_trend = technical_analysis.get('ltf_trend', {})
         key_levels = technical_analysis.get('key_levels', {})
-        market_structure = technical_analysis.get('market_structure', {})
-        risk_assessment = technical_analysis.get('risk_assessment', {})
-        ml_signal = technical_analysis.get('ml_signal', {})
         
-        return f"""IMPORTANT: You are a professional forex trading analyst. Analyze the technical setup and provide ONLY a valid JSON response.
-
+        # Ultra-concise prompt to avoid token limits
+        return f"""JSON ONLY:
 SYMBOL: {symbol}
-CURRENT PRICE: {current_price:.5f}
+PRICE: {current_price:.5f}
+TREND: {htf_trend.get('direction', 'NEUTRAL')}
+RSI: {momentum_data.get('rsi', {}).get('value', 50):.1f}
+SUPPORT: {key_levels.get('support_1', current_price * 0.99):.5f}
+RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
 
-TECHNICAL ANALYSIS SUMMARY:
-- HTF Trend (4H): {htf_trend.get('direction', 'NEUTRAL')} | Strength: {htf_trend.get('strength', 'UNKNOWN')} | ADX: {htf_trend.get('adx', 0):.1f}
-- LTF Trend (1H): {ltf_trend.get('direction', 'NEUTRAL')} | EMA Alignment: {htf_trend.get('ema_alignment', 0)}/4
-- Momentum Bias: {momentum_data.get('overall_bias', 'NEUTRAL')} | RSI: {momentum_data.get('rsi', {}).get('value', 50):.1f} ({momentum_data.get('rsi', {}).get('signal', 'NEUTRAL')})
-- MACD: {momentum_data.get('macd', {}).get('trend', 'NEUTRAL')} | Signal: {momentum_data.get('macd', {}).get('cross', 'NO_CROSS')}
-- Stochastic: {stochastic_data.get('k', 50):.1f} ({stochastic_data.get('signal', 'NEUTRAL')})
-- ML Signal Strength: {ml_signal.get('signal_strength', 0):.3f} | Confidence: {ml_signal.get('confidence', 0):.3f}
-- Key Support: {key_levels.get('support_1', current_price * 0.99):.5f} | Key Resistance: {key_levels.get('resistance_1', current_price * 1.01):.5f}
-- Market Structure: {market_structure.get('higher_timeframe_structure', 'UNKNOWN')}
-- Risk Level: {risk_assessment.get('risk_level', 'MEDIUM')}
-- Volatility: {technical_analysis.get('volatility', 0.001):.5f} (ATR)
-- Market Phase: {market_structure.get('market_phase', 'UNKNOWN')}
-
-CALCULATION INSTRUCTIONS:
-- Calculate realistic levels based on current price {current_price:.5f} and technical structure
-- Use ATR ({risk_assessment.get('atr_value', 0.001):.5f}) for stop loss calculation
-- For entry: Use single price, not range
-- For stop loss: Calculate based on 1.5x ATR or key levels
-- For take profit: Use risk-reward ratio 1.5-2.0
-- Consider market structure and phase in your analysis
-- Factor in ML signal strength and confidence
-
-RETURN ONLY THIS EXACT JSON FORMAT:
 {{
   "SYMBOL": "{symbol}",
-  "ACTION": "BUY",
+  "ACTION": "BUY|SELL|HOLD",
   "CONFIDENCE": 7,
   "ENTRY": "{current_price:.5f}",
   "STOP_LOSS": "{current_price - 0.0020:.5f}",
   "TAKE_PROFIT": "{current_price + 0.0030:.5f}",
   "RISK_REWARD_RATIO": "1.5",
-  "ANALYSIS": "Technical analysis based on bullish trend alignment and positive momentum convergence",
-  "EXPIRATION_H": 4,
-  "TRADE_RATIONALE": "Signal based on EMA alignment, RSI momentum, and key level breakout potential"
-}}
-
-CRITICAL:
-- ACTION must be "BUY", "SELL", or "HOLD"
-- CONFIDENCE must be between 1-10
-- All price levels must be single values, not ranges
-- Provide realistic levels based on technical context
-- Return ONLY the JSON object, no other text
-"""
+  "ANALYSIS": "Technical analysis",
+  "EXPIRATION_H": 4
+}}"""
 
     async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """Get enhanced AI analysis with multiple models and robust error handling"""
@@ -1545,7 +1415,6 @@ CRITICAL:
                 result = results[i]
                 if isinstance(result, Exception):
                     logging.error(f"❌ Error in {provider}/{model_name} for {symbol}: {str(result)}")
-                    logging.error(f"❌ Traceback: {traceback.format_exc()}")
                     self.api_manager.mark_model_failed(provider, model_name)
                     failed_count += 1
                     self.api_manager.record_api_usage(provider)
@@ -1565,16 +1434,15 @@ CRITICAL:
                 
         except Exception as e:
             logging.error(f"❌ Error in AI analysis for {symbol}: {str(e)}")
-            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
         """Get analysis from single AI model"""
         try:
-            prompt = self._create_enhanced_english_prompt(symbol, technical_analysis)
+            prompt = self._create_optimized_prompt(symbol, technical_analysis)
             
             if provider == "google_gemini":
-                return await self._get_gemini_analysis(symbol, prompt, model_name)
+                return await self._get_gemini_analysis_optimized(symbol, prompt, model_name)
             elif provider == "cloudflare":
                 return await self._get_cloudflare_analysis(symbol, prompt, model_name)
             elif provider == "groq":
@@ -1584,137 +1452,54 @@ CRITICAL:
                 
         except Exception as e:
             logging.error(f"❌ Error in {provider}/{model_name} for {symbol}: {str(e)}")
-            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
-    # ---------------------------------------------------------
-    # ✅ Gemini with token-aware + schema + MIME + plain fallbacks
-    # ---------------------------------------------------------
-    async def _get_gemini_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """
-        Gemini with:
-          1) token-aware max_output_tokens
-          2) response_schema for structured output (افزایش شانس داشتن Part)
-          3) fallback: MIME=application/json بدون schema
-          4) fallback نهایی: بدون MIME (plain text) + short prompt
-        """
+    async def _get_gemini_analysis_optimized(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
+        """Optimized Gemini analysis with minimal token usage"""
         try:
-            model = genai.GenerativeModel(
-                model_name,
-                system_instruction="You are a forex trading expert. Return ONLY valid JSON. No prose."
+            model = genai.GenerativeModel(model_name)
+            
+            # Use very conservative token limits
+            generation_config = genai.types.GenerationConfig(
+                temperature=0.1,
+                max_output_tokens=300,  # Reduced from 800
+                top_p=0.8,
+                top_k=40
             )
-
-            # 1) محاسبهٔ خروجی امن
-            max_out = self._calc_gemini_max_tokens(model, model_name, prompt, min_gen=384, pad=256)
-
-            # 2) تلاش اول: Structured Output (schema)
-            response_schema = {
-                "type": "object",
-                "properties": {
-                    "SYMBOL": {"type": "string"},
-                    "ACTION": {"type": "string", "enum": ["BUY", "SELL", "HOLD"]},
-                    "CONFIDENCE": {"type": "number"},
-                    "ENTRY": {"type": "string"},
-                    "STOP_LOSS": {"type": "string"},
-                    "TAKE_PROFIT": {"type": "string"},
-                    "RISK_REWARD_RATIO": {"type": "string"},
-                    "ANALYSIS": {"type": "string"},
-                    "EXPIRATION_H": {"type": "number"},
-                    "TRADE_RATIONALE": {"type": "string"}
-                },
-                "required": ["SYMBOL", "ACTION", "CONFIDENCE"]
-            }
-
-            resp1 = await asyncio.to_thread(
+            
+            # Simple approach without complex schema
+            response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.1,
-                    max_output_tokens=max_out,
-                    response_mime_type="application/json",
-                    response_schema=response_schema
-                )
+                generation_config=generation_config
             )
-
-            def _resp_is_empty_or_blocked(rsp) -> bool:
-                try:
-                    d = rsp.to_dict()
-                except Exception:
-                    d = {}
-                pf = (d or {}).get("prompt_feedback") or {}
-                if pf.get("block_reason"):
-                    return True
-                cands = (d or {}).get("candidates") or []
-                if not cands:
-                    return True
-                parts = ((cands[0].get("content") or {}).get("parts")) or []
-                return len(parts) == 0
-
-            raw = self._extract_gemini_text(resp1)
-            try:
-                if getattr(resp1, "candidates", None):
-                    fr = getattr(resp1.candidates[0], "finish_reason", None)
-                    if fr is not None and fr != 1:
-                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (schema attempt)")
-            except Exception:
-                pass
-
-            if raw and not _resp_is_empty_or_blocked(resp1):
-                return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
-
-            # 3) تلاش دوم: MIME=application/json بدون schema
-            resp2 = await asyncio.to_thread(
-                model.generate_content,
-                prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.05,
-                    max_output_tokens=max_out,
-                    response_mime_type="application/json",
-                )
-            )
-            try:
-                if getattr(resp2, "candidates", None):
-                    fr = getattr(resp2.candidates[0], "finish_reason", None)
-                    if fr is not None and fr != 1:
-                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (json-mime attempt)")
-            except Exception:
-                pass
-
-            raw = self._extract_gemini_text(resp2)
-            if raw:
-                return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
-
-            # 4) تلاش سوم: بدون MIME (plain) + پرامپت کوتاه‌تر
-            short_prompt = self._shorten_prompt_for_gemini(prompt)
-            resp3 = await asyncio.to_thread(
-                model.generate_content,
-                short_prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.0,
-                    max_output_tokens=max(min(1200, max_out + 200), 500),
-                )
-            )
-            try:
-                if getattr(resp3, "candidates", None):
-                    fr = getattr(resp3.candidates[0], "finish_reason", None)
-                    if fr is not None and fr != 1:
-                        logging.warning(f"⚠️ Gemini finish_reason={fr} for {symbol} (plain attempt)")
-            except Exception:
-                pass
-
-            raw = self._extract_gemini_text(resp3)
-            if not raw:
-                logging.warning(f"❌ Gemini returned no usable content for {symbol} after all fallbacks")
-                return None
-
-            return self._parse_ai_response(raw, symbol, f"Gemini-{model_name}")
-
+            
+            text = self._extract_response_text(response)
+            if text:
+                return self._parse_ai_response(text, symbol, f"Gemini-{model_name}")
+            
+            return None
+            
         except Exception as e:
             logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
             return None
 
+    def _extract_response_text(self, response) -> Optional[str]:
+        """Safely extract text from AI response"""
+        try:
+            if hasattr(response, 'text'):
+                return response.text
+            elif hasattr(response, 'candidates') and response.candidates:
+                candidate = response.candidates[0]
+                if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
+                    return ''.join(part.text for part in candidate.content.parts if hasattr(part, 'text'))
+            return None
+        except Exception as e:
+            logging.warning(f"Error extracting response text: {e}")
+            return None
+
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Cloudflare AI with improved response handling"""
+        """Get analysis from Cloudflare AI"""
         if not self.cloudflare_api_key:
             logging.warning(f"❌ Cloudflare API key not available for {symbol}")
             return None
@@ -1728,8 +1513,8 @@ CRITICAL:
             payload = {
                 "messages": [
                     {
-                        "role": "system",
-                        "content": "You are a forex trading expert. Return ONLY valid JSON format."
+                        "role": "system", 
+                        "content": "Return ONLY valid JSON format."
                     },
                     {"role": "user", "content": prompt}
                 ],
@@ -1752,7 +1537,7 @@ CRITICAL:
                         elif "result" in data and isinstance(data["result"], str):
                             content = data["result"]
                         else:
-                            content = data
+                            content = str(data)
                             
                         if content:
                             return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
@@ -1766,7 +1551,6 @@ CRITICAL:
                         
         except Exception as e:
             logging.error(f"❌ Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
-            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     async def _get_groq_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
@@ -1785,7 +1569,7 @@ CRITICAL:
                 "messages": [
                     {
                         "role": "system",
-                        "content": "You are a forex trading expert. Return ONLY valid JSON format."
+                        "content": "Return ONLY valid JSON format."
                     },
                     {"role": "user", "content": prompt}
                 ],
@@ -1814,43 +1598,23 @@ CRITICAL:
                         
         except Exception as e:
             logging.error(f"❌ Groq/{model_name} analysis error for {symbol}: {str(e)}")
-            logging.error(f"❌ Traceback: {traceback.format_exc()}")
             return None
 
     def _parse_ai_response(self, response, symbol: str, ai_name: str) -> Optional[Dict]:
-        """Parse AI response with enhanced validation and robust error handling"""
+        """Parse AI response with enhanced validation"""
         try:
             if isinstance(response, dict):
                 cleaned_response = json.dumps(response, ensure_ascii=False)
             else:
                 cleaned_response = (response or "").strip()
 
-                cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
-                cleaned_response = re.sub(r'```\s*', '', cleaned_response)
+            # Clean response
+            cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
+            cleaned_response = re.sub(r'```\s*', '', cleaned_response)
+            cleaned_response = re.sub(r'<think>.*?</think>', '', cleaned_response, flags=re.DOTALL)
+            cleaned_response = re.sub(r'</?[^>]+>', '', cleaned_response)
 
-                cleaned_response = re.sub(
-                    r'<think>.*?</think>',
-                    '',
-                    cleaned_response,
-                    flags=re.DOTALL | re.IGNORECASE
-                )
-                if cleaned_response.lstrip().lower().startswith('<think>'):
-                    brace_idx = cleaned_response.find('{')
-                    if brace_idx != -1:
-                        cleaned_response = cleaned_response[brace_idx:]
-
-                cleaned_response = re.sub(r'</?[^>]+>', '', cleaned_response)
-
-                cleaned_response = re.sub(
-                    r'^\s*(system|assistant|user|inst|instruction|thought)\s*:\s*.*?(?=\{)',
-                    '',
-                    cleaned_response,
-                    flags=re.IGNORECASE | re.DOTALL
-                )
-
-                if '{' in cleaned_response:
-                    cleaned_response = cleaned_response[cleaned_response.find('{'):]
-
+            # Extract JSON
             json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
             if json_match:
                 json_str = json_match.group(0)
@@ -1859,44 +1623,19 @@ CRITICAL:
                 if self._validate_signal_data(signal_data, symbol):
                     signal_data['ai_model'] = ai_name
                     signal_data['timestamp'] = datetime.now(UTC).isoformat()
-
                     signal_data = self._validate_numeric_values(signal_data, symbol)
 
                     logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
 
-            try:
-                if isinstance(response, dict):
-                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
-                else:
-                    response_preview = str(response)[:200] if response else "Empty response"
-            except:
-                response_preview = "Unable to preview response"
-
-            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format. Response: {response_preview}...")
+            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format")
             return None
 
         except json.JSONDecodeError as e:
-            try:
-                if isinstance(response, dict):
-                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
-                else:
-                    response_preview = str(response)[:200] if response else "Empty response"
-            except:
-                response_preview = "Unable to preview response"
-
-            logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}. Response: {response_preview}...")
+            logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}")
             return None
         except Exception as e:
-            try:
-                if isinstance(response, dict):
-                    response_preview = json.dumps(response, ensure_ascii=False)[:200]
-                else:
-                    response_preview = str(response)[:200] if response else "Empty response"
-            except:
-                response_preview = "Unable to preview response"
-
-            logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}. Response: {response_preview}...")
+            logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}")
             return None
 
     def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
@@ -1992,11 +1731,9 @@ CRITICAL:
                         
         return combined
 
-# =================================================================================
+ # =================================================================================
 # --- Gemini Direct Signal Agent (Non-Intrusive Add-on) ---
 # =================================================================================
-# این کلاسِ جدید مستقلاً با Gemini کار می‌کند و به هیچ بخش قبلی دست نمی‌زند.
-# اگر خواستی مستقیم از جمینی سیگنال بگیری (بدون رأی‌گیری چندمدلی)، از این کلاس استفاده کن.
 
 class GeminiDirectSignalAgent:
     """
@@ -2016,25 +1753,6 @@ class GeminiDirectSignalAgent:
         except Exception as e:
             logging.error(f"GeminiDirectSignalAgent init error: {e}")
 
-    def _schema(self):
-        # حداقل اسکیمای قابل اتکا
-        return {
-            "type": "object",
-            "properties": {
-                "SYMBOL": {"type": "string"},
-                "ACTION": {"type": "string", "enum": ["BUY", "SELL", "HOLD"]},
-                "CONFIDENCE": {"type": "number"},
-                "ENTRY": {"type": "string"},
-                "STOP_LOSS": {"type": "string"},
-                "TAKE_PROFIT": {"type": "string"},
-                "RISK_REWARD_RATIO": {"type": "string"},
-                "ANALYSIS": {"type": "string"},
-                "EXPIRATION_H": {"type": "number"},
-                "TRADE_RATIONALE": {"type": "string"}
-            },
-            "required": ["SYMBOL", "ACTION", "CONFIDENCE"]
-        }
-
     def _make_prompt(self, symbol: str, ta: Dict) -> str:
         # پرامپت کوتاه و تمرکز روی خروجی JSON
         price = ta.get("current_price", 1.0)
@@ -2048,7 +1766,7 @@ class GeminiDirectSignalAgent:
             f"ATR={risk.get('atr_value',0.001)}\n"
             f"ML_STRENGTH={ml.get('signal_strength',0)} CONF={ml.get('confidence',0)}\n"
             f"SUP1={key.get('support_1',price*0.99)} RES1={key.get('resistance_1',price*1.01)}\n\n"
-            "Return JSON with fields listed in the schema: SYMBOL,ACTION,CONFIDENCE,ENTRY,STOP_LOSS,TAKE_PROFIT,"
+            "Return JSON with fields: SYMBOL,ACTION,CONFIDENCE,ENTRY,STOP_LOSS,TAKE_PROFIT,"
             "RISK_REWARD_RATIO,ANALYSIS,EXPIRATION_H,TRADE_RATIONALE.\n"
         )
 
@@ -2062,16 +1780,14 @@ class GeminiDirectSignalAgent:
             )
             prompt = self._make_prompt(symbol, technical_analysis)
 
-            # تلاش اول: با schema و MIME
+            # Simple approach with minimal configuration
             try:
                 resp = await asyncio.to_thread(
                     model.generate_content,
                     prompt,
                     generation_config=genai.types.GenerationConfig(
                         temperature=0.05,
-                        max_output_tokens=800,
-                        response_mime_type="application/json",
-                        response_schema=self._schema()
+                        max_output_tokens=400,
                     )
                 )
                 text = self._extract_text(resp)
@@ -2079,42 +1795,7 @@ class GeminiDirectSignalAgent:
                 if data:
                     return data
             except Exception as e:
-                logging.warning(f"GeminiDirect(schema) failed: {e}")
-
-            # تلاش دوم: فقط MIME application/json
-            try:
-                resp = await asyncio.to_thread(
-                    model.generate_content,
-                    prompt,
-                    generation_config=genai.types.GenerationConfig(
-                        temperature=0.05,
-                        max_output_tokens=800,
-                        response_mime_type="application/json",
-                    )
-                )
-                text = self._extract_text(resp)
-                data = self._clean_parse(text)
-                if data:
-                    return data
-            except Exception as e:
-                logging.warning(f"GeminiDirect(json-mime) failed: {e}")
-
-            # تلاش سوم: Plain + تمیزکاری
-            try:
-                resp = await asyncio.to_thread(
-                    model.generate_content,
-                    prompt,
-                    generation_config=genai.types.GenerationConfig(
-                        temperature=0.0,
-                        max_output_tokens=900
-                    )
-                )
-                text = self._extract_text(resp)
-                data = self._clean_parse(text)
-                if data:
-                    return data
-            except Exception as e:
-                logging.warning(f"GeminiDirect(plain) failed: {e}")
+                logging.warning(f"GeminiDirect failed: {e}")
 
             return None
         except Exception as e:
@@ -2122,7 +1803,7 @@ class GeminiDirectSignalAgent:
             return None
 
     def _extract_text(self, resp) -> Optional[str]:
-        # مثل EnhancedAIManager._extract_gemini_text ولی مختصر
+        # Extract text from Gemini response
         try:
             d = resp.to_dict()
             for c in d.get("candidates", []):
@@ -2297,7 +1978,7 @@ class ImprovedForexAnalyzer:
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
 
             # اگر جمینی مستقیم هم خواستی موازی تست کنی (بدون جایگزینی):
-            direct = await self.gemini_direct.fetch_signal(pair, technical_analysis) if self.gemini_direct else None
+            direct = await self.gemini_direct.fetch_signal(pair, technical_analysis) if self.gemini_direct.available else None
             if direct and ai_analysis is None:
                 ai_analysis = direct  # فقط اگر چیزی از ensemble نیامد
 
@@ -2419,8 +2100,8 @@ class ImprovedForexAnalyzer:
         except Exception as e:
             logging.error(f"❌ Error saving signals: {e}")
 
-            
-  # =================================================================================
+
+# =================================================================================
 # --- Installation Helper ---
 # =================================================================================
 
@@ -2536,4 +2217,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())      
+    asyncio.run(main())          
