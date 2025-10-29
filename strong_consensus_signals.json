@@ -6,16 +6,16 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 4,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-10-29T05:50:16.659953+00:00",
+    "timestamp": "2025-10-29T05:57:19.498255+00:00",
     "CONFIDENCE": 7.0,
-    "ENTRY": "1.16302",
-    "STOP_LOSS": "1.16267",
-    "TAKE_PROFIT": "1.16313",
+    "ENTRY": "1.16301",
+    "STOP_LOSS": "1.16101",
+    "TAKE_PROFIT": "1.16601",
     "RISK_REWARD_RATIO": "1.5",
     "EXPIRATION_H": 4,
-    "ANALYSIS": "Bullish trend with RSI at 35.0, suggesting a potential buy opportunity",
-    "POSITION_UNITS": 103179.653,
-    "LEVERAGE_EST": 30.0,
+    "ANALYSIS": "Technical analysis indicates a bullish trend with RSI at 34.9, suggesting a potential buy opportunity",
+    "POSITION_UNITS": 20000.0,
+    "LEVERAGE_EST": 5.82,
     "RISK_USD": 100.0
   }
 ]
