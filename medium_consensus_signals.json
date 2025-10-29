@@ -1,1 +1,40 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-29T18:41:27.959279+00:00",
+    "CONFIDENCE": 7.5,
+    "ENTRY": "1.31550",
+    "STOP_LOSS": "1.31781",
+    "TAKE_PROFIT": "1.31319",
+    "RISK_REWARD_RATIO": "1.2",
+    "EXPIRATION_H": 2,
+    "ANALYSIS": "Strong bearish trend with low RSI",
+    "POSITION_UNITS": 14718.6147,
+    "LEVERAGE_EST": 5.69,
+    "RISK_USD": 100.0
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-29T18:40:37.632308+00:00",
+    "CONFIDENCE": 6.0,
+    "ENTRY": "0.80109",
+    "STOP_LOSS": "0.79909",
+    "TAKE_PROFIT": "0.80409",
+    "RISK_REWARD_RATIO": "1.2",
+    "EXPIRATION_H": 2,
+    "ANALYSIS": "Neutral trend, high RSI",
+    "POSITION_UNITS": 17000.0,
+    "LEVERAGE_EST": 4.01,
+    "RISK_USD": 100.0
+  }
+]
