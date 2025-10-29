@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-29T02:09:06.123919+00:00",
+    "CONFIDENCE": 6.7,
+    "ENTRY": "0.79356",
+    "STOP_LOSS": "0.79208",
+    "TAKE_PROFIT": "0.79628",
+    "RISK_REWARD_RATIO": "1.7",
+    "EXPIRATION_H": 4,
+    "ANALYSIS": "Technical analysis based on bullish momentum convergence, oversold stochastic, and ranging market structure",
+    "POSITION_UNITS": 28934.2307,
+    "LEVERAGE_EST": 5.36,
+    "RISK_USD": 100.0
+  }
+]
