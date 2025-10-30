@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 4,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-30T12:52:54.580899+00:00",
+    "ENTRY": "1.15637",
+    "STOP_LOSS": "1.15518",
+    "TAKE_PROFIT": "1.15756",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "The strong bearish trend is weak and the RSI is oversold at 25.4, indicating a potential reversal. Buying at this level with a stop loss at support and take profit above resistance provides an acceptable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.0,
+    "QUALITY_SCORE": 42.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 25.443942392399805,
+      "key_support": 1.1551833333333332,
+      "key_resistance": 1.1575566666666666,
+      "volatility": 0.06968282695505804,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
