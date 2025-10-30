@@ -1,18 +1,18 @@
 {
-  "timestamp": "2025-10-30T13:34:08.398444+00:00",
+  "timestamp": "2025-10-30T14:30:23.686581+00:00",
   "total_signals": 1,
   "strong_signals": 0,
-  "medium_signals": 1,
-  "weak_signals": 0,
+  "medium_signals": 0,
+  "weak_signals": 1,
   "performance_stats": {
     "total_analyses": 1,
     "success_rate": 100.0,
-    "avg_analysis_time_sec": 11.97,
+    "avg_analysis_time_sec": 17.81,
     "avg_api_response_time_sec": 0,
     "recent_analysis_times": [
       [
         "EUR/USD",
-        11.965412378311157
+        17.808486938476562
       ]
     ],
     "recent_api_times": []
