@@ -1417,16 +1417,16 @@ class SmartAPIManager:
         logging.info(f"📊 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
                    f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
 
-        # Strategy: prioritize decisive models first
+        # FIXED: Enhanced model selection to ensure Gemini is used
         decisive_models = [
             "llama-3.3-70b-versatile",  # Strong models less likely to HOLD
             "qwen/qwen3-32b",
             "@cf/meta/llama-4-scout-17b-16e-instruct",
-            "gemini-1.5-flash",
+            "gemini-1.5-flash",  # Ensure Gemini is included
             "llama-3.1-8b-instant"
         ]
         
-        # First pass: select decisive models
+        # First pass: select decisive models with priority on Gemini
         for model in decisive_models:
             if len(selected_models) >= target_total:
                 break
@@ -1438,6 +1438,16 @@ class SmartAPIManager:
                 selected_models.append((provider, model))
                 provider_capacity[provider] -= 1
                 logging.info(f"🎯 Selected decisive model: {provider}/{model}")
+
+        # NEW: Ensure Gemini is included if available
+        if "google_gemini" not in [p for p, m in selected_models] and self.is_gemini_available():
+            gemini_models = self.available_models.get("google_gemini", [])
+            for gemini_model in gemini_models:
+                if gemini_model not in [m for p, m in selected_models] and not self.is_model_failed("google_gemini", gemini_model):
+                    selected_models.append(("google_gemini", gemini_model))
+                    provider_capacity["google_gemini"] -= 1
+                    logging.info(f"🎯 Added Gemini model: {gemini_model}")
+                    break
 
         # Second pass: fill with any available models
         providers_order = ["groq", "cloudflare", "google_gemini"]  # Priority order
@@ -1841,7 +1851,7 @@ Return ONLY this JSON format (NO other text):
             return None
 
     def _parse_ai_response(self, response, symbol: str, ai_name: str) -> Optional[Dict]:
-        """Parse AI response with enhanced validation"""
+        """Parse AI response with enhanced validation and text extraction fallback"""
         try:
             if isinstance(response, dict):
                 cleaned_response = json.dumps(response, ensure_ascii=False)
@@ -1868,14 +1878,51 @@ Return ONLY this JSON format (NO other text):
                     logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
 
-            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format: {cleaned_response[:200]}...")
-            return None
+            # NEW: If JSON parsing fails, try text extraction
+            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format, trying text extraction...")
+            return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
 
         except json.JSONDecodeError as e:
-            logging.error(f"❌ JSON error in {ai_name} response for {symbol}: {e}")
-            return None
+            logging.warning(f"❌ JSON error in {ai_name} response for {symbol}, trying text extraction: {e}")
+            return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
         except Exception as e:
             logging.error(f"❌ Error parsing {ai_name} response for {symbol}: {str(e)}")
+            return None
+
+    def _extract_signal_from_text(self, text: str, symbol: str, ai_name: str) -> Optional[Dict]:
+        """NEW: Extract trading signal from unstructured text response"""
+        try:
+            text_upper = text.upper()
+            action = "HOLD"
+            
+            # Extract action from text
+            if "BUY" in text_upper and "SELL" not in text_upper:
+                action = "BUY"
+            elif "SELL" in text_upper and "BUY" not in text_upper:
+                action = "SELL"
+            
+            # Extract confidence
+            confidence_match = re.search(r'CONFIDENCE[:\s]*(\d+)', text_upper)
+            confidence = int(confidence_match.group(1)) if confidence_match else 5
+            
+            # Create basic signal
+            signal_data = {
+                "SYMBOL": symbol,
+                "ACTION": action,
+                "CONFIDENCE": confidence,
+                "ENTRY": "N/A",
+                "STOP_LOSS": "N/A", 
+                "TAKE_PROFIT": "N/A",
+                "RISK_REWARD_RATIO": "1.8",
+                "ANALYSIS": f"Extracted from text: {text[:100]}...",
+                "ai_model": ai_name + "-TEXT_EXTRACTED"
+            }
+            
+            logging.info(f"✅ {ai_name} text-extracted signal for {symbol}: {action}")
+            return signal_data
+            
+        except Exception as e:
+            logging.warning(f"❌ Text extraction failed for {symbol}: {e}")
             return None
 
     def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
@@ -2114,30 +2161,45 @@ class AdvancedRiskManager:
 
     def calculate_intelligent_take_profit(self, action: str, entry_price: float, stop_loss: float,
                                         technical_analysis: Dict, atr: float) -> float:
-        """Calculate intelligent take profit using multiple methods"""
+        """NEW: Calculate intelligent take profit with minimum 1.5:1 RR ratio"""
         key_levels = technical_analysis.get('key_levels', {})
         risk_amount = abs(entry_price - stop_loss)
         
+        # Ensure minimum risk-reward ratio of 1.5:1
+        min_rr_ratio = 1.5
+        
         if action == "BUY":
-            # Method 1: Risk-Reward Ratio (1.5:1 minimum)
-            tp_rr = entry_price + (risk_amount * 1.8)
+            # Method 1: Risk-Reward Ratio with minimum
+            tp_rr = entry_price + (risk_amount * min_rr_ratio)
             
             # Method 2: Key resistance level
             tp_resistance = key_levels.get('resistance_1', entry_price * 1.03)
             
-            # Choose the most appropriate take profit
-            take_profit = min(tp_rr, tp_resistance)
+            # Method 3: ATR-based (3 ATR above)
+            tp_atr = entry_price + (3 * atr)
+            
+            # Choose the most conservative that meets minimum RR
+            candidate_tps = [tp for tp in [tp_rr, tp_resistance, tp_atr] 
+                            if (tp - entry_price) >= (risk_amount * min_rr_ratio)]
+            
+            take_profit = min(candidate_tps) if candidate_tps else tp_rr
             
         else:  # SELL
-            # Method 1: Risk-Reward Ratio (1.5:1 minimum)
-            tp_rr = entry_price - (risk_amount * 1.8)
+            # Method 1: Risk-Reward Ratio with minimum
+            tp_rr = entry_price - (risk_amount * min_rr_ratio)
             
             # Method 2: Key support level
             tp_support = key_levels.get('support_1', entry_price * 0.97)
             
-            # Choose the most appropriate take profit
-            take_profit = max(tp_rr, tp_support)
+            # Method 3: ATR-based (3 ATR below)
+            tp_atr = entry_price - (3 * atr)
             
+            # Choose the most conservative that meets minimum RR
+            candidate_tps = [tp for tp in [tp_rr, tp_support, tp_atr] 
+                            if (entry_price - tp) >= (risk_amount * min_rr_ratio)]
+            
+            take_profit = max(candidate_tps) if candidate_tps else tp_rr
+        
         return round(take_profit, 5)
 
     def validate_signal_risk(self, signal: Dict, technical_analysis: Dict) -> Dict:
@@ -2228,36 +2290,47 @@ class SignalQualityScorer:
         action = signal.get('ACTION')
         trend_direction = technical_analysis.get('htf_trend', {}).get('direction', 'NEUTRAL')
         momentum_bias = technical_analysis.get('momentum', {}).get('overall_bias', 'NEUTRAL')
+        market_structure = technical_analysis.get('market_structure', {}).get('higher_timeframe_structure', 'UNKNOWN')
         
         alignment_score = 0
         
-        # Trend alignment
+        # Trend alignment (40 points max)
         if (action == 'BUY' and 'BULLISH' in trend_direction) or (action == 'SELL' and 'BEARISH' in trend_direction):
             alignment_score += 40
         elif trend_direction == 'NEUTRAL':
             alignment_score += 20
+        else:  # Counter-trend
+            alignment_score += 10
             
-        # Momentum alignment
+        # Momentum alignment (30 points max)
         if (action == 'BUY' and momentum_bias == 'BULLISH') or (action == 'SELL' and momentum_bias == 'BEARISH'):
             alignment_score += 30
         elif momentum_bias == 'NEUTRAL':
             alignment_score += 15
             
+        # Market structure alignment (30 points max)
+        if (action == 'BUY' and market_structure == 'UPTREND') or (action == 'SELL' and market_structure == 'DOWNTREND'):
+            alignment_score += 30
+        elif market_structure == 'RANGING':
+            alignment_score += 20
+        elif market_structure == 'UNKNOWN':
+            alignment_score += 10
+            
         return min(alignment_score, 100)
     
     def _calculate_volatility_score(self, technical_analysis: Dict) -> float:
-        """Calculate volatility appropriateness score"""
+        """NEW: Calculate volatility appropriateness score with better ranges"""
         volatility = technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
         
-        # Ideal volatility range for trading (0.5% to 2%)
-        if 0.5 <= volatility <= 2.0:
+        # More realistic volatility ranges for forex
+        if 0.1 <= volatility <= 2.0:  # Good volatility for trading
             return 100
-        elif 0.3 <= volatility <= 3.0:
+        elif 0.05 <= volatility < 0.1 or 2.0 < volatility <= 3.0:  # Acceptable but not ideal
             return 70
-        elif 0.1 <= volatility <= 5.0:
+        elif 0.02 <= volatility < 0.05 or 3.0 < volatility <= 5.0:  # Marginal
             return 40
-        else:
-            return 10
+        else:  # Too low or too high
+            return 20
     
     def _calculate_momentum_score(self, signal: Dict, technical_analysis: Dict) -> float:
         """Calculate momentum confirmation score"""
@@ -2295,7 +2368,7 @@ class SignalQualityScorer:
         else:
             return 20
 
- # =================================================================================
+# =================================================================================
 # --- Gemini Direct Signal Agent (Enhanced) ---
 # =================================================================================
 
@@ -2868,4 +2941,4 @@ async def main():
         logging.info("🏁 Enhanced system executed but no signals generated")
 
 if __name__ == "__main__":
-    asyncio.run(main())           
+    asyncio.run(main())
