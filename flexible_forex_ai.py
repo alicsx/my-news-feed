@@ -63,9 +63,14 @@ CACHE_FILE = "signal_cache.json"
 USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
-# FIXED: Use correct Gemini models that work with free tier
-GEMINI_MODEL = 'gemini-1.5-flash'
-GEMINI_FALLBACK_MODEL = 'gemini-1.5-flash'
+# FIXED: Use ONLY free Gemini models
+GEMINI_FREE_MODELS = [
+    'gemini-1.5-flash',
+    'gemini-1.5-pro'
+]
+
+GEMINI_MODEL = 'gemini-1.5-flash'  # Default free model
+GEMINI_FALLBACK_MODEL = 'gemini-1.5-pro'  # Fallback free model
 
 # Enhanced Cloudflare models
 CLOUDFLARE_MODELS = [
@@ -110,11 +115,39 @@ logging.basicConfig(
 )
 
 # =================================================================================
-# --- NEW: Dynamic Model Discovery System ---
+# --- NEW: Free Tier Model Filter System ---
+# =================================================================================
+
+class FreeTierModelFilter:
+    """Filter to only use free tier models for Gemini"""
+    
+    @staticmethod
+    def filter_gemini_models(available_models: List[str]) -> List[str]:
+        """Filter Gemini models to only include free tier ones"""
+        free_models = []
+        for model in available_models:
+            # Only allow free tier models
+            if any(free_model in model.lower() for free_model in ['gemini-1.5-flash', 'gemini-1.5-pro']):
+                free_models.append(model)
+        
+        # If no free models found, use our predefined free models
+        if not free_models:
+            free_models = GEMINI_FREE_MODELS.copy()
+            
+        logging.info(f"🎯 Free tier Gemini models available: {free_models}")
+        return free_models
+    
+    @staticmethod
+    def is_free_tier_model(model_name: str) -> bool:
+        """Check if a model is in free tier"""
+        return any(free_model in model_name.lower() for free_model in ['gemini-1.5-flash', 'gemini-1.5-pro'])
+
+# =================================================================================
+# --- NEW: Dynamic Model Discovery System with Free Tier Filter ---
 # =================================================================================
 
 class DynamicModelDiscoverer:
-    """Discover available models from AI providers dynamically"""
+    """Discover available models from AI providers dynamically with free tier filtering"""
     
     def __init__(self):
         self.available_models = {
@@ -123,13 +156,14 @@ class DynamicModelDiscoverer:
             "groq": []
         }
         self.fallback_models = {
-            "google_gemini": [GEMINI_MODEL, GEMINI_FALLBACK_MODEL],
+            "google_gemini": GEMINI_FREE_MODELS,  # Only free models
             "cloudflare": CLOUDFLARE_MODELS,
             "groq": GROQ_MODELS
         }
+        self.model_filter = FreeTierModelFilter()
         
     async def discover_models(self) -> Dict[str, List[str]]:
-        """Discover available models from all providers"""
+        """Discover available models from all providers with free tier filtering"""
         discovery_tasks = [
             self._discover_gemini_models(),
             self._discover_cloudflare_models(),
@@ -150,6 +184,11 @@ class DynamicModelDiscoverer:
             else:
                 self.available_models[provider] = self.fallback_models[provider]
                 
+        # Apply free tier filter for Gemini
+        self.available_models["google_gemini"] = self.model_filter.filter_gemini_models(
+            self.available_models["google_gemini"]
+        )
+                
         logging.info(f"🎯 Discovered models: Gemini({len(self.available_models['google_gemini'])}), "
                    f"Cloudflare({len(self.available_models['cloudflare'])}), "
                    f"Groq({len(self.available_models['groq'])})")
@@ -157,7 +196,7 @@ class DynamicModelDiscoverer:
         return self.available_models
     
     async def _discover_gemini_models(self) -> List[str]:
-        """Discover available Gemini models"""
+        """Discover available Gemini models with free tier filtering"""
         if not google_api_key:
             return self.fallback_models["google_gemini"]
             
@@ -168,12 +207,15 @@ class DynamicModelDiscoverer:
             available_models = []
             for model in models:
                 model_name = model.name
-                # Filter for relevant models
-                if 'gemini' in model_name.lower() and 'generateContent' in model.supported_generation_methods:
+                # Filter for relevant models and free tier only
+                if ('gemini' in model_name.lower() and 
+                    'generateContent' in model.supported_generation_methods and
+                    self.model_filter.is_free_tier_model(model_name)):
+                    
                     available_models.append(model_name.split('/')[-1])  # Extract model name only
             
-            # Prioritize our preferred models
-            preferred_models = [GEMINI_MODEL, GEMINI_FALLBACK_MODEL]
+            # Prioritize our preferred free models
+            preferred_models = GEMINI_FREE_MODELS
             for preferred in preferred_models:
                 if preferred in available_models:
                     available_models.remove(preferred)
@@ -1417,16 +1459,16 @@ class SmartAPIManager:
         logging.info(f"📊 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
                    f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
 
-        # FIXED: Enhanced model selection to ensure Gemini is used
+        # FIXED: Enhanced model selection to ensure ONLY free tier Gemini models are used
         decisive_models = [
             "llama-3.3-70b-versatile",  # Strong models less likely to HOLD
             "qwen/qwen3-32b",
             "@cf/meta/llama-4-scout-17b-16e-instruct",
-            "gemini-1.5-flash",  # Ensure Gemini is included
+            "gemini-1.5-flash",  # Only free tier Gemini
             "llama-3.1-8b-instant"
         ]
         
-        # First pass: select decisive models with priority on Gemini
+        # First pass: select decisive models with priority on free tier Gemini
         for model in decisive_models:
             if len(selected_models) >= target_total:
                 break
@@ -1439,17 +1481,19 @@ class SmartAPIManager:
                 provider_capacity[provider] -= 1
                 logging.info(f"🎯 Selected decisive model: {provider}/{model}")
 
-        # NEW: Ensure Gemini is included if available
+        # NEW: Ensure free tier Gemini is included if available
         if "google_gemini" not in [p for p, m in selected_models] and self.is_gemini_available():
             gemini_models = self.available_models.get("google_gemini", [])
-            for gemini_model in gemini_models:
+            # Only use free tier models
+            free_gemini_models = [m for m in gemini_models if FreeTierModelFilter.is_free_tier_model(m)]
+            for gemini_model in free_gemini_models:
                 if gemini_model not in [m for p, m in selected_models] and not self.is_model_failed("google_gemini", gemini_model):
                     selected_models.append(("google_gemini", gemini_model))
                     provider_capacity["google_gemini"] -= 1
-                    logging.info(f"🎯 Added Gemini model: {gemini_model}")
+                    logging.info(f"🎯 Added free tier Gemini model: {gemini_model}")
                     break
 
-        # Second pass: fill with any available models
+        # Second pass: fill with any available models (excluding paid Gemini models)
         providers_order = ["groq", "cloudflare", "google_gemini"]  # Priority order
         round_robin_index = 0
         remaining_target = target_total - len(selected_models)
@@ -1459,6 +1503,10 @@ class SmartAPIManager:
             
             if provider_capacity[current_provider] > 0:
                 for model_name in self.available_models.get(current_provider, []):
+                    # For Gemini, only use free tier models
+                    if current_provider == "google_gemini" and not FreeTierModelFilter.is_free_tier_model(model_name):
+                        continue
+                        
                     if ((current_provider, model_name) not in selected_models and 
                         not self.is_model_failed(current_provider, model_name)):
                         selected_models.append((current_provider, model_name))
@@ -1477,10 +1525,14 @@ class SmartAPIManager:
         if len(selected_models) < min_required:
             logging.warning(f"⚠️ Only {len(selected_models)} models selected. Activating enhanced fallback...")
             
-            # Try to use any available model regardless of previous failures
+            # Try to use any available model regardless of previous failures (but still filter paid Gemini)
             for provider in providers_order:
                 if self.can_use_provider(provider):
                     for model_name in self.available_models.get(provider, []):
+                        # For Gemini, only use free tier models
+                        if provider == "google_gemini" and not FreeTierModelFilter.is_free_tier_model(model_name):
+                            continue
+                            
                         if (provider, model_name) not in selected_models:
                             selected_models.append((provider, model_name))
                             logging.info(f"🚨 Enhanced fallback: {provider}/{model_name}")
@@ -2922,6 +2974,7 @@ async def main():
     logging.info("📊 Data Source Statistics:")
     for source, count in data_source_stats.items():
         logging.info(f"  {source}: {count} pairs")
+    
     
     # Performance statistics
     perf_stats = analyzer.performance_monitor.get_performance_stats()
