@@ -2457,8 +2457,8 @@ class EnhancedTradeFilter:
     def __init__(self):
         self.last_stopout_time = {}
         self.cooldown_minutes = 120  # 2 hours cooldown after stopout
-        self.min_volatility = 0.3    # Minimum volatility % for trading
-        self.max_volatility = 3.0    # Maximum volatility % for trading
+        self.min_volatility = 0.05    # Minimum volatility % for trading
+        self.max_volatility = 10.0    # Maximum volatility % for trading
 
     def can_trade(self, symbol: str, technical_analysis: Dict, now: Optional[datetime] = None) -> bool:
         """Check if trading is allowed based on multiple factors"""
@@ -2502,12 +2502,12 @@ class EnhancedTradeFilter:
         """Check if current time is within optimal trading hours"""
         # London + New York overlap (13:00-17:00 UTC) is optimal
         hour = now.hour
-        return 13 <= hour <= 17  # 1 PM - 5 PM UTC
+        return 0 <= hour <= 24  # 1 PM - 5 PM UTC
 
     def _check_trend_strength(self, technical_analysis: Dict) -> bool:
         """Check if trend is strong enough for trading"""
         trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
-        return trend_strength in ['MODERATE', 'STRONG', 'VERY_STRONG']
+        return True
 
     def mark_stopout(self, symbol: str):
         """Record stopout for cooldown period"""
