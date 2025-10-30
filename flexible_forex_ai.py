@@ -64,8 +64,8 @@ USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
 # FIXED: Use correct Gemini models
-GEMINI_MODEL = 'gemini-1.5-flash'  # This is the correct model name
-GEMINI_FALLBACK_MODEL = 'gemini-1.0-pro'
+GEMINI_MODEL = 'gemini-2.5-flash'  # This is the correct model name
+GEMINI_FALLBACK_MODEL = 'gemini-1.5-flash'
 
 # Enhanced Cloudflare models
 CLOUDFLARE_MODELS = [
