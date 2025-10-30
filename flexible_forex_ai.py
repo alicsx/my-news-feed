@@ -63,8 +63,8 @@ CACHE_FILE = "signal_cache.json"
 USAGE_TRACKER_FILE = "api_usage_tracker.json"
 LOG_FILE = "trading_log.log"
 
-# FIXED: Use correct Gemini models
-GEMINI_MODEL = 'gemini-2.5-flash'  # This is the correct model name
+# FIXED: Use correct Gemini models that work with free tier
+GEMINI_MODEL = 'gemini-1.5-flash'
 GEMINI_FALLBACK_MODEL = 'gemini-1.5-flash'
 
 # Enhanced Cloudflare models
@@ -1300,6 +1300,7 @@ class SmartAPIManager:
         self.available_models = {}
         self.failed_models = set()
         self.models_initialized = False
+        self.gemini_disabled = False  # NEW: Flag to disable Gemini if quota issues
 
     async def initialize_models(self):
         """Initialize available models dynamically"""
@@ -1387,48 +1388,59 @@ class SmartAPIManager:
                 return provider
         return None
 
+    def disable_gemini(self):
+        """Disable Gemini temporarily due to quota limits"""
+        self.gemini_disabled = True
+        logging.warning("🚫 Gemini temporarily disabled due to quota limits")
+
+    def is_gemini_available(self) -> bool:
+        """Check if Gemini has available quota"""
+        if self.gemini_disabled:
+            return False
+        if not self.can_use_provider("google_gemini"):
+            return False
+        gemini_models = self.available_models.get("google_gemini", [])
+        return len(gemini_models) > 0
+
     def select_diverse_models(self, target_total: int = 5, min_required: int = 3) -> List[Tuple[str, str]]:
-        """Select diverse models from different providers with intelligent fallback"""
+        """Select diverse models with robust fallback system"""
         selected_models = []
         
-        # Calculate provider capacity
+        # Calculate provider capacity with Gemini availability check
         provider_capacity = {}
         for provider in ["google_gemini", "cloudflare", "groq"]:
-            provider_capacity[provider] = self.get_available_models_count(provider)
+            if provider == "google_gemini" and not self.is_gemini_available():
+                provider_capacity[provider] = 0
+            else:
+                provider_capacity[provider] = self.get_available_models_count(provider)
             
         logging.info(f"📊 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
                    f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
 
-        # Strategy: prioritize diversity across providers
-        total_available = sum(provider_capacity.values())
-        if total_available == 0:
-            logging.error("❌ No providers available")
-            return selected_models
-
-        # NEW: Intelligent model selection based on capabilities
-        model_capabilities = {
-            "high_accuracy": ["gemini-1.5-flash", "llama-3.3-70b-versatile", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"],
-            "fast_inference": ["gemini-1.0-pro", "llama-3.1-8b-instant", "@cf/meta/llama-3.1-8b-instruct-fast"],
-            "balanced": ["qwen/qwen3-32b", "@cf/meta/llama-4-scout-17b-16e-instruct"]
-        }
+        # Strategy: prioritize decisive models first
+        decisive_models = [
+            "llama-3.3-70b-versatile",  # Strong models less likely to HOLD
+            "qwen/qwen3-32b",
+            "@cf/meta/llama-4-scout-17b-16e-instruct",
+            "gemini-1.5-flash",
+            "llama-3.1-8b-instant"
+        ]
         
-        # First pass: select one model from each capability category
-        for capability, models in model_capabilities.items():
+        # First pass: select decisive models
+        for model in decisive_models:
             if len(selected_models) >= target_total:
                 break
-            
-            for model in models:
-                provider = self._find_model_provider(model)
-                if (provider and provider_capacity[provider] > 0 and 
-                    not self.is_model_failed(provider, model)):
-                    
-                    selected_models.append((provider, model))
-                    provider_capacity[provider] -= 1
-                    logging.info(f"🎯 Selected {provider}/{model} (capability: {capability})")
-                    break
+                
+            provider = self._find_model_provider(model)
+            if (provider and provider_capacity[provider] > 0 and 
+                not self.is_model_failed(provider, model)):
+                
+                selected_models.append((provider, model))
+                provider_capacity[provider] -= 1
+                logging.info(f"🎯 Selected decisive model: {provider}/{model}")
 
         # Second pass: fill with any available models
-        providers_order = ["google_gemini", "cloudflare", "groq"]
+        providers_order = ["groq", "cloudflare", "google_gemini"]  # Priority order
         round_robin_index = 0
         remaining_target = target_total - len(selected_models)
         
@@ -1442,7 +1454,7 @@ class SmartAPIManager:
                         selected_models.append((current_provider, model_name))
                         provider_capacity[current_provider] -= 1
                         remaining_target -= 1
-                        logging.info(f"🎯 Added {current_provider}/{model_name} as fallback")
+                        logging.info(f"🎯 Added {current_provider}/{model_name}")
                         break
                     
             round_robin_index += 1
@@ -1451,21 +1463,29 @@ class SmartAPIManager:
             if round_robin_index > len(providers_order) * 3:
                 break
 
-        # Final fallback: if minimum not reached, use any available model even if failed before
+        # NEW: Enhanced fallback system - ensure we always get 5 models
         if len(selected_models) < min_required:
-            logging.warning(f"⚠️ Only {len(selected_models)} models selected. Activating emergency fallback...")
+            logging.warning(f"⚠️ Only {len(selected_models)} models selected. Activating enhanced fallback...")
+            
+            # Try to use any available model regardless of previous failures
             for provider in providers_order:
                 if self.can_use_provider(provider):
                     for model_name in self.available_models.get(provider, []):
                         if (provider, model_name) not in selected_models:
                             selected_models.append((provider, model_name))
-                            logging.info(f"🚨 Emergency fallback: {provider}/{model_name}")
-                            if len(selected_models) >= min_required:
+                            logging.info(f"🚨 Enhanced fallback: {provider}/{model_name}")
+                            if len(selected_models) >= target_total:
                                 break
-                    if len(selected_models) >= min_required:
+                    if len(selected_models) >= target_total:
                         break
 
-        logging.info(f"🎯 {len(selected_models)} diverse models selected: {selected_models}")
+        # FINAL FALLBACK: If still not enough, use synthetic decision maker
+        if len(selected_models) == 0:
+            logging.error("❌ No AI models available. Using synthetic decision maker.")
+            # This ensures we always have at least one "model"
+            selected_models.append(("synthetic", "technical_analyzer"))
+            
+        logging.info(f"🎯 {len(selected_models)} models selected: {selected_models}")
         return selected_models
 
     def record_api_usage(self, provider: str, count: int = 1):
@@ -1483,7 +1503,7 @@ class SmartAPIManager:
         return summary
 
 # =================================================================================
-# --- Enhanced AI Manager with Fixed Gemini Token Issues ---
+# --- Enhanced AI Manager with Fixed Issues ---
 # =================================================================================
 
 class EnhancedAIManager:
@@ -1497,57 +1517,49 @@ class EnhancedAIManager:
             genai.configure(api_key=gemini_api_key)
 
     def _create_optimized_prompt(self, symbol: str, technical_analysis: Dict) -> str:
-        """Create optimized prompt with advanced trading context"""
+        """Create prompt that encourages decisive signals"""
         current_price = technical_analysis.get('current_price', 1.0850)
         trend = technical_analysis.get('htf_trend', {})
         momentum = technical_analysis.get('momentum', {})
         key_levels = technical_analysis.get('key_levels', {})
         risk = technical_analysis.get('risk_assessment', {})
-        ml_signal = technical_analysis.get('ml_signal', {})
         
-        # Advanced prompt with comprehensive context
-        return f"""SYMBOL: {symbol}
-CURRENT_PRICE: {current_price:.5f}
-TREND: {trend.get('direction', 'NEUTRAL')} (Strength: {trend.get('strength', 'UNKNOWN')})
+        return f"""As a professional forex trader, analyze {symbol} and provide a TRADING DECISION.
+
+CRITICAL INSTRUCTIONS:
+- Be DECISIVE: Prefer BUY/SELL over HOLD when there's reasonable evidence
+- Only use HOLD if market conditions are completely unclear
+- Consider risk-reward ratios above 1.5 as acceptable
+
+MARKET DATA:
+Price: {current_price:.5f}
+Trend: {trend.get('direction', 'NEUTRAL')} (Strength: {trend.get('strength', 'UNKNOWN')})
 RSI: {momentum.get('rsi', {}).get('value', 50):.1f} ({momentum.get('rsi', {}).get('signal', 'NEUTRAL')})
-MACD: {momentum.get('macd', {}).get('trend', 'NEUTRAL')}
-KEY_SUPPORT: {key_levels.get('support_1', current_price * 0.99):.5f}
-KEY_RESISTANCE: {key_levels.get('resistance_1', current_price * 1.01):.5f}
-VOLATILITY: {risk.get('volatility_percent', 0):.2f}%
-RISK_LEVEL: {risk.get('risk_level', 'MEDIUM')}
-ML_SIGNAL_STRENGTH: {ml_signal.get('signal_strength', 0):.2f}
+Support: {key_levels.get('support_1', current_price * 0.99):.5f}
+Resistance: {key_levels.get('resistance_1', current_price * 1.01):.5f}
+Volatility: {risk.get('volatility_percent', 0):.2f}%
+Risk Level: {risk.get('risk_level', 'MEDIUM')}
 
-ANALYSIS CONTEXT:
-- Market Structure: {technical_analysis.get('market_structure', {}).get('higher_timeframe_structure', 'UNKNOWN')}
-- Trend Alignment: {'ALIGNED' if trend.get('direction', 'NEUTRAL') == technical_analysis.get('ltf_trend', {}).get('direction', 'NEUTRAL') else 'MISALIGNED'}
-- Momentum Bias: {momentum.get('overall_bias', 'NEUTRAL')}
-- Key Levels: Support at {key_levels.get('support_1', 0):.5f}, Resistance at {key_levels.get('resistance_1', 0):.5f}
-- Volume Trend: {technical_analysis.get('volume_analysis', {}).get('volume_trend', 'UNKNOWN')}
+TRADING GUIDELINES:
+- BUY if trend is bullish and RSI is not overbought
+- SELL if trend is bearish and RSI is not oversold  
+- HOLD only if trend is completely neutral
 
-TRADING STRATEGY GUIDELINES:
-1. Only take BUY/SELL if trend and momentum align
-2. Consider risk-reward ratio > 1.5
-3. Place stops beyond key support/resistance
-4. Adjust position size based on volatility
-5. Consider time of day and market sessions
-
-Return ONLY JSON with exact structure:
+Return ONLY this JSON format (NO other text):
 {{
   "SYMBOL": "{symbol}",
   "ACTION": "BUY|SELL|HOLD",
   "CONFIDENCE": 1-10,
-  "ENTRY": "price",
-  "STOP_LOSS": "price", 
-  "TAKE_PROFIT": "price",
-  "RISK_REWARD_RATIO": "number",
-  "ANALYSIS": "brief reasoning",
-  "EXPIRATION_H": 4,
-  "TRADE_RATIONALE": "detailed explanation"
+  "ENTRY": "{current_price:.5f}",
+  "STOP_LOSS": "calculated_price",
+  "TAKE_PROFIT": "calculated_price",
+  "RISK_REWARD_RATIO": "1.5-3.0",
+  "ANALYSIS": "brief_reasoning"
 }}"""
 
     async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """Get enhanced AI analysis with multiple models and robust error handling"""
-        await self.api_manager.initialize_models()  # Ensure models are initialized
+        """Get enhanced AI analysis with robust fallback system"""
+        await self.api_manager.initialize_models()
         selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
         
         if len(selected_models) < 3:
@@ -1558,7 +1570,11 @@ Return ONLY JSON with exact structure:
 
         tasks = []
         for provider, model_name in selected_models:
-            task = self._get_single_analysis(symbol, technical_analysis, provider, model_name)
+            # Handle synthetic fallback
+            if provider == "synthetic":
+                task = self._get_synthetic_analysis(symbol, technical_analysis)
+            else:
+                task = self._get_single_analysis(symbol, technical_analysis, provider, model_name)
             tasks.append(task)
 
         try:
@@ -1571,29 +1587,39 @@ Return ONLY JSON with exact structure:
                 result = results[i]
                 if isinstance(result, Exception):
                     logging.error(f"❌ Error in {provider}/{model_name} for {symbol}: {str(result)}")
-                    self.api_manager.mark_model_failed(provider, model_name)
+                    if provider != "synthetic":  # Don't mark synthetic as failed
+                        self.api_manager.mark_model_failed(provider, model_name)
                     failed_count += 1
-                    self.api_manager.record_api_usage(provider)
+                    if provider != "synthetic":
+                        self.api_manager.record_api_usage(provider)
                 elif result is not None:
                     valid_results.append(result)
-                    self.api_manager.record_api_usage(provider)
+                    if provider != "synthetic":
+                        self.api_manager.record_api_usage(provider)
                 else:
-                    self.api_manager.record_api_usage(provider)
+                    if provider != "synthetic":
+                        self.api_manager.record_api_usage(provider)
 
             logging.info(f"📊 Results: {len(valid_results)} successful, {failed_count} failed")
             
             if valid_results:
-                return self._combine_signals(symbol, valid_results, len(selected_models))
+                combined_signal = self._combine_signals(symbol, valid_results, len(selected_models))
+                if combined_signal:
+                    return combined_signal
+                else:
+                    logging.warning(f"⚠️ Signal combination failed for {symbol}")
             else:
                 logging.warning(f"⚠️ No valid AI results for {symbol}")
-                return None
+                
+            # Ultimate fallback: use technical analysis only
+            return await self._get_technical_fallback(symbol, technical_analysis)
                 
         except Exception as e:
             logging.error(f"❌ Error in AI analysis for {symbol}: {str(e)}")
-            return None
+            return await self._get_technical_fallback(symbol, technical_analysis)
 
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from single AI model"""
+        """Get analysis from single AI model with enhanced error handling"""
         try:
             prompt = self._create_optimized_prompt(symbol, technical_analysis)
             
@@ -1610,10 +1636,58 @@ Return ONLY JSON with exact structure:
             logging.error(f"❌ Error in {provider}/{model_name} for {symbol}: {str(e)}")
             return None
 
+    async def _get_synthetic_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """Synthetic analysis based on technical indicators only"""
+        try:
+            trend = technical_analysis.get('htf_trend', {})
+            momentum = technical_analysis.get('momentum', {})
+            current_price = technical_analysis.get('current_price', 1.0)
+            
+            # Simple decision logic based on technicals
+            trend_direction = trend.get('direction', 'NEUTRAL')
+            rsi = momentum.get('rsi', {}).get('value', 50)
+            rsi_signal = momentum.get('rsi', {}).get('signal', 'NEUTRAL')
+            
+            action = "HOLD"
+            confidence = 5
+            
+            if trend_direction == "BULLISH" and rsi_signal != "OVERBOUGHT" and rsi < 70:
+                action = "BUY"
+                confidence = 7
+            elif trend_direction == "BEARISH" and rsi_signal != "OVERSOLD" and rsi > 30:
+                action = "SELL" 
+                confidence = 7
+            elif trend_direction in ["STRONG_BULLISH", "STRONG_BEARISH"]:
+                action = "BUY" if "BULL" in trend_direction else "SELL"
+                confidence = 8
+                
+            return {
+                "SYMBOL": symbol,
+                "ACTION": action,
+                "CONFIDENCE": confidence,
+                "ENTRY": f"{current_price:.5f}",
+                "STOP_LOSS": f"{current_price * 0.995:.5f}" if action == "BUY" else f"{current_price * 1.005:.5f}",
+                "TAKE_PROFIT": f"{current_price * 1.01:.5f}" if action == "BUY" else f"{current_price * 0.99:.5f}",
+                "RISK_REWARD_RATIO": "1.8",
+                "ANALYSIS": f"Synthetic signal based on {trend_direction} trend and RSI {rsi:.1f}",
+                "ai_model": "SYNTHETIC_TECHNICAL"
+            }
+            
+        except Exception as e:
+            logging.error(f"❌ Synthetic analysis error for {symbol}: {e}")
+            return None
+
+    async def _get_technical_fallback(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """Ultimate fallback using pure technical analysis"""
+        try:
+            return await self._get_synthetic_analysis(symbol, technical_analysis)
+        except Exception as e:
+            logging.error(f"❌ Technical fallback also failed for {symbol}: {e}")
+            return None
+
     async def _get_gemini_analysis_optimized(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Optimized Gemini analysis with proper error handling"""
         try:
-            # FIXED: Use correct model initialization
             model = genai.GenerativeModel(model_name)
             
             generation_config = genai.types.GenerationConfig(
@@ -1637,22 +1711,29 @@ Return ONLY JSON with exact structure:
             
         except Exception as e:
             logging.error(f"❌ Gemini analysis error for {symbol}: {str(e)}")
-            # Try fallback model
-            if model_name != GEMINI_FALLBACK_MODEL:
-                logging.info(f"🔄 Trying fallback model: {GEMINI_FALLBACK_MODEL}")
-                return await self._get_gemini_analysis_optimized(symbol, prompt, GEMINI_FALLBACK_MODEL)
             return None
 
     def _extract_response_text(self, response) -> Optional[str]:
-        """Safely extract text from AI response"""
+        """Safely extract text from AI response with enhanced error handling"""
         try:
-            if hasattr(response, 'text'):
+            # Method 1: Direct text attribute
+            if hasattr(response, 'text') and response.text:
                 return response.text
-            elif hasattr(response, 'candidates') and response.candidates:
-                candidate = response.candidates[0]
-                if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
-                    return ''.join(part.text for part in candidate.content.parts if hasattr(part, 'text'))
-            return None
+                
+            # Method 2: Try to access parts directly
+            if hasattr(response, 'candidates') and response.candidates:
+                for candidate in response.candidates:
+                    if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
+                        text_parts = []
+                        for part in candidate.content.parts:
+                            if hasattr(part, 'text') and part.text:
+                                text_parts.append(part.text)
+                        if text_parts:
+                            return ''.join(text_parts)
+            
+            # Method 3: Use string representation as last resort
+            return str(response)
+            
         except Exception as e:
             logging.warning(f"Error extracting response text: {e}")
             return None
@@ -1787,7 +1868,7 @@ Return ONLY JSON with exact structure:
                     logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
 
-            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format")
+            logging.warning(f"❌ {ai_name} response for {symbol} lacks valid JSON format: {cleaned_response[:200]}...")
             return None
 
         except json.JSONDecodeError as e:
@@ -1823,23 +1904,26 @@ Return ONLY JSON with exact structure:
 
     def _validate_numeric_values(self, signal_data: Dict, symbol: str) -> Dict:
         """Validate and fix numeric values"""
-        numeric_fields = ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'EXPIRATION_H', 'RISK_REWARD_RATIO']
+        numeric_fields = ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO']
         
         for field in numeric_fields:
             if field in signal_data:
                 value = signal_data[field]
                 if value is None or value == "null" or str(value).strip() == "":
-                    if field == 'EXPIRATION_H':
-                        signal_data[field] = 4
-                    elif field == 'RISK_REWARD_RATIO':
-                        signal_data[field] = "1.5"
+                    if field == 'RISK_REWARD_RATIO':
+                        signal_data[field] = "1.8"
                     else:
                         signal_data[field] = "N/A"
+                elif field == 'CONFIDENCE':
+                    try:
+                        signal_data[field] = float(value)
+                    except:
+                        signal_data[field] = 5.0
                         
         return signal_data
 
     def _combine_signals(self, symbol: str, valid_results: List[Dict], total_models: int) -> Optional[Dict]:
-        """Combine signal results intelligently"""
+        """Combine signal results with robust error handling"""
         if not valid_results:
             return None
             
@@ -1849,10 +1933,18 @@ Return ONLY JSON with exact structure:
         for result in valid_results:
             action = result['ACTION'].upper()
             action_counts[action] = action_counts.get(action, 0) + 1
-            confidence_sum[action] = confidence_sum.get(action, 0) + float(result.get('CONFIDENCE', 5))
             
+            # FIXED: Better confidence handling
+            try:
+                confidence_val = float(result.get('CONFIDENCE', 5))
+                confidence_sum[action] = confidence_sum.get(action, 0) + confidence_val
+            except (ValueError, TypeError):
+                confidence_sum[action] = confidence_sum.get(action, 0) + 5  # Default value
+        
+        logging.info(f"📊 Signal combination for {symbol}: {action_counts}")
+        
         total_valid = len(valid_results)
-        max_agreement = max(action_counts.values())
+        max_agreement = max(action_counts.values()) if action_counts else 0
         
         if max_agreement >= 3:
             agreement_type = 'STRONG_CONSENSUS'
@@ -1861,11 +1953,12 @@ Return ONLY JSON with exact structure:
         else:
             agreement_type = 'WEAK_CONSENSUS'
             
-        majority_action = max(action_counts, key=action_counts.get)
-        avg_confidence = confidence_sum[majority_action] / max_agreement
+        majority_action = max(action_counts, key=action_counts.get) if action_counts else 'HOLD'
         
-        # NEW: Enhanced signal combination with weighted analysis
-        agreeing_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
+        # Calculate average confidence for majority action
+        avg_confidence = 5.0  # Default
+        if majority_action in confidence_sum and max_agreement > 0:
+            avg_confidence = confidence_sum[majority_action] / max_agreement
         
         combined = {
             'SYMBOL': symbol,
@@ -1878,46 +1971,108 @@ Return ONLY JSON with exact structure:
             'timestamp': datetime.now(UTC).isoformat()
         }
         
-        # Calculate weighted averages for price levels
-        if agreeing_results:
-            entries = [float(r.get('ENTRY', 0)) for r in agreeing_results if r.get('ENTRY') not in [None, "N/A"]]
-            stops = [float(r.get('STOP_LOSS', 0)) for r in agreeing_results if r.get('STOP_LOSS') not in [None, "N/A"]]
-            takes = [float(r.get('TAKE_PROFIT', 0)) for r in agreeing_results if r.get('TAKE_PROFIT') not in [None, "N/A"]]
-            
-            if entries:
-                combined['ENTRY'] = round(sum(entries) / len(entries), 5)
-            if stops:
-                combined['STOP_LOSS'] = round(sum(stops) / len(stops), 5)
-            if takes:
-                combined['TAKE_PROFIT'] = round(sum(takes) / len(takes), 5)
-                
-            # Use the most comprehensive analysis
-            best_analysis = max(agreeing_results, key=lambda x: len(x.get('ANALYSIS', '')))
-            combined['ANALYSIS'] = best_analysis.get('ANALYSIS', f"{majority_action} signal based on agreement of {max_agreement} out of {total_models} AI models")
-            combined['TRADE_RATIONALE'] = best_analysis.get('TRADE_RATIONALE', combined['ANALYSIS'])
-            
-        # Set defaults for missing fields
+        # Add details from the first valid result of majority action
+        majority_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
+        if majority_results:
+            first_result = majority_results[0]
+            for field in ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO', 'ANALYSIS']:
+                if field in first_result and first_result[field] not in [None, "null", ""]:
+                    combined[field] = first_result[field]
+        
+        # Ensure all required fields have values
         if 'ENTRY' not in combined:
             combined['ENTRY'] = "N/A"
         if 'STOP_LOSS' not in combined:
-            combined['STOP_LOSS'] = "N/A" 
+            combined['STOP_LOSS'] = "N/A"
         if 'TAKE_PROFIT' not in combined:
             combined['TAKE_PROFIT'] = "N/A"
         if 'RISK_REWARD_RATIO' not in combined:
-            combined['RISK_REWARD_RATIO'] = "1.5"
-        if 'EXPIRATION_H' not in combined:
-            combined['EXPIRATION_H'] = 4
+            combined['RISK_REWARD_RATIO'] = "1.8"
+        if 'ANALYSIS' not in combined:
+            combined['ANALYSIS'] = f"{majority_action} signal based on agreement of {max_agreement} out of {total_models} AI models"
             
         return combined
 
 # =================================================================================
-# --- Advanced Risk Manager with Smart TP/SL Calculation ---
+# --- Enhanced Trade Filter with Flexible Settings ---
+# =================================================================================
+
+class EnhancedTradeFilter:
+    """
+    Advanced trade filtering with flexible market condition analysis
+    """
+    def __init__(self):
+        self.last_stopout_time = {}
+        self.cooldown_minutes = 120
+        
+        # FLEXIBLE volatility ranges for better signal generation
+        self.min_volatility = 0.05    # Reduced from 0.3% - allow lower volatility
+        self.max_volatility = 10.0    # Increased from 3.0% - allow higher volatility
+
+    def can_trade(self, symbol: str, technical_analysis: Dict, now: Optional[datetime] = None) -> bool:
+        """Check if trading is allowed with flexible volatility ranges"""
+        now = now or datetime.now(UTC)
+        
+        # Cooldown check
+        if not self._check_cooldown(symbol, now):
+            logging.info(f"⏸️ {symbol} in cooldown period")
+            return False
+            
+        # Volatility check (now more flexible)
+        volatility_ok, volatility_value = self._check_volatility(technical_analysis)
+        if not volatility_ok:
+            logging.info(f"📊 {symbol} volatility {volatility_value:.2f}% outside extended range [{self.min_volatility}%-{self.max_volatility}%]")
+            return False
+            
+        # Market hours consideration (optional)
+        if not self._check_market_hours(now):
+            logging.warning(f"⏰ {symbol} outside optimal trading hours - but continuing")
+            # return False  # Comment out for more signals
+            
+        # Trend strength check (relaxed)
+        if not self._check_trend_strength(technical_analysis):
+            logging.warning(f"📈 {symbol} trend weak but continuing analysis")
+            # return False  # Comment out for more signals
+            
+        logging.info(f"✅ Trade filter PASSED for {symbol} (volatility: {volatility_value:.2f}%)")
+        return True
+
+    def _check_cooldown(self, symbol: str, now: datetime) -> bool:
+        """Check if symbol is in cooldown period"""
+        last_stopout = self.last_stopout_time.get(symbol)
+        if last_stopout and (now - last_stopout).total_seconds() < self.cooldown_minutes * 60:
+            return False
+        return True
+
+    def _check_volatility(self, technical_analysis: Dict) -> Tuple[bool, float]:
+        """Check if volatility is within extended acceptable range"""
+        volatility = technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
+        return self.min_volatility <= volatility <= self.max_volatility, volatility
+
+    def _check_market_hours(self, now: datetime) -> bool:
+        """Check if current time is within optimal trading hours - more flexible"""
+        hour = now.hour
+        # Extended trading hours
+        return 0 <= hour <= 24  # All hours
+
+    def _check_trend_strength(self, technical_analysis: Dict) -> bool:
+        """More flexible trend strength check"""
+        trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
+        # Allow all trend strengths
+        return True
+
+    def mark_stopout(self, symbol: str):
+        """Record stopout for cooldown period"""
+        self.last_stopout_time[symbol] = datetime.now(UTC)
+        logging.info(f"🛑 Stopout recorded for {symbol}, cooldown activated")
+
+# =================================================================================
+# --- Advanced Risk Manager ---
 # =================================================================================
 
 class AdvancedRiskManager:
     """
-    Advanced position sizing and risk management with intelligent TP/SL calculation
-    Uses multiple methods: ATR, Support/Resistance, Market Structure
+    Advanced position sizing and risk management
     """
     
     def __init__(self,
@@ -1934,7 +2089,6 @@ class AdvancedRiskManager:
                                       technical_analysis: Dict, atr: float) -> float:
         """Calculate intelligent stop loss using multiple methods"""
         key_levels = technical_analysis.get('key_levels', {})
-        trend = technical_analysis.get('htf_trend', {})
         
         if action == "BUY":
             # Method 1: Below nearest support
@@ -1943,14 +2097,8 @@ class AdvancedRiskManager:
             # Method 2: ATR-based (2 ATR below)
             sl_atr = current_price - (2 * atr)
             
-            # Method 3: Recent swing low
-            recent_low = key_levels.get('support_2', current_price * 0.98)
-            
             # Choose the most conservative (highest) stop loss for BUY
-            stop_loss = max(sl_support, sl_atr, recent_low)
-            
-            # Add small buffer
-            stop_loss = stop_loss - (atr * 0.1)
+            stop_loss = max(sl_support, sl_atr)
             
         else:  # SELL
             # Method 1: Above nearest resistance
@@ -1959,14 +2107,8 @@ class AdvancedRiskManager:
             # Method 2: ATR-based (2 ATR above)
             sl_atr = current_price + (2 * atr)
             
-            # Method 3: Recent swing high
-            recent_high = key_levels.get('resistance_2', current_price * 1.02)
-            
             # Choose the most conservative (lowest) stop loss for SELL
-            stop_loss = min(sl_resistance, sl_atr, recent_high)
-            
-            # Add small buffer
-            stop_loss = stop_loss + (atr * 0.1)
+            stop_loss = min(sl_resistance, sl_atr)
             
         return round(stop_loss, 5)
 
@@ -1978,16 +2120,13 @@ class AdvancedRiskManager:
         
         if action == "BUY":
             # Method 1: Risk-Reward Ratio (1.5:1 minimum)
-            tp_rr = entry_price + (risk_amount * 1.8)  # Slightly better than 1.5
+            tp_rr = entry_price + (risk_amount * 1.8)
             
             # Method 2: Key resistance level
             tp_resistance = key_levels.get('resistance_1', entry_price * 1.03)
             
-            # Method 3: ATR-based (3 ATR above)
-            tp_atr = entry_price + (3 * atr)
-            
             # Choose the most appropriate take profit
-            take_profit = min(tp_rr, tp_resistance, tp_atr)
+            take_profit = min(tp_rr, tp_resistance)
             
         else:  # SELL
             # Method 1: Risk-Reward Ratio (1.5:1 minimum)
@@ -1996,61 +2135,10 @@ class AdvancedRiskManager:
             # Method 2: Key support level
             tp_support = key_levels.get('support_1', entry_price * 0.97)
             
-            # Method 3: ATR-based (3 ATR below)
-            tp_atr = entry_price - (3 * atr)
-            
             # Choose the most appropriate take profit
-            take_profit = max(tp_rr, tp_support, tp_atr)
+            take_profit = max(tp_rr, tp_support)
             
         return round(take_profit, 5)
-
-    def calculate_position_size(self, entry_price: float, stop_loss: float, 
-                              atr: float, rr_ratio: float = 1.5) -> Dict:
-        """Calculate position size with multiple risk management methods"""
-        if not entry_price or not stop_loss or atr <= 0:
-            return {"units": 0, "risk_amount": 0, "leverage": 0, "position_risk_pct": 0}
-            
-        # Calculate risk per unit
-        risk_per_unit = abs(entry_price - stop_loss)
-        if risk_per_unit <= 0:
-            return {"units": 0, "risk_amount": 0, "leverage": 0, "position_risk_pct": 0}
-        
-        # Base risk amount
-        risk_amount = self.equity * (self.risk_per_trade_pct / 100.0)
-        
-        # Calculate units based on risk
-        units = risk_amount / risk_per_unit
-        
-        # Calculate notional value and leverage
-        notional = units * entry_price
-        leverage = notional / max(self.equity, 1e-8)
-        
-        # Apply leverage cap
-        if leverage > self.max_leverage:
-            scale = self.max_leverage / leverage
-            units *= scale
-            leverage = self.max_leverage
-            risk_amount *= scale
-            
-        # Volatility adjustment - reduce position in high volatility
-        volatility_factor = min(1.0, 0.5 / max(atr / entry_price, 0.001))
-        units *= volatility_factor
-        
-        # Kelly Criterion adjustment (conservative)
-        assumed_win_rate = 0.55  # Conservative assumption
-        kelly_fraction = assumed_win_rate - (1 - assumed_win_rate) / rr_ratio
-        kelly_fraction = max(0.0, min(kelly_fraction, self.kelly_cap))
-        units *= (0.3 + 0.7 * kelly_fraction)  # Blend with conservative base
-        
-        position_risk_pct = (risk_amount / self.equity) * 100
-        
-        return {
-            "units": round(units, 2),
-            "risk_amount": round(risk_amount, 2),
-            "leverage": round(leverage, 2),
-            "position_risk_pct": round(position_risk_pct, 2),
-            "risk_per_unit": round(risk_per_unit, 5)
-        }
 
     def validate_signal_risk(self, signal: Dict, technical_analysis: Dict) -> Dict:
         """Validate and enhance signal with proper risk management"""
@@ -2072,30 +2160,13 @@ class AdvancedRiskManager:
         # Calculate actual risk-reward ratio
         risk = abs(current_price - stop_loss)
         reward = abs(take_profit - current_price)
-        actual_rr = reward / risk if risk > 0 else 1.5
+        actual_rr = reward / risk if risk > 0 else 1.8
         signal['ACTUAL_RR_RATIO'] = round(actual_rr, 2)
-        
-        # Calculate position size
-        rr_ratio = float(signal.get('RISK_REWARD_RATIO', 1.5))
-        position_info = self.calculate_position_size(current_price, stop_loss, atr, rr_ratio)
-        
-        # Add position sizing information
-        signal.update({
-            'POSITION_UNITS': position_info['units'],
-            'LEVERAGE_EST': position_info['leverage'],
-            'RISK_USD': position_info['risk_amount'],
-            'POSITION_RISK_PCT': position_info['position_risk_pct'],
-            'RISK_PER_UNIT': position_info['risk_per_unit']
-        })
-        
-        # Add risk assessment
-        risk_level = technical_analysis.get('risk_assessment', {}).get('risk_level', 'MEDIUM')
-        signal['RISK_ASSESSMENT'] = risk_level
         
         return signal
 
 # =================================================================================
-# --- Enhanced Signal Quality Scoring System ---
+# --- Signal Quality Scorer ---
 # =================================================================================
 
 class SignalQualityScorer:
@@ -2129,7 +2200,7 @@ class SignalQualityScorer:
         
         # 3. Risk-Reward Score
         rr_ratio = float(signal.get('ACTUAL_RR_RATIO', 1.0))
-        scores['risk_reward'] = min(rr_ratio * 33.33, 100)  # 3:1 RR = 100 score
+        scores['risk_reward'] = min(rr_ratio * 33.33, 100)
         
         # 4. Trend Strength Score
         trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
@@ -2172,22 +2243,11 @@ class SignalQualityScorer:
         elif momentum_bias == 'NEUTRAL':
             alignment_score += 15
             
-        # Price position alignment
-        current_price = technical_analysis.get('current_price', 0)
-        support = technical_analysis.get('key_levels', {}).get('support_1', 0)
-        resistance = technical_analysis.get('key_levels', {}).get('resistance_1', 0)
-        
-        if action == 'BUY' and current_price > support:
-            alignment_score += 30
-        elif action == 'SELL' and current_price < resistance:
-            alignment_score += 30
-            
         return min(alignment_score, 100)
     
     def _calculate_volatility_score(self, technical_analysis: Dict) -> float:
         """Calculate volatility appropriateness score"""
         volatility = technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
-        atr = technical_analysis.get('volatility', 0.001)
         
         # Ideal volatility range for trading (0.5% to 2%)
         if 0.5 <= volatility <= 2.0:
@@ -2218,11 +2278,6 @@ class SignalQualityScorer:
         if (action == 'BUY' and macd_trend == 'BULLISH') or (action == 'SELL' and macd_trend == 'BEARISH'):
             score += 15
             
-        # Stochastic alignment
-        stoch_signal = momentum.get('stochastic', {}).get('signal', 'NEUTRAL')
-        if (action == 'BUY' and stoch_signal == 'OVERSOLD') or (action == 'SELL' and stoch_signal == 'OVERBOUGHT'):
-            score += 15
-            
         return min(score, 100)
     
     def _calculate_market_structure_score(self, technical_analysis: Dict) -> float:
@@ -2240,13 +2295,13 @@ class SignalQualityScorer:
         else:
             return 20
 
-# =================================================================================
+ # =================================================================================
 # --- Gemini Direct Signal Agent (Enhanced) ---
 # =================================================================================
 
 class GeminiDirectSignalAgent:
     """
-    Enhanced direct Gemini signal agent with improved error handling and signal quality
+    Enhanced direct Gemini signal agent with improved error handling
     """
     def __init__(self, api_key: Optional[str] = None, model_name: str = GEMINI_MODEL):
         self.model_name = model_name
@@ -2274,6 +2329,8 @@ class GeminiDirectSignalAgent:
         
         return f"""As an expert forex trading analyst, analyze {symbol} and provide ONLY JSON output.
 
+CRITICAL: Be DECISIVE - prefer BUY/SELL over HOLD unless market is completely unclear.
+
 MARKET DATA:
 - Price: {price:.5f}
 - Trend: {trend.get('direction', 'NEUTRAL')} ({trend.get('strength', 'UNKNOWN')})
@@ -2285,11 +2342,10 @@ MARKET DATA:
 - ML Signal Strength: {ml.get('signal_strength', 0):.2f}
 
 TRADING RULES:
-1. Only trade if trend and momentum align
-2. Minimum risk-reward ratio: 1.5
-3. Consider market structure and key levels
-4. Avoid trading in extreme volatility
-5. Prefer signals with technical confirmation
+1. Only use HOLD if trend is completely neutral and no clear direction
+2. BUY if trend is bullish and RSI < 70
+3. SELL if trend is bearish and RSI > 30
+4. Minimum risk-reward ratio: 1.5
 
 Return EXACT JSON format:
 {{
@@ -2447,79 +2503,11 @@ Return EXACT JSON format:
         return True
 
 # =================================================================================
-# --- Enhanced Trade Filter with Market Condition Analysis ---
-# =================================================================================
-
-class EnhancedTradeFilter:
-    """
-    Advanced trade filtering with market condition analysis
-    """
-    def __init__(self):
-        self.last_stopout_time = {}
-        self.cooldown_minutes = 120  # 2 hours cooldown after stopout
-        self.min_volatility = 0.05    # Minimum volatility % for trading
-        self.max_volatility = 10.0    # Maximum volatility % for trading
-
-    def can_trade(self, symbol: str, technical_analysis: Dict, now: Optional[datetime] = None) -> bool:
-        """Check if trading is allowed based on multiple factors"""
-        now = now or datetime.now(UTC)
-        
-        # Cooldown check
-        if not self._check_cooldown(symbol, now):
-            logging.info(f"⏸️ {symbol} in cooldown period")
-            return False
-            
-        # Volatility check
-        if not self._check_volatility(technical_analysis):
-            logging.info(f"📊 {symbol} volatility outside acceptable range")
-            return False
-            
-        # Market hours consideration (optional)
-        if not self._check_market_hours(now):
-            logging.info(f"⏰ {symbol} outside optimal trading hours")
-            return False
-            
-        # Trend strength check
-        if not self._check_trend_strength(technical_analysis):
-            logging.info(f"📈 {symbol} trend too weak for trading")
-            return False
-            
-        return True
-
-    def _check_cooldown(self, symbol: str, now: datetime) -> bool:
-        """Check if symbol is in cooldown period"""
-        last_stopout = self.last_stopout_time.get(symbol)
-        if last_stopout and (now - last_stopout).total_seconds() < self.cooldown_minutes * 60:
-            return False
-        return True
-
-    def _check_volatility(self, technical_analysis: Dict) -> bool:
-        """Check if volatility is within acceptable range"""
-        volatility = technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
-        return self.min_volatility <= volatility <= self.max_volatility
-
-    def _check_market_hours(self, now: datetime) -> bool:
-        """Check if current time is within optimal trading hours"""
-        # London + New York overlap (13:00-17:00 UTC) is optimal
-        hour = now.hour
-        return 0 <= hour <= 24  # 1 PM - 5 PM UTC
-
-    def _check_trend_strength(self, technical_analysis: Dict) -> bool:
-        """Check if trend is strong enough for trading"""
-        trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
-        return True
-
-    def mark_stopout(self, symbol: str):
-        """Record stopout for cooldown period"""
-        self.last_stopout_time[symbol] = datetime.now(UTC)
-        logging.info(f"🛑 Stopout recorded for {symbol}, cooldown activated")
-
-# =================================================================================
 # --- Main Forex Analyzer Class (Fully Enhanced) ---
 # =================================================================================
 
 class ImprovedForexAnalyzer:
-    def __init__(self):
+    def __init__(self, strict_filters: bool = False):
         self.model_discoverer = DynamicModelDiscoverer()
         self.api_manager = SmartAPIManager(USAGE_TRACKER_FILE, self.model_discoverer)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
@@ -2532,9 +2520,10 @@ class ImprovedForexAnalyzer:
         self.risk_manager = AdvancedRiskManager()
         self.signal_scorer = SignalQualityScorer()
         self.trade_filter = EnhancedTradeFilter()
+        self.strict_filters = strict_filters
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
-        """Complete analysis of a currency pair with comprehensive error handling"""
+        """Complete analysis with flexible filtering and robust fallbacks"""
         logging.info(f"🔍 Starting enhanced analysis for {pair}")
         start_time = time.time()
         
@@ -2573,18 +2562,26 @@ class ImprovedForexAnalyzer:
                 self.performance_monitor.record_failure()
                 return None
 
-            # Trade filter check
-            if not self.trade_filter.can_trade(pair, technical_analysis):
-                logging.info(f"⏸️ Trade filter blocked {pair}")
-                self.performance_monitor.record_success()
-                return None
+            # Trade filter check (flexible)
+            if self.strict_filters:
+                if not self.trade_filter.can_trade(pair, technical_analysis):
+                    logging.info(f"⏸️ Trade filter blocked {pair}")
+                    self.performance_monitor.record_success()
+                    return None
+            else:
+                # Just log the volatility info but don't block
+                volatility_ok, volatility_value = self.trade_filter._check_volatility(technical_analysis)
+                if not volatility_ok:
+                    logging.warning(f"⚠️ {pair} volatility {volatility_value:.2f}% outside optimal range but continuing...")
+                else:
+                    logging.info(f"✅ {pair} volatility {volatility_value:.2f}% within acceptable range")
                 
-            # AI analysis (ensemble)
+            # AI analysis (ensemble with robust fallbacks)
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
 
-            # Gemini direct as backup
+            # Gemini direct as additional backup
             if not ai_analysis and self.gemini_direct.available:
-                logging.info(f"🔄 Trying GeminiDirect as backup for {pair}")
+                logging.info(f"🔄 Trying GeminiDirect as additional backup for {pair}")
                 direct_signal = await self.gemini_direct.fetch_signal(pair, technical_analysis)
                 if direct_signal:
                     ai_analysis = direct_signal
@@ -2607,7 +2604,8 @@ class ImprovedForexAnalyzer:
                     'rsi': technical_analysis.get('momentum', {}).get('rsi', {}).get('value', 50),
                     'key_support': technical_analysis.get('key_levels', {}).get('support_1', 0),
                     'key_resistance': technical_analysis.get('key_levels', {}).get('resistance_1', 0),
-                    'volatility': technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
+                    'volatility': technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0),
+                    'volatility_status': 'OPTIMAL' if volatility_ok else 'EXTENDED_RANGE'
                 }
                 
                 analysis_duration = time.time() - start_time
@@ -2634,6 +2632,9 @@ class ImprovedForexAnalyzer:
         
         # Initialize models first
         await self.api_manager.initialize_models()
+        
+        # Disable Gemini if there are quota issues (uncomment if needed)
+        # self.api_manager.disable_gemini()
         
         tasks = [self.analyze_pair(pair) for pair in pairs]
         results = await asyncio.gather(*tasks)
@@ -2782,6 +2783,7 @@ async def main():
     parser.add_argument("--risk_pct", type=float, default=1.0, help="Risk per trade percent (default 1.0)")
     parser.add_argument("--kelly_cap", type=float, default=0.5, help="Kelly cap (0..1, default 0.5)")
     parser.add_argument("--max_lev", type=float, default=30.0, help="Max leverage (default 30)")
+    parser.add_argument("--strict", action="store_true", help="Use strict trade filters")
     
     args = parser.parse_args()
     
@@ -2797,7 +2799,8 @@ async def main():
     
     logging.info(f"🎯 Currency pairs to analyze: {', '.join(pairs_to_analyze)}")
     
-    analyzer = ImprovedForexAnalyzer()
+    # Use strict filters only if explicitly requested
+    analyzer = ImprovedForexAnalyzer(strict_filters=args.strict)
 
     # Configure risk manager with CLI arguments
     analyzer.risk_manager.equity = args.equity
@@ -2807,13 +2810,18 @@ async def main():
 
     logging.info(f"⚙️ Risk Configuration: Equity=${args.equity:.0f}, Risk={args.risk_pct}%, "
                f"Kelly Cap={args.kelly_cap}, Max Leverage={args.max_lev}x")
+    logging.info(f"⚙️ Filter Mode: {'STRICT' if args.strict else 'FLEXIBLE'}")
+
+    # Optional: Disable Gemini if having quota issues
+    # analyzer.api_manager.disable_gemini()
+    # logging.info("🚫 Gemini disabled due to quota issues")
 
     signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
     
     # Save signals
     analyzer.save_signals(signals)
     
-    # Enhanced results display
+    # Display results
     logging.info("📈 Enhanced Results Summary:")
     strong_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'STRONG_CONSENSUS' or s.get('QUALITY_SCORE', 0) >= 70])
     medium_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'MEDIUM_CONSENSUS' or 50 <= s.get('QUALITY_SCORE', 0) < 70])
@@ -2832,7 +2840,7 @@ async def main():
         quality_icon = "🔥" if quality_score >= 80 else "✅" if quality_score >= 60 else "⚠️"
         
         logging.info(f"  {action_icon} {quality_icon} {signal['SYMBOL']}: {signal['ACTION']} "
-                   f"(Quality: {quality_score}/10, Conf: {signal.get('CONFIDENCE', 0)}/10)"
+                   f"(Quality: {quality_score}/100, Conf: {signal.get('CONFIDENCE', 0)}/10)"
                    f" | Entry: {signal.get('ENTRY', 'N/A')} | SL: {signal.get('STOP_LOSS', 'N/A')} | TP: {signal.get('TAKE_PROFIT', 'N/A')}"
                    f" | RR: {signal.get('ACTUAL_RR_RATIO', 'N/A')}:1")
     
@@ -2853,7 +2861,11 @@ async def main():
     # Final API status
     analyzer.api_manager.save_usage_data()
     logging.info(analyzer.api_manager.get_usage_summary())
-    logging.info("🏁 Enhanced system execution completed successfully!")
+    
+    if signals:
+        logging.info("🏁 Enhanced system execution completed successfully with signals!")
+    else:
+        logging.info("🏁 Enhanced system executed but no signals generated")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main())           
