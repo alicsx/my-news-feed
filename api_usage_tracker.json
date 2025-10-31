@@ -6,11 +6,11 @@
             "limit": 1500
         },
         "cloudflare": {
-            "used_today": 29,
+            "used_today": 33,
             "limit": 10000
         },
         "groq": {
-            "used_today": 104,
+            "used_today": 120,
             "limit": 10000
         }
     }
