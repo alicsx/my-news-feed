@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-10-31T08:29:25.578131+00:00",
+    "ENTRY": "1.31442",
+    "STOP_LOSS": "1.31467",
+    "TAKE_PROFIT": "1.31404",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, low volatility and low risk level",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 69.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 38.52875353631574,
+      "key_support": 1.3143833333333335,
+      "key_resistance": 1.3146666666666669,
+      "volatility": 0.08620333240984657,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
