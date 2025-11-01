@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated_at": "2025-11-01T20:26:47.893488+00:00",
+    "generated_at": "2025-11-01T22:24:19.760432+00:00",
     "total_signals": 2,
-    "average_quality": 70.05
+    "average_quality": 73.75
   },
   "signals": [
     {
       "SYMBOL": "EUR/USD",
       "ACTION": "SELL",
-      "CONFIDENCE": 8.2,
-      "AGREEMENT_LEVEL": 2,
-      "AGREEMENT_TYPE": "WEAK_CONSENSUS",
-      "VALID_MODELS": 4,
+      "CONFIDENCE": 7.3,
+      "AGREEMENT_LEVEL": 3,
+      "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+      "VALID_MODELS": 3,
       "TOTAL_MODELS": 5,
-      "MODEL_DIVERSITY_SCORE": 0.33,
-      "timestamp": "2025-11-01T20:26:22.426741+00:00",
+      "MODEL_DIVERSITY_SCORE": 0.67,
+      "timestamp": "2025-11-01T22:23:52.518512+00:00",
       "ENTRY": "1.15350",
       "STOP_LOSS": "1.15390",
       "TAKE_PROFIT": "1.15270",
@@ -33,7 +33,7 @@
         "trend_alignment": "ALIGNED",
         "position_size_rating": "AGGRESSIVE"
       },
-      "QUALITY_SCORE": 71.5,
+      "QUALITY_SCORE": 78.9,
       "TECHNICAL_CONTEXT": {
         "trend_analysis": {
           "htf_direction": "STRONG_BEARISH",
