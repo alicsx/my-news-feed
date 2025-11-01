@@ -1412,6 +1412,708 @@ Return ONLY this JSON format (NO other text):
         return combined
 
 # =================================================================================
+# --- Advanced Technical Analysis with Machine Learning Features ---
+# =================================================================================
+
+class AdvancedTechnicalAnalyzer:
+    def __init__(self):
+        self.indicators_config = {
+            'trend': ['ema_8', 'ema_21', 'ema_50', 'ema_200', 'wma_34', 'hma_55', 'adx_14', 'ichimoku'],
+            'momentum': ['rsi_14', 'stoch_14_3_3', 'macd', 'cci_20', 'williams_14', 'momentum_10'],
+            'volatility': ['bb_20_2', 'bb_20_1.5', 'atr_14', 'kc_20_2'],
+            'volume': ['obv', 'cmf_20', 'vwap'],
+            'advanced': ['supertrend', 'parabolic_sar', 'donchian_20', 'pivot_points']
+        }
+        self.ml_features = {}
+
+    def calculate_enhanced_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Calculate comprehensive technical indicators with robust error handling"""
+        if df is None or df.empty:
+            logging.warning("Empty DataFrame provided to indicator calculation")
+            return None
+            
+        try:
+            # Make a copy to avoid modifying original
+            df_indicators = df.copy()
+            
+            # Ensure numeric columns and handle errors
+            for col in ['open', 'high', 'low', 'close']:
+                if col in df_indicators.columns:
+                    df_indicators[col] = pd.to_numeric(df_indicators[col], errors='coerce')
+            
+            # Remove any rows with NaN values in essential price columns
+            df_indicators = df_indicators.dropna(subset=['open', 'high', 'low', 'close'])
+            
+            if len(df_indicators) < 100:
+                logging.warning(f"Insufficient data after cleaning: {len(df_indicators)} rows")
+                return None
+
+            # Calculate indicators with individual error handling
+            indicators_added = []
+            
+            # Trend indicators
+            trend_indicators = ['EMA_8', 'EMA_21', 'EMA_50', 'EMA_200', 'WMA_34', 'HMA_55', 'ADX_14']
+            for indicator in trend_indicators:
+                try:
+                    if indicator.startswith('EMA'):
+                        length = int(indicator.split('_')[1])
+                        df_indicators.ta.ema(length=length, append=True)
+                        indicators_added.append(indicator)
+                    elif indicator == 'WMA_34':
+                        df_indicators.ta.wma(length=34, append=True)
+                        indicators_added.append(indicator)
+                    elif indicator == 'HMA_55':
+                        df_indicators.ta.hma(length=55, append=True)
+                        indicators_added.append(indicator)
+                    elif indicator == 'ADX_14':
+                        df_indicators.ta.adx(length=14, append=True)
+                        indicators_added.append(indicator)
+                except Exception as e:
+                    logging.warning(f"Failed to calculate {indicator}: {e}")
+
+            # Momentum indicators
+            momentum_indicators = ['RSI_14', 'STOCHk_14_3_3', 'MACD_12_26_9', 'CCI_20_0.015', 'WILLR_14', 'MOM_10']
+            for indicator in momentum_indicators:
+                try:
+                    if indicator == 'RSI_14':
+                        df_indicators.ta.rsi(length=14, append=True)
+                    elif indicator == 'STOCHk_14_3_3':
+                        df_indicators.ta.stoch(append=True)
+                    elif indicator == 'MACD_12_26_9':
+                        df_indicators.ta.macd(append=True)
+                    elif indicator == 'CCI_20_0.015':
+                        df_indicators.ta.cci(length=20, append=True)
+                    elif indicator == 'WILLR_14':
+                        df_indicators.ta.willr(length=14, append=True)
+                    elif indicator == 'MOM_10':
+                        df_indicators.ta.mom(length=10, append=True)
+                    indicators_added.append(indicator)
+                except Exception as e:
+                    logging.warning(f"Failed to calculate {indicator}: {e}")
+
+            # Volatility indicators
+            volatility_indicators = ['BBL_20_2.0', 'BBU_20_2.0', 'ATRr_14', 'KCLe_20_2', 'KCUe_20_2']
+            for indicator in volatility_indicators:
+                try:
+                    if indicator.startswith('BB'):
+                        df_indicators.ta.bbands(length=20, std=2, append=True)
+                    elif indicator == 'ATRr_14':
+                        df_indicators.ta.atr(length=14, append=True)
+                    elif indicator.startswith('KC'):
+                        df_indicators.ta.kc(length=20, scalar=2, append=True)
+                    indicators_added.append(indicator)
+                except Exception as e:
+                    logging.warning(f"Failed to calculate {indicator}: {e}")
+
+            # Advanced indicators
+            advanced_indicators = ['SUPERT_7_3.0', 'PSARl_0.02_0.2', 'DCP_20', 'DCM_20', 'DCU_20']
+            for indicator in advanced_indicators:
+                try:
+                    if indicator.startswith('SUPERT'):
+                        df_indicators.ta.supertrend(append=True)
+                    elif indicator.startswith('PSAR'):
+                        df_indicators.ta.psar(append=True)
+                    elif indicator.startswith('DC'):
+                        df_indicators.ta.donchian(lower_length=20, upper_length=20, append=True)
+                    indicators_added.append(indicator)
+                except Exception as e:
+                    logging.warning(f"Failed to calculate {indicator}: {e}")
+
+            # Ichimoku Cloud
+            try:
+                df_indicators.ta.ichimoku(append=True)
+                indicators_added.extend(['ISA_9', 'ISB_26', 'ICS_26', 'ICB_26', 'ITS_9'])
+            except Exception as e:
+                logging.warning(f"Failed to calculate Ichimoku: {e}")
+
+            # Support and resistance levels
+            try:
+                df_indicators['pivot'] = (df_indicators['high'] + df_indicators['low'] + df_indicators['close']) / 3
+                df_indicators['r1'] = 2 * df_indicators['pivot'] - df_indicators['low']
+                df_indicators['s1'] = 2 * df_indicators['pivot'] - df_indicators['high']
+                df_indicators['sup_1'] = df_indicators['low'].rolling(20, min_periods=1).min().shift(1)
+                df_indicators['res_1'] = df_indicators['high'].rolling(20, min_periods=1).max().shift(1)
+                df_indicators['sup_2'] = df_indicators['low'].rolling(50, min_periods=1).min().shift(1)
+                df_indicators['res_2'] = df_indicators['high'].rolling(50, min_periods=1).max().shift(1)
+                indicators_added.extend(['pivot', 'r1', 's1', 'sup_1', 'res_1', 'sup_2', 'res_2'])
+            except Exception as e:
+                logging.warning(f"Failed to calculate support/resistance: {e}")
+
+            # Price action patterns
+            try:
+                df_indicators['inside_bar'] = ((df_indicators['high'] < df_indicators['high'].shift(1)) & (df_indicators['low'] > df_indicators['low'].shift(1)))
+                df_indicators['outside_bar'] = ((df_indicators['high'] > df_indicators['high'].shift(1)) & (df_indicators['low'] < df_indicators['low'].shift(1)))
+                indicators_added.extend(['inside_bar', 'outside_bar'])
+            except Exception as e:
+                logging.warning(f"Failed to calculate price patterns: {e}")
+
+            # Advanced ML features
+            try:
+                # Price volatility features
+                df_indicators['price_range'] = (df_indicators['high'] - df_indicators['low']) / df_indicators['close']
+                df_indicators['price_change'] = df_indicators['close'].pct_change()
+                df_indicators['volatility_20'] = df_indicators['price_change'].rolling(20).std()
+                
+                # Momentum features
+                df_indicators['momentum_5'] = df_indicators['close'] / df_indicators['close'].shift(5) - 1
+                df_indicators['momentum_10'] = df_indicators['close'] / df_indicators['close'].shift(10) - 1
+                
+                # Mean reversion features
+                df_indicators['z_score_20'] = (df_indicators['close'] - df_indicators['close'].rolling(20).mean()) / df_indicators['close'].rolling(20).std()
+                
+                indicators_added.extend(['price_range', 'price_change', 'volatility_20', 'momentum_5', 'momentum_10', 'z_score_20'])
+            except Exception as e:
+                logging.warning(f"Failed to calculate ML features: {e}")
+
+            # Remove rows with too many NaN values but keep recent data
+            initial_count = len(df_indicators)
+            df_indicators = df_indicators.dropna(thresh=len(df_indicators.columns) - 15)  # Allow up to 15 NaN columns
+            
+            if len(df_indicators) < 50:
+                logging.warning(f"Too many NaN values after cleaning: {len(df_indicators)} rows left")
+                # Keep recent data even with some NaN values
+                df_indicators = df_indicators.tail(100).fillna(method='ffill').fillna(method='bfill')
+
+            logging.info(f"✅ Successfully calculated {len(indicators_added)} indicators for {len(df_indicators)} rows")
+            return df_indicators
+            
+        except Exception as e:
+            logging.error(f"❌ Critical error in indicator calculation: {e}")
+            # Fallback: return original DataFrame with basic indicators
+            return self._calculate_basic_indicators(df)
+
+    def _calculate_basic_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Fallback method for basic indicator calculation"""
+        try:
+            df_basic = df.copy()
+            
+            # Basic indicators that rarely fail
+            df_basic.ta.ema(length=21, append=True)
+            df_basic.ta.ema(length=50, append=True)
+            df_basic.ta.rsi(length=14, append=True)
+            df_basic.ta.macd(append=True)
+            df_basic.ta.bbands(length=20, std=2, append=True)
+            df_basic.ta.atr(length=14, append=True)
+            
+            # Basic support/resistance
+            df_basic['sup_1'] = df_basic['low'].rolling(20, min_periods=1).min().shift(1)
+            df_basic['res_1'] = df_basic['high'].rolling(20, min_periods=1).max().shift(1)
+            
+            df_basic = df_basic.dropna()
+            logging.info("✅ Basic indicators calculated as fallback")
+            return df_basic
+            
+        except Exception as e:
+            logging.error(f"❌ Even basic indicators failed: {e}")
+            return None
+
+    def generate_comprehensive_analysis(self, symbol: str, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
+        """Generate comprehensive technical analysis with robust error handling"""
+        if htf_df is None or ltf_df is None or htf_df.empty or ltf_df.empty:
+            logging.warning(f"Empty DataFrames provided for {symbol}")
+            return None
+            
+        try:
+            # Get the latest data points with bounds checking
+            last_htf = htf_df.iloc[-1] if len(htf_df) > 0 else None
+            last_ltf = ltf_df.iloc[-1] if len(ltf_df) > 0 else None
+            prev_htf = htf_df.iloc[-2] if len(htf_df) > 1 else last_htf
+            prev_ltf = ltf_df.iloc[-2] if len(ltf_df) > 1 else last_ltf
+            
+            if last_htf is None or last_ltf is None:
+                return None
+
+            # Multi-timeframe analysis with error handling
+            htf_trend = self._analyze_enhanced_trend(last_htf, prev_htf, htf_df)
+            ltf_trend = self._analyze_enhanced_trend(last_ltf, prev_ltf, ltf_df)
+            
+            # Momentum analysis
+            momentum = self._analyze_momentum(last_ltf, prev_ltf)
+            
+            # Key levels with dynamic calculation
+            key_levels = self._calculate_dynamic_levels(htf_df, ltf_df, last_ltf['close'])
+            
+            # Market structure
+            market_structure = self._analyze_market_structure(htf_df, ltf_df)
+            
+            # Volume analysis (handle missing volume)
+            volume_analysis = self._analyze_volume(ltf_df)
+            
+            # Risk assessment
+            risk_assessment = self._assess_risk(htf_df, ltf_df)
+            
+            # ML-based signal strength
+            ml_signal = self._calculate_ml_signal(htf_df, ltf_df)
+            
+            return {
+                'symbol': symbol,
+                'htf_trend': htf_trend,
+                'ltf_trend': ltf_trend,
+                'momentum': momentum,
+                'key_levels': key_levels,
+                'market_structure': market_structure,
+                'volume_analysis': volume_analysis,
+                'risk_assessment': risk_assessment,
+                'ml_signal': ml_signal,
+                'volatility': last_ltf.get('ATRr_14', 0.001),
+                'current_price': last_ltf['close'],
+                'timestamp': datetime.now(UTC).isoformat()
+            }
+            
+        except Exception as e:
+            logging.error(f"❌ Error generating technical analysis for {symbol}: {e}")
+            # Return basic analysis as fallback
+            return self._generate_basic_analysis(symbol, htf_df, ltf_df)
+
+    def _calculate_ml_signal(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
+        """Calculate machine learning based signal strength"""
+        try:
+            if ltf_df.empty or len(ltf_df) < 50:
+                return {"signal_strength": 0, "confidence": 0, "features": {}}
+            
+            # Feature engineering for ML signal
+            features = {}
+            
+            # Trend strength features
+            if 'ADX_14' in ltf_df.columns:
+                features['adx_strength'] = ltf_df['ADX_14'].iloc[-1] / 100.0
+            else:
+                features['adx_strength'] = 0
+                
+            # Momentum convergence
+            rsi = ltf_df.get('RSI_14', 50)
+            macd_hist = ltf_df.get('MACDh_12_26_9', 0)
+            stoch_k = ltf_df.get('STOCHk_14_3_3', 50)
+            
+            # Normalize features
+            rsi_signal = abs(rsi.iloc[-1] - 50) / 50.0 if isinstance(rsi, pd.Series) else 0
+            macd_signal = abs(macd_hist.iloc[-1]) if isinstance(macd_hist, pd.Series) else 0
+            stoch_signal = abs(stoch_k.iloc[-1] - 50) / 50.0 if isinstance(stoch_k, pd.Series) else 0
+            
+            features['momentum_convergence'] = (rsi_signal + macd_signal + stoch_signal) / 3.0
+            
+            # Volatility adjusted signal
+            volatility = ltf_df['close'].pct_change().std() * 100 if len(ltf_df) > 1 else 1
+            features['volatility_factor'] = min(volatility / 2.0, 1.0)  # Normalize to 0-1
+            
+            # Price position features
+            if 'BBU_20_2.0' in ltf_df.columns and 'BBL_20_2.0' in ltf_df.columns:
+                bb_upper = ltf_df['BBU_20_2.0'].iloc[-1]
+                bb_lower = ltf_df['BBL_20_2.0'].iloc[-1]
+                current_price = ltf_df['close'].iloc[-1]
+                bb_position = (current_price - bb_lower) / (bb_upper - bb_lower) if bb_upper != bb_lower else 0.5
+                features['bb_position'] = abs(bb_position - 0.5) * 2  # Convert to 0-1 scale
+            else:
+                features['bb_position'] = 0
+                
+            # Calculate composite signal strength
+            signal_strength = (
+                features['adx_strength'] * 0.3 +
+                features['momentum_convergence'] * 0.4 +
+                features['bb_position'] * 0.2 +
+                features['volatility_factor'] * 0.1
+            )
+            
+            # Confidence based on data quality
+            confidence = min(len(ltf_df) / 200.0, 1.0)  # Higher confidence with more data
+            
+            return {
+                "signal_strength": round(signal_strength, 3),
+                "confidence": round(confidence, 3),
+                "features": features
+            }
+            
+        except Exception as e:
+            logging.warning(f"ML signal calculation error: {e}")
+            return {"signal_strength": 0, "confidence": 0, "features": {}}
+
+    def _generate_basic_analysis(self, symbol: str, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
+        """Fallback basic analysis"""
+        try:
+            last_ltf = ltf_df.iloc[-1]
+            current_price = last_ltf['close']
+            
+            return {
+                'symbol': symbol,
+                'htf_trend': {'direction': 'NEUTRAL', 'strength': 'UNKNOWN', 'adx': 0},
+                'ltf_trend': {'direction': 'NEUTRAL', 'strength': 'UNKNOWN', 'adx': 0},
+                'momentum': {
+                    'rsi': {'value': 50, 'signal': 'NEUTRAL'},
+                    'macd': {'signal': 'NEUTRAL', 'histogram': 0},
+                    'stochastic': {'k': 50, 'd': 50, 'signal': 'NEUTRAL'}
+                },
+                'key_levels': {
+                    'support_1': current_price * 0.99,
+                    'resistance_1': current_price * 1.01,
+                    'support_2': current_price * 0.98,
+                    'resistance_2': current_price * 1.02
+                },
+                'market_structure': {'higher_timeframe_structure': 'UNKNOWN'},
+                'volume_analysis': {'signal': 'NO_DATA'},
+                'risk_assessment': {'risk_level': 'MEDIUM'},
+                'ml_signal': {'signal_strength': 0, 'confidence': 0, 'features': {}},
+                'volatility': 0.001,
+                'current_price': current_price,
+                'timestamp': datetime.now(UTC).isoformat()
+            }
+        except Exception as e:
+            logging.error(f"❌ Even basic analysis failed for {symbol}: {e}")
+            return None
+
+    def _analyze_enhanced_trend(self, current: pd.Series, previous: pd.Series, df: pd.DataFrame) -> Dict:
+        """Enhanced trend analysis with multiple confirmations"""
+        try:
+            # EMA analysis with fallbacks
+            ema_8 = current.get('EMA_8', current['close'])
+            ema_21 = current.get('EMA_21', current['close'])
+            ema_50 = current.get('EMA_50', current['close'])
+            ema_200 = current.get('EMA_200', current['close'])
+            
+            # EMA alignment score
+            ema_alignment = 0
+            if ema_8 > ema_21 > ema_50 > ema_200:
+                trend_direction = "STRONG_BULLISH"
+                ema_alignment = 4
+            elif ema_8 < ema_21 < ema_50 < ema_200:
+                trend_direction = "STRONG_BEARISH"
+                ema_alignment = 4
+            elif ema_8 > ema_21 and ema_21 > ema_50:
+                trend_direction = "BULLISH"
+                ema_alignment = 3
+            elif ema_8 < ema_21 and ema_21 < ema_50:
+                trend_direction = "BEARISH"
+                ema_alignment = 3
+            else:
+                trend_direction = "NEUTRAL"
+                ema_alignment = 1
+
+            # ADX strength with fallback
+            adx = current.get('ADX_14', 0)
+            if adx > 40:
+                trend_strength = "VERY_STRONG"
+            elif adx > 25:
+                trend_strength = "STRONG"
+            elif adx > 20:
+                trend_strength = "MODERATE"
+            else:
+                trend_strength = "WEAK"
+
+            # Ichimoku analysis
+            ichimoku_signal = self._analyze_ichimoku(current)
+            
+            # SuperTrend signal
+            supertrend_signal = "BULLISH" if current.get('SUPERT_7_3.0', '') == 'up' else "BEARISH"
+
+            return {
+                'direction': trend_direction,
+                'strength': trend_strength,
+                'adx': adx,
+                'ema_alignment': ema_alignment,
+                'ichimoku_signal': ichimoku_signal,
+                'supertrend_signal': supertrend_signal,
+                'price_above_ema200': current['close'] > ema_200
+            }
+            
+        except Exception as e:
+            logging.warning(f"Trend analysis error: {e}")
+            return {
+                'direction': 'NEUTRAL',
+                'strength': 'UNKNOWN',
+                'adx': 0,
+                'ema_alignment': 0,
+                'ichimoku_signal': 'NEUTRAL',
+                'supertrend_signal': 'NEUTRAL',
+                'price_above_ema200': False
+            }
+
+    def _analyze_ichimoku(self, data: pd.Series) -> str:
+        """Analyze Ichimoku Cloud signals with error handling"""
+        try:
+            tenkan = data.get('ISA_9', data['close'])
+            kijun = data.get('ISB_26', data['close'])
+            senkou_a = data.get('ICS_26', data['close'])
+            senkou_b = data.get('ICB_26', data['close'])
+            chikou = data.get('ITS_9', data['close'])
+            price = data['close']
+            
+            # Cloud analysis
+            cloud_bullish = senkou_a > senkou_b
+            
+            # Signal generation
+            if price > max(senkou_a, senkou_b) and tenkan > kijun and chikou > price:
+                return "STRONG_BULLISH"
+            elif price < min(senkou_a, senkou_b) and tenkan < kijun and chikou < price:
+                return "STRONG_BEARISH"
+            elif price > max(senkou_a, senkou_b):
+                return "BULLISH"
+            elif price < min(senkou_a, senkou_b):
+                return "BEARISH"
+            else:
+                return "NEUTRAL"
+        except:
+            return "NEUTRAL"
+
+    def _analyze_momentum(self, current: pd.Series, previous: pd.Series) -> Dict:
+        """Comprehensive momentum analysis with error handling"""
+        try:
+            rsi = current.get('RSI_14', 50)
+            macd = current.get('MACD_12_26_9', 0)
+            macd_signal = current.get('MACDs_12_26_9', 0)
+            macd_hist = current.get('MACDh_12_26_9', 0)
+            stoch_k = current.get('STOCHk_14_3_3', 50)
+            stoch_d = current.get('STOCHd_14_3_3', 50)
+            cci = current.get('CCI_20_0.015', 0)
+            williams = current.get('WILLR_14', -50)
+            momentum_val = current.get('MOM_10', 0)
+
+            # RSI analysis
+            if rsi > 70:
+                rsi_signal = "OVERBOUGHT"
+            elif rsi < 30:
+                rsi_signal = "OVERSOLD"
+            else:
+                rsi_signal = "NEUTRAL"
+
+            # MACD analysis
+            macd_trend = "BULLISH" if macd_hist > 0 else "BEARISH"
+            prev_macd = previous.get('MACD_12_26_9', 0)
+            prev_macd_signal = previous.get('MACDs_12_26_9', 0)
+            macd_cross = "BULLISH_CROSS" if macd > macd_signal and prev_macd <= prev_macd_signal else "BEARISH_CROSS" if macd < macd_signal and prev_macd >= prev_macd_signal else "NO_CROSS"
+
+            # Stochastic analysis
+            stoch_signal = "OVERBOUGHT" if stoch_k > 80 else "OVERSOLD" if stoch_k < 20 else "NEUTRAL"
+
+            # CCI analysis
+            cci_signal = "OVERBOUGHT" if cci > 100 else "OVERSOLD" if cci < -100 else "NEUTRAL"
+
+            # Williams %R
+            williams_signal = "OVERBOUGHT" if williams > -20 else "OVERSOLD" if williams < -80 else "NEUTRAL"
+
+            # Momentum convergence score
+            bullish_signals = 0
+            bearish_signals = 0
+            
+            if rsi_signal == "OVERSOLD":
+                bullish_signals += 1
+            if rsi_signal == "OVERBOUGHT":
+                bearish_signals += 1
+                
+            if macd_trend == "BULLISH":
+                bullish_signals += 1
+            if macd_trend == "BEARISH":
+                bearish_signals += 1
+                
+            if stoch_signal == "OVERSOLD":
+                bullish_signals += 1
+            if stoch_signal == "OVERBOUGHT":
+                bearish_signals += 1
+                
+            momentum_score = bullish_signals - bearish_signals
+
+            return {
+                'rsi': {'value': rsi, 'signal': rsi_signal},
+                'macd': {'trend': macd_trend, 'cross': macd_cross, 'histogram': macd_hist},
+                'stochastic': {'k': stoch_k, 'd': stoch_d, 'signal': stoch_signal},
+                'cci': {'value': cci, 'signal': cci_signal},
+                'williams': {'value': williams, 'signal': williams_signal},
+                'momentum': {'value': momentum_val, 'signal': "BULLISH" if momentum_val > 0 else "BEARISH"},
+                'convergence_score': momentum_score,
+                'overall_bias': "BULLISH" if momentum_score > 1 else "BEARISH" if momentum_score < -1 else "NEUTRAL"
+            }
+            
+        except Exception as e:
+            logging.warning(f"Momentum analysis error: {e}")
+            return {
+                'rsi': {'value': 50, 'signal': 'NEUTRAL'},
+                'macd': {'trend': 'NEUTRAL', 'cross': 'NO_CROSS', 'histogram': 0},
+                'stochastic': {'k': 50, 'd': 50, 'signal': 'NEUTRAL'},
+                'cci': {'value': 0, 'signal': 'NEUTRAL'},
+                'williams': {'value': -50, 'signal': 'NEUTRAL'},
+                'momentum': {'value': 0, 'signal': 'NEUTRAL'},
+                'convergence_score': 0,
+                'overall_bias': "NEUTRAL"
+            }
+
+    def _calculate_dynamic_levels(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame, current_price: float) -> Dict:
+        """Calculate dynamic support and resistance levels with error handling"""
+        try:
+            # Recent highs and lows with error handling
+            recent_high_20 = ltf_df['high'].tail(20).max() if len(ltf_df) >= 20 else current_price * 1.02
+            recent_low_20 = ltf_df['low'].tail(20).min() if len(ltf_df) >= 20 else current_price * 0.98
+            recent_high_50 = ltf_df['high'].tail(50).max() if len(ltf_df) >= 50 else current_price * 1.03
+            recent_low_50 = ltf_df['low'].tail(50).min() if len(ltf_df) >= 50 else current_price * 0.97
+
+            # Pivot points
+            pivot = ltf_df.get('pivot', pd.Series([current_price])).iloc[-1]
+            r1 = ltf_df.get('r1', pd.Series([current_price * 1.01])).iloc[-1]
+            s1 = ltf_df.get('s1', pd.Series([current_price * 0.99])).iloc[-1]
+
+            # Bollinger Bands
+            bb_upper = ltf_df.get('BBU_20_2.0', pd.Series([current_price * 1.02])).iloc[-1]
+            bb_lower = ltf_df.get('BBL_20_2.0', pd.Series([current_price * 0.98])).iloc[-1]
+
+            # Fibonacci levels
+            range_high = max(recent_high_20, recent_high_50)
+            range_low = min(recent_low_20, recent_low_50)
+            fib_range = range_high - range_low
+            fib_382 = range_high - 0.382 * fib_range
+            fib_618 = range_high - 0.618 * fib_range
+
+            # Determine key levels based on proximity
+            levels = [recent_high_20, recent_low_20, recent_high_50, recent_low_50, pivot, r1, s1, bb_upper, bb_lower, fib_382, fib_618]
+            
+            # Find nearest support and resistance
+            supports = [level for level in levels if level < current_price]
+            resistances = [level for level in levels if level > current_price]
+            
+            nearest_support = max(supports) if supports else current_price * 0.99
+            nearest_resistance = min(resistances) if resistances else current_price * 1.01
+
+            return {
+                'support_1': nearest_support,
+                'resistance_1': nearest_resistance,
+                'support_2': min(supports) if len(supports) > 1 else nearest_support * 0.995,
+                'resistance_2': max(resistances) if len(resistances) > 1 else nearest_resistance * 1.005,
+                'pivot': pivot,
+                'bb_upper': bb_upper,
+                'bb_lower': bb_lower,
+                'fib_382': fib_382,
+                'fib_618': fib_618
+            }
+            
+        except Exception as e:
+            logging.warning(f"Dynamic levels calculation error: {e}")
+            # Fallback levels
+            return {
+                'support_1': current_price * 0.99,
+                'resistance_1': current_price * 1.01,
+                'support_2': current_price * 0.98,
+                'resistance_2': current_price * 1.02,
+                'pivot': current_price,
+                'bb_upper': current_price * 1.02,
+                'bb_lower': current_price * 0.98,
+                'fib_382': current_price * 0.994,
+                'fib_618': current_price * 0.988
+            }
+
+    def _analyze_market_structure(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
+        """Analyze market structure for higher timeframe context"""
+        try:
+            if len(htf_df) < 5 or len(ltf_df) < 10:
+                return {'higher_timeframe_structure': 'INSUFFICIENT_DATA', 'is_breaking_structure': False, 'market_phase': 'UNKNOWN'}
+
+            # Higher Highs/Higher Lows analysis
+            htf_highs = htf_df['high'].tail(5)
+            htf_lows = htf_df['low'].tail(5)
+            
+            htf_hh = all(htf_highs.iloc[i] > htf_highs.iloc[i-1] for i in range(1, len(htf_highs)))
+            htf_ll = all(htf_lows.iloc[i] > htf_lows.iloc[i-1] for i in range(1, len(htf_lows)))
+            htf_lh = all(htf_highs.iloc[i] < htf_highs.iloc[i-1] for i in range(1, len(htf_highs)))
+            htf_hl = all(htf_lows.iloc[i] < htf_lows.iloc[i-1] for i in range(1, len(htf_lows)))
+
+            if htf_hh and htf_ll:
+                structure = "UPTREND"
+            elif htf_lh and htf_hl:
+                structure = "DOWNTREND"
+            else:
+                structure = "RANGING"
+
+            return {
+                'higher_timeframe_structure': structure,
+                'is_breaking_structure': self._check_structure_break(htf_df, ltf_df),
+                'market_phase': self._determine_market_phase(htf_df)
+            }
+            
+        except Exception as e:
+            logging.warning(f"Market structure analysis error: {e}")
+            return {'higher_timeframe_structure': 'UNKNOWN', 'is_breaking_structure': False, 'market_phase': 'UNKNOWN'}
+
+    def _check_structure_break(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> bool:
+        """Check if market is breaking structure"""
+        try:
+            if len(htf_df) < 5 or len(ltf_df) < 10:
+                return False
+                
+            recent_htf_high = htf_df['high'].iloc[-1]
+            recent_htf_low = htf_df['low'].iloc[-1]
+            ltf_high = ltf_df['high'].tail(5).max()
+            ltf_low = ltf_df['low'].tail(5).min()
+            
+            return ltf_high > recent_htf_high or ltf_low < recent_htf_low
+        except:
+            return False
+
+    def _determine_market_phase(self, df: pd.DataFrame) -> str:
+        """Determine market phase"""
+        try:
+            if len(df) < 50:
+                return "UNKNOWN"
+                
+            price_change = (df['close'].iloc[-1] - df['close'].iloc[-50]) / df['close'].iloc[-50] * 100
+            volatility = df['close'].pct_change().std() * 100
+            
+            if abs(price_change) < 2 and volatility < 1:
+                return "ACCUMULATION"
+            elif price_change > 5 and volatility > 1.5:
+                return "MARKUP"
+            elif abs(price_change) < 3 and volatility > 2:
+                return "DISTRIBUTION"
+            elif price_change < -5 and volatility > 1.5:
+                return "MARKDOWN"
+            else:
+                return "TRANSITION"
+        except:
+            return "UNKNOWN"
+
+    def _analyze_volume(self, df: pd.DataFrame) -> Dict:
+        """Analyze volume characteristics with handling for missing volume"""
+        try:
+            if 'volume' not in df.columns or df['volume'].isna().all():
+                return {'signal': 'NO_VOLUME_DATA', 'trend': 'UNKNOWN', 'volume_vs_average': 1}
+                
+            volume_trend = "INCREASING" if df['volume'].iloc[-1] > df['volume'].tail(20).mean() else "DECREASING"
+            
+            # Handle OBV if available
+            obv_trend = "NEUTRAL"
+            if 'OBV' in df.columns:
+                obv_trend = "BULLISH" if df['OBV'].iloc[-1] > df['OBV'].iloc[-5] else "BEARISH"
+
+            return {
+                'volume_trend': volume_trend,
+                'obv_signal': obv_trend,
+                'volume_vs_average': df['volume'].iloc[-1] / df['volume'].tail(20).mean() if df['volume'].tail(20).mean() > 0 else 1
+            }
+            
+        except Exception as e:
+            logging.warning(f"Volume analysis error: {e}")
+            return {'signal': 'ERROR', 'trend': 'UNKNOWN', 'volume_vs_average': 1}
+
+    def _assess_risk(self, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
+        """Assess market risk conditions"""
+        try:
+            ltf_volatility = ltf_df['close'].pct_change().std() * 100
+            atr = ltf_df.get('ATRr_14', pd.Series([0])).iloc[-1]
+            current_range = (ltf_df['high'].iloc[-1] - ltf_df['low'].iloc[-1]) / ltf_df['close'].iloc[-1] * 100
+            
+            if ltf_volatility > 2 or current_range > 1.5:
+                risk_level = "HIGH"
+            elif ltf_volatility > 1 or current_range > 0.8:
+                risk_level = "MEDIUM"
+            else:
+                risk_level = "LOW"
+
+            return {
+                'risk_level': risk_level,
+                'volatility_percent': ltf_volatility,
+                'atr_value': atr,
+                'current_range_percent': current_range
+            }
+            
+        except Exception as e:
+            logging.warning(f"Risk assessment error: {e}")
+            return {'risk_level': 'MEDIUM', 'volatility_percent': 0, 'atr_value': 0, 'current_range_percent': 0}
+            
+# =================================================================================
 # --- Enhanced Trade Filter with Smart Market Analysis ---
 # =================================================================================
 
