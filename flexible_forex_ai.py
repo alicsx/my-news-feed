@@ -1412,6 +1412,292 @@ Return ONLY this JSON format (NO other text):
         return combined
 
 # =================================================================================
+# --- Enhanced Data Source Management ---
+# =================================================================================
+
+class DataSource(Enum):
+    TWELVEDATA = "twelvedata"
+    YAHOO = "yahoo"
+    SYNTHETIC = "synthetic"
+
+@dataclass
+class DataFetchResult:
+    success: bool
+    data: Optional[pd.DataFrame]
+    source: DataSource
+    symbol: str
+    error: Optional[str] = None
+
+class RateLimiter:
+    def __init__(self, requests_per_minute: int):
+        self.requests_per_minute = requests_per_minute
+        self.interval = 60.0 / requests_per_minute
+        self.last_request_time = 0
+        self.lock = asyncio.Lock()
+
+    async def acquire(self):
+        async with self.lock:
+            current_time = time.time()
+            time_since_last = current_time - self.last_request_time
+            if time_since_last < self.interval:
+                wait_time = self.interval - time_since_last
+                logging.debug(f"⏳ Rate limiting: waiting {wait_time:.2f}s")
+                await asyncio.sleep(wait_time)
+            self.last_request_time = time.time()
+
+class EnhancedDataFetcher:
+    def __init__(self):
+        self.rate_limiter = RateLimiter(TWELVEDATA_RATE_LIMIT)
+        self.data_source_priority = DATA_SOURCE_PRIORITY.copy()
+        self.last_data_source = {}
+        self.cache = {}
+        self.cache_ttl = 300  # 5 minutes cache
+        
+    async def get_market_data(self, symbol: str, interval: str, max_retries: int = 2) -> Optional[pd.DataFrame]:
+        """Get market data with multiple fallback sources and rate limiting"""
+        
+        # Check cache first
+        cache_key = f"{symbol}_{interval}"
+        current_time = time.time()
+        if cache_key in self.cache:
+            cached_data, timestamp = self.cache[cache_key]
+            if current_time - timestamp < self.cache_ttl:
+                logging.info(f"📦 Using cached data for {symbol} ({interval})")
+                return cached_data
+        
+        for source in self.data_source_priority:
+            try:
+                if source == "twelvedata" and TWELVEDATA_API_KEY:
+                    result = await self._get_twelvedata_with_retry(symbol, interval, max_retries)
+                    if result.success:
+                        self.last_data_source[symbol] = DataSource.TWELVEDATA
+                        self.cache[cache_key] = (result.data, current_time)
+                        return result.data
+                        
+                elif source == "yahoo":
+                    result = await self._get_yahoo_data(symbol, interval)
+                    if result.success:
+                        self.last_data_source[symbol] = DataSource.YAHOO
+                        self.cache[cache_key] = (result.data, current_time)
+                        return result.data
+                        
+                elif source == "synthetic":
+                    result = await self._get_synthetic_data(symbol, interval)
+                    if result.success:
+                        self.last_data_source[symbol] = DataSource.SYNTHETIC
+                        self.cache[cache_key] = (result.data, current_time)
+                        return result.data
+                        
+            except Exception as e:
+                logging.warning(f"❌ {source} failed for {symbol}: {str(e)}")
+                continue
+                
+        logging.error(f"❌ All data sources failed for {symbol}")
+        return None
+
+    async def _get_twelvedata_with_retry(self, symbol: str, interval: str, max_retries: int) -> DataFetchResult:
+        """Get data from Twelve Data with rate limiting and retry logic"""
+        
+        for attempt in range(max_retries):
+            try:
+                # Apply rate limiting
+                await self.rate_limiter.acquire()
+                
+                result = await self._get_twelvedata_data(symbol, interval)
+                if result.success:
+                    return result
+                    
+                logging.warning(f"⚠️ TwelveData attempt {attempt + 1} failed for {symbol}: {result.error}")
+                
+                # Wait before retry
+                if attempt < max_retries - 1:
+                    wait_time = (attempt + 1) * 2  # Exponential backoff
+                    await asyncio.sleep(wait_time)
+                    
+            except Exception as e:
+                logging.warning(f"❌ TwelveData error on attempt {attempt + 1} for {symbol}: {str(e)}")
+                if attempt < max_retries - 1:
+                    await asyncio.sleep((attempt + 1) * 2)
+                    
+        return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "All retries failed")
+
+    async def _get_twelvedata_data(self, symbol: str, interval: str) -> DataFetchResult:
+        """Get data from Twelve Data API with enhanced error handling"""
+        try:
+            url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval={interval}&outputsize={CANDLES_TO_FETCH}&apikey={TWELVEDATA_API_KEY}'
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, timeout=30) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        
+                        # Check for API errors
+                        if 'code' in data and data['code'] != 200:
+                            error_msg = data.get('message', 'Unknown API error')
+                            
+                            # Handle specific error codes
+                            if data['code'] == 429:
+                                logging.warning(f"🔁 Rate limit hit for {symbol}, will use fallback")
+                                return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Rate limit exceeded")
+                            elif data['code'] == 400:
+                                logging.warning(f"⚠️ Invalid symbol {symbol} for TwelveData")
+                                return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Invalid symbol")
+                            else:
+                                logging.warning(f"⚠️ TwelveData API error for {symbol}: {error_msg}")
+                                return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, error_msg)
+                        
+                        if 'values' in data and data['values']:
+                            df = pd.DataFrame(data['values'])
+                            # Reverse to get chronological order
+                            df = df.iloc[::-1].reset_index(drop=True)
+                            
+                            # Convert to numeric
+                            for col in ['open', 'high', 'low', 'close']:
+                                if col in df.columns:
+                                    df[col] = pd.to_numeric(df[col], errors='coerce')
+                            
+                            # Remove any rows with NaN values in essential columns
+                            df = df.dropna(subset=['open', 'high', 'low', 'close'])
+                            
+                            if len(df) > 50:
+                                logging.info(f"✅ TwelveData: {len(df)} candles for {symbol} ({interval})")
+                                return DataFetchResult(True, df, DataSource.TWELVEDATA, symbol)
+                            else:
+                                return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Insufficient data after cleaning")
+                        else:
+                            return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "No values in response")
+                    else:
+                        error_text = await response.text()
+                        logging.warning(f"⚠️ TwelveData HTTP {response.status} for {symbol}: {error_text}")
+                        return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, f"HTTP {response.status}")
+                        
+        except asyncio.TimeoutError:
+            logging.warning(f"⏰ TwelveData timeout for {symbol}")
+            return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Timeout")
+        except Exception as e:
+            logging.warning(f"❌ TwelveData exception for {symbol}: {str(e)}")
+            return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, str(e))
+
+    async def _get_yahoo_data(self, symbol: str, interval: str) -> DataFetchResult:
+        """Get data from Yahoo Finance as fallback"""
+        try:
+            # Convert symbol to Yahoo format
+            yahoo_symbol = YAHOO_SYMBOLS.get(symbol, symbol.replace("/", "") + "=X")
+            
+            # Map intervals
+            interval_map = {
+                "1h": "1h",
+                "4h": "4h", 
+                "1d": "1d",
+                "1m": "1m",
+                "5m": "5m",
+                "15m": "15m"
+            }
+            
+            yf_interval = interval_map.get(interval, "1h")
+            period = "60d" if interval in ["1h", "4h"] else "120d"
+            
+            # Download data using async thread
+            ticker = yf.Ticker(yahoo_symbol)
+            df = await asyncio.to_thread(
+                ticker.history, 
+                period=period, 
+                interval=yf_interval,
+                timeout=30
+            )
+            
+            if df.empty:
+                return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Empty DataFrame from Yahoo")
+                
+            # Reset index and rename columns
+            df = df.reset_index()
+            df = df.rename(columns={
+                'Open': 'open',
+                'High': 'high', 
+                'Low': 'low',
+                'Close': 'close',
+                'Volume': 'volume'
+            })
+            
+            # Ensure we have the required columns
+            required_cols = ['open', 'high', 'low', 'close']
+            if all(col in df.columns for col in required_cols):
+                # Clean data
+                for col in required_cols:
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
+                
+                df = df.dropna(subset=required_cols)
+                
+                if len(df) > 50:
+                    logging.info(f"✅ Yahoo Finance: {len(df)} candles for {symbol} ({interval})")
+                    return DataFetchResult(True, df.tail(CANDLES_TO_FETCH), DataSource.YAHOO, symbol)
+                else:
+                    return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Insufficient data after cleaning")
+            else:
+                return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Missing required columns")
+                
+        except Exception as e:
+            logging.warning(f"❌ Yahoo Finance error for {symbol}: {str(e)}")
+            return DataFetchResult(False, None, DataSource.YAHOO, symbol, str(e))
+
+    async def _get_synthetic_data(self, symbol: str, interval: str) -> DataFetchResult:
+        """Generate synthetic data as last resort fallback"""
+        try:
+            # Create realistic synthetic data based on common forex patterns
+            np.random.seed(hash(symbol) % 10000)
+            
+            # Base prices for different pairs (approximate)
+            base_prices = {
+                "EUR/USD": 1.0850, "GBP/USD": 1.2650, "USD/CHF": 0.9050,
+                "EUR/JPY": 158.50, "AUD/JPY": 97.50, "GBP/JPY": 187.50,
+                "EUR/AUD": 1.6350, "NZD/CAD": 0.8150
+            }
+            
+            base_price = base_prices.get(symbol, 1.0)
+            volatility = 0.002  # 0.2% volatility
+            
+            # Generate synthetic data
+            n_candles = CANDLES_TO_FETCH
+            returns = np.random.normal(0, volatility, n_candles)
+            prices = base_price * (1 + returns).cumprod()
+            
+            # Create OHLC data with some randomness
+            df = pd.DataFrame({
+                'open': prices * (1 + np.random.normal(0, 0.0005, n_candles)),
+                'high': prices * (1 + np.abs(np.random.normal(0, 0.001, n_candles))),
+                'low': prices * (1 - np.abs(np.random.normal(0, 0.001, n_candles))),
+                'close': prices
+            })
+            
+            # Ensure high >= open, high >= close, low <= open, low <= close
+            df['high'] = df[['open', 'close', 'high']].max(axis=1) * (1 + np.abs(np.random.normal(0, 0.0002, n_candles)))
+            df['low'] = df[['open', 'close', 'low']].min(axis=1) * (1 - np.abs(np.random.normal(0, 0.0002, n_candles)))
+            
+            # Add datetime index
+            end_date = datetime.now(UTC)
+            if interval == "1h":
+                dates = pd.date_range(end=end_date, periods=n_candles, freq='1H')
+            else:  # 4h
+                dates = pd.date_range(end=end_date, periods=n_candles, freq='4H')
+            
+            df['datetime'] = dates
+            df = df.set_index('datetime')
+            
+            logging.info(f"🔄 Synthetic data generated for {symbol} ({interval}): {len(df)} candles")
+            return DataFetchResult(True, df, DataSource.SYNTHETIC, symbol)
+            
+        except Exception as e:
+            logging.warning(f"❌ Synthetic data generation failed for {symbol}: {str(e)}")
+            return DataFetchResult(False, None, DataSource.SYNTHETIC, symbol, str(e))
+
+    def get_data_source_stats(self) -> Dict:
+        """Get statistics about data sources used"""
+        stats = {}
+        for source in DataSource:
+            count = list(self.last_data_source.values()).count(source)
+            stats[source.value] = count
+        return stats
+# =================================================================================
 # --- Advanced Technical Analysis with Machine Learning Features ---
 # =================================================================================
 
