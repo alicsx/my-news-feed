@@ -2209,8 +2209,7 @@ class EnhancedSignalQualityScorer:
         else:
             return "Standard market conditions"
 
-
-   # =================================================================================
+# =================================================================================
 # --- Enhanced Gemini Direct Signal Agent ---
 # =================================================================================
 
@@ -3131,5 +3130,4 @@ async def enhanced_main():
         logging.info("🏁 Enhanced system executed successfully. Check market_analysis.json for market insights.")
 
 if __name__ == "__main__":
-    asyncio.run(enhanced_main())        
-      
+    asyncio.run(enhanced_main())            
