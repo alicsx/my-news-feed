@@ -10,12 +10,12 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-02T16:30:43.779848+00:00",
+    "timestamp": "2025-11-02T18:34:14.076937+00:00",
     "ENTRY": "177.70000",
     "STOP_LOSS": "177.69099",
     "TAKE_PROFIT": "177.69099",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bullish trend with moderate strength, neutral RSI, and low risk level",
+    "ANALYSIS": "Strong bullish trend with moderate strength, RSI is neutral, and risk level is low",
     "ACTUAL_RR_RATIO": 1.8,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
@@ -35,7 +35,7 @@
   {
     "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
-    "CONFIDENCE": 7.2,
+    "CONFIDENCE": 6.6,
     "AGREEMENT_LEVEL": 5,
     "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
     "VALID_MODELS": 5,
@@ -43,7 +43,7 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-02T16:30:36.119968+00:00",
+    "timestamp": "2025-11-02T18:34:06.474984+00:00",
     "ENTRY": "0.80420",
     "STOP_LOSS": "0.80418",
     "TAKE_PROFIT": "0.80420",
@@ -74,12 +74,12 @@
     "VALID_MODELS": 4,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-02T16:30:29.874599+00:00",
+    "timestamp": "2025-11-02T18:33:59.817377+00:00",
     "ENTRY": "1.31455",
     "STOP_LOSS": "1.31484",
     "TAKE_PROFIT": "1.31412",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is outweighed by overall trend strength",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is not strong enough to counter the overall bearish trend",
     "ACTUAL_RR_RATIO": 1.48,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
@@ -99,25 +99,25 @@
   {
     "SYMBOL": "EUR/USD",
     "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-02T16:30:21.393098+00:00",
+    "timestamp": "2025-11-02T18:33:51.453828+00:00",
     "ENTRY": "1.15350",
     "STOP_LOSS": "1.15575",
     "TAKE_PROFIT": "1.15012",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend, bearish MACD, and RSI not oversold",
+    "ANALYSIS": "Strong bearish trend, bearish MACD, and RSI not oversold support the sell decision",
     "ACTUAL_RR_RATIO": 1.5,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
       "position_size": 44444.44444444276,
       "max_leverage": 30.0
     },
-    "QUALITY_SCORE": 66.0,
+    "QUALITY_SCORE": 61.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
       "rsi": 36.32561853204539,
