@@ -2109,7 +2109,7 @@ Return ONLY this JSON format (NO other text):
             logging.warning(f"Error extracting response text: {e}")
             return None
 
-     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
+    async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Cloudflare AI"""
         if not self.cloudflare_api_key:
             logging.warning(f"❌ Cloudflare API key not available for {symbol}")
