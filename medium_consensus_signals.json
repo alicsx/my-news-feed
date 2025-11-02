@@ -1,26 +1,123 @@
 [
   {
-    "SYMBOL": "EUR/USD",
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.4,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-02T10:26:47.503152+00:00",
+    "ENTRY": "0.80420",
+    "STOP_LOSS": "0.80418",
+    "TAKE_PROFIT": "0.80420",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bullish trend, neutral RSI, and bullish MACD indicate a potential upside, with a reasonable risk-reward ratio",
+    "ACTUAL_RR_RATIO": 1.0,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 373046.1799586212,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 76.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 61.48741324391297,
+      "key_support": 0.8041799666666667,
+      "key_resistance": 0.8041999933333334,
+      "volatility": 0.08670008441564092,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-02T10:26:54.314321+00:00",
+    "ENTRY": "177.70000",
+    "STOP_LOSS": "177.69099",
+    "TAKE_PROFIT": "177.69099",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Strong bullish trend with moderate strength, RSI is neutral, and risk level is low",
+    "ACTUAL_RR_RATIO": 1.8,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 0.0,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 72.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 41.6344290549766,
+      "key_support": 177.69098999999997,
+      "key_resistance": 178.053562,
+      "volatility": 0.10165743639888783,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
+    "CONFIDENCE": 7.7,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 4,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [],
+    "timestamp": "2025-11-02T10:26:39.944292+00:00",
+    "ENTRY": "1.31455",
+    "STOP_LOSS": "1.31484",
+    "TAKE_PROFIT": "1.31412",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bearish trend with RSI in neutral zone, MACD bullish signal is not strong enough to counter the overall bearish trend",
+    "ACTUAL_RR_RATIO": 1.48,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 228214.97850975618,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 68.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 50.05997400047567,
+      "key_support": 1.31441782,
+      "key_resistance": 1.3148366666666667,
+      "volatility": 0.08697892330791616,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-02T09:37:19.898706+00:00",
+    "timestamp": "2025-11-02T10:26:31.604467+00:00",
     "ENTRY": "1.15350",
     "STOP_LOSS": "1.15575",
     "TAKE_PROFIT": "1.15012",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend with bearish MACD and neutral RSI, selling at current price with stop loss at resistance and take profit below support",
+    "ANALYSIS": "Strong bearish trend with bearish MACD, and RSI not oversold",
     "ACTUAL_RR_RATIO": 1.5,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
       "position_size": 44444.44444444276,
       "max_leverage": 30.0
     },
-    "QUALITY_SCORE": 66.0,
+    "QUALITY_SCORE": 61.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
       "rsi": 36.32561853204539,
