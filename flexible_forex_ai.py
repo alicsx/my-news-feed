@@ -2227,7 +2227,7 @@ Return ONLY this JSON format (NO other text):
                             content = data["response"]
                         elif "result" in data and isinstance(data["result"], str):
                             content = data["result"]
-                         else:
+                        else:
                             # Try to find any text content
                             content = str(data)
                         
