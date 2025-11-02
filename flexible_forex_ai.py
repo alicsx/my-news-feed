@@ -65,8 +65,8 @@ LOG_FILE = "trading_log.log"
 
 # FIXED: Use ONLY free Gemini models
 GEMINI_FREE_MODELS = [
-    'gemini-1.5-flash',
-    'gemini-1.5-pro'
+    'gemini-flash-latest',
+    'gemini-2.5-flash-lite'
 ]
 
 GEMINI_MODEL = 'gemini-1.5-flash'  # Default free model
