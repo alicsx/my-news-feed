@@ -1,8 +1,8 @@
 [
   {
-    "SYMBOL": "USD/CHF",
+    "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
-    "CONFIDENCE": 7.4,
+    "CONFIDENCE": 6.6,
     "AGREEMENT_LEVEL": 5,
     "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
     "VALID_MODELS": 5,
@@ -10,7 +10,40 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-02T14:23:43.215373+00:00",
+    "timestamp": "2025-11-02T16:30:43.779848+00:00",
+    "ENTRY": "177.70000",
+    "STOP_LOSS": "177.69099",
+    "TAKE_PROFIT": "177.69099",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Strong bullish trend with moderate strength, neutral RSI, and low risk level",
+    "ACTUAL_RR_RATIO": 1.8,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 0.0,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 77.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 41.6344290549766,
+      "key_support": 177.69098999999997,
+      "key_resistance": 178.053562,
+      "volatility": 0.10165743639888783,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-02T16:30:36.119968+00:00",
     "ENTRY": "0.80420",
     "STOP_LOSS": "0.80418",
     "TAKE_PROFIT": "0.80420",
@@ -41,12 +74,12 @@
     "VALID_MODELS": 4,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-02T14:23:35.778985+00:00",
+    "timestamp": "2025-11-02T16:30:29.874599+00:00",
     "ENTRY": "1.31455",
     "STOP_LOSS": "1.31484",
     "TAKE_PROFIT": "1.31412",
     "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is ignored due to very strong bearish trend",
+    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is outweighed by overall trend strength",
     "ACTUAL_RR_RATIO": 1.48,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
@@ -64,39 +97,6 @@
     }
   },
   {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "MODEL_TYPES_USED": [
-      "gemini"
-    ],
-    "timestamp": "2025-11-02T14:23:50.751442+00:00",
-    "ENTRY": "177.70000",
-    "STOP_LOSS": "177.69099",
-    "TAKE_PROFIT": "177.69099",
-    "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bullish trend with moderate strength, RSI is neutral, and risk level is low",
-    "ACTUAL_RR_RATIO": 1.8,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 0.0,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 72.5,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 41.6344290549766,
-      "key_support": 177.69098999999997,
-      "key_resistance": 178.053562,
-      "volatility": 0.10165743639888783,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "SELL",
     "CONFIDENCE": 7.0,
@@ -105,12 +105,12 @@
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-02T14:23:28.394795+00:00",
+    "timestamp": "2025-11-02T16:30:21.393098+00:00",
     "ENTRY": "1.15350",
     "STOP_LOSS": "1.15575",
     "TAKE_PROFIT": "1.15012",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend, MACD bearish, and RSI not oversold",
+    "ANALYSIS": "Strong bearish trend, bearish MACD, and RSI not oversold",
     "ACTUAL_RR_RATIO": 1.5,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
