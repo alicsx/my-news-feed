@@ -1694,7 +1694,7 @@ class SmartAPIManager:
         gemini_models = self.available_models.get("google_gemini", [])
         return len(gemini_models) > 0
 
-    def select_diverse_models(self, target_total: int = 5, min_required: int = 3) -> List[Tuple[str, str]]:
+    def select_diverse_models(self, target_total: int = 8, min_required: int = 5) -> List[Tuple[str, str]]:
         """Select diverse models with enhanced diversity and fallback system"""
         selected_models = []
         
@@ -1711,32 +1711,102 @@ class SmartAPIManager:
 
         # NEW: Enhanced diverse model selection with multiple architectures
         diverse_model_combinations = [
-            # Combination 1: Maximum diversity
-            [
-                ("google_gemini", "gemini-1.5-flash"),      # Gemini
-                ("groq", "llama-3.3-70b-versatile"),        # Llama
-                ("groq", "deepseek-ai/deepseek-r1-32b"),    # DeepSeek
-                ("groq", "qwen/qwen3-32b"),                 # Qwen
-                ("cloudflare", "@cf/mistralai/mistral-small-3.1-24b-instruct")  # Mistral
-            ],
-            # Combination 2: Alternative diversity
-            [
-                ("google_gemini", "gemini-1.5-pro"),        # Gemini
-                ("groq", "meta-llama/llama-4-scout-17b-16e-instruct"),  # Llama
-                ("groq", "deepseek-ai/deepseek-r1-8b"),     # DeepSeek
-                ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),  # Qwen
-                ("cloudflare", "@cf/meta/llama-3.1-8b-instruct-fast")  # Llama (alternative)
-            ],
-            # Combination 3: Fallback diversity
-            [
-                ("google_gemini", "gemini-1.5-flash"),      # Gemini
-                ("groq", "llama-3.1-8b-instant"),           # Llama
-                ("cloudflare", "@cf/meta/llama-4-scout-17b-16e-instruct"),  # Llama
-                ("cloudflare", "@cf/google/gemma-3-12b-it"),  # Gemma
-                ("groq", "qwen/qwen3-32b")                  # Qwen
-            ]
-        ]
-
+    # Combination 1: Maximum Diversity & Performance (All providers + architectures)
+    [
+        ("google_gemini", "gemini-1.5-flash"),                      # Gemini - Fast
+        ("groq", "llama-3.3-70b-versatile"),                       # Llama 70B - High Quality
+        ("cloudflare", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"), # Llama 70B CF - Fast
+        ("groq", "qwen/qwen3-32b"),                                # Qwen 32B - Strong reasoning
+        ("cloudflare", "@cf/mistralai/mistral-small-3.1-24b-instruct"), # Mistral - Balanced
+        ("groq", "meta-llama/llama-4-maverick-17b-128e-instruct"), # Llama 4 Maverick
+        ("groq", "openai/gpt-oss-120b"),                           # GPT OSS 120B - Largest
+        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct")             # Qwen CF - Fast
+    ],
+    
+    # Combination 2: High Speed & Efficiency (Fast models from all providers)
+    [
+        ("google_gemini", "gemini-2.5-flash-lite"),                # Gemini Flash Lite - Fastest
+        ("groq", "llama-3.1-8b-instant"),                          # Llama 8B Instant - Very Fast
+        ("cloudflare", "@cf/meta/llama-3.1-8b-instruct-fast"),     # Llama 8B CF - Fast
+        ("groq", "deepseek-ai/deepseek-r1-8b"),                    # DeepSeek 8B - Efficient
+        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),            # Qwen 7B CF - Fast
+        ("groq", "meta-llama/llama-prompt-guard-2-22m"),           # Llama Prompt Guard
+        ("cloudflare", "@cf/meta/llama-4-scout-17b-16e-instruct"), # Llama Scout CF
+        ("groq", "groq/compound-mini")                             # Compound Mini
+    ],
+    
+    # Combination 3: High Quality & Specialized (Best quality models)
+    [
+        ("google_gemini", "gemini-1.5-pro"),                       # Gemini Pro - High Quality
+        ("groq", "meta-llama/llama-4-scout-17b-16e-instruct"),     # Llama 4 Scout
+        ("groq", "deepseek-ai/deepseek-r1-32b"),                   # DeepSeek 32B - High Quality
+        ("cloudflare", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"), # Llama 70B CF
+        ("groq", "openai/gpt-oss-120b"),                           # GPT OSS 120B
+        ("groq", "meta-llama/llama-guard-4-12b"),                  # Llama Guard - Safety
+        ("groq", "moonshotai/kimi-k2-instruct"),                   # Kimi K2 - Specialized
+        ("cloudflare", "@cf/mistralai/mistral-small-3.1-24b-instruct") # Mistral
+    ],
+    
+    # Combination 4: Balanced Mix (Good performance + diversity)
+    [
+        ("google_gemini", "gemini-1.5-flash"),                     # Gemini Flash
+        ("groq", "llama-3.3-70b-versatile"),                      # Llama 70B
+        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),            # Qwen CF
+        ("groq", "qwen/qwen3-32b"),                               # Qwen 32B
+        ("cloudflare", "@cf/meta/llama-4-scout-17b-16e-instruct"), # Llama Scout CF
+        ("groq", "deepseek-ai/deepseek-r1-8b"),                    # DeepSeek 8B
+        ("groq", "openai/gpt-oss-20b"),                           # GPT OSS 20B
+        ("cloudflare", "@cf/google/gemma-3-12b-it")               # Gemma 12B
+    ],
+    
+    # Combination 5: Safety & Reliability Focused (Models with safety features)
+    [
+        ("google_gemini", "gemini-1.5-pro"),                       # Gemini Pro
+        ("groq", "meta-llama/llama-guard-4-12b"),                  # Llama Guard - Safety
+        ("groq", "meta-llama/llama-prompt-guard-2-86m"),           # Llama Prompt Guard
+        ("groq", "openai/gpt-oss-safeguard-20b"),                  # GPT Safeguard
+        ("cloudflare", "@cf/meta/llama-3.1-8b-instruct-fast"),     # Llama 8B CF
+        ("groq", "llama-3.1-8b-instant"),                          # Llama 8B Instant
+        ("google_gemini", "gemini-2.5-flash-lite"),                # Gemini Flash Lite
+        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct")             # Qwen CF
+    ],
+    
+    # Combination 6: Compact & Efficient (Smaller models for speed)
+    [
+        ("google_gemini", "gemini-2.5-flash-lite"),                # Gemini Flash Lite
+        ("groq", "llama-3.1-8b-instant"),                          # Llama 8B Instant
+        ("cloudflare", "@cf/meta/llama-3.1-8b-instruct-fast"),     # Llama 8B CF
+        ("groq", "meta-llama/llama-prompt-guard-2-22m"),           # Llama 22M
+        ("groq", "meta-llama/llama-prompt-guard-2-86m"),           # Llama 86M
+        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),            # Qwen 7B
+        ("groq", "groq/compound-mini"),                            # Compound Mini
+        ("groq", "allam-2-7b")                                     # Allam 7B
+    ],
+    
+    # Combination 7: Specialized & Niche Models
+    [
+        ("groq", "moonshotai/kimi-k2-instruct"),                   # Kimi K2
+        ("groq", "moonshotai/kimi-k2-instruct-0905"),              # Kimi K2 0905
+        ("groq", "whisper-large-v3-turbo"),                        # Whisper Turbo
+        ("groq", "whisper-large-v3"),                              # Whisper Large
+        ("groq", "playai-tts"),                                    # TTS Arabic
+        ("groq", "playai-tts-arabic"),                             # TTS
+        ("groq", "groq/compound"),                                 # Compound
+        ("google_gemini", "gemini-1.5-flash")                      # Gemini Flash
+    ],
+    
+    # Combination 8: Fallback & Robust (Most reliable models)
+    [
+        ("google_gemini", "gemini-1.5-flash"),                     # Most reliable Gemini
+        ("groq", "llama-3.3-70b-versatile"),                      # Most reliable Llama
+        ("cloudflare", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"), # Reliable Llama CF
+        ("groq", "qwen/qwen3-32b"),                               # Reliable Qwen
+        ("cloudflare", "@cf/mistralai/mistral-small-3.1-24b-instruct"), # Reliable Mistral
+        ("groq", "llama-3.1-8b-instant"),                          # Reliable fast Llama
+        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),            # Reliable Qwen CF
+        ("google_gemini", "gemini-2.5-flash-lite")                 # Reliable fast Gemini
+    ]
+]
         # Try each combination until we get enough models
         for combination in diverse_model_combinations:
             if len(selected_models) >= target_total:
@@ -2110,59 +2180,76 @@ Return ONLY this JSON format (NO other text):
             return None
 
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Cloudflare AI"""
-        if not self.cloudflare_api_key:
-            logging.warning(f"❌ Cloudflare API key not available for {symbol}")
-            return None
-            
-        try:
-            headers = {
-                "Authorization": f"Bearer {self.cloudflare_api_key}",
-                "Content-Type": "application/json"
-            }
-            
-            payload = {
-                "messages": [
-                    {
-                        "role": "system", 
-                        "content": "You are a professional forex trading analyst. Return ONLY valid JSON format. No additional text or explanations."
-                    },
-                    {"role": "user", "content": prompt}
-                ],
-                "stream": False
-            }
-            
-            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "default_account_id")
-            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_name}"
-            
-            async with aiohttp.ClientSession() as session:
-                async with session.post(url, headers=headers, json=payload, timeout=60) as response:
-                    if response.status == 200:
-                        data = await response.json()
-                        content = ""
-                        
-                        if "result" in data and "response" in data["result"]:
-                            content = data["result"]["response"]
-                        elif "response" in data:
-                            content = data["response"]
-                        elif "result" in data and isinstance(data["result"], str):
-                            content = data["result"]
-                        else:
-                            content = str(data)
-                            
-                        if content:
-                            return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
-                        else:
-                            logging.warning(f"❌ Empty content in Cloudflare response for {symbol}")
-                            return None
+    """Get analysis from Cloudflare AI"""
+    if not self.cloudflare_api_key:
+        logging.warning(f"❌ Cloudflare API key not available for {symbol}")
+        return None
+        
+    try:
+        headers = {
+            "Authorization": f"Bearer {self.cloudflare_api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "messages": [
+                {
+                    "role": "system", 
+                    "content": "You are a professional forex trading analyst. Return ONLY valid JSON format. No additional text or explanations."
+                },
+                {"role": "user", "content": prompt}
+            ],
+            "stream": False
+        }
+        
+        account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "default_account_id")
+        
+        # 🔥 FIX: Remove @ symbol from model name for URL
+        clean_model_name = model_name.replace('@', '')
+        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{clean_model_name}"
+        
+        logging.info(f"🔗 Calling Cloudflare API: {clean_model_name}")
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, json=payload, timeout=60) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    content = ""
+                    
+                    if "result" in data and "response" in data["result"]:
+                        content = data["result"]["response"]
+                    elif "response" in data:
+                        content = data["response"]
+                    elif "result" in data and isinstance(data["result"], str):
+                        content = data["result"]
                     else:
-                        error_text = await response.text()
-                        logging.error(f"❌ Cloudflare API error for {symbol}: {response.status} - {error_text}")
-                        return None
+                        content = str(data)
                         
-        except Exception as e:
-            logging.error(f"❌ Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
-            return None
+                    if content:
+                        return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
+                    else:
+                        logging.warning(f"❌ Empty content in Cloudflare response for {symbol}")
+                        return None
+                else:
+                    error_text = await response.text()
+                    logging.error(f"❌ Cloudflare API error for {symbol}: {response.status} - {error_text}")
+                    
+                    # 🔥 FIX: Mark failed model to avoid retries
+                    provider = "cloudflare"
+                    if hasattr(self, 'api_manager'):
+                        self.api_manager.mark_model_failed(provider, model_name)
+                    
+                    return None
+                    
+    except Exception as e:
+        logging.error(f"❌ Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
+        
+        # 🔥 FIX: Mark failed model to avoid retries
+        provider = "cloudflare"
+        if hasattr(self, 'api_manager'):
+            self.api_manager.mark_model_failed(provider, model_name)
+            
+        return None
 
     async def _get_groq_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Groq API"""
