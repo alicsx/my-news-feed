@@ -2209,7 +2209,7 @@ Return ONLY this JSON format (NO other text):
                 return None
             
             # FIX: Remove @ symbol from model name for URL
-            clean_model_name = model_name.replace('@', '')
+            clean_model_name = model_name.replace('@cf/', '')
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{clean_model_name}"
         
             logging.info(f"🔗 Calling Cloudflare API: {url}")
