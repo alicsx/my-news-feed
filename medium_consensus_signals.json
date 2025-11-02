@@ -1,5 +1,38 @@
 [
   {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.4,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-02T14:23:43.215373+00:00",
+    "ENTRY": "0.80420",
+    "STOP_LOSS": "0.80418",
+    "TAKE_PROFIT": "0.80420",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bullish trend, neutral RSI, and bullish MACD indicate a potential upside, with a reasonable risk-reward ratio",
+    "ACTUAL_RR_RATIO": 1.0,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 373046.1799586212,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 76.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 61.48741324391297,
+      "key_support": 0.8041799666666667,
+      "key_resistance": 0.8041999933333334,
+      "volatility": 0.08670008441564092,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
     "CONFIDENCE": 7.0,
@@ -8,12 +41,12 @@
     "VALID_MODELS": 4,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-02T12:50:21.378609+00:00",
+    "timestamp": "2025-11-02T14:23:35.778985+00:00",
     "ENTRY": "1.31455",
     "STOP_LOSS": "1.31484",
     "TAKE_PROFIT": "1.31412",
     "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Strong bearish trend with RSI in neutral zone, MACD bullish signal is not strong enough to reverse the trend",
+    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is ignored due to very strong bearish trend",
     "ACTUAL_RR_RATIO": 1.48,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
@@ -33,7 +66,7 @@
   {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.5,
+    "CONFIDENCE": 7.0,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
     "VALID_MODELS": 5,
@@ -41,12 +74,12 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-02T12:50:35.587968+00:00",
+    "timestamp": "2025-11-02T14:23:50.751442+00:00",
     "ENTRY": "177.70000",
     "STOP_LOSS": "177.69099",
     "TAKE_PROFIT": "177.69099",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bullish trend with moderate strength, neutral RSI, and low risk level",
+    "ANALYSIS": "Strong bullish trend with moderate strength, RSI is neutral, and risk level is low",
     "ACTUAL_RR_RATIO": 1.8,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
@@ -64,39 +97,6 @@
     }
   },
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "MODEL_TYPES_USED": [
-      "gemini"
-    ],
-    "timestamp": "2025-11-02T12:50:28.034824+00:00",
-    "ENTRY": "0.80420",
-    "STOP_LOSS": "0.80418",
-    "TAKE_PROFIT": "0.80420",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Strong bullish trend, neutral RSI, and bullish MACD indicate a potential upside, with a reasonable risk-reward ratio",
-    "ACTUAL_RR_RATIO": 1.0,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 373046.1799586212,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 71.5,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 61.48741324391297,
-      "key_support": 0.8041799666666667,
-      "key_resistance": 0.8041999933333334,
-      "volatility": 0.08670008441564092,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "SELL",
     "CONFIDENCE": 7.0,
@@ -105,12 +105,12 @@
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-02T12:50:13.039845+00:00",
+    "timestamp": "2025-11-02T14:23:28.394795+00:00",
     "ENTRY": "1.15350",
     "STOP_LOSS": "1.15575",
     "TAKE_PROFIT": "1.15012",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend with bearish MACD and neutral RSI, selling at current price with stop loss at resistance and take profit below support",
+    "ANALYSIS": "Strong bearish trend, MACD bearish, and RSI not oversold",
     "ACTUAL_RR_RATIO": 1.5,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
