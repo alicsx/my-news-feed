@@ -2,97 +2,33 @@
   {
     "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 5,
-    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-03T08:38:44.299500+00:00",
-    "ENTRY": "0.80604",
-    "STOP_LOSS": "0.80566",
-    "TAKE_PROFIT": "0.80648",
+    "timestamp": "2025-11-03T10:33:03.515017+00:00",
+    "ENTRY": "0.80712",
+    "STOP_LOSS": "0.80650",
+    "TAKE_PROFIT": "0.80981",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, acceptable risk-reward ratio",
-    "ACTUAL_RR_RATIO": 1.48,
+    "ANALYSIS": "Strong bullish trend with bullish MACD, despite overbought RSI, the trend strength and low risk level justify a buy decision",
+    "ACTUAL_RR_RATIO": 5.75,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
-      "position_size": 303048.6696163845,
+      "position_size": 204069.1386241533,
       "max_leverage": 30.0
     },
-    "QUALITY_SCORE": 77.4,
+    "QUALITY_SCORE": 70.5,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 68.30856800156674,
-      "key_support": 0.8056599900000001,
-      "key_resistance": 0.80603999,
-      "volatility": 0.08583794676106582,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 4,
-    "TOTAL_MODELS": 5,
-    "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-03T08:38:37.209737+00:00",
-    "ENTRY": "1.31277",
-    "STOP_LOSS": "1.31304",
-    "TAKE_PROFIT": "1.31236",
-    "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is not strong enough to counter the overall bearish trend",
-    "ACTUAL_RR_RATIO": 1.52,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 228524.41783404557,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 67.6,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 42.222412236525194,
-      "key_support": 1.3124433333333332,
-      "key_resistance": 1.3130366666666666,
-      "volatility": 0.08557702922091373,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.8,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "MODEL_TYPES_USED": [
-      "gemini"
-    ],
-    "timestamp": "2025-11-03T08:38:51.143286+00:00",
-    "ENTRY": "177.51000",
-    "STOP_LOSS": "177.44501",
-    "TAKE_PROFIT": "177.59248",
-    "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bullish trend, neutral RSI, and bullish MACD indicate a potential upside, with a reasonable risk-reward ratio",
-    "ACTUAL_RR_RATIO": 1.5,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 1690.1027582477016,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 63.5,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 37.68493818767283,
-      "key_support": 177.44501,
-      "key_resistance": 177.61733333333333,
-      "volatility": 0.08605601157244963,
+      "rsi": 71.13925050798774,
+      "key_support": 0.8065033599999999,
+      "key_resistance": 0.80711669,
+      "volatility": 0.08611462585562715,
       "volatility_status": "OPTIMAL"
     }
   },
@@ -105,25 +41,25 @@
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-03T08:38:29.937404+00:00",
-    "ENTRY": "1.15205",
-    "STOP_LOSS": "1.15267",
-    "TAKE_PROFIT": "1.15112",
+    "timestamp": "2025-11-03T10:32:47.561840+00:00",
+    "ENTRY": "1.15168",
+    "STOP_LOSS": "1.15217",
+    "TAKE_PROFIT": "1.15095",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is ignored due to strong trend",
-    "ACTUAL_RR_RATIO": 1.5,
+    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is not strong enough to counter the overall trend",
+    "ACTUAL_RR_RATIO": 1.49,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
-      "position_size": 161290.32258062827,
+      "position_size": 204081.63265311145,
       "max_leverage": 30.0
     },
-    "QUALITY_SCORE": 59.5,
+    "QUALITY_SCORE": 56.4,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 33.129223053567536,
-      "key_support": 1.15197,
-      "key_resistance": 1.1526699999999999,
-      "volatility": 0.06886192441812092,
+      "rsi": 33.342617965122194,
+      "key_support": 1.1514733333333333,
+      "key_resistance": 1.1521666666666668,
+      "volatility": 0.06905949929610616,
       "volatility_status": "OPTIMAL"
     }
   }

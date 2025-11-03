@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-03T10:33:10.033261+00:00",
+    "ENTRY": "177.55",
+    "STOP_LOSS": "177.50200",
+    "TAKE_PROFIT": "177.54202",
+    "RISK_REWARD_RATIO": "2.2",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, considering MACD bearish signal as a minor correction",
+    "ACTUAL_RR_RATIO": 1.5,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 1689.9693726850587,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 58.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 39.779340796171105,
+      "key_support": 177.50200333333336,
+      "key_resistance": 177.59200666666672,
+      "volatility": 0.08605830821074398,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
