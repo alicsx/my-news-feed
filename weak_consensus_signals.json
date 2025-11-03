@@ -1,8 +1,8 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
+    "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
-    "CONFIDENCE": 3.3,
+    "CONFIDENCE": 4.7,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
@@ -10,19 +10,46 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-03T12:57:44.090062+00:00",
-    "ENTRY": 0,
-    "STOP_LOSS": 0,
-    "TAKE_PROFIT": 0,
-    "RISK_REWARD_RATIO": 0,
-    "ANALYSIS": "Neutral trend with weak strength, RSI in neutral zone, and conflicting MACD bearish signal. Support/resistance levels are extremely tight (177.57-177.64), making directional bias unclear. Low volatility and weak ML signal (0.14) confirm lack of conviction for any position.",
+    "timestamp": "2025-11-03T14:28:53.952476+00:00",
+    "ENTRY": "0.80889",
+    "STOP_LOSS": "0.80902",
+    "TAKE_PROFIT": "0.80866",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, let's tackle this USD/CHF analysis. The user wants a trading decision based on the provided d...",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 76.74072601052558,
+      "key_support": 0.8086633299999999,
+      "key_resistance": 0.80901998,
+      "volatility": 0.08559712539469178,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-03T14:29:00.606008+00:00",
+    "ENTRY": "1.00000",
+    "STOP_LOSS": "1.00500",
+    "TAKE_PROFIT": "0.99000",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/JPY\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 3,\n  \"ENTRY\": 0,\n  \"STOP_LOSS\": 0,\n  ...",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 43.8413089544851,
-      "key_support": 177.57066666666665,
-      "key_resistance": 177.6443433333333,
-      "volatility": 0.08369911453305869,
+      "rsi": 39.68819834788415,
+      "key_support": 177.44933,
+      "key_resistance": 177.50967,
+      "volatility": 0.082846308240455,
       "volatility_status": "OPTIMAL"
     }
   }

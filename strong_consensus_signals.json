@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [],
+    "timestamp": "2025-11-03T14:28:38.035847+00:00",
+    "ENTRY": "1.15101",
+    "STOP_LOSS": "1.15130",
+    "TAKE_PROFIT": "1.14806",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bearish trend, bearish MACD, and RSI not oversold",
+    "ACTUAL_RR_RATIO": 10.17,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 260640.65472932465,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 73.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 30.231796028807217,
+      "key_support": 1.1509733333333332,
+      "key_resistance": 1.1512966666666664,
+      "volatility": 0.0683101693147328,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
