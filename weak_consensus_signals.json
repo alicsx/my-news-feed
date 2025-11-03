@@ -2,7 +2,7 @@
   {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.3,
+    "CONFIDENCE": 4.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
@@ -10,19 +10,19 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-03T18:37:12.772582+00:00",
-    "ENTRY": "177.68100",
-    "STOP_LOSS": "177.69700",
-    "TAKE_PROFIT": "177.65101",
+    "timestamp": "2025-11-03T20:31:33.862944+00:00",
+    "ENTRY": "1.00000",
+    "STOP_LOSS": "1.00500",
+    "TAKE_PROFIT": "0.99000",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, let's tackle this EUR/JPY analysis. The user wants a trading decision based on the provided d...",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/JPY\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 3,\n  \"ENTRY\": 0,\n  \"STOP_LOSS\": 0,\n  ...",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 49.40485197596568,
-      "key_support": 177.65100666666666,
-      "key_resistance": 177.69700333333333,
-      "volatility": 0.08143644440659906,
+      "rsi": 48.11536872850735,
+      "key_support": 177.60366666666664,
+      "key_resistance": 177.64433333333332,
+      "volatility": 0.08109329222674073,
       "volatility_status": "OPTIMAL"
     }
   }
