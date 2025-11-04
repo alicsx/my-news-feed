@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-04T02:04:49.428980+00:00",
+    "ENTRY": "0.80963",
+    "STOP_LOSS": "0.80951",
+    "TAKE_PROFIT": "0.80963",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Strong bullish trend with bullish MACD, despite overbought RSI, the trend strength and low risk level support a buy decision",
+    "ACTUAL_RR_RATIO": 3.0,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 370580.8374106593,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 75.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 74.85467214878972,
+      "key_support": 0.8095066533333334,
+      "key_resistance": 0.8096333166666667,
+      "volatility": 0.08521274930919284,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]

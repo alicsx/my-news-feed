@@ -1,8 +1,8 @@
 [
   {
     "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.3,
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.3,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
@@ -10,25 +10,19 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-03T22:28:09.848091+00:00",
-    "ENTRY": "177.63000",
-    "STOP_LOSS": "177.53067",
-    "TAKE_PROFIT": "177.75150",
-    "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Bullish MACD signal with neutral RSI and weak neutral trend, suggesting potential for upside movement",
-    "ACTUAL_RR_RATIO": 1.5,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 1132.1181931391927,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 54.5,
+    "timestamp": "2025-11-04T02:04:56.931264+00:00",
+    "ENTRY": "1.00000",
+    "STOP_LOSS": "1.00500",
+    "TAKE_PROFIT": "0.99000",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/JPY\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 3,\n  \"ENTRY\": 0,\n  \"STOP_LOSS\": 0,\n  ...",
+    "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 47.13964924220812,
-      "key_support": 177.5306666666667,
-      "key_resistance": 177.65533333333335,
-      "volatility": 0.08085549087812068,
+      "rsi": 46.8342967766215,
+      "key_support": 177.58933333333331,
+      "key_resistance": 177.61766666666665,
+      "volatility": 0.08071859921839923,
       "volatility_status": "OPTIMAL"
     }
   }
