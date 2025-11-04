@@ -2,33 +2,33 @@
   {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.8,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-04T08:31:12.924599+00:00",
-    "ENTRY": "176.98334",
-    "STOP_LOSS": "176.96667",
-    "TAKE_PROFIT": "177.09501",
+    "timestamp": "2025-11-04T08:38:20.076221+00:00",
+    "ENTRY": "176.995",
+    "STOP_LOSS": "176.99067",
+    "TAKE_PROFIT": "177.17134",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Overbought RSI and weak neutral trend suggest potential reversal, with support at 176.96667",
-    "ACTUAL_RR_RATIO": 1.5,
+    "ANALYSIS": "RSI is 30.3, not oversold, and trend is neutral with a weak strength, MACD is bearish but price is near support level",
+    "ACTUAL_RR_RATIO": 1.64,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
-      "position_size": 1694.7428596317081,
+      "position_size": 1463.3575275107708,
       "max_leverage": 30.0
     },
-    "QUALITY_SCORE": 59.0,
+    "QUALITY_SCORE": 48.7,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 27.810936528006653,
-      "key_support": 176.96667033333333,
-      "key_resistance": 177.12334066666665,
-      "volatility": 0.08101781190165858,
+      "rsi": 30.255502814671864,
+      "key_support": 176.99066866666666,
+      "key_resistance": 177.17133733333333,
+      "volatility": 0.08102159831890458,
       "volatility_status": "OPTIMAL"
     }
   }
