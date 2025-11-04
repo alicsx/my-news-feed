@@ -10,19 +10,19 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-04T02:04:56.931264+00:00",
-    "ENTRY": "1.00000",
-    "STOP_LOSS": "1.00500",
-    "TAKE_PROFIT": "0.99000",
+    "timestamp": "2025-11-04T04:32:46.629366+00:00",
+    "ENTRY": "177.26801",
+    "STOP_LOSS": "177.30601",
+    "TAKE_PROFIT": "177.20201",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/JPY\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 3,\n  \"ENTRY\": 0,\n  \"STOP_LOSS\": 0,\n  ...",
+    "ANALYSIS": "Extracted from text: \nOkay, let's tackle this EUR/JPY analysis. The user wants a trading decision based on the provided d...",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 46.8342967766215,
-      "key_support": 177.58933333333331,
-      "key_resistance": 177.61766666666665,
-      "volatility": 0.08071859921839923,
+      "rsi": 32.786030188848876,
+      "key_support": 177.20201333333338,
+      "key_resistance": 177.3060066666667,
+      "volatility": 0.08096277889993653,
       "volatility_status": "OPTIMAL"
     }
   }
