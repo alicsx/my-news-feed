@@ -1,34 +1,59 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 2,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [],
+    "timestamp": "2025-11-04T20:31:58.154759+00:00",
+    "ENTRY": "1.14793",
+    "STOP_LOSS": "1.14809",
+    "TAKE_PROFIT": "1.14769",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Strong bearish trend, bearish MACD, and RSI not oversold support selling",
+    "ACTUAL_RR_RATIO": 1.5,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 261339.9771763087,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 56.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 32.63270803957316,
+      "key_support": 1.1478099999999998,
+      "key_resistance": 1.1480899999999996,
+      "volatility": 0.06863409934341665,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.3,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-04T18:39:51.720947+00:00",
-    "ENTRY": "176.32600",
-    "STOP_LOSS": "176.32600",
-    "TAKE_PROFIT": "176.46100",
-    "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "RSI is oversold at 29.8, indicating potential for a bounce, and the moderate neutral trend may shift bullish",
-    "ACTUAL_RR_RATIO": 1.5,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 1700.8731148656311,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 58.5,
+    "timestamp": "2025-11-04T20:32:22.308462+00:00",
+    "ENTRY": "176.41100",
+    "STOP_LOSS": "176.44666",
+    "TAKE_PROFIT": "176.38434",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, let's tackle this EUR/JPY analysis. The user wants a trading decision based on the provided d...",
+    "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 29.809000636132367,
-      "key_support": 176.32600333333332,
-      "key_resistance": 176.38999666666666,
-      "volatility": 0.08198746450233177,
+      "trend": "BEARISH",
+      "rsi": 32.64370782709178,
+      "key_support": 176.38433666666666,
+      "key_resistance": 176.4466633333333,
+      "volatility": 0.08148198995347841,
       "volatility_status": "OPTIMAL"
     }
   }

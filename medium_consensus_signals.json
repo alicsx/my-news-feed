@@ -1,63 +1,32 @@
 [
   {
     "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 6.5,
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
     "AGREEMENT_LEVEL": 2,
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 4,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-04T18:39:37.394136+00:00",
-    "ENTRY": "1.30196",
-    "STOP_LOSS": "1.30224",
-    "TAKE_PROFIT": "1.30154",
-    "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend with bearish MACD, and despite being oversold, the trend strength is very strong, suggesting continuation",
-    "ACTUAL_RR_RATIO": 1.5,
+    "timestamp": "2025-11-04T20:32:09.583691+00:00",
+    "ENTRY": "1.30200",
+    "STOP_LOSS": "1.30171",
+    "TAKE_PROFIT": "1.30244",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, let's tackle this GBP/USD analysis. The user wants a trading decision based on the provided d...",
+    "ACTUAL_RR_RATIO": 1.52,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
-      "position_size": 230421.8255553166,
+      "position_size": 230414.7465437788,
       "max_leverage": 30.0
     },
-    "QUALITY_SCORE": 63.0,
+    "QUALITY_SCORE": 56.1,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 19.911987392623516,
-      "key_support": 1.3019,
-      "key_resistance": 1.3022366666666667,
-      "volatility": 0.08636146690589615,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 8.0,
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-04T18:39:29.895533+00:00",
-    "ENTRY": "1.14846",
-    "STOP_LOSS": "1.14861",
-    "TAKE_PROFIT": "1.14824",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Strong bearish trend, RSI not oversold, and bearish MACD signal",
-    "ACTUAL_RR_RATIO": 1.47,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 261219.37202862964,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 60.8,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 35.22240263218104,
-      "key_support": 1.1483766666666666,
-      "key_resistance": 1.1486133333333333,
-      "volatility": 0.06868298485003776,
+      "rsi": 22.57178918943801,
+      "key_support": 1.3017133333333333,
+      "key_resistance": 1.3023066666666665,
+      "volatility": 0.08632656613583267,
       "volatility_status": "OPTIMAL"
     }
   }
