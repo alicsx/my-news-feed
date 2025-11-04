@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-04T13:01:12.367911+00:00",
+    "ENTRY": "176.39000",
+    "STOP_LOSS": "176.38233",
+    "TAKE_PROFIT": "176.39903",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Overbought RSI and weak neutral trend suggest potential reversal",
+    "ACTUAL_RR_RATIO": 1.5,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 1700.7862337908693,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 52.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 22.14819369872251,
+      "key_support": 176.38233333333335,
+      "key_resistance": 176.5026766666667,
+      "volatility": 0.08187712705427709,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
