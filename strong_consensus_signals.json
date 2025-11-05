@@ -1,32 +1,34 @@
 [
   {
-    "SYMBOL": "EUR/USD",
+    "SYMBOL": "EUR/JPY",
     "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 3,
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-05T02:06:23.199881+00:00",
-    "ENTRY": "1.14907",
-    "STOP_LOSS": "1.14911",
-    "TAKE_PROFIT": "1.14895",
+    "MODEL_TYPES_USED": [
+      "gemini"
+    ],
+    "timestamp": "2025-11-05T04:32:58.875064+00:00",
+    "ENTRY": "176.31300",
+    "STOP_LOSS": "176.31533",
+    "TAKE_PROFIT": "176.24666",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is not strong enough to counter the overall bearish trend",
-    "ACTUAL_RR_RATIO": 3.0,
+    "ANALYSIS": "Strong bearish trend with RSI not oversold, supported by low risk level and sufficient ML signal strength",
+    "ACTUAL_RR_RATIO": 28.47,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
-      "position_size": 261080.7000443837,
+      "position_size": 1701.5194568749894,
       "max_leverage": 30.0
     },
-    "QUALITY_SCORE": 72.0,
+    "QUALITY_SCORE": 82.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 44.93068863339308,
-      "key_support": 1.1489533333333335,
-      "key_resistance": 1.1491066666666667,
-      "volatility": 0.06808560163874107,
+      "trend": "BEARISH",
+      "rsi": 41.006345999930275,
+      "key_support": 176.24666,
+      "key_resistance": 176.31533,
+      "volatility": 0.0819812297347926,
       "volatility_status": "OPTIMAL"
     }
   }
