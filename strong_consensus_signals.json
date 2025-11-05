@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
+    "VALID_MODELS": 4,
+    "TOTAL_MODELS": 5,
+    "MODEL_TYPES_USED": [],
+    "timestamp": "2025-11-05T12:57:55.135057+00:00",
+    "ENTRY": "1.30429",
+    "STOP_LOSS": "1.30480",
+    "TAKE_PROFIT": "1.30034",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Strong bearish trend with RSI in neutral zone, MACD bullish signal is not strong enough to reverse the trend",
+    "ACTUAL_RR_RATIO": 7.75,
+    "RISK_ASSESSMENT": {
+      "risk_per_trade_pct": 1.0,
+      "position_size": 196078.431372545,
+      "max_leverage": 30.0
+    },
+    "QUALITY_SCORE": 80.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 49.36959143654393,
+      "key_support": 1.30414,
+      "key_resistance": 1.3048000000000002,
+      "volatility": 0.08615135076128803,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
