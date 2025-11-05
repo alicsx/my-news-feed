@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "SELL",
-    "CONFIDENCE": 6.8,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 4,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-11-05T20:32:42.482657+00:00",
-    "ENTRY": "177.07500",
-    "STOP_LOSS": "177.11567",
-    "TAKE_PROFIT": "177.01399",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The trend is strongly bearish. Although the RSI is neutral, the dominant bearish trend suggests a selling opportunity. Stop loss is placed slightly above the resistance level, and take profit is calculated to achieve a risk-reward ratio of 1.5.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 69.5,
-    "TECHNICAL_CONTEXT": {
-      "trend": "BEARISH",
-      "rsi": 63.07423444201381,
-      "key_support": 177.05933766666666,
-      "key_resistance": 177.11566933333333,
-      "volatility": 0.08106603157923821,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "SELL",
     "CONFIDENCE": 7.5,
@@ -32,20 +7,20 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 4,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-11-05T20:32:19.957593+00:00",
-    "ENTRY": "1.14898",
-    "STOP_LOSS": "1.14924",
-    "TAKE_PROFIT": "1.14859",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bearish trend. RSI is neutral, not oversold, allowing for a sell. Stop loss placed above the resistance. Take profit target provides a 1.5 risk-reward ratio.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 59.5,
+    "timestamp": "2025-11-05T20:57:19.018624+00:00",
+    "ENTRY": "1.14888",
+    "STOP_LOSS": "1.14889",
+    "TAKE_PROFIT": "1.14886",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bearish trend suggests further downside. RSI is neutral, not oversold, allowing for a sell. Stop loss placed slightly above resistance, take profit targeting a risk-reward ratio of 3.0.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 62.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 51.67612375929098,
-      "key_support": 1.1489266666666664,
-      "key_resistance": 1.149243333333333,
-      "volatility": 0.06678124330938832,
+      "rsi": 50.87661290505721,
+      "key_support": 1.1485966666666667,
+      "key_resistance": 1.1488933333333333,
+      "volatility": 0.06677199071977791,
       "volatility_status": "OPTIMAL"
     }
   }
