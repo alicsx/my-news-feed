@@ -35,7 +35,7 @@ CLOUDFLARE_AI_API_KEY = os.getenv("CLOUDFLARE_AI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 if not all([google_api_key, TWELVEDATA_API_KEY]):
-    logging.warning("鈿狅笍 Some API keys are missing. System will use fallback methods.")
+    logging.warning("⚠️ Some API keys are missing. System will use fallback methods.")
 
 # Main system configuration
 HIGH_TIMEFRAME = "4h"
@@ -66,19 +66,22 @@ LOG_FILE = "trading_log.log"
 # FIXED: Use ONLY free Gemini models
 GEMINI_FREE_MODELS = [
     'gemini-1.5-flash',
+    'gemini-2.0-flash-exp',
     'gemini-1.5-pro'
 ]
 
 GEMINI_MODEL = 'gemini-1.5-flash'  # Default free model
 GEMINI_FALLBACK_MODEL = 'gemini-1.5-pro'  # Fallback free model
 
-# Enhanced Cloudflare models - Diverse AI families
+# Enhanced Cloudflare models - Diverse AI families (updated & non-deprecated)
 CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-4-scout-17b-16e-instruct",  # Meta Llama
-    "@cf/mistralai/mistral-7b-instruct-v0.3",   # Mistral AI
-    "@cf/google/gemma-7b-it",                   # Google Gemma
-    "@cf/qwen/qwen1.5-7b-chat-awq",             # Qwen
-    "@cf/deepseek-ai/deepseek-math-7b-instruct" # DeepSeek
+    "@cf/meta/llama-3.1-8b-instruct",               # Meta Llama
+    "@cf/meta/llama-3.3-70b-instruct-fp8-fast",     # Meta Llama large fast
+    "@cf/meta/llama-4-scout-17b-16e-instruct",      # Meta Llama scout
+    "@cf/google/gemma-3-12b-it",                    # Google Gemma 3
+    "@cf/mistral/mistral-small-3.1-24b-instruct",   # Mistral
+    "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b", # DeepSeek
+    "@cf/qwen/qwq-32b"                              # Qwen reasoning
 ]
 
 # Enhanced Groq models - Diverse AI families
@@ -154,7 +157,7 @@ class AIModelDiversityManager:
             if family not in used_families:
                 selected_models.append((provider, model))
                 used_families.add(family)
-                logging.info(f"馃幆 Selected diverse model: {provider}/{model} (Family: {family})")
+                logging.info(f"🧠 Selected diverse model: {provider}/{model} (Family: {family})")
         
         # Second pass: fill remaining slots with any available models
         for provider, model in available_models:
@@ -163,7 +166,7 @@ class AIModelDiversityManager:
             if (provider, model) not in selected_models:
                 selected_models.append((provider, model))
                 family = diversity_manager.get_model_family(model)
-                logging.info(f"馃幆 Added additional model: {provider}/{model} (Family: {family})")
+                logging.info(f"🧠 Added additional model: {provider}/{model} (Family: {family})")
         
         # Log diversity summary
         family_count = {}
@@ -171,7 +174,7 @@ class AIModelDiversityManager:
             family = diversity_manager.get_model_family(model)
             family_count[family] = family_count.get(family, 0) + 1
         
-        logging.info(f"馃寛 Model Diversity: {family_count}")
+        logging.info(f"🧭 Model Diversity: {family_count}")
         return selected_models
 
 # =================================================================================
@@ -194,7 +197,7 @@ class FreeTierModelFilter:
         if not free_models:
             free_models = GEMINI_FREE_MODELS.copy()
             
-        logging.info(f"馃幆 Free tier Gemini models available: {free_models}")
+        logging.info(f"🧠 Free tier Gemini models available: {free_models}")
         return free_models
     
     @staticmethod
@@ -238,7 +241,7 @@ class AdvancedDynamicModelDiscoverer:
         for i, result in enumerate(results):
             provider = list(self.available_models.keys())[i]
             if isinstance(result, Exception):
-                logging.warning(f"鉂� Model discovery failed for {provider}: {result}")
+                logging.warning(f"❗ Model discovery failed for {provider}: {result}")
                 # Use fallback models but ensure diversity
                 self.available_models[provider] = self._ensure_fallback_diversity(provider)
             elif result:
@@ -273,10 +276,10 @@ class AdvancedDynamicModelDiscoverer:
             for model in models:
                 family = self.diversity_manager.get_model_family(model)
                 families[family] = families.get(family, 0) + 1
-            logging.info(f"馃寛 {provider} model diversity: {families}")
+            logging.info(f"🧭 {provider} model diversity: {families}")
                 
         total_models = sum(len(models) for models in self.available_models.values())
-        logging.info(f"馃幆 Total discovered models: Gemini({len(self.available_models['google_gemini'])}), "
+        logging.info(f"🧠 Total discovered models: Gemini({len(self.available_models['google_gemini'])}), "
                    f"Cloudflare({len(self.available_models['cloudflare'])}), "
                    f"Groq({len(self.available_models['groq'])})")
 
@@ -309,7 +312,7 @@ class AdvancedDynamicModelDiscoverer:
             return available_models if available_models else self.fallback_models["google_gemini"]
             
         except Exception as e:
-            logging.warning(f"鉂� Gemini model discovery failed: {e}")
+            logging.warning(f"❗ Gemini model discovery failed: {e}")
             return self.fallback_models["google_gemini"]
     
     async def _discover_cloudflare_models(self) -> List[str]:
@@ -323,7 +326,11 @@ class AdvancedDynamicModelDiscoverer:
                 "Content-Type": "application/json"
             }
             
-            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "default_account_id")
+            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID")
+            if not account_id:
+                logging.warning("⚠️ CLOUDFLARE_ACCOUNT_ID is not set; using fallback model catalog.")
+                return self.fallback_models["cloudflare"]
+
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/models"
             
             async with aiohttp.ClientSession() as session:
@@ -336,11 +343,11 @@ class AdvancedDynamicModelDiscoverer:
                         diverse_models = self._prioritize_diverse_models(models, "cloudflare")
                         return diverse_models if diverse_models else self.fallback_models["cloudflare"]
                     else:
-                        logging.warning(f"鉂� Cloudflare API returned status {response.status}")
+                        logging.warning(f"❗ Cloudflare API returned status {response.status}")
                         return self.fallback_models["cloudflare"]
                         
         except Exception as e:
-            logging.warning(f"鉂� Cloudflare model discovery failed: {e}")
+            logging.warning(f"❗ Cloudflare model discovery failed: {e}")
             return self.fallback_models["cloudflare"]
     
     async def _discover_groq_models(self) -> List[str]:
@@ -366,11 +373,11 @@ class AdvancedDynamicModelDiscoverer:
                         diverse_models = self._prioritize_diverse_models(models, "groq")
                         return diverse_models if diverse_models else self.fallback_models["groq"]
                     else:
-                        logging.warning(f"鉂� Groq API returned status {response.status}")
+                        logging.warning(f"❗ Groq API returned status {response.status}")
                         return self.fallback_models["groq"]
                         
         except Exception as e:
-            logging.warning(f"鉂� Groq model discovery failed: {e}")
+            logging.warning(f"❗ Groq model discovery failed: {e}")
             return self.fallback_models["groq"]
     
     def _prioritize_diverse_models(self, models: List[str], provider: str) -> List[str]:
@@ -504,7 +511,7 @@ class RateLimiter:
             time_since_last = current_time - self.last_request_time
             if time_since_last < self.interval:
                 wait_time = self.interval - time_since_last
-                logging.debug(f"鈴� Rate limiting: waiting {wait_time:.2f}s")
+                logging.debug(f"⏳ Rate limiting: waiting {wait_time:.2f}s")
                 await asyncio.sleep(wait_time)
             self.last_request_time = time.time()
 
@@ -525,7 +532,7 @@ class EnhancedDataFetcher:
         if cache_key in self.cache:
             cached_data, timestamp = self.cache[cache_key]
             if current_time - timestamp < self.cache_ttl:
-                logging.info(f"馃摝 Using cached data for {symbol} ({interval})")
+                logging.info(f"📦 Using cached data for {symbol} ({interval})")
                 return cached_data
         
         for source in self.data_source_priority:
@@ -552,10 +559,10 @@ class EnhancedDataFetcher:
                         return result.data
                         
             except Exception as e:
-                logging.warning(f"鉂� {source} failed for {symbol}: {str(e)}")
+                logging.warning(f"❗ {source} failed for {symbol}: {str(e)}")
                 continue
                 
-        logging.error(f"鉂� All data sources failed for {symbol}")
+        logging.error(f"❗ All data sources failed for {symbol}")
         return None
 
     async def _get_twelvedata_with_retry(self, symbol: str, interval: str, max_retries: int) -> DataFetchResult:
@@ -570,7 +577,7 @@ class EnhancedDataFetcher:
                 if result.success:
                     return result
                     
-                logging.warning(f"鈿狅笍 TwelveData attempt {attempt + 1} failed for {symbol}: {result.error}")
+                logging.warning(f"⚠️ TwelveData attempt {attempt + 1} failed for {symbol}: {result.error}")
                 
                 # Wait before retry
                 if attempt < max_retries - 1:
@@ -578,7 +585,7 @@ class EnhancedDataFetcher:
                     await asyncio.sleep(wait_time)
                     
             except Exception as e:
-                logging.warning(f"鉂� TwelveData error on attempt {attempt + 1} for {symbol}: {str(e)}")
+                logging.warning(f"❗ TwelveData error on attempt {attempt + 1} for {symbol}: {str(e)}")
                 if attempt < max_retries - 1:
                     await asyncio.sleep((attempt + 1) * 2)
                     
@@ -600,13 +607,13 @@ class EnhancedDataFetcher:
                             
                             # Handle specific error codes
                             if data['code'] == 429:
-                                logging.warning(f"馃攣 Rate limit hit for {symbol}, will use fallback")
+                                logging.warning(f"🧱 Rate limit hit for {symbol}, will use fallback")
                                 return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Rate limit exceeded")
                             elif data['code'] == 400:
-                                logging.warning(f"鈿狅笍 Invalid symbol {symbol} for TwelveData")
+                                logging.warning(f"⚠️ Invalid symbol {symbol} for TwelveData")
                                 return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Invalid symbol")
                             else:
-                                logging.warning(f"鈿狅笍 TwelveData API error for {symbol}: {error_msg}")
+                                logging.warning(f"⚠️ TwelveData API error for {symbol}: {error_msg}")
                                 return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, error_msg)
                         
                         if 'values' in data and data['values']:
@@ -623,7 +630,7 @@ class EnhancedDataFetcher:
                             df = df.dropna(subset=['open', 'high', 'low', 'close'])
                             
                             if len(df) > 50:
-                                logging.info(f"鉁� TwelveData: {len(df)} candles for {symbol} ({interval})")
+                                logging.info(f"✅ TwelveData: {len(df)} candles for {symbol} ({interval})")
                                 return DataFetchResult(True, df, DataSource.TWELVEDATA, symbol)
                             else:
                                 return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Insufficient data after cleaning")
@@ -631,14 +638,14 @@ class EnhancedDataFetcher:
                             return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "No values in response")
                     else:
                         error_text = await response.text()
-                        logging.warning(f"鈿狅笍 TwelveData HTTP {response.status} for {symbol}: {error_text}")
+                        logging.warning(f"⚠️ TwelveData HTTP {response.status} for {symbol}: {error_text}")
                         return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, f"HTTP {response.status}")
                         
         except asyncio.TimeoutError:
-            logging.warning(f"鈴� TwelveData timeout for {symbol}")
+            logging.warning(f"⏱️ TwelveData timeout for {symbol}")
             return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, "Timeout")
         except Exception as e:
-            logging.warning(f"鉂� TwelveData exception for {symbol}: {str(e)}")
+            logging.warning(f"❗ TwelveData exception for {symbol}: {str(e)}")
             return DataFetchResult(False, None, DataSource.TWELVEDATA, symbol, str(e))
 
     async def _get_yahoo_data(self, symbol: str, interval: str) -> DataFetchResult:
@@ -650,7 +657,7 @@ class EnhancedDataFetcher:
             # Map intervals
             interval_map = {
                 "1h": "1h",
-                "4h": "4h", 
+                "4h": "1h",  # fetch 1h and resample to 4h
                 "1d": "1d",
                 "1m": "1m",
                 "5m": "5m",
@@ -660,18 +667,27 @@ class EnhancedDataFetcher:
             yf_interval = interval_map.get(interval, "1h")
             period = "60d" if interval in ["1h", "4h"] else "120d"
             
-            # Download data using async thread
+            # Download data using async thread (yfinance.history has no 'timeout' kwarg)
             ticker = yf.Ticker(yahoo_symbol)
             df = await asyncio.to_thread(
                 ticker.history, 
                 period=period, 
-                interval=yf_interval,
-                timeout=30
+                interval=yf_interval
             )
             
             if df.empty:
                 return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Empty DataFrame from Yahoo")
                 
+            # Resample to 4H if needed
+            if interval == "4h":
+                df = df.resample("4H").agg({
+                    "Open": "first",
+                    "High": "max",
+                    "Low": "min",
+                    "Close": "last",
+                    "Volume": "sum"
+                }).dropna()
+
             # Reset index and rename columns
             df = df.reset_index()
             df = df.rename(columns={
@@ -692,7 +708,7 @@ class EnhancedDataFetcher:
                 df = df.dropna(subset=required_cols)
                 
                 if len(df) > 50:
-                    logging.info(f"鉁� Yahoo Finance: {len(df)} candles for {symbol} ({interval})")
+                    logging.info(f"✅ Yahoo Finance: {len(df)} candles for {symbol} ({interval})")
                     return DataFetchResult(True, df.tail(CANDLES_TO_FETCH), DataSource.YAHOO, symbol)
                 else:
                     return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Insufficient data after cleaning")
@@ -700,7 +716,7 @@ class EnhancedDataFetcher:
                 return DataFetchResult(False, None, DataSource.YAHOO, symbol, "Missing required columns")
                 
         except Exception as e:
-            logging.warning(f"鉂� Yahoo Finance error for {symbol}: {str(e)}")
+            logging.warning(f"❗ Yahoo Finance error for {symbol}: {str(e)}")
             return DataFetchResult(False, None, DataSource.YAHOO, symbol, str(e))
 
     async def _get_synthetic_data(self, symbol: str, interval: str) -> DataFetchResult:
@@ -746,11 +762,11 @@ class EnhancedDataFetcher:
             df['datetime'] = dates
             df = df.set_index('datetime')
             
-            logging.info(f"馃攧 Synthetic data generated for {symbol} ({interval}): {len(df)} candles")
+            logging.info(f"🧪 Synthetic data generated for {symbol} ({interval}): {len(df)} candles")
             return DataFetchResult(True, df, DataSource.SYNTHETIC, symbol)
             
         except Exception as e:
-            logging.warning(f"鉂� Synthetic data generation failed for {symbol}: {str(e)}")
+            logging.warning(f"❗ Synthetic data generation failed for {symbol}: {str(e)}")
             return DataFetchResult(False, None, DataSource.SYNTHETIC, symbol, str(e))
 
     def get_data_source_stats(self) -> Dict:
@@ -781,7 +797,7 @@ class SmartAPIManager:
         if not self.models_initialized:
             self.available_models = await self.model_discoverer.discover_models()
             self.models_initialized = True
-            logging.info("馃幆 AI Models initialized dynamically with diversity")
+            logging.info("🧠 AI Models initialized dynamically with diversity")
 
     def load_usage_data(self) -> Dict:
         """Load API usage data"""
@@ -816,7 +832,7 @@ class SmartAPIManager:
                 data["providers"][provider]["used_today"] = 0
             data["last_reset_date"] = today
             self.save_usage_data(data)
-            logging.info("鉁� Daily API usage reset")
+            logging.info("✅ Daily API usage reset")
         return data
 
     def save_usage_data(self, data: Dict = None):
@@ -849,7 +865,7 @@ class SmartAPIManager:
     def mark_model_failed(self, provider: str, model_name: str):
         """Mark model as failed"""
         self.failed_models.add((provider, model_name))
-        logging.warning(f"鉂� Model {provider}/{model_name} added to failed list")
+        logging.warning(f"❗ Model {provider}/{model_name} added to failed list")
 
     def is_model_failed(self, provider: str, model_name: str) -> bool:
         """Check if model failed"""
@@ -865,7 +881,7 @@ class SmartAPIManager:
     def disable_gemini(self):
         """Disable Gemini temporarily due to quota limits"""
         self.gemini_disabled = True
-        logging.warning("馃毇 Gemini temporarily disabled due to quota limits")
+        logging.warning("🚫 Gemini temporarily disabled due to quota limits")
 
     def is_gemini_available(self) -> bool:
         """Check if Gemini has available quota"""
@@ -888,7 +904,7 @@ class SmartAPIManager:
             else:
                 provider_capacity[provider] = self.get_available_models_count(provider)
             
-        logging.info(f"馃搳 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
+        logging.info(f"📊 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
                    f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
 
         # NEW: Get all available models across providers
@@ -913,17 +929,17 @@ class SmartAPIManager:
                     if (provider, model) not in selected_models and remaining_needed > 0:
                         selected_models.append((provider, model))
                         remaining_needed -= 1
-                        logging.info(f"馃幆 Added fill model: {provider}/{model}")
+                        logging.info(f"🧠 Added fill model: {provider}/{model}")
         else:
-            logging.warning("鈿狅笍 No available models found for selection")
+            logging.warning("⚠️ No available models found for selection")
 
         # FINAL FALLBACK: If still not enough, use synthetic decision maker
         if len(selected_models) == 0:
-            logging.error("鉂� No AI models available. Using synthetic decision maker.")
+            logging.error("❗ No AI models available. Using synthetic decision maker.")
             # This ensures we always have at least one "model"
             selected_models.append(("synthetic", "technical_analyzer"))
             
-        logging.info(f"馃幆 {len(selected_models)} diverse models selected: {selected_models}")
+        logging.info(f"🧠 {len(selected_models)} diverse models selected: {selected_models}")
         return selected_models
 
     def record_api_usage(self, provider: str, count: int = 1):
@@ -934,7 +950,7 @@ class SmartAPIManager:
 
     def get_usage_summary(self) -> str:
         """Get usage summary"""
-        summary = "馃搳 API Usage Summary:\n"
+        summary = "📊 API Usage Summary:\n"
         for provider, data in self.usage_data["providers"].items():
             remaining = data["limit"] - data["used_today"]
             summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
@@ -996,71 +1012,72 @@ Return ONLY this JSON format (NO other text):
   "ANALYSIS": "brief_reasoning"
 }}"""
 
+    async def _timed(self, coro, provider: str, model: str):
+        """Measure latency and capture result/exceptions"""
+        t0 = time.time()
+        try:
+            out = await coro
+            return out, time.time() - t0, True, provider, model
+        except Exception as e:
+            return e, time.time() - t0, False, provider, model
+
     async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """Get enhanced AI analysis with diverse model ensemble"""
         await self.api_manager.initialize_models()
         selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
         
         if len(selected_models) < 3:
-            logging.error(f"鉂� Cannot find minimum 3 AI models for {symbol}")
+            logging.error(f"❗ Cannot find minimum 3 AI models for {symbol}")
             return None
             
-        logging.info(f"馃幆 Using {len(selected_models)} diverse AI models for {symbol}")
+        logging.info(f"🧠 Using {len(selected_models)} diverse AI models for {symbol}")
 
         tasks = []
         for provider, model_name in selected_models:
             # Handle synthetic fallback
             if provider == "synthetic":
-                task = self._get_synthetic_analysis(symbol, technical_analysis)
+                task = self._timed(self._get_synthetic_analysis(symbol, technical_analysis), provider, model_name)
             else:
-                task = self._get_single_analysis(symbol, technical_analysis, provider, model_name)
+                task = self._timed(self._get_single_analysis(symbol, technical_analysis, provider, model_name), provider, model_name)
             tasks.append(task)
 
         try:
-            results = await asyncio.gather(*tasks, return_exceptions=True)
+            results = await asyncio.gather(*tasks, return_exceptions=False)
             
             valid_results = []
             failed_count = 0
             
-            for i, (provider, model_name) in enumerate(selected_models):
-                start_time = time.time()
-                result = results[i]
-                response_time = time.time() - start_time
-                
-                if isinstance(result, Exception):
-                    logging.error(f"鉂� Error in {provider}/{model_name} for {symbol}: {str(result)}")
-                    if provider != "synthetic":  # Don't mark synthetic as failed
-                        self.api_manager.mark_model_failed(provider, model_name)
-                        self.performance_monitor.record_model_performance(provider, model_name, False, response_time)
-                    failed_count += 1
-                    if provider != "synthetic":
-                        self.api_manager.record_api_usage(provider)
-                elif result is not None:
+            for result, elapsed, ok, provider, model_name in results:
+                if ok and not isinstance(result, Exception) and result is not None:
                     valid_results.append(result)
                     if provider != "synthetic":
                         self.api_manager.record_api_usage(provider)
-                        self.performance_monitor.record_model_performance(provider, model_name, True, response_time)
+                        self.performance_monitor.record_model_performance(provider, model_name, True, elapsed)
                 else:
+                    failed_count += 1
                     if provider != "synthetic":
                         self.api_manager.record_api_usage(provider)
-                        self.performance_monitor.record_model_performance(provider, model_name, False, response_time)
+                        self.performance_monitor.record_model_performance(provider, model_name, False, elapsed)
+                        # If explicit error, mark failed model (helps skip deprecated/invalid models)
+                        if isinstance(result, Exception):
+                            self.api_manager.mark_model_failed(provider, model_name)
 
-            logging.info(f"馃搳 Results: {len(valid_results)} successful, {failed_count} failed")
+            logging.info(f"📊 Results: {len(valid_results)} successful, {failed_count} failed")
             
             if valid_results:
                 combined_signal = self._combine_signals(symbol, valid_results, len(selected_models))
                 if combined_signal:
                     return combined_signal
                 else:
-                    logging.warning(f"鈿狅笍 Signal combination failed for {symbol}")
+                    logging.warning(f"⚠️ Signal combination failed for {symbol}")
             else:
-                logging.warning(f"鈿狅笍 No valid AI results for {symbol}")
+                logging.warning(f"⚠️ No valid AI results for {symbol}")
                 
             # Ultimate fallback: use technical analysis only
             return await self._get_technical_fallback(symbol, technical_analysis)
                 
         except Exception as e:
-            logging.error(f"鉂� Error in AI analysis for {symbol}: {str(e)}")
+            logging.error(f"❗ Error in AI analysis for {symbol}: {str(e)}")
             return await self._get_technical_fallback(symbol, technical_analysis)
 
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
@@ -1078,7 +1095,7 @@ Return ONLY this JSON format (NO other text):
                 return None
                 
         except Exception as e:
-            logging.error(f"鉂� Error in {provider}/{model_name} for {symbol}: {str(e)}")
+            logging.error(f"❗ Error in {provider}/{model_name} for {symbol}: {str(e)}")
             return None
 
     async def _get_synthetic_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
@@ -1119,7 +1136,7 @@ Return ONLY this JSON format (NO other text):
             }
             
         except Exception as e:
-            logging.error(f"鉂� Synthetic analysis error for {symbol}: {e}")
+            logging.error(f"❗ Synthetic analysis error for {symbol}: {e}")
             return None
 
     async def _get_technical_fallback(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
@@ -1127,7 +1144,7 @@ Return ONLY this JSON format (NO other text):
         try:
             return await self._get_synthetic_analysis(symbol, technical_analysis)
         except Exception as e:
-            logging.error(f"鉂� Technical fallback also failed for {symbol}: {e}")
+            logging.error(f"❗ Technical fallback also failed for {symbol}: {e}")
             return None
             
     async def _get_gemini_analysis_optimized(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
@@ -1155,7 +1172,7 @@ Return ONLY this JSON format (NO other text):
             return None
             
         except Exception as e:
-            logging.error(f"鉂� Gemini analysis error for {symbol}: {str(e)}")
+            logging.error(f"❗ Gemini analysis error for {symbol}: {str(e)}")
             return None
 
     def _extract_response_text(self, response) -> Optional[str]:
@@ -1186,7 +1203,7 @@ Return ONLY this JSON format (NO other text):
     async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Cloudflare AI"""
         if not self.cloudflare_api_key:
-            logging.warning(f"鉂� Cloudflare API key not available for {symbol}")
+            logging.warning(f"⚠️ Cloudflare API key not available for {symbol}")
             return None
             
         try:
@@ -1206,7 +1223,11 @@ Return ONLY this JSON format (NO other text):
                 "stream": False
             }
             
-            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "default_account_id")
+            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID")
+            if not account_id:
+                logging.warning("⚠️ CLOUDFLARE_ACCOUNT_ID is not set; skipping Cloudflare call.")
+                return None
+
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_name}"
             
             async with aiohttp.ClientSession() as session:
@@ -1215,33 +1236,39 @@ Return ONLY this JSON format (NO other text):
                         data = await response.json()
                         content = ""
                         
-                        if "result" in data and "response" in data["result"]:
+                        if "result" in data and isinstance(data["result"], dict) and "response" in data["result"]:
                             content = data["result"]["response"]
                         elif "response" in data:
                             content = data["response"]
                         elif "result" in data and isinstance(data["result"], str):
                             content = data["result"]
                         else:
-                            content = str(data)
+                            content = json.dumps(data, ensure_ascii=False)
                             
                         if content:
                             return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
                         else:
-                            logging.warning(f"鉂� Empty content in Cloudflare response for {symbol}")
+                            logging.warning(f"⚠️ Empty content in Cloudflare response for {symbol}")
                             return None
                     else:
                         error_text = await response.text()
-                        logging.error(f"鉂� Cloudflare API error for {symbol}: {response.status} - {error_text}")
+                        logging.error(f"❗ Cloudflare API error for {symbol}: {response.status} - {error_text}")
+                        # Special handling for deprecated model / wrong route
+                        if response.status == 410 or "deprecated" in error_text.lower():
+                            self.api_manager.mark_model_failed("cloudflare", model_name)
+                            logging.warning(f"Model deprecated on Cloudflare: {model_name}; removed from rotation.")
+                        if "No route for that URI" in error_text or '"code":7000' in error_text:
+                            logging.warning(f"Cloudflare routing/model name issue for {model_name}. Check model id & account_id.")
                         return None
                         
         except Exception as e:
-            logging.error(f"鉂� Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
+            logging.error(f"❗ Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
             return None
 
     async def _get_groq_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
         """Get analysis from Groq API"""
         if not self.groq_api_key:
-            logging.warning(f"鉂� Groq API key not available for {symbol}")
+            logging.warning(f"⚠️ Groq API key not available for {symbol}")
             return None
             
         try:
@@ -1274,15 +1301,15 @@ Return ONLY this JSON format (NO other text):
                             content = data["choices"][0]["message"]["content"]
                             return self._parse_ai_response(content, symbol, f"Groq-{model_name}")
                         else:
-                            logging.warning(f"鉂� No choices in Groq response for {symbol}: {data}")
+                            logging.warning(f"⚠️ No choices in Groq response for {symbol}: {data}")
                             return None
                     else:
                         error_text = await response.text()
-                        logging.error(f"鉂� Groq API error for {symbol}: {response.status} - {error_text}")
+                        logging.error(f"❗ Groq API error for {symbol}: {response.status} - {error_text}")
                         return None
                         
         except Exception as e:
-            logging.error(f"鉂� Groq/{model_name} analysis error for {symbol}: {str(e)}")
+            logging.error(f"❗ Groq/{model_name} analysis error for {symbol}: {str(e)}")
             return None
 
     def _parse_ai_response(self, response, symbol: str, ai_name: str) -> Optional[Dict]:
@@ -1310,18 +1337,18 @@ Return ONLY this JSON format (NO other text):
                     signal_data['timestamp'] = datetime.now(UTC).isoformat()
                     signal_data = self._validate_numeric_values(signal_data, symbol)
 
-                    logging.info(f"鉁� {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
+                    logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
 
             # NEW: If JSON parsing fails, try text extraction
-            logging.warning(f"鉂� {ai_name} response for {symbol} lacks valid JSON format, trying text extraction...")
+            logging.warning(f"⚠️ {ai_name} response for {symbol} lacks valid JSON format, trying text extraction...")
             return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
 
         except json.JSONDecodeError as e:
-            logging.warning(f"鉂� JSON error in {ai_name} response for {symbol}, trying text extraction: {e}")
+            logging.warning(f"⚠️ JSON error in {ai_name} response for {symbol}, trying text extraction: {e}")
             return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
         except Exception as e:
-            logging.error(f"鉂� Error parsing {ai_name} response for {symbol}: {str(e)}")
+            logging.error(f"❗ Error parsing {ai_name} response for {symbol}: {str(e)}")
             return None
 
     def _extract_signal_from_text(self, text: str, symbol: str, ai_name: str) -> Optional[Dict]:
@@ -1353,11 +1380,11 @@ Return ONLY this JSON format (NO other text):
                 "ai_model": ai_name + "-TEXT_EXTRACTED"
             }
             
-            logging.info(f"鉁� {ai_name} text-extracted signal for {symbol}: {action}")
+            logging.info(f"✅ {ai_name} text-extracted signal for {symbol}: {action}")
             return signal_data
             
         except Exception as e:
-            logging.warning(f"鉂� Text extraction failed for {symbol}: {e}")
+            logging.warning(f"⚠️ Text extraction failed for {symbol}: {e}")
             return None
 
     def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
@@ -1365,21 +1392,21 @@ Return ONLY this JSON format (NO other text):
         required_fields = ['SYMBOL', 'ACTION', 'CONFIDENCE']
         for field in required_fields:
             if field not in signal_data:
-                logging.warning(f"鉂� Required field {field} missing in signal for {symbol}")
+                logging.warning(f"⚠️ Required field {field} missing in signal for {symbol}")
                 return False
                 
         action = signal_data['ACTION'].upper()
         if action not in ['BUY', 'SELL', 'HOLD']:
-            logging.warning(f"鉂� Invalid ACTION for {symbol}: {action}")
+            logging.warning(f"⚠️ Invalid ACTION for {symbol}: {action}")
             return False
             
         try:
             confidence = float(signal_data['CONFIDENCE'])
             if not (1 <= confidence <= 10):
-                logging.warning(f"鉂� CONFIDENCE out of range for {symbol}: {confidence}")
+                logging.warning(f"⚠️ CONFIDENCE out of range for {symbol}: {confidence}")
                 return False
         except (ValueError, TypeError):
-            logging.warning(f"鉂� Invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
+            logging.warning(f"⚠️ Invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
             return False
             
         return True
@@ -1423,7 +1450,7 @@ Return ONLY this JSON format (NO other text):
             except (ValueError, TypeError):
                 confidence_sum[action] = confidence_sum.get(action, 0) + 5  # Default value
         
-        logging.info(f"馃搳 Signal combination for {symbol}: {action_counts}")
+        logging.info(f"📊 Signal combination for {symbol}: {action_counts}")
         
         total_valid = len(valid_results)
         max_agreement = max(action_counts.values()) if action_counts else 0
@@ -1570,7 +1597,7 @@ class AdvancedTechnicalAnalyzer:
                     logging.warning(f"Failed to calculate {indicator}: {e}")
 
             # Advanced indicators
-            advanced_indicators = ['SUPERT_7_3.0', 'PSARl_0.02_0.2', 'DCP_20', 'DCM_20', 'DCU_20']
+            advanced_indicators = ['SUPERT_7_3.0', 'SUPERTd_7_3.0', 'PSARl_0.02_0.2', 'DCP_20', 'DCM_20', 'DCU_20']
             for indicator in advanced_indicators:
                 try:
                     if indicator.startswith('SUPERT'):
@@ -1583,10 +1610,10 @@ class AdvancedTechnicalAnalyzer:
                 except Exception as e:
                     logging.warning(f"Failed to calculate {indicator}: {e}")
 
-            # Ichimoku Cloud
+            # Ichimoku Cloud (correct column mapping)
             try:
                 df_indicators.ta.ichimoku(append=True)
-                indicators_added.extend(['ISA_9', 'ISB_26', 'ICS_26', 'ICB_26', 'ITS_9'])
+                indicators_added.extend(['ISA_9', 'ISB_26', 'ITS_9', 'IKS_26', 'ICS_26'])
             except Exception as e:
                 logging.warning(f"Failed to calculate Ichimoku: {e}")
 
@@ -1638,11 +1665,11 @@ class AdvancedTechnicalAnalyzer:
                 # Keep recent data even with some NaN values
                 df_indicators = df_indicators.tail(100).fillna(method='ffill').fillna(method='bfill')
 
-            logging.info(f"鉁� Successfully calculated {len(indicators_added)} indicators for {len(df_indicators)} rows")
+            logging.info(f"✅ Successfully calculated {len(indicators_added)} indicators for {len(df_indicators)} rows")
             return df_indicators
             
         except Exception as e:
-            logging.error(f"鉂� Critical error in indicator calculation: {e}")
+            logging.error(f"❗ Critical error in indicator calculation: {e}")
             # Fallback: return original DataFrame with basic indicators
             return self._calculate_basic_indicators(df)
 
@@ -1664,11 +1691,11 @@ class AdvancedTechnicalAnalyzer:
             df_basic['res_1'] = df_basic['high'].rolling(20, min_periods=1).max().shift(1)
             
             df_basic = df_basic.dropna()
-            logging.info("鉁� Basic indicators calculated as fallback")
+            logging.info("✅ Basic indicators calculated as fallback")
             return df_basic
             
         except Exception as e:
-            logging.error(f"鉂� Even basic indicators failed: {e}")
+            logging.error(f"❗ Even basic indicators failed: {e}")
             return None
 
     def generate_comprehensive_analysis(self, symbol: str, htf_df: pd.DataFrame, ltf_df: pd.DataFrame) -> Dict:
@@ -1725,7 +1752,7 @@ class AdvancedTechnicalAnalyzer:
             }
             
         except Exception as e:
-            logging.error(f"鉂� Error generating technical analysis for {symbol}: {e}")
+            logging.error(f"❗ Error generating technical analysis for {symbol}: {e}")
             # Return basic analysis as fallback
             return self._generate_basic_analysis(symbol, htf_df, ltf_df)
 
@@ -1821,7 +1848,7 @@ class AdvancedTechnicalAnalyzer:
                 'timestamp': datetime.now(UTC).isoformat()
             }
         except Exception as e:
-            logging.error(f"鉂� Even basic analysis failed for {symbol}: {e}")
+            logging.error(f"❗ Even basic analysis failed for {symbol}: {e}")
             return None
             
     def _analyze_enhanced_trend(self, current: pd.Series, previous: pd.Series, df: pd.DataFrame) -> Dict:
@@ -1862,11 +1889,12 @@ class AdvancedTechnicalAnalyzer:
             else:
                 trend_strength = "WEAK"
 
-            # Ichimoku analysis
+            # Ichimoku analysis (fixed mapping inside helper)
             ichimoku_signal = self._analyze_ichimoku(current)
             
-            # SuperTrend signal
-            supertrend_signal = "BULLISH" if current.get('SUPERT_7_3.0', '') == 'up' else "BEARISH"
+            # SuperTrend signal (use direction column)
+            st_dir = current.get('SUPERTd_7_3.0', 0)
+            supertrend_signal = "BULLISH" if st_dir > 0 else "BEARISH" if st_dir < 0 else "NEUTRAL"
 
             return {
                 'direction': trend_direction,
@@ -1891,17 +1919,14 @@ class AdvancedTechnicalAnalyzer:
             }
 
     def _analyze_ichimoku(self, data: pd.Series) -> str:
-        """Analyze Ichimoku Cloud signals with error handling"""
+        """Analyze Ichimoku Cloud signals with error handling (correct column names)"""
         try:
-            tenkan = data.get('ISA_9', data['close'])
-            kijun = data.get('ISB_26', data['close'])
-            senkou_a = data.get('ICS_26', data['close'])
-            senkou_b = data.get('ICB_26', data['close'])
-            chikou = data.get('ITS_9', data['close'])
-            price = data['close']
-            
-            # Cloud analysis
-            cloud_bullish = senkou_a > senkou_b
+            tenkan    = data.get('ITS_9',  data['close'])   # Tenkan
+            kijun     = data.get('IKS_26', data['close'])   # Kijun
+            senkou_a  = data.get('ISA_9',  data['close'])   # Span A
+            senkou_b  = data.get('ISB_26', data['close'])   # Span B
+            chikou    = data.get('ICS_26', data['close'])   # Chikou
+            price     = data['close']
             
             # Signal generation
             if price > max(senkou_a, senkou_b) and tenkan > kijun and chikou > price:
@@ -2177,7 +2202,7 @@ class AdvancedTechnicalAnalyzer:
             logging.warning(f"Risk assessment error: {e}")
             return {'risk_level': 'MEDIUM', 'volatility_percent': 0, 'atr_value': 0, 'current_range_percent': 0}
 
-# =================================================================================
+ # =================================================================================
 # --- Enhanced Trade Filter with Flexible Settings ---
 # =================================================================================
 
@@ -2199,26 +2224,26 @@ class EnhancedTradeFilter:
         
         # Cooldown check
         if not self._check_cooldown(symbol, now):
-            logging.info(f"鈴革笍 {symbol} in cooldown period")
+            logging.info(f"🛑 {symbol} in cooldown period")
             return False
             
         # Volatility check (now more flexible)
         volatility_ok, volatility_value = self._check_volatility(technical_analysis)
         if not volatility_ok:
-            logging.info(f"馃搳 {symbol} volatility {volatility_value:.2f}% outside extended range [{self.min_volatility}%-{self.max_volatility}%]")
+            logging.info(f"📊 {symbol} volatility {volatility_value:.2f}% outside extended range [{self.min_volatility}%-{self.max_volatility}%]")
             return False
             
         # Market hours consideration (optional)
         if not self._check_market_hours(now):
-            logging.warning(f"鈴� {symbol} outside optimal trading hours - but continuing")
+            logging.warning(f"⏰ {symbol} outside optimal trading hours - but continuing")
             # return False  # Comment out for more signals
             
         # Trend strength check (relaxed)
         if not self._check_trend_strength(technical_analysis):
-            logging.warning(f"馃搱 {symbol} trend weak but continuing analysis")
+            logging.warning(f"ℹ️ {symbol} trend weak but continuing analysis")
             # return False  # Comment out for more signals
             
-        logging.info(f"鉁� Trade filter PASSED for {symbol} (volatility: {volatility_value:.2f}%)")
+        logging.info(f"✅ Trade filter PASSED for {symbol} (volatility: {volatility_value:.2f}%)")
         return True
 
     def _check_cooldown(self, symbol: str, now: datetime) -> bool:
@@ -2248,7 +2273,7 @@ class EnhancedTradeFilter:
     def mark_stopout(self, symbol: str):
         """Record stopout for cooldown period"""
         self.last_stopout_time[symbol] = datetime.now(UTC)
-        logging.info(f"馃洃 Stopout recorded for {symbol}, cooldown activated")
+        logging.info(f"💥 Stopout recorded for {symbol}, cooldown activated")
 
 # =================================================================================
 # --- Advanced Risk Manager ---
@@ -2361,6 +2386,8 @@ class AdvancedRiskManager:
         reward = abs(take_profit - current_price)
         actual_rr = reward / risk if risk > 0 else 1.8
         signal['ACTUAL_RR_RATIO'] = round(actual_rr, 2)
+        # Reflect in RISK_REWARD_RATIO too for transparency
+        signal['RISK_REWARD_RATIO'] = str(round(actual_rr, 2))
         
         return signal
 
@@ -2522,11 +2549,11 @@ class GeminiDirectSignalAgent:
             if k:
                 genai.configure(api_key=k)
                 self.available = True
-                logging.info(f"鉁� GeminiDirectSignalAgent initialized with {model_name}")
+                logging.info(f"✅ GeminiDirectSignalAgent initialized with {model_name}")
             else:
-                logging.warning("鈿狅笍 GeminiDirectSignalAgent: GOOGLE_API_KEY not set.")
+                logging.warning("⚠️ GeminiDirectSignalAgent: GOOGLE_API_KEY not set.")
         except Exception as e:
-            logging.error(f"鉂� GeminiDirectSignalAgent init error: {e}")
+            logging.error(f"❗ GeminiDirectSignalAgent init error: {e}")
 
     def _create_enhanced_prompt(self, symbol: str, ta: Dict) -> str:
         """Create enhanced prompt for better signal generation"""
@@ -2595,14 +2622,14 @@ Return EXACT JSON format:
                 text = self._extract_text(response)
                 data = self._clean_parse(text)
                 if data and self._validate_direct_signal(data, symbol):
-                    logging.info(f"鉁� GeminiDirect signal for {symbol}: {data.get('ACTION', 'HOLD')}")
+                    logging.info(f"✅ GeminiDirect signal for {symbol}: {data.get('ACTION', 'HOLD')}")
                     return data
                     
             except Exception as e:
-                logging.warning(f"鈿狅笍 GeminiDirect primary model failed: {e}")
+                logging.warning(f"⚠️ GeminiDirect primary model failed: {e}")
                 # Try fallback model
                 if self.model_name != self.fallback_model:
-                    logging.info(f"馃攧 Trying fallback model: {self.fallback_model}")
+                    logging.info(f"🧪 Trying fallback model: {self.fallback_model}")
                     model = genai.GenerativeModel(self.fallback_model)
                     response = await asyncio.to_thread(
                         model.generate_content,
@@ -2615,13 +2642,13 @@ Return EXACT JSON format:
                     text = self._extract_text(response)
                     data = self._clean_parse(text)
                     if data and self._validate_direct_signal(data, symbol):
-                        logging.info(f"鉁� GeminiDirect (fallback) signal for {symbol}: {data.get('ACTION', 'HOLD')}")
+                        logging.info(f"✅ GeminiDirect (fallback) signal for {symbol}: {data.get('ACTION', 'HOLD')}")
                         return data
 
             return None
             
         except Exception as e:
-            logging.error(f"鉂� GeminiDirectSignalAgent error for {symbol}: {e}")
+            logging.error(f"❗ GeminiDirectSignalAgent error for {symbol}: {e}")
             return None
 
     def _extract_text(self, resp) -> Optional[str]:
@@ -2693,21 +2720,21 @@ Return EXACT JSON format:
         required = ['SYMBOL', 'ACTION', 'CONFIDENCE']
         for field in required:
             if field not in signal_data:
-                logging.warning(f"鉂� GeminiDirect missing field {field} for {symbol}")
+                logging.warning(f"⚠️ GeminiDirect missing field {field} for {symbol}")
                 return False
                 
         action = signal_data['ACTION'].upper()
         if action not in ['BUY', 'SELL', 'HOLD']:
-            logging.warning(f"鉂� GeminiDirect invalid ACTION for {symbol}: {action}")
+            logging.warning(f"⚠️ GeminiDirect invalid ACTION for {symbol}: {action}")
             return False
             
         try:
             confidence = float(signal_data['CONFIDENCE'])
             if not (1 <= confidence <= 10):
-                logging.warning(f"鉂� GeminiDirect CONFIDENCE out of range for {symbol}: {confidence}")
+                logging.warning(f"⚠️ GeminiDirect CONFIDENCE out of range for {symbol}: {confidence}")
                 return False
         except (ValueError, TypeError):
-            logging.warning(f"鉂� GeminiDirect invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
+            logging.warning(f"⚠️ GeminiDirect invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
             return False
             
         return True
@@ -2734,7 +2761,7 @@ class ImprovedForexAnalyzer:
 
     async def analyze_pair(self, pair: str) -> Optional[Dict]:
         """Complete analysis with flexible filtering and robust fallbacks"""
-        logging.info(f"馃攳 Starting enhanced analysis for {pair}")
+        logging.info(f"🚀 Starting enhanced analysis for {pair}")
         start_time = time.time()
         
         try:
@@ -2745,18 +2772,18 @@ class ImprovedForexAnalyzer:
             ltf_df = await self.data_fetcher.get_market_data(pair, LOW_TIMEFRAME)
             
             if htf_df is None or ltf_df is None:
-                logging.warning(f"鈿狅笍 Market data retrieval failed for {pair}")
+                logging.warning(f"⚠️ Market data retrieval failed for {pair}")
                 self.performance_monitor.record_failure()
                 return None
                 
-            logging.info(f"鉁� Retrieved data: HTF={len(htf_df)} rows, LTF={len(ltf_df)} rows")
+            logging.info(f"✅ Retrieved data: HTF={len(htf_df)} rows, LTF={len(ltf_df)} rows")
             
             # Technical analysis
             htf_df_processed = self.technical_analyzer.calculate_enhanced_indicators(htf_df)
             ltf_df_processed = self.technical_analyzer.calculate_enhanced_indicators(ltf_df)
             
             if htf_df_processed is None or ltf_df_processed is None:
-                logging.warning(f"鈿狅笍 Technical analysis failed for {pair}")
+                logging.warning(f"⚠️ Technical analysis failed for {pair}")
                 htf_df_processed = self.technical_analyzer._calculate_basic_indicators(htf_df)
                 ltf_df_processed = self.technical_analyzer._calculate_basic_indicators(ltf_df)
                 if htf_df_processed is None or ltf_df_processed is None:
@@ -2768,30 +2795,31 @@ class ImprovedForexAnalyzer:
             )
             
             if not technical_analysis:
-                logging.warning(f"鈿狅笍 Technical analysis generation failed for {pair}")
+                logging.warning(f"⚠️ Technical analysis generation failed for {pair}")
                 self.performance_monitor.record_failure()
                 return None
 
             # Trade filter check (flexible)
             if self.strict_filters:
                 if not self.trade_filter.can_trade(pair, technical_analysis):
-                    logging.info(f"鈴革笍 Trade filter blocked {pair}")
+                    logging.info(f"🛑 Trade filter blocked {pair}")
                     self.performance_monitor.record_success()
                     return None
+                volatility_ok = True
             else:
                 # Just log the volatility info but don't block
                 volatility_ok, volatility_value = self.trade_filter._check_volatility(technical_analysis)
                 if not volatility_ok:
-                    logging.warning(f"鈿狅笍 {pair} volatility {volatility_value:.2f}% outside optimal range but continuing...")
+                    logging.warning(f"⚠️ {pair} volatility {volatility_value:.2f}% outside optimal range but continuing...")
                 else:
-                    logging.info(f"鉁� {pair} volatility {volatility_value:.2f}% within acceptable range")
+                    logging.info(f"✅ {pair} volatility {volatility_value:.2f}% within acceptable range")
                 
             # AI analysis (ensemble with robust fallbacks)
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
 
             # Gemini direct as additional backup
             if not ai_analysis and self.gemini_direct.available:
-                logging.info(f"馃攧 Trying GeminiDirect as additional backup for {pair}")
+                logging.info(f"🧪 Trying GeminiDirect as additional backup for {pair}")
                 direct_signal = await self.gemini_direct.fetch_signal(pair, technical_analysis)
                 if direct_signal:
                     ai_analysis = direct_signal
@@ -2815,30 +2843,30 @@ class ImprovedForexAnalyzer:
                     'key_support': technical_analysis.get('key_levels', {}).get('support_1', 0),
                     'key_resistance': technical_analysis.get('key_levels', {}).get('resistance_1', 0),
                     'volatility': technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0),
-                    'volatility_status': 'OPTIMAL' if volatility_ok else 'EXTENDED_RANGE'
+                    'volatility_status': 'OPTIMAL' if (self.strict_filters or volatility_ok) else 'EXTENDED_RANGE'
                 }
                 
                 analysis_duration = time.time() - start_time
                 self.performance_monitor.record_analysis_time(pair, analysis_duration)
                 self.performance_monitor.record_success()
                 
-                logging.info(f"鉁� Enhanced signal for {pair}: {ai_analysis['ACTION']} "
+                logging.info(f"✅ Enhanced signal for {pair}: {ai_analysis['ACTION']} "
                            f"(Quality: {quality_score}/100, Agreement: {ai_analysis.get('AGREEMENT_LEVEL', 0)}/{ai_analysis.get('TOTAL_MODELS', 0)})")
                 return ai_analysis
                 
             self.performance_monitor.record_failure()
-            logging.info(f"馃攳 No trading signal for {pair}")
+            logging.info(f"ℹ️ No trading signal for {pair}")
             return None
             
         except Exception as e:
             self.performance_monitor.record_failure()
-            logging.error(f"鉂� Error analyzing {pair}: {str(e)}")
-            logging.error(f"鉂� Traceback: {traceback.format_exc()}")
+            logging.error(f"❗ Error analyzing {pair}: {str(e)}")
+            logging.error(f"❗ Traceback: {traceback.format_exc()}")
             return None
 
     async def analyze_all_pairs(self, pairs: List[str]) -> List[Dict]:
         """Analyze all currency pairs with enhanced processing"""
-        logging.info(f"馃殌 Starting enhanced analysis for {len(pairs)} currency pairs")
+        logging.info(f"🗂️ Starting enhanced analysis for {len(pairs)} currency pairs")
         
         # Initialize models first
         await self.api_manager.initialize_models()
@@ -2854,11 +2882,11 @@ class ImprovedForexAnalyzer:
         # Sort by quality score
         valid_signals.sort(key=lambda x: x.get('QUALITY_SCORE', 0), reverse=True)
         
-        logging.info(f"馃搳 Enhanced analysis complete. {len(valid_signals)} valid signals")
+        logging.info(f"📊 Enhanced analysis complete. {len(valid_signals)} valid signals")
         
         # Log performance statistics
         perf_stats = self.performance_monitor.get_performance_stats()
-        logging.info(f"馃搱 Performance Statistics: {json.dumps(perf_stats, indent=2)}")
+        logging.info(f"📈 Performance Statistics: {json.dumps(perf_stats, indent=2)}")
         
         return valid_signals
 
@@ -2867,10 +2895,10 @@ class ImprovedForexAnalyzer:
         import os
         
         current_dir = os.getcwd()
-        logging.info(f"馃搧 Current directory for file saving: {current_dir}")
+        logging.info(f"📁 Current directory for file saving: {current_dir}")
         
         if not signals:
-            logging.info("馃摑 No signals to save")
+            logging.info("🗒️ No signals to save")
             # Create empty files
             empty_data = []
             try:
@@ -2882,9 +2910,9 @@ class ImprovedForexAnalyzer:
                 for filename in files_to_create:
                     with open(filename, 'w', encoding='utf-8') as f:
                         json.dump(empty_data, f, indent=2, ensure_ascii=False)
-                    logging.info(f"馃捑 Empty file created: {filename}")
+                    logging.info(f"📝 Empty file created: {filename}")
             except Exception as e:
-                logging.error(f"鉂� Error creating empty files: {e}")
+                logging.error(f"❗ Error creating empty files: {e}")
             return
 
         # Enhanced categorization with quality scoring
@@ -2909,17 +2937,17 @@ class ImprovedForexAnalyzer:
             # Strong signals
             with open("strong_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(strong_signals, f, indent=2, ensure_ascii=False)
-            logging.info(f"馃捑 {len(strong_signals)} strong signals saved")
+            logging.info(f"📝 {len(strong_signals)} strong signals saved")
             
             # Medium signals  
             with open("medium_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(medium_signals, f, indent=2, ensure_ascii=False)
-            logging.info(f"馃捑 {len(medium_signals)} medium signals saved")
+            logging.info(f"📝 {len(medium_signals)} medium signals saved")
             
             # Weak signals
             with open("weak_consensus_signals.json", 'w', encoding='utf-8') as f:
                 json.dump(weak_signals, f, indent=2, ensure_ascii=False)
-            logging.info(f"馃捑 {len(weak_signals)} weak signals saved")
+            logging.info(f"📝 {len(weak_signals)} weak signals saved")
             
             # Create summary file
             summary = {
@@ -2933,18 +2961,18 @@ class ImprovedForexAnalyzer:
             
             with open("analysis_summary.json", 'w', encoding='utf-8') as f:
                 json.dump(summary, f, indent=2, ensure_ascii=False)
-            logging.info("馃捑 Analysis summary saved")
+            logging.info("📝 Analysis summary saved")
             
             # Verify file creation
             for filename in ["strong_consensus_signals.json", "medium_consensus_signals.json", 
                            "weak_consensus_signals.json", "analysis_summary.json"]:
                 if os.path.exists(filename):
-                    logging.info(f"鉁� File {filename} successfully created")
+                    logging.info(f"✅ File {filename} successfully created")
                 else:
-                    logging.error(f"鉂� File {filename} not created!")
+                    logging.error(f"❗ File {filename} not created!")
                     
         except Exception as e:
-            logging.error(f"鉂� Error saving signals: {e}")
+            logging.error(f"❗ Error saving signals: {e}")
 
 # =================================================================================
 # --- Installation Helper ---
@@ -2964,13 +2992,13 @@ def install_required_packages():
                 import aiohttp
             elif package == 'scipy':
                 import scipy
-            print(f"鉁� {package} is already installed")
+            print(f"✅ {package} is already installed")
         except ImportError:
-            print(f"馃摝 Installing {package}...")
+            print(f"📦 Installing {package}...")
             import subprocess
             import sys
             subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-            print(f"鉁� {package} installed successfully!")
+            print(f"✅ {package} installed successfully!")
 
 # =================================================================================
 # --- Main Function ---
@@ -2978,7 +3006,7 @@ def install_required_packages():
 
 async def main():
     """Main program execution function"""
-    logging.info("馃幆 Starting Enhanced Forex Analysis System (Advanced AI Engine)")
+    logging.info("🧠 Starting Enhanced Forex Analysis System (Advanced AI Engine)")
     
     # Install required packages
     install_required_packages()
@@ -3005,9 +3033,9 @@ async def main():
         pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE
     else:
         pairs_to_analyze = CURRENCY_PAIRS_TO_ANALYZE[:4]  # Default to first 4 pairs
-        logging.info(f"馃攳 Using default currency pairs: {', '.join(pairs_to_analyze)}")
+        logging.info(f"🧪 Using default currency pairs: {', '.join(pairs_to_analyze)}")
     
-    logging.info(f"馃幆 Currency pairs to analyze: {', '.join(pairs_to_analyze)}")
+    logging.info(f"🧠 Currency pairs to analyze: {', '.join(pairs_to_analyze)}")
     
     # Use strict filters only if explicitly requested
     analyzer = ImprovedForexAnalyzer(strict_filters=args.strict)
@@ -3018,13 +3046,13 @@ async def main():
     analyzer.risk_manager.kelly_cap = args.kelly_cap
     analyzer.risk_manager.max_leverage = args.max_lev
 
-    logging.info(f"鈿欙笍 Risk Configuration: Equity=${args.equity:.0f}, Risk={args.risk_pct}%, "
+    logging.info(f"✨ Risk Configuration: Equity=${args.equity:.0f}, Risk={args.risk_pct}%, "
                f"Kelly Cap={args.kelly_cap}, Max Leverage={args.max_lev}x")
-    logging.info(f"鈿欙笍 Filter Mode: {'STRICT' if args.strict else 'FLEXIBLE'}")
+    logging.info(f"✨ Filter Mode: {'STRICT' if args.strict else 'FLEXIBLE'}")
 
     # Optional: Disable Gemini if having quota issues
     # analyzer.api_manager.disable_gemini()
-    # logging.info("馃毇 Gemini disabled due to quota issues")
+    # logging.info("🚫 Gemini disabled due to quota issues")
 
     signals = await analyzer.analyze_all_pairs(pairs_to_analyze)
     
@@ -3032,22 +3060,22 @@ async def main():
     analyzer.save_signals(signals)
     
     # Display results
-    logging.info("馃搱 Enhanced Results Summary:")
+    logging.info("📊 Enhanced Results Summary:")
     strong_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'STRONG_CONSENSUS' or s.get('QUALITY_SCORE', 0) >= 70])
     medium_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'MEDIUM_CONSENSUS' or 50 <= s.get('QUALITY_SCORE', 0) < 70])
     weak_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'WEAK_CONSENSUS' or s.get('QUALITY_SCORE', 0) < 50])
     
     avg_quality = sum(s.get('QUALITY_SCORE', 0) for s in signals) / len(signals) if signals else 0
     
-    logging.info(f"馃幆 Strong signals: {strong_count}")
-    logging.info(f"馃搳 Medium signals: {medium_count}") 
-    logging.info(f"馃搱 Weak signals: {weak_count}")
-    logging.info(f"馃搵 Average Quality Score: {avg_quality:.1f}/100")
+    logging.info(f"🟢 Strong signals: {strong_count}")
+    logging.info(f"🟡 Medium signals: {medium_count}") 
+    logging.info(f"🔴 Weak signals: {weak_count}")
+    logging.info(f"📈 Average Quality Score: {avg_quality:.1f}/100")
     
     for signal in signals:
-        action_icon = "馃煝" if signal['ACTION'] == 'BUY' else "馃敶" if signal['ACTION'] == 'SELL' else "鈿�"
+        action_icon = "🟢" if signal['ACTION'] == 'BUY' else "🔴" if signal['ACTION'] == 'SELL' else "🟦"
         quality_score = signal.get('QUALITY_SCORE', 0)
-        quality_icon = "馃敟" if quality_score >= 80 else "鉁�" if quality_score >= 60 else "鈿狅笍"
+        quality_icon = "🔥" if quality_score >= 80 else "✅" if quality_score >= 60 else "⚠️"
         
         logging.info(f"  {action_icon} {quality_icon} {signal['SYMBOL']}: {signal['ACTION']} "
                    f"(Quality: {quality_score}/100, Conf: {signal.get('CONFIDENCE', 0)}/10)"
@@ -3056,14 +3084,14 @@ async def main():
     
     # Display enhanced statistics
     data_source_stats = analyzer.data_fetcher.get_data_source_stats()
-    logging.info("馃搳 Data Source Statistics:")
+    logging.info("📦 Data Source Statistics:")
     for source, count in data_source_stats.items():
         logging.info(f"  {source}: {count} pairs")
     
     
     # Performance statistics
     perf_stats = analyzer.performance_monitor.get_performance_stats()
-    logging.info("馃殌 Enhanced Performance Statistics:")
+    logging.info("⚙️ Enhanced Performance Statistics:")
     logging.info(f"  Total Analyses: {perf_stats['total_analyses']}")
     logging.info(f"  Success Rate: {perf_stats['success_rate']}%")
     logging.info(f"  Avg Analysis Time: {perf_stats['avg_analysis_time_sec']}s")
@@ -3074,9 +3102,9 @@ async def main():
     logging.info(analyzer.api_manager.get_usage_summary())
     
     if signals:
-        logging.info("馃弫 Enhanced system execution completed successfully with signals!")
+        logging.info("🏁 Enhanced system execution completed successfully with signals!")
     else:
-        logging.info("馃弫 Enhanced system executed but no signals generated")
+        logging.info("🏁 Enhanced system executed but no signals generated")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main())           
