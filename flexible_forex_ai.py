@@ -65,41 +65,30 @@ LOG_FILE = "trading_log.log"
 
 # FIXED: Use ONLY free Gemini models
 GEMINI_FREE_MODELS = [
-    'gemini-flash-latest',
-    'gemini-2.5-flash-lite'
+    'gemini-1.5-flash',
+    'gemini-1.5-pro'
 ]
 
 GEMINI_MODEL = 'gemini-1.5-flash'  # Default free model
 GEMINI_FALLBACK_MODEL = 'gemini-1.5-pro'  # Fallback free model
 
-# Enhanced Cloudflare models
+# Enhanced Cloudflare models - Diverse AI families
 CLOUDFLARE_MODELS = [
-    "@cf/meta/llama-4-scout-17b-16e-instruct",
-    "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
-    "@cf/meta/llama-3.1-8b-instruct-fast",
-    "@cf/qwen/qwen2.5-7b-instruct",
-    "@cf/mistralai/mistral-small-3.1-24b-instruct"
+    "@cf/meta/llama-4-scout-17b-16e-instruct",  # Meta Llama
+    "@cf/mistralai/mistral-7b-instruct-v0.3",   # Mistral AI
+    "@cf/google/gemma-7b-it",                   # Google Gemma
+    "@cf/qwen/qwen1.5-7b-chat-awq",             # Qwen
+    "@cf/deepseek-ai/deepseek-math-7b-instruct" # DeepSeek
 ]
 
-# Enhanced Groq models
+# Enhanced Groq models - Diverse AI families
 GROQ_MODELS = [
-    "qwen/qwen3-32b",
-    "llama-3.3-70b-versatile",
-    "meta-llama/llama-4-maverick-17b-128e-instruct",
-    "meta-llama/llama-4-scout-17b-16e-instruct",
-    "llama-3.1-8b-instant",
-    "deepseek-ai/deepseek-r1-8b",
-    "deepseek-ai/deepseek-r1-32b"
+    "llama-3.3-70b-versatile",                  # Meta Llama
+    "qwen-2.5-32b",                             # Qwen
+    "mixtral-8x7b-32768",                       # Mistral
+    "gemma2-9b-it",                             # Google Gemma
+    "deepseek-r1-distill-qwen-32b"              # DeepSeek
 ]
-
-# NEW: Enhanced model diversity configuration
-DIVERSE_MODEL_TYPES = {
-    "gemini": ["gemini-1.5-flash", "gemini-1.5-pro"],
-    "llama": ["llama-3.3-70b-versatile", "meta-llama/llama-4-scout-17b-16e-instruct"],
-    "deepseek": ["deepseek-ai/deepseek-r1-8b", "deepseek-ai/deepseek-r1-32b"],
-    "qwen": ["qwen/qwen3-32b", "@cf/qwen/qwen2.5-7b-instruct"],
-    "mistral": ["@cf/mistralai/mistral-small-3.1-24b-instruct"]
-}
 
 # Daily API limits
 API_DAILY_LIMITS = {
@@ -126,70 +115,67 @@ logging.basicConfig(
 )
 
 # =================================================================================
-# --- NEW: Enhanced Model Diversity System ---
+# --- NEW: AI Model Diversity Manager ---
 # =================================================================================
 
-class ModelDiversityManager:
-    """Manager to ensure diverse AI model selection across different architectures"""
+class AIModelDiversityManager:
+    """Manager to ensure diverse AI model selection across different families"""
     
     def __init__(self):
-        self.model_categories = {
-            "gemini": {"provider": "google_gemini", "models": DIVERSE_MODEL_TYPES["gemini"]},
-            "llama": {"provider": "groq", "models": DIVERSE_MODEL_TYPES["llama"]},
-            "deepseek": {"provider": "groq", "models": DIVERSE_MODEL_TYPES["deepseek"]},
-            "qwen": {"provider": "groq", "models": DIVERSE_MODEL_TYPES["qwen"]},
-            "mistral": {"provider": "cloudflare", "models": DIVERSE_MODEL_TYPES["mistral"]}
+        self.model_families = {
+            'llama': ['llama', 'meta-llama'],
+            'gemini': ['gemini'],
+            'qwen': ['qwen'],
+            'mistral': ['mistral', 'mixtral'],
+            'gemma': ['gemma'],
+            'deepseek': ['deepseek'],
+            'claude': ['claude']
         }
-        self.preferred_model_combinations = [
-            ["gemini-1.5-flash", "llama-3.3-70b-versatile", "deepseek-ai/deepseek-r1-32b", 
-             "qwen/qwen3-32b", "@cf/mistralai/mistral-small-3.1-24b-instruct"],
-            ["gemini-1.5-pro", "meta-llama/llama-4-scout-17b-16e-instruct", "deepseek-ai/deepseek-r1-8b",
-             "@cf/qwen/qwen2.5-7b-instruct", "@cf/meta/llama-3.1-8b-instruct-fast"]
-        ]
-    
-    def get_diverse_model_combination(self, available_models: Dict[str, List[str]], 
-                                    target_count: int = 5) -> List[Tuple[str, str]]:
-        """Select diverse models from different architectures"""
-        selected_models = []
         
-        # Try preferred combinations first
-        for combination in self.preferred_model_combinations:
+    def get_model_family(self, model_name: str) -> str:
+        """Identify the AI family of a model"""
+        model_lower = model_name.lower()
+        for family, keywords in self.model_families.items():
+            if any(keyword in model_lower for keyword in keywords):
+                return family
+        return 'unknown'
+    
+    def select_diverse_models(self, available_models: List[Tuple[str, str]], target_count: int = 5) -> List[Tuple[str, str]]:
+        """Select models from diverse AI families"""
+        diversity_manager = AIModelDiversityManager()
+        selected_models = []
+        used_families = set()
+        
+        # First pass: try to get one model from each family
+        for provider, model in available_models:
             if len(selected_models) >= target_count:
                 break
-                
-            for model_name in combination:
-                provider = self._find_model_provider(model_name, available_models)
-                if provider and (provider, model_name) not in selected_models:
-                    selected_models.append((provider, model_name))
-                    if len(selected_models) >= target_count:
-                        break
+            family = diversity_manager.get_model_family(model)
+            if family not in used_families:
+                selected_models.append((provider, model))
+                used_families.add(family)
+                logging.info(f"馃幆 Selected diverse model: {provider}/{model} (Family: {family})")
         
-        # If not enough diverse models, fill with any available
-        if len(selected_models) < target_count:
-            self._fill_remaining_slots(selected_models, available_models, target_count)
+        # Second pass: fill remaining slots with any available models
+        for provider, model in available_models:
+            if len(selected_models) >= target_count:
+                break
+            if (provider, model) not in selected_models:
+                selected_models.append((provider, model))
+                family = diversity_manager.get_model_family(model)
+                logging.info(f"馃幆 Added additional model: {provider}/{model} (Family: {family})")
         
-        logging.info(f"馃幆 Diverse model selection: {[f'{p}/{m}' for p, m in selected_models]}")
+        # Log diversity summary
+        family_count = {}
+        for provider, model in selected_models:
+            family = diversity_manager.get_model_family(model)
+            family_count[family] = family_count.get(family, 0) + 1
+        
+        logging.info(f"馃寛 Model Diversity: {family_count}")
         return selected_models
-    
-    def _find_model_provider(self, model_name: str, available_models: Dict[str, List[str]]) -> Optional[str]:
-        """Find which provider has the model"""
-        for provider, models in available_models.items():
-            if model_name in models:
-                return provider
-        return None
-    
-    def _fill_remaining_slots(self, selected_models: List[Tuple[str, str]], 
-                            available_models: Dict[str, List[str]], target_count: int):
-        """Fill remaining slots with available models"""
-        for provider, models in available_models.items():
-            for model in models:
-                if (provider, model) not in selected_models:
-                    selected_models.append((provider, model))
-                    if len(selected_models) >= target_count:
-                        return
 
 # =================================================================================
-# --- NEW: Free Tier Model Filter System ---
+# --- Enhanced Free Tier Model Filter System ---
 # =================================================================================
 
 class FreeTierModelFilter:
@@ -200,8 +186,8 @@ class FreeTierModelFilter:
         """Filter Gemini models to only include free tier ones"""
         free_models = []
         for model in available_models:
-            # Only allow free tier models
-            if any(free_model in model.lower() for free_model in ['gemini-1.5-flash', 'gemini-1.5-pro']):
+            # Only allow free tier models - updated for newer Gemini models
+            if any(free_model in model.lower() for free_model in ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash-exp']):
                 free_models.append(model)
         
         # If no free models found, use our predefined free models
@@ -214,14 +200,15 @@ class FreeTierModelFilter:
     @staticmethod
     def is_free_tier_model(model_name: str) -> bool:
         """Check if a model is in free tier"""
-        return any(free_model in model_name.lower() for free_model in ['gemini-1.5-flash', 'gemini-1.5-pro'])
+        return any(free_model in model_name.lower() for free_model in 
+                  ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash-exp'])
 
 # =================================================================================
-# --- NEW: Dynamic Model Discovery System with Enhanced Diversity ---
+# --- NEW: Advanced Dynamic Model Discovery System ---
 # =================================================================================
 
-class DynamicModelDiscoverer:
-    """Discover available models from AI providers dynamically with enhanced diversity"""
+class AdvancedDynamicModelDiscoverer:
+    """Enhanced model discovery with diversity tracking and family classification"""
     
     def __init__(self):
         self.available_models = {
@@ -235,7 +222,7 @@ class DynamicModelDiscoverer:
             "groq": GROQ_MODELS
         }
         self.model_filter = FreeTierModelFilter()
-        self.diversity_manager = ModelDiversityManager()
+        self.diversity_manager = AIModelDiversityManager()
         
     async def discover_models(self) -> Dict[str, List[str]]:
         """Discover available models from all providers with enhanced diversity"""
@@ -247,50 +234,52 @@ class DynamicModelDiscoverer:
         
         results = await asyncio.gather(*discovery_tasks, return_exceptions=True)
         
-        # Process results
+        # Process results with enhanced error handling
         for i, result in enumerate(results):
             provider = list(self.available_models.keys())[i]
             if isinstance(result, Exception):
                 logging.warning(f"鉂� Model discovery failed for {provider}: {result}")
-                # Use fallback models
-                self.available_models[provider] = self.fallback_models[provider]
+                # Use fallback models but ensure diversity
+                self.available_models[provider] = self._ensure_fallback_diversity(provider)
             elif result:
                 self.available_models[provider] = result
             else:
-                self.available_models[provider] = self.fallback_models[provider]
+                self.available_models[provider] = self._ensure_fallback_diversity(provider)
                 
         # Apply free tier filter for Gemini
         self.available_models["google_gemini"] = self.model_filter.filter_gemini_models(
             self.available_models["google_gemini"]
         )
-                
-        logging.info(f"馃幆 Discovered models: Gemini({len(self.available_models['google_gemini'])}), "
-                   f"Cloudflare({len(self.available_models['cloudflare'])}), "
-                   f"Groq({len(self.available_models['groq'])})")
         
-        # Log specific model types for diversity verification
+        # Log model diversity
         self._log_model_diversity()
                    
         return self.available_models
     
-    def _log_model_diversity(self):
-        """Log the diversity of available models"""
-        model_types = {}
-        for provider, models in self.available_models.items():
-            for model in models:
-                if 'gemini' in model.lower():
-                    model_types.setdefault('gemini', []).append(model)
-                elif 'llama' in model.lower():
-                    model_types.setdefault('llama', []).append(model)
-                elif 'deepseek' in model.lower():
-                    model_types.setdefault('deepseek', []).append(model)
-                elif 'qwen' in model.lower():
-                    model_types.setdefault('qwen', []).append(model)
-                elif 'mistral' in model.lower():
-                    model_types.setdefault('mistral', []).append(model)
+    def _ensure_fallback_diversity(self, provider: str) -> List[str]:
+        """Ensure fallback models maintain diversity"""
+        fallback_models = self.fallback_models[provider].copy()
         
-        logging.info(f"馃寛 Model diversity: { {k: len(v) for k, v in model_types.items()} }")
+        # For Gemini, only return free models
+        if provider == "google_gemini":
+            return self.model_filter.filter_gemini_models(fallback_models)
+            
+        return fallback_models
     
+    def _log_model_diversity(self):
+        """Log the diversity of discovered models"""
+        for provider, models in self.available_models.items():
+            families = {}
+            for model in models:
+                family = self.diversity_manager.get_model_family(model)
+                families[family] = families.get(family, 0) + 1
+            logging.info(f"馃寛 {provider} model diversity: {families}")
+                
+        total_models = sum(len(models) for models in self.available_models.values())
+        logging.info(f"馃幆 Total discovered models: Gemini({len(self.available_models['google_gemini'])}), "
+                   f"Cloudflare({len(self.available_models['cloudflare'])}), "
+                   f"Groq({len(self.available_models['groq'])})")
+
     async def _discover_gemini_models(self) -> List[str]:
         """Discover available Gemini models with free tier filtering"""
         if not google_api_key:
@@ -324,7 +313,7 @@ class DynamicModelDiscoverer:
             return self.fallback_models["google_gemini"]
     
     async def _discover_cloudflare_models(self) -> List[str]:
-        """Discover available Cloudflare models"""
+        """Discover available Cloudflare models with enhanced error handling"""
         if not CLOUDFLARE_AI_API_KEY:
             return self.fallback_models["cloudflare"]
             
@@ -344,20 +333,10 @@ class DynamicModelDiscoverer:
                         models = [model.get("id") for model in data.get("result", []) if model.get("id")]
                         
                         # Prioritize diverse models
-                        diverse_models = []
-                        for category in ["mistral", "qwen", "llama"]:
-                            for model in models:
-                                if category in model.lower() and model not in diverse_models:
-                                    diverse_models.append(model)
-                                    break
-                        
-                        # Add remaining models
-                        for model in models:
-                            if model not in diverse_models:
-                                diverse_models.append(model)
-                                
+                        diverse_models = self._prioritize_diverse_models(models, "cloudflare")
                         return diverse_models if diverse_models else self.fallback_models["cloudflare"]
                     else:
+                        logging.warning(f"鉂� Cloudflare API returned status {response.status}")
                         return self.fallback_models["cloudflare"]
                         
         except Exception as e:
@@ -365,7 +344,7 @@ class DynamicModelDiscoverer:
             return self.fallback_models["cloudflare"]
     
     async def _discover_groq_models(self) -> List[str]:
-        """Discover available Groq models with enhanced diversity"""
+        """Discover available Groq models with enhanced error handling"""
         if not GROQ_API_KEY:
             return self.fallback_models["groq"]
             
@@ -383,32 +362,42 @@ class DynamicModelDiscoverer:
                         data = await response.json()
                         models = [model["id"] for model in data.get("data", [])]
                         
-                        # Prioritize diverse model architectures
-                        diverse_models = []
-                        for category in ["deepseek", "qwen", "llama"]:
-                            for model in models:
-                                if category in model.lower() and model not in diverse_models:
-                                    diverse_models.append(model)
-                                    break
-                        
-                        # Add remaining models
-                        for model in models:
-                            if model not in diverse_models:
-                                diverse_models.append(model)
-                                
+                        # Prioritize diverse models
+                        diverse_models = self._prioritize_diverse_models(models, "groq")
                         return diverse_models if diverse_models else self.fallback_models["groq"]
                     else:
+                        logging.warning(f"鉂� Groq API returned status {response.status}")
                         return self.fallback_models["groq"]
                         
         except Exception as e:
             logging.warning(f"鉂� Groq model discovery failed: {e}")
             return self.fallback_models["groq"]
-
-    def get_diverse_models(self, target_count: int = 5) -> List[Tuple[str, str]]:
-        """Get diverse models from all available providers"""
-        return self.diversity_manager.get_diverse_model_combination(
-            self.available_models, target_count
-        )
+    
+    def _prioritize_diverse_models(self, models: List[str], provider: str) -> List[str]:
+        """Prioritize models to ensure diversity across AI families"""
+        if not models:
+            return models
+            
+        # Classify models by family
+        families = {}
+        for model in models:
+            family = self.diversity_manager.get_model_family(model)
+            if family not in families:
+                families[family] = []
+            families[family].append(model)
+        
+        # Build diverse list - one from each family first
+        diverse_models = []
+        for family in families:
+            if families[family]:
+                diverse_models.append(families[family][0])
+        
+        # Add remaining models
+        for family in families:
+            for model in families[family][1:]:
+                diverse_models.append(model)
+        
+        return diverse_models
 
 # =================================================================================
 # --- Enhanced Performance Monitoring System ---
@@ -423,8 +412,7 @@ class PerformanceMonitor:
         self.error_rates = deque(maxlen=50)
         self.successful_analyses = 0
         self.failed_analyses = 0
-        self.model_performance = {}  # Track performance by model
-        self.provider_performance = {}  # Track performance by provider
+        self.model_performance = {}
         
     def record_analysis_time(self, symbol: str, duration: float):
         """Record analysis duration"""
@@ -435,23 +423,19 @@ class PerformanceMonitor:
         self.api_response_times.append((provider, duration))
         
     def record_model_performance(self, provider: str, model: str, success: bool, response_time: float):
-        """Record performance for specific model"""
+        """Record individual model performance"""
         key = f"{provider}/{model}"
         if key not in self.model_performance:
-            self.model_performance[key] = {
-                'total_requests': 0,
-                'successful_requests': 0,
-                'total_response_time': 0,
-                'last_used': None
-            }
-        
-        self.model_performance[key]['total_requests'] += 1
-        self.model_performance[key]['total_response_time'] += response_time
-        self.model_performance[key]['last_used'] = datetime.now(UTC)
+            self.model_performance[key] = {'success': 0, 'failures': 0, 'total_time': 0, 'count': 0}
         
         if success:
-            self.model_performance[key]['successful_requests'] += 1
+            self.model_performance[key]['success'] += 1
+        else:
+            self.model_performance[key]['failures'] += 1
             
+        self.model_performance[key]['total_time'] += response_time
+        self.model_performance[key]['count'] += 1
+        
     def record_success(self):
         """Record successful analysis"""
         self.successful_analyses += 1
@@ -468,15 +452,16 @@ class PerformanceMonitor:
         avg_analysis_time = np.mean([t[1] for t in self.analysis_times]) if self.analysis_times else 0
         avg_api_time = np.mean([t[1] for t in self.api_response_times]) if self.api_response_times else 0
         
-        # Model performance stats
+        # Model performance summary
         model_stats = {}
-        for model_key, stats in self.model_performance.items():
-            success_rate_model = (stats['successful_requests'] / stats['total_requests'] * 100) if stats['total_requests'] > 0 else 0
-            avg_response_time = stats['total_response_time'] / stats['total_requests'] if stats['total_requests'] > 0 else 0
-            model_stats[model_key] = {
-                'success_rate': round(success_rate_model, 2),
-                'avg_response_time': round(avg_response_time, 2),
-                'total_requests': stats['total_requests']
+        for model, data in self.model_performance.items():
+            total_calls = data['success'] + data['failures']
+            success_rate_model = (data['success'] / total_calls * 100) if total_calls > 0 else 0
+            avg_time = data['total_time'] / data['count'] if data['count'] > 0 else 0
+            model_stats[model] = {
+                'success_rate': round(success_rate_model, 1),
+                'avg_response_time': round(avg_time, 2),
+                'total_calls': total_calls
             }
         
         return {
@@ -488,28 +473,7 @@ class PerformanceMonitor:
             "recent_analysis_times": list(self.analysis_times)[-5:],
             "recent_api_times": list(self.api_response_times)[-5:]
         }
-
-    def get_best_performing_models(self, count: int = 3) -> List[Tuple[str, float]]:
-        """Get best performing models based on success rate and speed"""
-        scored_models = []
         
-        for model_key, stats in self.model_performance.items():
-            if stats['total_requests'] < 3:  # Minimum requests for reliability
-                continue
-                
-            success_rate = stats['successful_requests'] / stats['total_requests']
-            avg_response_time = stats['total_response_time'] / stats['total_requests']
-            
-            # Score: success rate (70%) and speed (30%)
-            speed_score = max(0, 1 - (avg_response_time / 10))  # Normalize speed (up to 10 seconds)
-            score = (success_rate * 0.7) + (speed_score * 0.3)
-            
-            scored_models.append((model_key, score))
-        
-        # Sort by score descending
-        scored_models.sort(key=lambda x: x[1], reverse=True)
-        return scored_models[:count]
-
 # =================================================================================
 # --- Enhanced Data Source Management ---
 # =================================================================================
@@ -551,11 +515,6 @@ class EnhancedDataFetcher:
         self.last_data_source = {}
         self.cache = {}
         self.cache_ttl = 300  # 5 minutes cache
-        self.performance_stats = {
-            'twelvedata': {'success': 0, 'failures': 0, 'avg_response_time': 0},
-            'yahoo': {'success': 0, 'failures': 0, 'avg_response_time': 0},
-            'synthetic': {'success': 0, 'failures': 0, 'avg_response_time': 0}
-        }
         
     async def get_market_data(self, symbol: str, interval: str, max_retries: int = 2) -> Optional[pd.DataFrame]:
         """Get market data with multiple fallback sources and rate limiting"""
@@ -571,58 +530,33 @@ class EnhancedDataFetcher:
         
         for source in self.data_source_priority:
             try:
-                start_time = time.time()
-                
                 if source == "twelvedata" and TWELVEDATA_API_KEY:
                     result = await self._get_twelvedata_with_retry(symbol, interval, max_retries)
                     if result.success:
                         self.last_data_source[symbol] = DataSource.TWELVEDATA
                         self.cache[cache_key] = (result.data, current_time)
-                        self._record_performance('twelvedata', True, time.time() - start_time)
                         return result.data
-                    else:
-                        self._record_performance('twelvedata', False, time.time() - start_time)
                         
                 elif source == "yahoo":
                     result = await self._get_yahoo_data(symbol, interval)
                     if result.success:
                         self.last_data_source[symbol] = DataSource.YAHOO
                         self.cache[cache_key] = (result.data, current_time)
-                        self._record_performance('yahoo', True, time.time() - start_time)
                         return result.data
-                    else:
-                        self._record_performance('yahoo', False, time.time() - start_time)
                         
                 elif source == "synthetic":
                     result = await self._get_synthetic_data(symbol, interval)
                     if result.success:
                         self.last_data_source[symbol] = DataSource.SYNTHETIC
                         self.cache[cache_key] = (result.data, current_time)
-                        self._record_performance('synthetic', True, time.time() - start_time)
                         return result.data
-                    else:
-                        self._record_performance('synthetic', False, time.time() - start_time)
                         
             except Exception as e:
                 logging.warning(f"鉂� {source} failed for {symbol}: {str(e)}")
-                self._record_performance(source, False, time.time() - start_time)
                 continue
                 
         logging.error(f"鉂� All data sources failed for {symbol}")
         return None
-
-    def _record_performance(self, source: str, success: bool, response_time: float):
-        """Record performance metrics for data sources"""
-        stats = self.performance_stats[source]
-        if success:
-            stats['success'] += 1
-            # Update average response time
-            if stats['avg_response_time'] == 0:
-                stats['avg_response_time'] = response_time
-            else:
-                stats['avg_response_time'] = (stats['avg_response_time'] * (stats['success'] - 1) + response_time) / stats['success']
-        else:
-            stats['failures'] += 1
 
     async def _get_twelvedata_with_retry(self, symbol: str, interval: str, max_retries: int) -> DataFetchResult:
         """Get data from Twelve Data with rate limiting and retry logic"""
@@ -825,24 +759,721 @@ class EnhancedDataFetcher:
         for source in DataSource:
             count = list(self.last_data_source.values()).count(source)
             stats[source.value] = count
-        
-        # Add performance statistics
-        stats['performance'] = self.performance_stats
         return stats
 
-    def get_data_source_reliability(self) -> Dict:
-        """Get reliability metrics for data sources"""
-        reliability = {}
-        for source, stats in self.performance_stats.items():
-            total_requests = stats['success'] + stats['failures']
-            if total_requests > 0:
-                success_rate = (stats['success'] / total_requests) * 100
-                reliability[source] = {
-                    'success_rate': round(success_rate, 2),
-                    'total_requests': total_requests,
-                    'avg_response_time': round(stats['avg_response_time'], 2)
-                }
-        return reliability
+# =================================================================================
+# --- Smart API Manager with Enhanced Model Selection & Dynamic Discovery ---
+# =================================================================================
+
+class SmartAPIManager:
+    def __init__(self, usage_file: str, model_discoverer: AdvancedDynamicModelDiscoverer):
+        self.usage_file = usage_file
+        self.model_discoverer = model_discoverer
+        self.usage_data = self.load_usage_data()
+        self.available_models = {}
+        self.failed_models = set()
+        self.models_initialized = False
+        self.gemini_disabled = False
+        self.diversity_manager = AIModelDiversityManager()
+
+    async def initialize_models(self):
+        """Initialize available models dynamically"""
+        if not self.models_initialized:
+            self.available_models = await self.model_discoverer.discover_models()
+            self.models_initialized = True
+            logging.info("馃幆 AI Models initialized dynamically with diversity")
+
+    def load_usage_data(self) -> Dict:
+        """Load API usage data"""
+        try:
+            if os.path.exists(self.usage_file):
+                with open(self.usage_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                return self.check_and_reset_daily_usage(data)
+            return self.initialize_usage_data()
+        except Exception as e:
+            logging.error(f"Error loading API usage data: {e}")
+            return self.initialize_usage_data()
+
+    def initialize_usage_data(self) -> Dict:
+        """Initialize usage data"""
+        today = datetime.now(UTC).date().isoformat()
+        return {
+            "last_reset_date": today,
+            "providers": {
+                "google_gemini": {"used_today": 0, "limit": API_DAILY_LIMITS["google_gemini"]},
+                "cloudflare": {"used_today": 0, "limit": API_DAILY_LIMITS["cloudflare"]},
+                "groq": {"used_today": 0, "limit": API_DAILY_LIMITS["groq"]}
+            }
+        }
+
+    def check_and_reset_daily_usage(self, data: Dict) -> Dict:
+        """Check and reset daily usage"""
+        today = datetime.now(UTC).date().isoformat()
+        last_reset = data.get("last_reset_date", "")
+        if last_reset != today:
+            for provider in data["providers"]:
+                data["providers"][provider]["used_today"] = 0
+            data["last_reset_date"] = today
+            self.save_usage_data(data)
+            logging.info("鉁� Daily API usage reset")
+        return data
+
+    def save_usage_data(self, data: Dict = None):
+        """Save usage data"""
+        if data is None:
+            data = self.usage_data
+        try:
+            with open(self.usage_file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            logging.error(f"Error saving API usage data: {e}")
+
+    def can_use_provider(self, provider: str) -> bool:
+        """Check if provider can be used"""
+        if provider not in self.usage_data["providers"]:
+            return False
+        provider_data = self.usage_data["providers"][provider]
+        remaining = provider_data["limit"] - provider_data["used_today"]
+        return remaining > 0
+
+    def get_available_models_count(self, provider: str) -> int:
+        """Get available models count for provider"""
+        if not self.can_use_provider(provider):
+            return 0
+        provider_data = self.usage_data["providers"][provider]
+        remaining = provider_data["limit"] - provider_data["used_today"]
+        available_models = len(self.available_models.get(provider, []))
+        return min(remaining, available_models)
+
+    def mark_model_failed(self, provider: str, model_name: str):
+        """Mark model as failed"""
+        self.failed_models.add((provider, model_name))
+        logging.warning(f"鉂� Model {provider}/{model_name} added to failed list")
+
+    def is_model_failed(self, provider: str, model_name: str) -> bool:
+        """Check if model failed"""
+        return (provider, model_name) in self.failed_models
+
+    def _find_model_provider(self, model_name: str) -> Optional[str]:
+        """Find which provider a model belongs to"""
+        for provider, models in self.available_models.items():
+            if model_name in models:
+                return provider
+        return None
+
+    def disable_gemini(self):
+        """Disable Gemini temporarily due to quota limits"""
+        self.gemini_disabled = True
+        logging.warning("馃毇 Gemini temporarily disabled due to quota limits")
+
+    def is_gemini_available(self) -> bool:
+        """Check if Gemini has available quota"""
+        if self.gemini_disabled:
+            return False
+        if not self.can_use_provider("google_gemini"):
+            return False
+        gemini_models = self.available_models.get("google_gemini", [])
+        return len(gemini_models) > 0
+
+    def select_diverse_models(self, target_total: int = 5, min_required: int = 3) -> List[Tuple[str, str]]:
+        """NEW: Select diverse models from different AI families with enhanced logic"""
+        selected_models = []
+        
+        # Calculate provider capacity with Gemini availability check
+        provider_capacity = {}
+        for provider in ["google_gemini", "cloudflare", "groq"]:
+            if provider == "google_gemini" and not self.is_gemini_available():
+                provider_capacity[provider] = 0
+            else:
+                provider_capacity[provider] = self.get_available_models_count(provider)
+            
+        logging.info(f"馃搳 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
+                   f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
+
+        # NEW: Get all available models across providers
+        all_available_models = []
+        for provider in ["google_gemini", "cloudflare", "groq"]:
+            if provider_capacity[provider] > 0:
+                for model in self.available_models.get(provider, []):
+                    # For Gemini, only use free tier models
+                    if provider == "google_gemini" and not FreeTierModelFilter.is_free_tier_model(model):
+                        continue
+                    if not self.is_model_failed(provider, model):
+                        all_available_models.append((provider, model))
+        
+        # NEW: Use diversity manager to select 5 diverse models
+        if all_available_models:
+            selected_models = self.diversity_manager.select_diverse_models(all_available_models, target_total)
+            
+            # If we don't have enough diverse models, fill with any available
+            if len(selected_models) < target_total:
+                remaining_needed = target_total - len(selected_models)
+                for provider, model in all_available_models:
+                    if (provider, model) not in selected_models and remaining_needed > 0:
+                        selected_models.append((provider, model))
+                        remaining_needed -= 1
+                        logging.info(f"馃幆 Added fill model: {provider}/{model}")
+        else:
+            logging.warning("鈿狅笍 No available models found for selection")
+
+        # FINAL FALLBACK: If still not enough, use synthetic decision maker
+        if len(selected_models) == 0:
+            logging.error("鉂� No AI models available. Using synthetic decision maker.")
+            # This ensures we always have at least one "model"
+            selected_models.append(("synthetic", "technical_analyzer"))
+            
+        logging.info(f"馃幆 {len(selected_models)} diverse models selected: {selected_models}")
+        return selected_models
+
+    def record_api_usage(self, provider: str, count: int = 1):
+        """Record API usage"""
+        if provider in self.usage_data["providers"]:
+            self.usage_data["providers"][provider]["used_today"] += count
+            self.save_usage_data()
+
+    def get_usage_summary(self) -> str:
+        """Get usage summary"""
+        summary = "馃搳 API Usage Summary:\n"
+        for provider, data in self.usage_data["providers"].items():
+            remaining = data["limit"] - data["used_today"]
+            summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
+        return summary
+
+# =================================================================================
+# --- Enhanced AI Manager with Diverse Model Support ---
+# =================================================================================
+
+class EnhancedAIManager:
+    def __init__(self, gemini_api_key: str, cloudflare_api_key: str, groq_api_key: str, api_manager):
+        self.gemini_api_key = gemini_api_key
+        self.cloudflare_api_key = cloudflare_api_key
+        self.groq_api_key = groq_api_key
+        self.api_manager = api_manager
+        self.performance_monitor = PerformanceMonitor()
+        
+        if gemini_api_key:
+            genai.configure(api_key=gemini_api_key)
+
+    def _create_optimized_prompt(self, symbol: str, technical_analysis: Dict) -> str:
+        """Create prompt that encourages decisive signals"""
+        current_price = technical_analysis.get('current_price', 1.0850)
+        trend = technical_analysis.get('htf_trend', {})
+        momentum = technical_analysis.get('momentum', {})
+        key_levels = technical_analysis.get('key_levels', {})
+        risk = technical_analysis.get('risk_assessment', {})
+        
+        return f"""As a professional forex trader, analyze {symbol} and provide a TRADING DECISION.
+
+CRITICAL INSTRUCTIONS:
+- Be DECISIVE: Prefer BUY/SELL over HOLD when there's reasonable evidence
+- Only use HOLD if market conditions are completely unclear
+- Consider risk-reward ratios above 1.5 as acceptable
+
+MARKET DATA:
+Price: {current_price:.5f}
+Trend: {trend.get('direction', 'NEUTRAL')} (Strength: {trend.get('strength', 'UNKNOWN')})
+RSI: {momentum.get('rsi', {}).get('value', 50):.1f} ({momentum.get('rsi', {}).get('signal', 'NEUTRAL')})
+Support: {key_levels.get('support_1', current_price * 0.99):.5f}
+Resistance: {key_levels.get('resistance_1', current_price * 1.01):.5f}
+Volatility: {risk.get('volatility_percent', 0):.2f}%
+Risk Level: {risk.get('risk_level', 'MEDIUM')}
+
+TRADING GUIDELINES:
+- BUY if trend is bullish and RSI is not overbought
+- SELL if trend is bearish and RSI is not oversold  
+- HOLD only if trend is completely neutral
+
+Return ONLY this JSON format (NO other text):
+{{
+  "SYMBOL": "{symbol}",
+  "ACTION": "BUY|SELL|HOLD",
+  "CONFIDENCE": 1-10,
+  "ENTRY": "{current_price:.5f}",
+  "STOP_LOSS": "calculated_price",
+  "TAKE_PROFIT": "calculated_price",
+  "RISK_REWARD_RATIO": "1.5-3.0",
+  "ANALYSIS": "brief_reasoning"
+}}"""
+
+    async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """Get enhanced AI analysis with diverse model ensemble"""
+        await self.api_manager.initialize_models()
+        selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
+        
+        if len(selected_models) < 3:
+            logging.error(f"鉂� Cannot find minimum 3 AI models for {symbol}")
+            return None
+            
+        logging.info(f"馃幆 Using {len(selected_models)} diverse AI models for {symbol}")
+
+        tasks = []
+        for provider, model_name in selected_models:
+            # Handle synthetic fallback
+            if provider == "synthetic":
+                task = self._get_synthetic_analysis(symbol, technical_analysis)
+            else:
+                task = self._get_single_analysis(symbol, technical_analysis, provider, model_name)
+            tasks.append(task)
+
+        try:
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            
+            valid_results = []
+            failed_count = 0
+            
+            for i, (provider, model_name) in enumerate(selected_models):
+                start_time = time.time()
+                result = results[i]
+                response_time = time.time() - start_time
+                
+                if isinstance(result, Exception):
+                    logging.error(f"鉂� Error in {provider}/{model_name} for {symbol}: {str(result)}")
+                    if provider != "synthetic":  # Don't mark synthetic as failed
+                        self.api_manager.mark_model_failed(provider, model_name)
+                        self.performance_monitor.record_model_performance(provider, model_name, False, response_time)
+                    failed_count += 1
+                    if provider != "synthetic":
+                        self.api_manager.record_api_usage(provider)
+                elif result is not None:
+                    valid_results.append(result)
+                    if provider != "synthetic":
+                        self.api_manager.record_api_usage(provider)
+                        self.performance_monitor.record_model_performance(provider, model_name, True, response_time)
+                else:
+                    if provider != "synthetic":
+                        self.api_manager.record_api_usage(provider)
+                        self.performance_monitor.record_model_performance(provider, model_name, False, response_time)
+
+            logging.info(f"馃搳 Results: {len(valid_results)} successful, {failed_count} failed")
+            
+            if valid_results:
+                combined_signal = self._combine_signals(symbol, valid_results, len(selected_models))
+                if combined_signal:
+                    return combined_signal
+                else:
+                    logging.warning(f"鈿狅笍 Signal combination failed for {symbol}")
+            else:
+                logging.warning(f"鈿狅笍 No valid AI results for {symbol}")
+                
+            # Ultimate fallback: use technical analysis only
+            return await self._get_technical_fallback(symbol, technical_analysis)
+                
+        except Exception as e:
+            logging.error(f"鉂� Error in AI analysis for {symbol}: {str(e)}")
+            return await self._get_technical_fallback(symbol, technical_analysis)
+
+    async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
+        """Get analysis from single AI model with enhanced error handling"""
+        try:
+            prompt = self._create_optimized_prompt(symbol, technical_analysis)
+            
+            if provider == "google_gemini":
+                return await self._get_gemini_analysis_optimized(symbol, prompt, model_name)
+            elif provider == "cloudflare":
+                return await self._get_cloudflare_analysis(symbol, prompt, model_name)
+            elif provider == "groq":
+                return await self._get_groq_analysis(symbol, prompt, model_name)
+            else:
+                return None
+                
+        except Exception as e:
+            logging.error(f"鉂� Error in {provider}/{model_name} for {symbol}: {str(e)}")
+            return None
+
+    async def _get_synthetic_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """Synthetic analysis based on technical indicators only"""
+        try:
+            trend = technical_analysis.get('htf_trend', {})
+            momentum = technical_analysis.get('momentum', {})
+            current_price = technical_analysis.get('current_price', 1.0)
+            
+            # Simple decision logic based on technicals
+            trend_direction = trend.get('direction', 'NEUTRAL')
+            rsi = momentum.get('rsi', {}).get('value', 50)
+            rsi_signal = momentum.get('rsi', {}).get('signal', 'NEUTRAL')
+            
+            action = "HOLD"
+            confidence = 5
+            
+            if trend_direction == "BULLISH" and rsi_signal != "OVERBOUGHT" and rsi < 70:
+                action = "BUY"
+                confidence = 7
+            elif trend_direction == "BEARISH" and rsi_signal != "OVERSOLD" and rsi > 30:
+                action = "SELL" 
+                confidence = 7
+            elif trend_direction in ["STRONG_BULLISH", "STRONG_BEARISH"]:
+                action = "BUY" if "BULL" in trend_direction else "SELL"
+                confidence = 8
+                
+            return {
+                "SYMBOL": symbol,
+                "ACTION": action,
+                "CONFIDENCE": confidence,
+                "ENTRY": f"{current_price:.5f}",
+                "STOP_LOSS": f"{current_price * 0.995:.5f}" if action == "BUY" else f"{current_price * 1.005:.5f}",
+                "TAKE_PROFIT": f"{current_price * 1.01:.5f}" if action == "BUY" else f"{current_price * 0.99:.5f}",
+                "RISK_REWARD_RATIO": "1.8",
+                "ANALYSIS": f"Synthetic signal based on {trend_direction} trend and RSI {rsi:.1f}",
+                "ai_model": "SYNTHETIC_TECHNICAL"
+            }
+            
+        except Exception as e:
+            logging.error(f"鉂� Synthetic analysis error for {symbol}: {e}")
+            return None
+
+    async def _get_technical_fallback(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
+        """Ultimate fallback using pure technical analysis"""
+        try:
+            return await self._get_synthetic_analysis(symbol, technical_analysis)
+        except Exception as e:
+            logging.error(f"鉂� Technical fallback also failed for {symbol}: {e}")
+            return None
+            
+    async def _get_gemini_analysis_optimized(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
+        """Optimized Gemini analysis with proper error handling"""
+        try:
+            model = genai.GenerativeModel(model_name)
+            
+            generation_config = genai.types.GenerationConfig(
+                temperature=0.1,
+                max_output_tokens=500,
+                top_p=0.8,
+                top_k=40
+            )
+            
+            response = await asyncio.to_thread(
+                model.generate_content,
+                prompt,
+                generation_config=generation_config
+            )
+            
+            text = self._extract_response_text(response)
+            if text:
+                return self._parse_ai_response(text, symbol, f"Gemini-{model_name}")
+            
+            return None
+            
+        except Exception as e:
+            logging.error(f"鉂� Gemini analysis error for {symbol}: {str(e)}")
+            return None
+
+    def _extract_response_text(self, response) -> Optional[str]:
+        """Safely extract text from AI response with enhanced error handling"""
+        try:
+            # Method 1: Direct text attribute
+            if hasattr(response, 'text') and response.text:
+                return response.text
+                
+            # Method 2: Try to access parts directly
+            if hasattr(response, 'candidates') and response.candidates:
+                for candidate in response.candidates:
+                    if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
+                        text_parts = []
+                        for part in candidate.content.parts:
+                            if hasattr(part, 'text') and part.text:
+                                text_parts.append(part.text)
+                        if text_parts:
+                            return ''.join(text_parts)
+            
+            # Method 3: Use string representation as last resort
+            return str(response)
+            
+        except Exception as e:
+            logging.warning(f"Error extracting response text: {e}")
+            return None
+
+    async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
+        """Get analysis from Cloudflare AI"""
+        if not self.cloudflare_api_key:
+            logging.warning(f"鉂� Cloudflare API key not available for {symbol}")
+            return None
+            
+        try:
+            headers = {
+                "Authorization": f"Bearer {self.cloudflare_api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "messages": [
+                    {
+                        "role": "system", 
+                        "content": "Return ONLY valid JSON format. No additional text."
+                    },
+                    {"role": "user", "content": prompt}
+                ],
+                "stream": False
+            }
+            
+            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID", "default_account_id")
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_name}"
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, headers=headers, json=payload, timeout=60) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        content = ""
+                        
+                        if "result" in data and "response" in data["result"]:
+                            content = data["result"]["response"]
+                        elif "response" in data:
+                            content = data["response"]
+                        elif "result" in data and isinstance(data["result"], str):
+                            content = data["result"]
+                        else:
+                            content = str(data)
+                            
+                        if content:
+                            return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
+                        else:
+                            logging.warning(f"鉂� Empty content in Cloudflare response for {symbol}")
+                            return None
+                    else:
+                        error_text = await response.text()
+                        logging.error(f"鉂� Cloudflare API error for {symbol}: {response.status} - {error_text}")
+                        return None
+                        
+        except Exception as e:
+            logging.error(f"鉂� Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
+            return None
+
+    async def _get_groq_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
+        """Get analysis from Groq API"""
+        if not self.groq_api_key:
+            logging.warning(f"鉂� Groq API key not available for {symbol}")
+            return None
+            
+        try:
+            headers = {
+                "Authorization": f"Bearer {self.groq_api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "Return ONLY valid JSON format. No additional text."
+                    },
+                    {"role": "user", "content": prompt}
+                ],
+                "model": model_name,
+                "temperature": 0.1,
+                "max_tokens": 600,
+                "stream": False
+            }
+            
+            url = "https://api.groq.com/openai/v1/chat/completions"
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, headers=headers, json=payload, timeout=60) as response:
+                    if response.status == 200:
+                        data = await response.json()
+                        if "choices" in data and len(data["choices"]) > 0:
+                            content = data["choices"][0]["message"]["content"]
+                            return self._parse_ai_response(content, symbol, f"Groq-{model_name}")
+                        else:
+                            logging.warning(f"鉂� No choices in Groq response for {symbol}: {data}")
+                            return None
+                    else:
+                        error_text = await response.text()
+                        logging.error(f"鉂� Groq API error for {symbol}: {response.status} - {error_text}")
+                        return None
+                        
+        except Exception as e:
+            logging.error(f"鉂� Groq/{model_name} analysis error for {symbol}: {str(e)}")
+            return None
+
+    def _parse_ai_response(self, response, symbol: str, ai_name: str) -> Optional[Dict]:
+        """Parse AI response with enhanced validation and text extraction fallback"""
+        try:
+            if isinstance(response, dict):
+                cleaned_response = json.dumps(response, ensure_ascii=False)
+            else:
+                cleaned_response = (response or "").strip()
+
+            # Clean response
+            cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
+            cleaned_response = re.sub(r'```\s*', '', cleaned_response)
+            cleaned_response = re.sub(r'<think>.*?</think>', '', cleaned_response, flags=re.DOTALL)
+            cleaned_response = re.sub(r'</?[^>]+>', '', cleaned_response)
+
+            # Extract JSON
+            json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
+            if json_match:
+                json_str = json_match.group(0)
+                signal_data = json.loads(json_str)
+
+                if self._validate_signal_data(signal_data, symbol):
+                    signal_data['ai_model'] = ai_name
+                    signal_data['timestamp'] = datetime.now(UTC).isoformat()
+                    signal_data = self._validate_numeric_values(signal_data, symbol)
+
+                    logging.info(f"鉁� {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
+                    return signal_data
+
+            # NEW: If JSON parsing fails, try text extraction
+            logging.warning(f"鉂� {ai_name} response for {symbol} lacks valid JSON format, trying text extraction...")
+            return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
+
+        except json.JSONDecodeError as e:
+            logging.warning(f"鉂� JSON error in {ai_name} response for {symbol}, trying text extraction: {e}")
+            return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
+        except Exception as e:
+            logging.error(f"鉂� Error parsing {ai_name} response for {symbol}: {str(e)}")
+            return None
+
+    def _extract_signal_from_text(self, text: str, symbol: str, ai_name: str) -> Optional[Dict]:
+        """NEW: Extract trading signal from unstructured text response"""
+        try:
+            text_upper = text.upper()
+            action = "HOLD"
+            
+            # Extract action from text
+            if "BUY" in text_upper and "SELL" not in text_upper:
+                action = "BUY"
+            elif "SELL" in text_upper and "BUY" not in text_upper:
+                action = "SELL"
+            
+            # Extract confidence
+            confidence_match = re.search(r'CONFIDENCE[:\s]*(\d+)', text_upper)
+            confidence = int(confidence_match.group(1)) if confidence_match else 5
+            
+            # Create basic signal
+            signal_data = {
+                "SYMBOL": symbol,
+                "ACTION": action,
+                "CONFIDENCE": confidence,
+                "ENTRY": "N/A",
+                "STOP_LOSS": "N/A", 
+                "TAKE_PROFIT": "N/A",
+                "RISK_REWARD_RATIO": "1.8",
+                "ANALYSIS": f"Extracted from text: {text[:100]}...",
+                "ai_model": ai_name + "-TEXT_EXTRACTED"
+            }
+            
+            logging.info(f"鉁� {ai_name} text-extracted signal for {symbol}: {action}")
+            return signal_data
+            
+        except Exception as e:
+            logging.warning(f"鉂� Text extraction failed for {symbol}: {e}")
+            return None
+
+    def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
+        """Validate signal data"""
+        required_fields = ['SYMBOL', 'ACTION', 'CONFIDENCE']
+        for field in required_fields:
+            if field not in signal_data:
+                logging.warning(f"鉂� Required field {field} missing in signal for {symbol}")
+                return False
+                
+        action = signal_data['ACTION'].upper()
+        if action not in ['BUY', 'SELL', 'HOLD']:
+            logging.warning(f"鉂� Invalid ACTION for {symbol}: {action}")
+            return False
+            
+        try:
+            confidence = float(signal_data['CONFIDENCE'])
+            if not (1 <= confidence <= 10):
+                logging.warning(f"鉂� CONFIDENCE out of range for {symbol}: {confidence}")
+                return False
+        except (ValueError, TypeError):
+            logging.warning(f"鉂� Invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
+            return False
+            
+        return True
+
+    def _validate_numeric_values(self, signal_data: Dict, symbol: str) -> Dict:
+        """Validate and fix numeric values"""
+        numeric_fields = ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO']
+        
+        for field in numeric_fields:
+            if field in signal_data:
+                value = signal_data[field]
+                if value is None or value == "null" or str(value).strip() == "":
+                    if field == 'RISK_REWARD_RATIO':
+                        signal_data[field] = "1.8"
+                    else:
+                        signal_data[field] = "N/A"
+                elif field == 'CONFIDENCE':
+                    try:
+                        signal_data[field] = float(value)
+                    except:
+                        signal_data[field] = 5.0
+                        
+        return signal_data
+
+    def _combine_signals(self, symbol: str, valid_results: List[Dict], total_models: int) -> Optional[Dict]:
+        """Combine signal results with robust error handling"""
+        if not valid_results:
+            return None
+            
+        action_counts = {}
+        confidence_sum = {}
+        
+        for result in valid_results:
+            action = result['ACTION'].upper()
+            action_counts[action] = action_counts.get(action, 0) + 1
+            
+            # FIXED: Better confidence handling
+            try:
+                confidence_val = float(result.get('CONFIDENCE', 5))
+                confidence_sum[action] = confidence_sum.get(action, 0) + confidence_val
+            except (ValueError, TypeError):
+                confidence_sum[action] = confidence_sum.get(action, 0) + 5  # Default value
+        
+        logging.info(f"馃搳 Signal combination for {symbol}: {action_counts}")
+        
+        total_valid = len(valid_results)
+        max_agreement = max(action_counts.values()) if action_counts else 0
+        
+        if max_agreement >= 3:
+            agreement_type = 'STRONG_CONSENSUS'
+        elif max_agreement == 2:
+            agreement_type = 'MEDIUM_CONSENSUS'
+        else:
+            agreement_type = 'WEAK_CONSENSUS'
+            
+        majority_action = max(action_counts, key=action_counts.get) if action_counts else 'HOLD'
+        
+        # Calculate average confidence for majority action
+        avg_confidence = 5.0  # Default
+        if majority_action in confidence_sum and max_agreement > 0:
+            avg_confidence = confidence_sum[majority_action] / max_agreement
+        
+        combined = {
+            'SYMBOL': symbol,
+            'ACTION': majority_action,
+            'CONFIDENCE': round(avg_confidence, 1),
+            'AGREEMENT_LEVEL': max_agreement,
+            'AGREEMENT_TYPE': agreement_type,
+            'VALID_MODELS': total_valid,
+            'TOTAL_MODELS': total_models,
+            'timestamp': datetime.now(UTC).isoformat()
+        }
+        
+        # Add details from the first valid result of majority action
+        majority_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
+        if majority_results:
+            first_result = majority_results[0]
+            for field in ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO', 'ANALYSIS']:
+                if field in first_result and first_result[field] not in [None, "null", ""]:
+                    combined[field] = first_result[field]
+        
+        # Ensure all required fields have values
+        if 'ENTRY' not in combined:
+            combined['ENTRY'] = "N/A"
+        if 'STOP_LOSS' not in combined:
+            combined['STOP_LOSS'] = "N/A"
+        if 'TAKE_PROFIT' not in combined:
+            combined['TAKE_PROFIT'] = "N/A"
+        if 'RISK_REWARD_RATIO' not in combined:
+            combined['RISK_REWARD_RATIO'] = "1.8"
+        if 'ANALYSIS' not in combined:
+            combined['ANALYSIS'] = f"{majority_action} signal based on agreement of {max_agreement} out of {total_models} AI models"
+            
+        return combined
 
 # =================================================================================
 # --- Advanced Technical Analysis with Machine Learning Features ---
@@ -1192,7 +1823,7 @@ class AdvancedTechnicalAnalyzer:
         except Exception as e:
             logging.error(f"鉂� Even basic analysis failed for {symbol}: {e}")
             return None
-
+            
     def _analyze_enhanced_trend(self, current: pd.Series, previous: pd.Series, df: pd.DataFrame) -> Dict:
         """Enhanced trend analysis with multiple confirmations"""
         try:
@@ -1547,996 +2178,6 @@ class AdvancedTechnicalAnalyzer:
             return {'risk_level': 'MEDIUM', 'volatility_percent': 0, 'atr_value': 0, 'current_range_percent': 0}
 
 # =================================================================================
-# --- Smart API Manager with Enhanced Model Selection & Dynamic Discovery ---
-# =================================================================================
-
-class SmartAPIManager:
-    def __init__(self, usage_file: str, model_discoverer: DynamicModelDiscoverer):
-        self.usage_file = usage_file
-        self.model_discoverer = model_discoverer
-        self.usage_data = self.load_usage_data()
-        self.available_models = {}
-        self.failed_models = set()
-        self.models_initialized = False
-        self.gemini_disabled = False
-        self.performance_stats = {}  # Track model performance
-
-    async def initialize_models(self):
-        """Initialize available models dynamically"""
-        if not self.models_initialized:
-            self.available_models = await self.model_discoverer.discover_models()
-            self.models_initialized = True
-            logging.info("馃幆 AI Models initialized dynamically")
-            
-            # Log model diversity
-            self._log_model_diversity()
-
-    def _log_model_diversity(self):
-        """Log the diversity of available models"""
-        diversity_stats = {}
-        for provider, models in self.available_models.items():
-            for model in models:
-                model_type = self._classify_model_type(model)
-                diversity_stats.setdefault(model_type, []).append(f"{provider}/{model}")
-        
-        logging.info("馃寛 Available Model Diversity:")
-        for model_type, model_list in diversity_stats.items():
-            logging.info(f"  {model_type}: {len(model_list)} models - {model_list}")
-
-    def _classify_model_type(self, model_name: str) -> str:
-        """Classify model by architecture type"""
-        model_lower = model_name.lower()
-        if 'gemini' in model_lower:
-            return 'gemini'
-        elif 'llama' in model_lower:
-            return 'llama'
-        elif 'deepseek' in model_lower:
-            return 'deepseek'
-        elif 'qwen' in model_lower:
-            return 'qwen'
-        elif 'mistral' in model_lower:
-            return 'mistral'
-        elif 'gpt' in model_lower:
-            return 'gpt'
-        else:
-            return 'other'
-
-    def load_usage_data(self) -> Dict:
-        """Load API usage data"""
-        try:
-            if os.path.exists(self.usage_file):
-                with open(self.usage_file, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                return self.check_and_reset_daily_usage(data)
-            return self.initialize_usage_data()
-        except Exception as e:
-            logging.error(f"Error loading API usage data: {e}")
-            return self.initialize_usage_data()
-
-    def initialize_usage_data(self) -> Dict:
-        """Initialize usage data"""
-        today = datetime.now(UTC).date().isoformat()
-        return {
-            "last_reset_date": today,
-            "providers": {
-                "google_gemini": {"used_today": 0, "limit": API_DAILY_LIMITS["google_gemini"]},
-                "cloudflare": {"used_today": 0, "limit": API_DAILY_LIMITS["cloudflare"]},
-                "groq": {"used_today": 0, "limit": API_DAILY_LIMITS["groq"]}
-            }
-        }
-
-    def check_and_reset_daily_usage(self, data: Dict) -> Dict:
-        """Check and reset daily usage"""
-        today = datetime.now(UTC).date().isoformat()
-        last_reset = data.get("last_reset_date", "")
-        if last_reset != today:
-            for provider in data["providers"]:
-                data["providers"][provider]["used_today"] = 0
-            data["last_reset_date"] = today
-            self.save_usage_data(data)
-            logging.info("鉁� Daily API usage reset")
-        return data
-
-    def save_usage_data(self, data: Dict = None):
-        """Save usage data"""
-        if data is None:
-            data = self.usage_data
-        try:
-            with open(self.usage_file, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=4, ensure_ascii=False)
-        except Exception as e:
-            logging.error(f"Error saving API usage data: {e}")
-
-    def can_use_provider(self, provider: str) -> bool:
-        """Check if provider can be used"""
-        if provider not in self.usage_data["providers"]:
-            return False
-        provider_data = self.usage_data["providers"][provider]
-        remaining = provider_data["limit"] - provider_data["used_today"]
-        return remaining > 0
-
-    def get_available_models_count(self, provider: str) -> int:
-        """Get available models count for provider"""
-        if not self.can_use_provider(provider):
-            return 0
-        provider_data = self.usage_data["providers"][provider]
-        remaining = provider_data["limit"] - provider_data["used_today"]
-        available_models = len(self.available_models.get(provider, []))
-        return min(remaining, available_models)
-
-    def mark_model_failed(self, provider: str, model_name: str):
-        """Mark model as failed"""
-        self.failed_models.add((provider, model_name))
-        logging.warning(f"鉂� Model {provider}/{model_name} added to failed list")
-
-    def is_model_failed(self, provider: str, model_name: str) -> bool:
-        """Check if model failed"""
-        return (provider, model_name) in self.failed_models
-
-    def _find_model_provider(self, model_name: str) -> Optional[str]:
-        """Find which provider a model belongs to"""
-        for provider, models in self.available_models.items():
-            if model_name in models:
-                return provider
-        return None
-
-    def disable_gemini(self):
-        """Disable Gemini temporarily due to quota limits"""
-        self.gemini_disabled = True
-        logging.warning("馃毇 Gemini temporarily disabled due to quota limits")
-
-    def is_gemini_available(self) -> bool:
-        """Check if Gemini has available quota"""
-        if self.gemini_disabled:
-            return False
-        if not self.can_use_provider("google_gemini"):
-            return False
-        gemini_models = self.available_models.get("google_gemini", [])
-        return len(gemini_models) > 0
-
-    def select_diverse_models(self, target_total: int = 8, min_required: int = 5) -> List[Tuple[str, str]]:
-        """Select diverse models with enhanced diversity and fallback system"""
-        selected_models = []
-        
-        # Calculate provider capacity with Gemini availability check
-        provider_capacity = {}
-        for provider in ["google_gemini", "cloudflare", "groq"]:
-            if provider == "google_gemini" and not self.is_gemini_available():
-                provider_capacity[provider] = 0
-            else:
-                provider_capacity[provider] = self.get_available_models_count(provider)
-            
-        logging.info(f"馃搳 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
-                   f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
-
-        # NEW: Enhanced diverse model selection with multiple architectures
-        diverse_model_combinations = [
-    # Combination 1: Maximum Diversity & Performance (All providers + architectures)
-    [
-        ("google_gemini", "gemini-1.5-flash"),                      # Gemini - Fast
-        ("groq", "llama-3.3-70b-versatile"),                       # Llama 70B - High Quality
-        ("cloudflare", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"), # Llama 70B CF - Fast
-        ("groq", "qwen/qwen3-32b"),                                # Qwen 32B - Strong reasoning
-        ("cloudflare", "@cf/mistralai/mistral-small-3.1-24b-instruct"), # Mistral - Balanced
-        ("groq", "meta-llama/llama-4-maverick-17b-128e-instruct"), # Llama 4 Maverick
-        ("groq", "openai/gpt-oss-120b"),                           # GPT OSS 120B - Largest
-        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct")             # Qwen CF - Fast
-    ],
-    
-    # Combination 2: High Speed & Efficiency (Fast models from all providers)
-    [
-        ("google_gemini", "gemini-2.5-flash-lite"),                # Gemini Flash Lite - Fastest
-        ("groq", "llama-3.1-8b-instant"),                          # Llama 8B Instant - Very Fast
-        ("cloudflare", "@cf/meta/llama-3.1-8b-instruct-fast"),     # Llama 8B CF - Fast
-        ("groq", "deepseek-ai/deepseek-r1-8b"),                    # DeepSeek 8B - Efficient
-        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),            # Qwen 7B CF - Fast
-        ("groq", "meta-llama/llama-prompt-guard-2-22m"),           # Llama Prompt Guard
-        ("cloudflare", "@cf/meta/llama-4-scout-17b-16e-instruct"), # Llama Scout CF
-        ("groq", "groq/compound-mini")                             # Compound Mini
-    ],
-    
-    # Combination 3: High Quality & Specialized (Best quality models)
-    [
-        ("google_gemini", "gemini-1.5-pro"),                       # Gemini Pro - High Quality
-        ("groq", "meta-llama/llama-4-scout-17b-16e-instruct"),     # Llama 4 Scout
-        ("groq", "deepseek-ai/deepseek-r1-32b"),                   # DeepSeek 32B - High Quality
-        ("cloudflare", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"), # Llama 70B CF
-        ("groq", "openai/gpt-oss-120b"),                           # GPT OSS 120B
-        ("groq", "meta-llama/llama-guard-4-12b"),                  # Llama Guard - Safety
-        ("groq", "moonshotai/kimi-k2-instruct"),                   # Kimi K2 - Specialized
-        ("cloudflare", "@cf/mistralai/mistral-small-3.1-24b-instruct") # Mistral
-    ],
-    
-    # Combination 4: Balanced Mix (Good performance + diversity)
-    [
-        ("google_gemini", "gemini-1.5-flash"),                     # Gemini Flash
-        ("groq", "llama-3.3-70b-versatile"),                      # Llama 70B
-        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),            # Qwen CF
-        ("groq", "qwen/qwen3-32b"),                               # Qwen 32B
-        ("cloudflare", "@cf/meta/llama-4-scout-17b-16e-instruct"), # Llama Scout CF
-        ("groq", "deepseek-ai/deepseek-r1-8b"),                    # DeepSeek 8B
-        ("groq", "openai/gpt-oss-20b"),                           # GPT OSS 20B
-        ("cloudflare", "@cf/google/gemma-3-12b-it")               # Gemma 12B
-    ],
-    
-    # Combination 5: Safety & Reliability Focused (Models with safety features)
-    [
-        ("google_gemini", "gemini-1.5-pro"),                       # Gemini Pro
-        ("groq", "meta-llama/llama-guard-4-12b"),                  # Llama Guard - Safety
-        ("groq", "meta-llama/llama-prompt-guard-2-86m"),           # Llama Prompt Guard
-        ("groq", "openai/gpt-oss-safeguard-20b"),                  # GPT Safeguard
-        ("cloudflare", "@cf/meta/llama-3.1-8b-instruct-fast"),     # Llama 8B CF
-        ("groq", "llama-3.1-8b-instant"),                          # Llama 8B Instant
-        ("google_gemini", "gemini-2.5-flash-lite"),                # Gemini Flash Lite
-        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct")             # Qwen CF
-    ],
-    
-    # Combination 6: Compact & Efficient (Smaller models for speed)
-    [
-        ("google_gemini", "gemini-2.5-flash-lite"),                # Gemini Flash Lite
-        ("groq", "llama-3.1-8b-instant"),                          # Llama 8B Instant
-        ("cloudflare", "@cf/meta/llama-3.1-8b-instruct-fast"),     # Llama 8B CF
-        ("groq", "meta-llama/llama-prompt-guard-2-22m"),           # Llama 22M
-        ("groq", "meta-llama/llama-prompt-guard-2-86m"),           # Llama 86M
-        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),            # Qwen 7B
-        ("groq", "groq/compound-mini"),                            # Compound Mini
-        ("groq", "allam-2-7b")                                     # Allam 7B
-    ],
-    
-    # Combination 7: Specialized & Niche Models
-    [
-        ("groq", "moonshotai/kimi-k2-instruct"),                   # Kimi K2
-        ("groq", "moonshotai/kimi-k2-instruct-0905"),              # Kimi K2 0905
-        ("groq", "whisper-large-v3-turbo"),                        # Whisper Turbo
-        ("groq", "whisper-large-v3"),                              # Whisper Large
-        ("groq", "playai-tts"),                                    # TTS Arabic
-        ("groq", "playai-tts-arabic"),                             # TTS
-        ("groq", "groq/compound"),                                 # Compound
-        ("google_gemini", "gemini-1.5-flash")                      # Gemini Flash
-    ],
-    
-    # Combination 8: Fallback & Robust (Most reliable models)
-    [
-        ("google_gemini", "gemini-1.5-flash"),                     # Most reliable Gemini
-        ("groq", "llama-3.3-70b-versatile"),                      # Most reliable Llama
-        ("cloudflare", "@cf/meta/llama-3.3-70b-instruct-fp8-fast"), # Reliable Llama CF
-        ("groq", "qwen/qwen3-32b"),                               # Reliable Qwen
-        ("cloudflare", "@cf/mistralai/mistral-small-3.1-24b-instruct"), # Reliable Mistral
-        ("groq", "llama-3.1-8b-instant"),                          # Reliable fast Llama
-        ("cloudflare", "@cf/qwen/qwen2.5-7b-instruct"),            # Reliable Qwen CF
-        ("google_gemini", "gemini-2.5-flash-lite")                 # Reliable fast Gemini
-    ]
-]
-        # Try each combination until we get enough models
-        for combination in diverse_model_combinations:
-            if len(selected_models) >= target_total:
-                break
-                
-            for provider, model_name in combination:
-                if (len(selected_models) < target_total and 
-                    provider_capacity.get(provider, 0) > 0 and
-                    not self.is_model_failed(provider, model_name) and
-                    model_name in self.available_models.get(provider, []) and
-                    (provider, model_name) not in selected_models):
-                    
-                    selected_models.append((provider, model_name))
-                    provider_capacity[provider] -= 1
-                    logging.info(f"馃幆 Selected diverse model: {provider}/{model_name}")
-
-        # NEW: Ensure we have models from different architectures
-        selected_types = set()
-        for provider, model_name in selected_models:
-            model_type = self._classify_model_type(model_name)
-            selected_types.add(model_type)
-        
-        logging.info(f"馃寛 Selected model types: {selected_types}")
-
-        # If we don't have enough diversity, try to add missing types
-        if len(selected_models) < target_total:
-            missing_types = set(['gemini', 'llama', 'deepseek', 'qwen', 'mistral']) - selected_types
-            logging.info(f"馃攳 Looking for missing model types: {missing_types}")
-            
-            for missing_type in missing_types:
-                if len(selected_models) >= target_total:
-                    break
-                    
-                # Find a model of the missing type
-                for provider, models in self.available_models.items():
-                    if provider_capacity.get(provider, 0) <= 0:
-                        continue
-                        
-                    for model_name in models:
-                        model_type = self._classify_model_type(model_name)
-                        if (model_type == missing_type and 
-                            not self.is_model_failed(provider, model_name) and
-                            (provider, model_name) not in selected_models):
-                            
-                            selected_models.append((provider, model_name))
-                            provider_capacity[provider] -= 1
-                            logging.info(f"馃幆 Added missing type {missing_type}: {provider}/{model_name}")
-                            break
-                    
-                    if len(selected_models) >= target_total:
-                        break
-
-        # Final fallback: fill with any available models
-        if len(selected_models) < target_total:
-            logging.warning(f"鈿狅笍 Only {len(selected_models)} diverse models selected. Filling with available models...")
-            
-            for provider in ["groq", "cloudflare", "google_gemini"]:
-                if provider_capacity.get(provider, 0) <= 0:
-                    continue
-                    
-                for model_name in self.available_models.get(provider, []):
-                    if ((provider, model_name) not in selected_models and 
-                        not self.is_model_failed(provider, model_name)):
-                        
-                        selected_models.append((provider, model_name))
-                        provider_capacity[provider] -= 1
-                        logging.info(f"馃攧 Added fallback model: {provider}/{model_name}")
-                        
-                        if len(selected_models) >= target_total:
-                            break
-                            
-                if len(selected_models) >= target_total:
-                    break
-
-        # ULTIMATE FALLBACK: Use synthetic if no models available
-        if len(selected_models) == 0:
-            logging.error("鉂� No AI models available. Using synthetic decision maker.")
-            selected_models.append(("synthetic", "technical_analyzer"))
-            
-        # Final diversity check
-        final_types = set(self._classify_model_type(model_name) for provider, model_name in selected_models)
-        logging.info(f"馃幆 Final model selection: {len(selected_models)} models with types {final_types}")
-        logging.info(f"馃搵 Selected models: {[f'{p}/{m}' for p, m in selected_models]}")
-        
-        return selected_models
-
-    def record_api_usage(self, provider: str, count: int = 1):
-        """Record API usage"""
-        if provider in self.usage_data["providers"]:
-            self.usage_data["providers"][provider]["used_today"] += count
-            self.save_usage_data()
-
-    def get_usage_summary(self) -> str:
-        """Get usage summary"""
-        summary = "馃搳 API Usage Summary:\n"
-        for provider, data in self.usage_data["providers"].items():
-            remaining = data["limit"] - data["used_today"]
-            summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
-        return summary
-
-# =================================================================================
-# --- Enhanced AI Manager with Fixed Issues ---
-# =================================================================================
-
-class EnhancedAIManager:
-    def __init__(self, gemini_api_key: str, cloudflare_api_key: str, groq_api_key: str, api_manager):
-        self.gemini_api_key = gemini_api_key
-        self.cloudflare_api_key = cloudflare_api_key
-        self.groq_api_key = groq_api_key
-        self.api_manager = api_manager
-        
-        if gemini_api_key:
-            genai.configure(api_key=gemini_api_key)
-
-    def _create_optimized_prompt(self, symbol: str, technical_analysis: Dict) -> str:
-        """Create prompt that encourages decisive signals"""
-        current_price = technical_analysis.get('current_price', 1.0850)
-        trend = technical_analysis.get('htf_trend', {})
-        momentum = technical_analysis.get('momentum', {})
-        key_levels = technical_analysis.get('key_levels', {})
-        risk = technical_analysis.get('risk_assessment', {})
-        ml_signal = technical_analysis.get('ml_signal', {})
-        
-        return f"""As a professional forex trader, analyze {symbol} and provide a TRADING DECISION.
-
-CRITICAL INSTRUCTIONS:
-- Be DECISIVE: Prefer BUY/SELL over HOLD when there's reasonable evidence
-- Only use HOLD if market conditions are completely unclear
-- Consider risk-reward ratios above 1.5 as acceptable
-- Provide specific price levels for entry, stop loss, and take profit
-
-MARKET DATA:
-Price: {current_price:.5f}
-Trend: {trend.get('direction', 'NEUTRAL')} (Strength: {trend.get('strength', 'UNKNOWN')})
-RSI: {momentum.get('rsi', {}).get('value', 50):.1f} ({momentum.get('rsi', {}).get('signal', 'NEUTRAL')})
-MACD: {momentum.get('macd', {}).get('trend', 'NEUTRAL')}
-Support: {key_levels.get('support_1', current_price * 0.99):.5f}
-Resistance: {key_levels.get('resistance_1', current_price * 1.01):.5f}
-Volatility: {risk.get('volatility_percent', 0):.2f}%
-Risk Level: {risk.get('risk_level', 'MEDIUM')}
-ML Signal Strength: {ml_signal.get('signal_strength', 0):.2f}/1.0
-
-TRADING GUIDELINES:
-- BUY if trend is bullish and RSI is not overbought (>70)
-- SELL if trend is bearish and RSI is not oversold (<30)  
-- HOLD only if trend is completely neutral and no clear direction
-- Always calculate proper risk-reward ratios (minimum 1.5:1)
-
-Return ONLY this JSON format (NO other text):
-{{
-  "SYMBOL": "{symbol}",
-  "ACTION": "BUY|SELL|HOLD",
-  "CONFIDENCE": 1-10,
-  "ENTRY": "exact_price",
-  "STOP_LOSS": "calculated_price",
-  "TAKE_PROFIT": "calculated_price",
-  "RISK_REWARD_RATIO": "1.5-3.0",
-  "ANALYSIS": "brief_technical_reasoning"
-}}"""
-
-    async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """Get enhanced AI analysis with robust fallback system"""
-        await self.api_manager.initialize_models()
-        selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
-        
-        if len(selected_models) < 3:
-            logging.error(f"鉂� Cannot find minimum 3 AI models for {symbol}")
-            return None
-            
-        logging.info(f"馃幆 Using {len(selected_models)} diverse AI models for {symbol}")
-
-        tasks = []
-        for provider, model_name in selected_models:
-            # Handle synthetic fallback
-            if provider == "synthetic":
-                task = self._get_synthetic_analysis(symbol, technical_analysis)
-            else:
-                task = self._get_single_analysis(symbol, technical_analysis, provider, model_name)
-            tasks.append(task)
-
-        try:
-            results = await asyncio.gather(*tasks, return_exceptions=True)
-            
-            valid_results = []
-            failed_count = 0
-            
-            for i, (provider, model_name) in enumerate(selected_models):
-                result = results[i]
-                if isinstance(result, Exception):
-                    logging.error(f"鉂� Error in {provider}/{model_name} for {symbol}: {str(result)}")
-                    if provider != "synthetic":  # Don't mark synthetic as failed
-                        self.api_manager.mark_model_failed(provider, model_name)
-                    failed_count += 1
-                    if provider != "synthetic":
-                        self.api_manager.record_api_usage(provider)
-                elif result is not None:
-                    valid_results.append(result)
-                    if provider != "synthetic":
-                        self.api_manager.record_api_usage(provider)
-                else:
-                    if provider != "synthetic":
-                        self.api_manager.record_api_usage(provider)
-
-            logging.info(f"馃搳 Results: {len(valid_results)} successful, {failed_count} failed")
-            
-            if valid_results:
-                combined_signal = self._combine_signals(symbol, valid_results, len(selected_models))
-                if combined_signal:
-                    return combined_signal
-                else:
-                    logging.warning(f"鈿狅笍 Signal combination failed for {symbol}")
-            else:
-                logging.warning(f"鈿狅笍 No valid AI results for {symbol}")
-                
-            # Ultimate fallback: use technical analysis only
-            return await self._get_technical_fallback(symbol, technical_analysis)
-                
-        except Exception as e:
-            logging.error(f"鉂� Error in AI analysis for {symbol}: {str(e)}")
-            return await self._get_technical_fallback(symbol, technical_analysis)
-
-    async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from single AI model with enhanced error handling"""
-        try:
-            prompt = self._create_optimized_prompt(symbol, technical_analysis)
-            
-            if provider == "google_gemini":
-                return await self._get_gemini_analysis_optimized(symbol, prompt, model_name)
-            elif provider == "cloudflare":
-                return await self._get_cloudflare_analysis(symbol, prompt, model_name)
-            elif provider == "groq":
-                return await self._get_groq_analysis(symbol, prompt, model_name)
-            else:
-                return None
-                
-        except Exception as e:
-            logging.error(f"鉂� Error in {provider}/{model_name} for {symbol}: {str(e)}")
-            return None
-
-    async def _get_synthetic_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """Synthetic analysis based on technical indicators only"""
-        try:
-            trend = technical_analysis.get('htf_trend', {})
-            momentum = technical_analysis.get('momentum', {})
-            current_price = technical_analysis.get('current_price', 1.0)
-            key_levels = technical_analysis.get('key_levels', {})
-            
-            # Simple decision logic based on technicals
-            trend_direction = trend.get('direction', 'NEUTRAL')
-            rsi = momentum.get('rsi', {}).get('value', 50)
-            rsi_signal = momentum.get('rsi', {}).get('signal', 'NEUTRAL')
-            macd_trend = momentum.get('macd', {}).get('trend', 'NEUTRAL')
-            
-            action = "HOLD"
-            confidence = 5
-            
-            # Enhanced decision logic
-            bullish_signals = 0
-            bearish_signals = 0
-            
-            if 'BULL' in trend_direction:
-                bullish_signals += 2
-            if 'BEAR' in trend_direction:
-                bearish_signals += 2
-                
-            if rsi_signal == "OVERSOLD":
-                bullish_signals += 1
-            if rsi_signal == "OVERBOUGHT":
-                bearish_signals += 1
-                
-            if macd_trend == "BULLISH":
-                bullish_signals += 1
-            if macd_trend == "BEARISH":
-                bearish_signals += 1
-                
-            if bullish_signals - bearish_signals >= 2:
-                action = "BUY"
-                confidence = min(7 + (bullish_signals - bearish_signals), 10)
-            elif bearish_signals - bullish_signals >= 2:
-                action = "SELL"
-                confidence = min(7 + (bearish_signals - bullish_signals), 10)
-                
-            # Calculate levels
-            if action == "BUY":
-                stop_loss = key_levels.get('support_1', current_price * 0.995)
-                take_profit = key_levels.get('resistance_1', current_price * 1.01)
-            elif action == "SELL":
-                stop_loss = key_levels.get('resistance_1', current_price * 1.005)
-                take_profit = key_levels.get('support_1', current_price * 0.99)
-            else:
-                stop_loss = current_price
-                take_profit = current_price
-                
-            risk_reward = abs(take_profit - current_price) / abs(stop_loss - current_price) if stop_loss != current_price else 1.8
-                
-            return {
-                "SYMBOL": symbol,
-                "ACTION": action,
-                "CONFIDENCE": confidence,
-                "ENTRY": f"{current_price:.5f}",
-                "STOP_LOSS": f"{stop_loss:.5f}",
-                "TAKE_PROFIT": f"{take_profit:.5f}",
-                "RISK_REWARD_RATIO": f"{risk_reward:.2f}",
-                "ANALYSIS": f"Synthetic signal: Trend {trend_direction}, RSI {rsi:.1f}, MACD {macd_trend}",
-                "ai_model": "SYNTHETIC_TECHNICAL"
-            }
-            
-        except Exception as e:
-            logging.error(f"鉂� Synthetic analysis error for {symbol}: {e}")
-            return None
-
-    async def _get_technical_fallback(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """Ultimate fallback using pure technical analysis"""
-        try:
-            return await self._get_synthetic_analysis(symbol, technical_analysis)
-        except Exception as e:
-            logging.error(f"鉂� Technical fallback also failed for {symbol}: {e}")
-            return None
-
-    async def _get_gemini_analysis_optimized(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Optimized Gemini analysis with proper error handling"""
-        try:
-            model = genai.GenerativeModel(model_name)
-            
-            generation_config = genai.types.GenerationConfig(
-                temperature=0.1,
-                max_output_tokens=500,
-                top_p=0.8,
-                top_k=40
-            )
-            
-            response = await asyncio.to_thread(
-                model.generate_content,
-                prompt,
-                generation_config=generation_config
-            )
-            
-            text = self._extract_response_text(response)
-            if text:
-                return self._parse_ai_response(text, symbol, f"Gemini-{model_name}")
-            
-            return None
-            
-        except Exception as e:
-            logging.error(f"鉂� Gemini analysis error for {symbol}: {str(e)}")
-            return None
-
-    def _extract_response_text(self, response) -> Optional[str]:
-        """Safely extract text from AI response with enhanced error handling"""
-        try:
-            # Method 1: Direct text attribute
-            if hasattr(response, 'text') and response.text:
-                return response.text
-                
-            # Method 2: Try to access parts directly
-            if hasattr(response, 'candidates') and response.candidates:
-                for candidate in response.candidates:
-                    if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
-                        text_parts = []
-                        for part in candidate.content.parts:
-                            if hasattr(part, 'text') and part.text:
-                                text_parts.append(part.text)
-                        if text_parts:
-                            return ''.join(text_parts)
-            
-            # Method 3: Use string representation as last resort
-            return str(response)
-            
-        except Exception as e:
-            logging.warning(f"Error extracting response text: {e}")
-            return None
-
-    async def _get_cloudflare_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Cloudflare AI with fixed URL"""
-        if not self.cloudflare_api_key:
-            logging.warning(f"❌ Cloudflare API key not available for {symbol}")
-            return None
-        
-        try:
-            headers = {
-                "Authorization": f"Bearer {self.cloudflare_api_key}",
-                "Content-Type": "application/json"
-            }
-        
-            payload = {
-                "messages": [
-                    {
-                        "role": "system", 
-                        "content": "You are a professional forex trading analyst. Return ONLY valid JSON format. No additional text or explanations."
-                    },
-                    {"role": "user", "content": prompt}
-                ],
-                "stream": False
-            }
-        
-            # FIX: Use correct Cloudflare API URL format
-            account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID")
-            if not account_id:
-                logging.error("❌ CLOUDFLARE_ACCOUNT_ID environment variable is missing!")
-                return None
-            
-            # FIX: Remove @ symbol from model name for URL
-            clean_model_name = model_name.replace('@cf/', '')
-            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{clean_model_name}"
-        
-            logging.info(f"🔗 Calling Cloudflare API: {url}")
-        
-            async with aiohttp.ClientSession() as session:
-                async with session.post(url, headers=headers, json=payload, timeout=60) as response:
-                    if response.status == 200:
-                        data = await response.json()
-                        content = ""
-                    
-                        # Extract content from different response formats
-                        if "result" in data and "response" in data["result"]:
-                            content = data["result"]["response"]
-                        elif "response" in data:
-                            content = data["response"]
-                        elif "result" in data and isinstance(data["result"], str):
-                            content = data["result"]
-                        else:
-                            # Try to find any text content
-                            content = str(data)
-                        
-                        if content:
-                            return self._parse_ai_response(content, symbol, f"Cloudflare-{model_name}")
-                        else:
-                            logging.warning(f"❌ Empty content in Cloudflare response for {symbol}")
-                            return None
-                    else:
-                        error_text = await response.text()
-                        logging.error(f"❌ Cloudflare API error for {symbol}: {response.status} - {error_text}")
-                        # Mark this model as failed
-                        provider = "cloudflare"
-                        self.api_manager.mark_model_failed(provider, model_name)
-                        return None
-                    
-        except Exception as e:
-            logging.error(f"❌ Cloudflare/{model_name} analysis error for {symbol}: {str(e)}")
-        # Mark this model as failed
-            provider = "cloudflare"
-            self.api_manager.mark_model_failed(provider, model_name)
-            return None
-
-    async def _get_groq_analysis(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from Groq API"""
-        if not self.groq_api_key:
-            logging.warning(f"鉂� Groq API key not available for {symbol}")
-            return None
-            
-        try:
-            headers = {
-                "Authorization": f"Bearer {self.groq_api_key}",
-                "Content-Type": "application/json"
-            }
-            
-            payload = {
-                "messages": [
-                    {
-                        "role": "system",
-                        "content": "You are a professional forex trading analyst. Return ONLY valid JSON format. No additional text or explanations."
-                    },
-                    {"role": "user", "content": prompt}
-                ],
-                "model": model_name,
-                "temperature": 0.1,
-                "max_tokens": 600,
-                "stream": False
-            }
-            
-            url = "https://api.groq.com/openai/v1/chat/completions"
-            
-            async with aiohttp.ClientSession() as session:
-                async with session.post(url, headers=headers, json=payload, timeout=60) as response:
-                    if response.status == 200:
-                        data = await response.json()
-                        if "choices" in data and len(data["choices"]) > 0:
-                            content = data["choices"][0]["message"]["content"]
-                            return self._parse_ai_response(content, symbol, f"Groq-{model_name}")
-                        else:
-                            logging.warning(f"鉂� No choices in Groq response for {symbol}: {data}")
-                            return None
-                    else:
-                        error_text = await response.text()
-                        logging.error(f"鉂� Groq API error for {symbol}: {response.status} - {error_text}")
-                        return None
-                        
-        except Exception as e:
-            logging.error(f"鉂� Groq/{model_name} analysis error for {symbol}: {str(e)}")
-            return None
-
-    def _parse_ai_response(self, response, symbol: str, ai_name: str) -> Optional[Dict]:
-        """Parse AI response with enhanced validation and text extraction fallback"""
-        try:
-            if isinstance(response, dict):
-                cleaned_response = json.dumps(response, ensure_ascii=False)
-            else:
-                cleaned_response = (response or "").strip()
-
-            # Clean response
-            cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
-            cleaned_response = re.sub(r'```\s*', '', cleaned_response)
-            cleaned_response = re.sub(r'<think>.*?</think>', '', cleaned_response, flags=re.DOTALL)
-            cleaned_response = re.sub(r'</?[^>]+>', '', cleaned_response)
-
-            # Extract JSON
-            json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
-            if json_match:
-                json_str = json_match.group(0)
-                signal_data = json.loads(json_str)
-
-                if self._validate_signal_data(signal_data, symbol):
-                    signal_data['ai_model'] = ai_name
-                    signal_data['timestamp'] = datetime.now(UTC).isoformat()
-                    signal_data = self._validate_numeric_values(signal_data, symbol)
-
-                    logging.info(f"鉁� {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
-                    return signal_data
-
-            # If JSON parsing fails, try text extraction
-            logging.warning(f"鉂� {ai_name} response for {symbol} lacks valid JSON format, trying text extraction...")
-            return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
-
-        except json.JSONDecodeError as e:
-            logging.warning(f"鉂� JSON error in {ai_name} response for {symbol}, trying text extraction: {e}")
-            return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
-        except Exception as e:
-            logging.error(f"鉂� Error parsing {ai_name} response for {symbol}: {str(e)}")
-            return None
-
-    def _extract_signal_from_text(self, text: str, symbol: str, ai_name: str) -> Optional[Dict]:
-        """Extract trading signal from unstructured text response"""
-        try:
-            text_upper = text.upper()
-            action = "HOLD"
-            
-            # Extract action from text with priority for clear signals
-            if "BUY" in text_upper and "SELL" not in text_upper and "NOT BUY" not in text_upper:
-                action = "BUY"
-            elif "SELL" in text_upper and "BUY" not in text_upper and "NOT SELL" not in text_upper:
-                action = "SELL"
-            elif "LONG" in text_upper:
-                action = "BUY"
-            elif "SHORT" in text_upper:
-                action = "SELL"
-            
-            # Extract confidence
-            confidence_match = re.search(r'CONFIDENCE[:\s]*(\d+)', text_upper)
-            confidence = int(confidence_match.group(1)) if confidence_match else 5
-            
-            # Extract price levels if possible
-            price_pattern = r'(\d+\.\d{4,5})'
-            prices = re.findall(price_pattern, text)
-            current_price = 1.0  # Default, should be replaced with actual price
-            
-            entry_price = current_price
-            stop_loss = current_price * 0.995 if action == "BUY" else current_price * 1.005
-            take_profit = current_price * 1.01 if action == "BUY" else current_price * 0.99
-            
-            if len(prices) >= 3:
-                try:
-                    # Try to interpret prices as entry, stop, take profit
-                    prices_float = [float(p) for p in prices[:3]]
-                    prices_float.sort()
-                    
-                    if action == "BUY":
-                        entry_price = prices_float[1]  # Middle price as entry
-                        stop_loss = min(prices_float)
-                        take_profit = max(prices_float)
-                    else:  # SELL
-                        entry_price = prices_float[1]  # Middle price as entry
-                        stop_loss = max(prices_float)
-                        take_profit = min(prices_float)
-                except:
-                    pass
-
-            # Create basic signal
-            signal_data = {
-                "SYMBOL": symbol,
-                "ACTION": action,
-                "CONFIDENCE": confidence,
-                "ENTRY": f"{entry_price:.5f}",
-                "STOP_LOSS": f"{stop_loss:.5f}", 
-                "TAKE_PROFIT": f"{take_profit:.5f}",
-                "RISK_REWARD_RATIO": "1.8",
-                "ANALYSIS": f"Extracted from text: {text[:100]}...",
-                "ai_model": ai_name + "-TEXT_EXTRACTED"
-            }
-            
-            logging.info(f"鉁� {ai_name} text-extracted signal for {symbol}: {action}")
-            return signal_data
-            
-        except Exception as e:
-            logging.warning(f"鉂� Text extraction failed for {symbol}: {e}")
-            return None
-
-    def _validate_signal_data(self, signal_data: Dict, symbol: str) -> bool:
-        """Validate signal data"""
-        required_fields = ['SYMBOL', 'ACTION', 'CONFIDENCE']
-        for field in required_fields:
-            if field not in signal_data:
-                logging.warning(f"鉂� Required field {field} missing in signal for {symbol}")
-                return False
-                
-        action = signal_data['ACTION'].upper()
-        if action not in ['BUY', 'SELL', 'HOLD']:
-            logging.warning(f"鉂� Invalid ACTION for {symbol}: {action}")
-            return False
-            
-        try:
-            confidence = float(signal_data['CONFIDENCE'])
-            if not (1 <= confidence <= 10):
-                logging.warning(f"鉂� CONFIDENCE out of range for {symbol}: {confidence}")
-                return False
-        except (ValueError, TypeError):
-            logging.warning(f"鉂� Invalid CONFIDENCE for {symbol}: {signal_data['CONFIDENCE']}")
-            return False
-            
-        return True
-
-    def _validate_numeric_values(self, signal_data: Dict, symbol: str) -> Dict:
-        """Validate and fix numeric values"""
-        numeric_fields = ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO']
-        
-        for field in numeric_fields:
-            if field in signal_data:
-                value = signal_data[field]
-                if value is None or value == "null" or str(value).strip() == "":
-                    if field == 'RISK_REWARD_RATIO':
-                        signal_data[field] = "1.8"
-                    else:
-                        signal_data[field] = "N/A"
-                elif field == 'CONFIDENCE':
-                    try:
-                        signal_data[field] = float(value)
-                    except:
-                        signal_data[field] = 5.0
-                        
-        return signal_data
-
-    def _combine_signals(self, symbol: str, valid_results: List[Dict], total_models: int) -> Optional[Dict]:
-        """Combine signal results with robust error handling"""
-        if not valid_results:
-            return None
-            
-        action_counts = {}
-        confidence_sum = {}
-        model_types_used = set()
-        
-        for result in valid_results:
-            action = result['ACTION'].upper()
-            action_counts[action] = action_counts.get(action, 0) + 1
-            
-            # Track model types for diversity analysis
-            ai_model = result.get('ai_model', '')
-            if 'Gemini' in ai_model:
-                model_types_used.add('gemini')
-            elif 'Llama' in ai_model:
-                model_types_used.add('llama')
-            elif 'DeepSeek' in ai_model:
-                model_types_used.add('deepseek')
-            elif 'Qwen' in ai_model:
-                model_types_used.add('qwen')
-            elif 'Mistral' in ai_model:
-                model_types_used.add('mistral')
-            
-            # FIXED: Better confidence handling
-            try:
-                confidence_val = float(result.get('CONFIDENCE', 5))
-                confidence_sum[action] = confidence_sum.get(action, 0) + confidence_val
-            except (ValueError, TypeError):
-                confidence_sum[action] = confidence_sum.get(action, 0) + 5  # Default value
-        
-        logging.info(f"馃搳 Signal combination for {symbol}: {action_counts}")
-        logging.info(f"馃寛 Model types used: {model_types_used}")
-        
-        total_valid = len(valid_results)
-        max_agreement = max(action_counts.values()) if action_counts else 0
-        
-        if max_agreement >= 4:
-            agreement_type = 'VERY_STRONG_CONSENSUS'
-        elif max_agreement == 3:
-            agreement_type = 'STRONG_CONSENSUS'
-        elif max_agreement == 2:
-            agreement_type = 'MEDIUM_CONSENSUS'
-        else:
-            agreement_type = 'WEAK_CONSENSUS'
-            
-        majority_action = max(action_counts, key=action_counts.get) if action_counts else 'HOLD'
-        
-        # Calculate average confidence for majority action
-        avg_confidence = 5.0  # Default
-        if majority_action in confidence_sum and max_agreement > 0:
-            avg_confidence = confidence_sum[majority_action] / max_agreement
-        
-        combined = {
-            'SYMBOL': symbol,
-            'ACTION': majority_action,
-            'CONFIDENCE': round(avg_confidence, 1),
-            'AGREEMENT_LEVEL': max_agreement,
-            'AGREEMENT_TYPE': agreement_type,
-            'VALID_MODELS': total_valid,
-            'TOTAL_MODELS': total_models,
-            'MODEL_TYPES_USED': list(model_types_used),
-            'timestamp': datetime.now(UTC).isoformat()
-        }
-        
-        # Add details from the first valid result of majority action
-        majority_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
-        if majority_results:
-            first_result = majority_results[0]
-            for field in ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO', 'ANALYSIS']:
-                if field in first_result and first_result[field] not in [None, "null", ""]:
-                    combined[field] = first_result[field]
-        
-        # Ensure all required fields have values
-        if 'ENTRY' not in combined:
-            combined['ENTRY'] = "N/A"
-        if 'STOP_LOSS' not in combined:
-            combined['STOP_LOSS'] = "N/A"
-        if 'TAKE_PROFIT' not in combined:
-            combined['TAKE_PROFIT'] = "N/A"
-        if 'RISK_REWARD_RATIO' not in combined:
-            combined['RISK_REWARD_RATIO'] = "1.8"
-        if 'ANALYSIS' not in combined:
-            combined['ANALYSIS'] = f"{majority_action} signal based on agreement of {max_agreement} out of {total_models} AI models from {len(model_types_used)} different architectures"
-            
-        return combined
-
-# =================================================================================
 # --- Enhanced Trade Filter with Flexible Settings ---
 # =================================================================================
 
@@ -2595,13 +2236,13 @@ class EnhancedTradeFilter:
     def _check_market_hours(self, now: datetime) -> bool:
         """Check if current time is within optimal trading hours - more flexible"""
         hour = now.hour
-        # Extended trading hours - almost all hours considered acceptable
+        # Extended trading hours
         return 0 <= hour <= 24  # All hours
 
     def _check_trend_strength(self, technical_analysis: Dict) -> bool:
         """More flexible trend strength check"""
         trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
-        # Allow all trend strengths for more signals
+        # Allow all trend strengths
         return True
 
     def mark_stopout(self, symbol: str):
@@ -2640,11 +2281,8 @@ class AdvancedRiskManager:
             # Method 2: ATR-based (2 ATR below)
             sl_atr = current_price - (2 * atr)
             
-            # Method 3: Recent low
-            sl_recent = key_levels.get('support_2', current_price * 0.98)
-            
             # Choose the most conservative (highest) stop loss for BUY
-            stop_loss = max(sl_support, sl_atr, sl_recent)
+            stop_loss = max(sl_support, sl_atr)
             
         else:  # SELL
             # Method 1: Above nearest resistance
@@ -2653,17 +2291,14 @@ class AdvancedRiskManager:
             # Method 2: ATR-based (2 ATR above)
             sl_atr = current_price + (2 * atr)
             
-            # Method 3: Recent high
-            sl_recent = key_levels.get('resistance_2', current_price * 1.02)
-            
             # Choose the most conservative (lowest) stop loss for SELL
-            stop_loss = min(sl_resistance, sl_atr, sl_recent)
+            stop_loss = min(sl_resistance, sl_atr)
             
         return round(stop_loss, 5)
 
     def calculate_intelligent_take_profit(self, action: str, entry_price: float, stop_loss: float,
                                         technical_analysis: Dict, atr: float) -> float:
-        """Calculate intelligent take profit with minimum 1.5:1 RR ratio"""
+        """NEW: Calculate intelligent take profit with minimum 1.5:1 RR ratio"""
         key_levels = technical_analysis.get('key_levels', {})
         risk_amount = abs(entry_price - stop_loss)
         
@@ -2680,11 +2315,8 @@ class AdvancedRiskManager:
             # Method 3: ATR-based (3 ATR above)
             tp_atr = entry_price + (3 * atr)
             
-            # Method 4: Next resistance level
-            tp_resistance2 = key_levels.get('resistance_2', entry_price * 1.05)
-            
             # Choose the most conservative that meets minimum RR
-            candidate_tps = [tp for tp in [tp_rr, tp_resistance, tp_atr, tp_resistance2] 
+            candidate_tps = [tp for tp in [tp_rr, tp_resistance, tp_atr] 
                             if (tp - entry_price) >= (risk_amount * min_rr_ratio)]
             
             take_profit = min(candidate_tps) if candidate_tps else tp_rr
@@ -2699,11 +2331,8 @@ class AdvancedRiskManager:
             # Method 3: ATR-based (3 ATR below)
             tp_atr = entry_price - (3 * atr)
             
-            # Method 4: Next support level
-            tp_support2 = key_levels.get('support_2', entry_price * 0.95)
-            
             # Choose the most conservative that meets minimum RR
-            candidate_tps = [tp for tp in [tp_rr, tp_support, tp_atr, tp_support2] 
+            candidate_tps = [tp for tp in [tp_rr, tp_support, tp_atr] 
                             if (entry_price - tp) >= (risk_amount * min_rr_ratio)]
             
             take_profit = max(candidate_tps) if candidate_tps else tp_rr
@@ -2733,29 +2362,9 @@ class AdvancedRiskManager:
         actual_rr = reward / risk if risk > 0 else 1.8
         signal['ACTUAL_RR_RATIO'] = round(actual_rr, 2)
         
-        # Add risk assessment
-        signal['RISK_ASSESSMENT'] = {
-            'risk_per_trade_pct': self.risk_per_trade_pct,
-            'position_size': self.calculate_position_size(current_price, stop_loss),
-            'max_leverage': self.max_leverage
-        }
-        
         return signal
 
-    def calculate_position_size(self, entry_price: float, stop_loss: float) -> float:
-        """Calculate position size based on risk management"""
-        risk_amount = self.equity * (self.risk_per_trade_pct / 100)
-        price_risk = abs(entry_price - stop_loss)
-        
-        if price_risk > 0:
-            position_size = risk_amount / price_risk
-            # Apply leverage cap
-            max_position = self.equity * self.max_leverage / entry_price
-            return min(position_size, max_position)
-        
-        return 0.0           
-
-  # =================================================================================
+# =================================================================================
 # --- Signal Quality Scorer ---
 # =================================================================================
 
@@ -2790,7 +2399,7 @@ class SignalQualityScorer:
         
         # 3. Risk-Reward Score
         rr_ratio = float(signal.get('ACTUAL_RR_RATIO', 1.0))
-        scores['risk_reward'] = min(rr_ratio * 33.33, 100)  # 3:1 RR gets 100 points
+        scores['risk_reward'] = min(rr_ratio * 33.33, 100)
         
         # 4. Trend Strength Score
         trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
@@ -2847,7 +2456,7 @@ class SignalQualityScorer:
         return min(alignment_score, 100)
     
     def _calculate_volatility_score(self, technical_analysis: Dict) -> float:
-        """Calculate volatility appropriateness score with better ranges"""
+        """NEW: Calculate volatility appropriateness score with better ranges"""
         volatility = technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
         
         # More realistic volatility ranges for forex
@@ -2877,11 +2486,6 @@ class SignalQualityScorer:
         # MACD alignment
         macd_trend = momentum.get('macd', {}).get('trend', 'NEUTRAL')
         if (action == 'BUY' and macd_trend == 'BULLISH') or (action == 'SELL' and macd_trend == 'BEARISH'):
-            score += 15
-            
-        # Stochastic alignment
-        stoch_signal = momentum.get('stochastic', {}).get('signal', 'NEUTRAL')
-        if (action == 'BUY' and stoch_signal == 'OVERSOLD') or (action == 'SELL' and stoch_signal == 'OVERBOUGHT'):
             score += 15
             
         return min(score, 100)
@@ -2941,7 +2545,6 @@ MARKET DATA:
 - Price: {price:.5f}
 - Trend: {trend.get('direction', 'NEUTRAL')} ({trend.get('strength', 'UNKNOWN')})
 - RSI: {momentum.get('rsi', {}).get('value', 50):.1f} ({momentum.get('rsi', {}).get('signal', 'NEUTRAL')})
-- MACD: {momentum.get('macd', {}).get('trend', 'NEUTRAL')}
 - Key Support: {key.get('support_1', price*0.99):.5f}
 - Key Resistance: {key.get('resistance_1', price*1.01):.5f}
 - Volatility: {risk.get('volatility_percent', 0):.2f}%
@@ -2953,7 +2556,6 @@ TRADING RULES:
 2. BUY if trend is bullish and RSI < 70
 3. SELL if trend is bearish and RSI > 30
 4. Minimum risk-reward ratio: 1.5
-5. Provide specific, realistic price levels
 
 Return EXACT JSON format:
 {{
@@ -3116,7 +2718,7 @@ Return EXACT JSON format:
 
 class ImprovedForexAnalyzer:
     def __init__(self, strict_filters: bool = False):
-        self.model_discoverer = DynamicModelDiscoverer()
+        self.model_discoverer = AdvancedDynamicModelDiscoverer()
         self.api_manager = SmartAPIManager(USAGE_TRACKER_FILE, self.model_discoverer)
         self.technical_analyzer = AdvancedTechnicalAnalyzer()
         self.ai_manager = EnhancedAIManager(google_api_key, CLOUDFLARE_AI_API_KEY, GROQ_API_KEY, self.api_manager)
@@ -3344,13 +2946,13 @@ class ImprovedForexAnalyzer:
         except Exception as e:
             logging.error(f"鉂� Error saving signals: {e}")
 
-    # =================================================================================
+# =================================================================================
 # --- Installation Helper ---
 # =================================================================================
 
 def install_required_packages():
     """Install required packages if missing"""
-    required_packages = ['yfinance', 'pandas-ta', 'aiohttp', 'scipy', 'google-generativeai']
+    required_packages = ['yfinance', 'pandas-ta', 'aiohttp', 'scipy']
     
     for package in required_packages:
         try:
@@ -3362,8 +2964,6 @@ def install_required_packages():
                 import aiohttp
             elif package == 'scipy':
                 import scipy
-            elif package == 'google-generativeai':
-                import google.generativeai
             print(f"鉁� {package} is already installed")
         except ImportError:
             print(f"馃摝 Installing {package}...")
@@ -3460,11 +3060,6 @@ async def main():
     for source, count in data_source_stats.items():
         logging.info(f"  {source}: {count} pairs")
     
-    # Display data source reliability
-    reliability_stats = analyzer.data_fetcher.get_data_source_reliability()
-    logging.info("馃搱 Data Source Reliability:")
-    for source, stats in reliability_stats.items():
-        logging.info(f"  {source}: {stats['success_rate']}% success, {stats['avg_response_time']}s avg response")
     
     # Performance statistics
     perf_stats = analyzer.performance_monitor.get_performance_stats()
@@ -3474,28 +3069,14 @@ async def main():
     logging.info(f"  Avg Analysis Time: {perf_stats['avg_analysis_time_sec']}s")
     logging.info(f"  Avg API Response Time: {perf_stats['avg_api_response_time_sec']}s")
     
-    # Model performance statistics
-    if 'model_performance' in perf_stats:
-        logging.info("馃 Model Performance Statistics:")
-        for model, stats in perf_stats['model_performance'].items():
-            if stats['total_requests'] >= 3:  # Only show models with sufficient data
-                logging.info(f"  {model}: {stats['success_rate']}% success, {stats['avg_response_time']}s avg")
-    
     # Final API status
     analyzer.api_manager.save_usage_data()
     logging.info(analyzer.api_manager.get_usage_summary())
     
     if signals:
         logging.info("馃弫 Enhanced system execution completed successfully with signals!")
-        
-        # Display best signals
-        best_signals = [s for s in signals if s.get('QUALITY_SCORE', 0) >= 70]
-        if best_signals:
-            logging.info("馃弳 BEST TRADING OPPORTUNITIES:")
-            for signal in best_signals[:3]:  # Top 3
-                logging.info(f"  馃幆 {signal['SYMBOL']}: {signal['ACTION']} (Quality: {signal['QUALITY_SCORE']}/100)")
     else:
         logging.info("馃弫 Enhanced system executed but no signals generated")
 
 if __name__ == "__main__":
-    asyncio.run(main())        
+    asyncio.run(main())
