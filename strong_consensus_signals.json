@@ -2,7 +2,7 @@
   {
     "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
-    "CONFIDENCE": 7.2,
+    "CONFIDENCE": 6.6,
     "AGREEMENT_LEVEL": 5,
     "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
     "VALID_MODELS": 5,
@@ -10,25 +10,25 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-05T08:31:25.456872+00:00",
-    "ENTRY": "0.80960",
-    "STOP_LOSS": "0.80945",
-    "TAKE_PROFIT": "0.81227",
-    "RISK_REWARD_RATIO": "2.1",
+    "timestamp": "2025-11-05T08:37:58.016870+00:00",
+    "ENTRY": "0.80950",
+    "STOP_LOSS": "0.80941",
+    "TAKE_PROFIT": "0.80966",
+    "RISK_REWARD_RATIO": "2.0",
     "ANALYSIS": "Strong bullish trend with neutral RSI, ignoring bearish MACD due to very strong trend strength",
-    "ACTUAL_RR_RATIO": 22.5,
+    "ACTUAL_RR_RATIO": 3.17,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
-      "position_size": 370567.08659452444,
+      "position_size": 370612.87014960404,
       "max_leverage": 30.0
     },
     "QUALITY_SCORE": 85.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 53.79089668650787,
-      "key_support": 0.8094466733333333,
-      "key_resistance": 0.8097233366666666,
-      "volatility": 0.08470558714594598,
+      "rsi": 53.00319411232724,
+      "key_support": 0.8094133366666667,
+      "key_resistance": 0.8096566633333334,
+      "volatility": 0.08470559763151657,
       "volatility_status": "OPTIMAL"
     }
   }
