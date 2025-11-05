@@ -10,56 +10,25 @@
     "MODEL_TYPES_USED": [
       "gemini"
     ],
-    "timestamp": "2025-11-05T06:41:08.084194+00:00",
-    "ENTRY": "0.80905",
-    "STOP_LOSS": "0.80897",
-    "TAKE_PROFIT": "0.80932",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, ignoring bearish MACD due to very strong trend indication",
-    "ACTUAL_RR_RATIO": 4.0,
+    "timestamp": "2025-11-05T08:31:25.456872+00:00",
+    "ENTRY": "0.80960",
+    "STOP_LOSS": "0.80945",
+    "TAKE_PROFIT": "0.81227",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, ignoring bearish MACD due to very strong trend strength",
+    "ACTUAL_RR_RATIO": 22.5,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
-      "position_size": 370809.8441262503,
+      "position_size": 370567.08659452444,
       "max_leverage": 30.0
     },
     "QUALITY_SCORE": 85.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 49.79449671236008,
-      "key_support": 0.8089699966666667,
-      "key_resistance": 0.8093200133333334,
-      "volatility": 0.08489198965626125,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 3,
-    "TOTAL_MODELS": 5,
-    "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-05T06:40:53.185655+00:00",
-    "ENTRY": "1.14900",
-    "STOP_LOSS": "1.14900",
-    "TAKE_PROFIT": "1.14861",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is ignored due to dominant trend",
-    "ACTUAL_RR_RATIO": 2.9,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 261119.33153451126,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 71.5,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 43.976637800407026,
-      "key_support": 1.1486066666666663,
-      "key_resistance": 1.1490033333333332,
-      "volatility": 0.06782249411586326,
+      "rsi": 53.79089668650787,
+      "key_support": 0.8094466733333333,
+      "key_resistance": 0.8097233366666666,
+      "volatility": 0.08470558714594598,
       "volatility_status": "OPTIMAL"
     }
   }
