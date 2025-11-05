@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 4,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-05T20:32:34.590882+00:00",
+    "ENTRY": "0.81004",
+    "STOP_LOSS": "0.80986",
+    "TAKE_PROFIT": "0.81314",
+    "RISK_REWARD_RATIO": "17.22",
+    "ANALYSIS": "Strong bullish trend and neutral RSI suggest further upside. Stop loss placed just below support. Take profit target provides a 1.5 risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 17.22,
+    "QUALITY_SCORE": 80.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 50.487801988935,
+      "key_support": 0.8098566766666665,
+      "key_resistance": 0.8101133533333332,
+      "volatility": 0.08480258877976148,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 4,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-05T20:32:26.970835+00:00",
+    "ENTRY": "1.30497",
+    "STOP_LOSS": "1.30498",
+    "TAKE_PROFIT": "1.30495",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The trend is strongly bearish. Although the RSI is neutral, the strength of the bearish trend outweighs the RSI reading. Selling at the current price with a tight stop loss above the immediate resistance and a take profit target below the immediate support offers a good risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 70.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 53.51134683176587,
+      "key_support": 1.3047233333333335,
+      "key_resistance": 1.3049766666666667,
+      "volatility": 0.08566829405964571,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
