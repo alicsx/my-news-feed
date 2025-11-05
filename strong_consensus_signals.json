@@ -1,38 +1,5 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.2,
-    "AGREEMENT_LEVEL": 5,
-    "AGREEMENT_TYPE": "VERY_STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "MODEL_TYPES_USED": [
-      "gemini"
-    ],
-    "timestamp": "2025-11-04T22:26:59.125912+00:00",
-    "ENTRY": "0.81000",
-    "STOP_LOSS": "0.80957",
-    "TAKE_PROFIT": "0.80994",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, ignoring bearish MACD due to trend strength",
-    "ACTUAL_RR_RATIO": 1.47,
-    "RISK_ASSESSMENT": {
-      "risk_per_trade_pct": 1.0,
-      "position_size": 370498.4530578089,
-      "max_leverage": 30.0
-    },
-    "QUALITY_SCORE": 82.3,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 56.969292234195045,
-      "key_support": 0.8095666566666667,
-      "key_resistance": 0.8104133233333334,
-      "volatility": 0.08522397559300987,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "SELL",
     "CONFIDENCE": 7.0,
@@ -41,25 +8,25 @@
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
     "MODEL_TYPES_USED": [],
-    "timestamp": "2025-11-04T22:26:44.630006+00:00",
-    "ENTRY": "1.14830",
-    "STOP_LOSS": "1.14833",
-    "TAKE_PROFIT": "1.14820",
+    "timestamp": "2025-11-05T02:06:23.199881+00:00",
+    "ENTRY": "1.14907",
+    "STOP_LOSS": "1.14911",
+    "TAKE_PROFIT": "1.14895",
     "RISK_REWARD_RATIO": "2.1",
-    "ANALYSIS": "Strong bearish trend, bearish MACD, and RSI not oversold support selling",
-    "ACTUAL_RR_RATIO": 3.33,
+    "ANALYSIS": "Strong bearish trend with RSI not oversold, MACD bullish signal is not strong enough to counter the overall bearish trend",
+    "ACTUAL_RR_RATIO": 3.0,
     "RISK_ASSESSMENT": {
       "risk_per_trade_pct": 1.0,
-      "position_size": 261255.76939824087,
+      "position_size": 261080.7000443837,
       "max_leverage": 30.0
     },
-    "QUALITY_SCORE": 73.5,
+    "QUALITY_SCORE": 72.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 36.37359410087131,
-      "key_support": 1.1481966666666668,
-      "key_resistance": 1.1483333333333334,
-      "volatility": 0.06858898224825691,
+      "rsi": 44.93068863339308,
+      "key_support": 1.1489533333333335,
+      "key_resistance": 1.1491066666666667,
+      "volatility": 0.06808560163874107,
       "volatility_status": "OPTIMAL"
     }
   }
