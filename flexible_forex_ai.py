@@ -1080,6 +1080,35 @@ Return ONLY this JSON format (NO other text):
             logging.error(f"❗ Error in AI analysis for {symbol}: {str(e)}")
             return await self._get_technical_fallback(symbol, technical_analysis)
 
+    async def _retry_with_alternate_same_family(self, symbol: str, technical_analysis: dict, provider: str, model_name: str):
+        """
+        یک بار تلاش مجدد با مدل هم‌خانواده از provider دیگر (اولویت با Groq).
+        اگر چیزی پیدا نشد یا دوباره fail شد، None برمی‌گرداند.
+        """
+        family = self.api_manager.diversity_manager.get_model_family(model_name)
+
+        # ترتیب اولویت: Groq -> Gemini -> Cloudflare (هر کدام غیر از provider فعلی)
+        provider_order = ["groq", "google_gemini", "cloudflare"]
+        for alt_provider in provider_order:
+            if alt_provider == provider:
+                continue
+            for alt_model in self.api_manager.available_models.get(alt_provider, []):
+                if self.api_manager.diversity_manager.get_model_family(alt_model) == family \
+                   and not self.api_manager.is_model_failed(alt_provider, alt_model):
+                    logging.info(f"🔁 Retrying {symbol} with alternate {alt_provider}/{alt_model} (family={family})")
+                    try:
+                        # مستقیم همان مسیر کال اصلی هر provider را صدا بزنیم تا ریکرسیو نشود
+                        if alt_provider == "google_gemini":
+                            return await self._get_gemini_analysis_optimized(symbol, self._create_optimized_prompt(symbol, technical_analysis), alt_model)
+                        elif alt_provider == "cloudflare":
+                            return await self._get_cloudflare_analysis(symbol, self._create_optimized_prompt(symbol, technical_analysis), alt_model)
+                        elif alt_provider == "groq":
+                            return await self._get_groq_analysis(symbol, self._create_optimized_prompt(symbol, technical_analysis), alt_model)
+                    except Exception as e2:
+                        logging.error(f"Alternate model also failed: {alt_provider}/{alt_model} -> {e2}")
+                        self.api_manager.mark_model_failed(alt_provider, alt_model)
+                        continue
+        return None
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
         """Get analysis from single AI model with enhanced error handling"""
         try:
@@ -1096,7 +1125,10 @@ Return ONLY this JSON format (NO other text):
                 
         except Exception as e:
             logging.error(f"❗ Error in {provider}/{model_name} for {symbol}: {str(e)}")
-            return None
+            self.api_manager.mark_model_failed(provider, model_name)
+    # 🔽 افزوده جدید: تلاشِ یک‌باره با مدل هم‌خانواده از provider دیگر (اولویت با Groq)
+        return await self._retry_with_alternate_same_family(symbol, technical_analysis, provider, model_name)
+            
 
     async def _get_synthetic_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """Synthetic analysis based on technical indicators only"""
