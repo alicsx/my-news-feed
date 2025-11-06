@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-06T22:27:17.443770+00:00",
+    "ENTRY": "1.15447",
+    "STOP_LOSS": "calculated_price",
+    "TAKE_PROFIT": "calculated_price",
+    "RISK_REWARD_RATIO": "1.5-3.0",
+    "ANALYSIS": "The trend is neutral and RSI is 66.2, which is not overbought or oversold. Market conditions are unclear, so it's best to hold.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 66.1752719997186,
+      "key_support": 1.1544466666666666,
+      "key_resistance": 1.1545533333333333,
+      "volatility": 0.06536038037438724,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-06T22:27:25.242751+00:00",
+    "ENTRY": "1.31332",
+    "STOP_LOSS": "calculated_price",
+    "TAKE_PROFIT": "calculated_price",
+    "RISK_REWARD_RATIO": "1.5-3.0",
+    "ANALYSIS": "The trend is neutral and RSI is at 68.0, which is not overbought or oversold. Market conditions are unclear, so it's best to hold.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 67.96837140057914,
+      "key_support": 1.31328,
+      "key_resistance": 1.31357,
+      "volatility": 0.0836092216665134,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
