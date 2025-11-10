@@ -7,19 +7,19 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-11-10T06:42:50.069019+00:00",
-    "ENTRY": "177.95200",
-    "STOP_LOSS": "177.88000",
-    "TAKE_PROFIT": "178.10000",
+    "timestamp": "2025-11-10T08:32:05.623462+00:00",
+    "ENTRY": "178.30499",
+    "STOP_LOSS": "178.25300",
+    "TAKE_PROFIT": "178.36200",
     "RISK_REWARD_RATIO": "1.71",
-    "ANALYSIS": "Strong bullish trend is present, but RSI is overbought (72.0). While a buy signal would normally be triggered, the overbought condition suggests a potential pullback or consolidation. A Hold with a tight stop-loss is warranted until RSI corrects or the bullish momentum is confirmed.",
+    "ANALYSIS": "Strong bullish trend, but RSI is significantly overbought, suggesting a potential pullback. Risk-reward ratio is acceptable but caution is advised.",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 72.03079794495308,
-      "key_support": 177.91299999999998,
-      "key_resistance": 177.99099999999999,
-      "volatility": 0.07765873484133003,
+      "rsi": 78.6607965864894,
+      "key_support": 178.2529966666667,
+      "key_resistance": 178.312,
+      "volatility": 0.0777792866461022,
       "volatility_status": "OPTIMAL"
     }
   }
