@@ -1,5 +1,29 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-10T08:38:15.749728+00:00",
+    "ENTRY": "1.15802",
+    "STOP_LOSS": "1.15756",
+    "TAKE_PROFIT": "1.15855",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Neutral trend and RSI of 63.6 indicate market conditions are unclear, so holding is the best option.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 63.63001987005794,
+      "key_support": 1.15756,
+      "key_resistance": 1.1585499999999997,
+      "volatility": 0.06381488421371552,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 4.5,
@@ -7,19 +31,19 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 3,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-11-10T08:32:05.623462+00:00",
-    "ENTRY": "178.30499",
-    "STOP_LOSS": "178.25300",
-    "TAKE_PROFIT": "178.36200",
-    "RISK_REWARD_RATIO": "1.71",
-    "ANALYSIS": "Strong bullish trend, but RSI is significantly overbought, suggesting a potential pullback. Risk-reward ratio is acceptable but caution is advised.",
+    "timestamp": "2025-11-10T08:38:38.127206+00:00",
+    "ENTRY": "178.39600",
+    "STOP_LOSS": "178.31467",
+    "TAKE_PROFIT": "178.57733",
+    "RISK_REWARD_RATIO": "1.64",
+    "ANALYSIS": "Strong bullish trend but RSI is significantly overbought. While a bullish trend exists, the overbought RSI suggests a potential pullback or consolidation. Risk-reward ratio is acceptable, but the overbought condition warrants caution and a hold to observe price action before initiating a buy.",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 78.6607965864894,
-      "key_support": 178.2529966666667,
-      "key_resistance": 178.312,
-      "volatility": 0.0777792866461022,
+      "rsi": 79.92520045874605,
+      "key_support": 178.31466999999998,
+      "key_resistance": 178.40601,
+      "volatility": 0.07790072473113532,
       "volatility_status": "OPTIMAL"
     }
   }
