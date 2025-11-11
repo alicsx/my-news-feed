@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 1,
+    "AGREEMENT_TYPE": "WEAK_CONSENSUS",
+    "VALID_MODELS": 3,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-11T20:30:56.378739+00:00",
+    "ENTRY": "0.80029",
+    "STOP_LOSS": "0.80006",
+    "TAKE_PROFIT": "0.80063",
+    "RISK_REWARD_RATIO": "1.48",
+    "ANALYSIS": "Despite the bearish trend, the RSI is at a neutral level of 33.0, indicating a potential buying opportunity. The price is close to the support level of 0.80006, which could provide a cushion for the trade. A buy signal is given with a confidence level of 8 out of 10.",
+    "ACTUAL_RR_RATIO": 1.48,
+    "QUALITY_SCORE": 48.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 32.98619106481195,
+      "key_support": 0.8000599966666666,
+      "key_resistance": 0.8002999833333333,
+      "volatility": 0.08007558134227545,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
