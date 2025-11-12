@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-11-12T12:59:34.617693+00:00",
+    "ENTRY": "179.19000",
+    "STOP_LOSS": "179.25833",
+    "TAKE_PROFIT": "179.08750",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a strong bullish trend, but the RSI is overbought. This indicates a potential reversal. Given the low risk level and strong trend, a sell decision is made with a stop loss at the resistance level and a take profit at the support level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 57.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 72.29528090673988,
+      "key_support": 179.17766666666668,
+      "key_resistance": 179.25833333333335,
+      "volatility": 0.07701524991308994,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-11-12T12:59:20.149584+00:00",
+    "ENTRY": "1.31134",
+    "STOP_LOSS": "1.31203",
+    "TAKE_PROFIT": "1.31030",
+    "RISK_REWARD_RATIO": "1.51",
+    "ANALYSIS": "Strong bearish trend confirmed despite RSI being neutral.  Entering a short position with a stop loss above the recent resistance and a take profit target near the support level, resulting in a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.51,
+    "QUALITY_SCORE": 56.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 37.180250033264784,
+      "key_support": 1.31093,
+      "key_resistance": 1.3120299999999998,
+      "volatility": 0.08187143740865509,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
