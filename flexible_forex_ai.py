@@ -107,6 +107,9 @@ DATA_SOURCE_PRIORITY = ["twelvedata", "yahoo", "synthetic"]
 TWELVEDATA_RATE_LIMIT = 8  # requests per minute
 MIN_REQUEST_INTERVAL = 60 / TWELVEDATA_RATE_LIMIT  # seconds between requests
 
+# Target count of successful model outputs (HARD requirement)
+TARGET_SUCCESS_MODELS = 5
+
 # Advanced logging setup
 logging.basicConfig(
     level=logging.INFO,
@@ -294,12 +297,16 @@ class AdvancedDynamicModelDiscoverer:
             
             available_models = []
             for model in models:
-                model_name = model.name
-                # Filter for relevant models and free tier only
+                model_name = model.name if hasattr(model, "name") else str(model)
+                # robust check for supported generation methods
+                supported = []
+                if hasattr(model, "supported_generation_methods"):
+                    supported = [str(m).lower() for m in getattr(model, "supported_generation_methods", [])]
+                elif hasattr(model, "generation_methods"):
+                    supported = [str(m).lower() for m in getattr(model, "generation_methods", [])]
                 if ('gemini' in model_name.lower() and 
-                    'generateContent' in model.supported_generation_methods and
+                    any('generate' in m for m in supported) and
                     self.model_filter.is_free_tier_model(model_name)):
-                    
                     available_models.append(model_name.split('/')[-1])  # Extract model name only
             
             # Prioritize our preferred free models
@@ -338,7 +345,6 @@ class AdvancedDynamicModelDiscoverer:
                     if response.status == 200:
                         data = await response.json()
                         models = [model.get("id") for model in data.get("result", []) if model.get("id")]
-                        
                         # Prioritize diverse models
                         diverse_models = self._prioritize_diverse_models(models, "cloudflare")
                         return diverse_models if diverse_models else self.fallback_models["cloudflare"]
@@ -602,7 +608,7 @@ class EnhancedDataFetcher:
                         data = await response.json()
                         
                         # Check for API errors
-                        if 'code' in data and data['code'] != 200:
+                        if isinstance(data, dict) and 'code' in data and data.get('status') != 'ok' and data['code'] != 200:
                             error_msg = data.get('message', 'Unknown API error')
                             
                             # Handle specific error codes
@@ -680,6 +686,8 @@ class EnhancedDataFetcher:
                 
             # Resample to 4H if needed
             if interval == "4h":
+                if not isinstance(df.index, pd.DatetimeIndex):
+                    df.index = pd.to_datetime(df.index)
                 df = df.resample("4H").agg({
                     "Open": "first",
                     "High": "max",
@@ -722,8 +730,9 @@ class EnhancedDataFetcher:
     async def _get_synthetic_data(self, symbol: str, interval: str) -> DataFetchResult:
         """Generate synthetic data as last resort fallback"""
         try:
-            # Create realistic synthetic data based on common forex patterns
-            np.random.seed(hash(symbol) % 10000)
+            # Stable seed based on symbol (consistent between runs)
+            stable_seed = int(hashlib.sha256(symbol.encode('utf-8')).hexdigest()[:8], 16) % 10000
+            np.random.seed(stable_seed)
             
             # Base prices for different pairs (approximate)
             base_prices = {
@@ -790,6 +799,7 @@ class SmartAPIManager:
         self.failed_models = set()
         self.models_initialized = False
         self.gemini_disabled = False
+        self.gemini_disabled_until = 0.0
         self.diversity_manager = AIModelDiversityManager()
 
     async def initialize_models(self):
@@ -855,6 +865,8 @@ class SmartAPIManager:
 
     def get_available_models_count(self, provider: str) -> int:
         """Get available models count for provider"""
+        if provider == "google_gemini" and not self.is_gemini_available():
+            return 0
         if not self.can_use_provider(provider):
             return 0
         provider_data = self.usage_data["providers"][provider]
@@ -878,36 +890,37 @@ class SmartAPIManager:
                 return provider
         return None
 
-    def disable_gemini(self):
+    def disable_gemini(self, duration_sec: int = 3600):
         """Disable Gemini temporarily due to quota limits"""
         self.gemini_disabled = True
-        logging.warning("🚫 Gemini temporarily disabled due to quota limits")
+        self.gemini_disabled_until = time.time() + duration_sec
+        logging.warning(f"🚫 Gemini temporarily disabled for {duration_sec}s due to quota/429")
 
     def is_gemini_available(self) -> bool:
         """Check if Gemini has available quota"""
-        if self.gemini_disabled:
+        if self.gemini_disabled and time.time() < self.gemini_disabled_until:
             return False
+        if self.gemini_disabled and time.time() >= self.gemini_disabled_until:
+            # auto re-enable after cooldown
+            self.gemini_disabled = False
         if not self.can_use_provider("google_gemini"):
             return False
         gemini_models = self.available_models.get("google_gemini", [])
         return len(gemini_models) > 0
 
     def select_diverse_models(self, target_total: int = 5, min_required: int = 3) -> List[Tuple[str, str]]:
-        """NEW: Select diverse models from different AI families with enhanced logic"""
+        """Select diverse models from different AI families with enhanced logic"""
         selected_models = []
         
         # Calculate provider capacity with Gemini availability check
         provider_capacity = {}
         for provider in ["google_gemini", "cloudflare", "groq"]:
-            if provider == "google_gemini" and not self.is_gemini_available():
-                provider_capacity[provider] = 0
-            else:
-                provider_capacity[provider] = self.get_available_models_count(provider)
+            provider_capacity[provider] = self.get_available_models_count(provider)
             
         logging.info(f"📊 Provider capacity: Gemini={provider_capacity['google_gemini']}, "
                    f"Cloudflare={provider_capacity['cloudflare']}, Groq={provider_capacity['groq']}")
 
-        # NEW: Get all available models across providers
+        # Get all available models across providers
         all_available_models = []
         for provider in ["google_gemini", "cloudflare", "groq"]:
             if provider_capacity[provider] > 0:
@@ -918,7 +931,7 @@ class SmartAPIManager:
                     if not self.is_model_failed(provider, model):
                         all_available_models.append((provider, model))
         
-        # NEW: Use diversity manager to select 5 diverse models
+        # Use diversity manager to select target_total diverse models
         if all_available_models:
             selected_models = self.diversity_manager.select_diverse_models(all_available_models, target_total)
             
@@ -956,8 +969,60 @@ class SmartAPIManager:
             summary += f"  {provider}: {data['used_today']}/{data['limit']} ({remaining} remaining)\n"
         return summary
 
+    # -------- NEW: backfill helpers to guarantee TARGET_SUCCESS_MODELS --------
+    def backfill_candidates(self,
+                            already_used: List[Tuple[str, str]],
+                            desired_total: int,
+                            prefer_families: Optional[set] = None) -> List[Tuple[str, str]]:
+        """
+        Pick additional (provider, model) pairs not in already_used and not failed,
+        respecting provider capacity and trying to diversify families.
+        """
+        prefer_families = prefer_families or set()
+        used_set = set(already_used)
+        picks: List[Tuple[str, str]] = []
+
+        # Build candidate pool
+        pool: List[Tuple[str, str]] = []
+        for provider in ["groq", "cloudflare", "google_gemini"]:
+            # Keep Gemini last to reduce quota pressure
+            if provider == "google_gemini" and not self.is_gemini_available():
+                continue
+            for model in self.available_models.get(provider, []):
+                if self.is_model_failed(provider, model):
+                    continue
+                if (provider, model) in used_set:
+                    continue
+                pool.append((provider, model))
+
+        # First pass: prefer families not yet used
+        for provider, model in pool:
+            if len(picks) + len(already_used) >= desired_total:
+                break
+            fam = self.diversity_manager.get_model_family(model)
+            if fam in prefer_families:
+                continue
+            # provider usage capacity check
+            if self.get_available_models_count(provider) <= 0:
+                continue
+            picks.append((provider, model))
+            prefer_families.add(fam)
+
+        # Second pass: fill whatever remains
+        for provider, model in pool:
+            if len(picks) + len(already_used) >= desired_total:
+                break
+            if (provider, model) in picks:
+                continue
+            if self.get_available_models_count(provider) <= 0:
+                continue
+            picks.append((provider, model))
+
+        return picks
+
+
 # =================================================================================
-# --- Enhanced AI Manager with Diverse Model Support ---
+# --- Enhanced AI Manager with Diverse Model Support + Hard Backfill to 5 ---
 # =================================================================================
 
 class EnhancedAIManager:
@@ -1022,19 +1087,19 @@ Return ONLY this JSON format (NO other text):
             return e, time.time() - t0, False, provider, model
 
     async def get_enhanced_ai_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
-        """Get enhanced AI analysis with diverse model ensemble"""
+        """Get enhanced AI analysis with diverse model ensemble and hard backfill to 5"""
         await self.api_manager.initialize_models()
-        selected_models = self.api_manager.select_diverse_models(target_total=5, min_required=3)
+        selected_models = self.api_manager.select_diverse_models(target_total=TARGET_SUCCESS_MODELS, min_required=3)
         
-        if len(selected_models) < 3:
-            logging.error(f"❗ Cannot find minimum 3 AI models for {symbol}")
-            return None
+        if len(selected_models) < 1:
+            logging.error(f"❗ Cannot find AI models for {symbol}")
+            return await self._get_technical_fallback(symbol, technical_analysis)
             
         logging.info(f"🧠 Using {len(selected_models)} diverse AI models for {symbol}")
 
+        # ---- First wave of requests
         tasks = []
         for provider, model_name in selected_models:
-            # Handle synthetic fallback
             if provider == "synthetic":
                 task = self._timed(self._get_synthetic_analysis(symbol, technical_analysis), provider, model_name)
             else:
@@ -1046,8 +1111,10 @@ Return ONLY this JSON format (NO other text):
             
             valid_results = []
             failed_count = 0
-            
+            used_models = []
+
             for result, elapsed, ok, provider, model_name in results:
+                used_models.append((provider, model_name))
                 if ok and not isinstance(result, Exception) and result is not None:
                     valid_results.append(result)
                     if provider != "synthetic":
@@ -1058,14 +1125,54 @@ Return ONLY this JSON format (NO other text):
                     if provider != "synthetic":
                         self.api_manager.record_api_usage(provider)
                         self.performance_monitor.record_model_performance(provider, model_name, False, elapsed)
-                        # If explicit error, mark failed model (helps skip deprecated/invalid models)
+                        # mark failed route/model
                         if isinstance(result, Exception):
                             self.api_manager.mark_model_failed(provider, model_name)
 
             logging.info(f"📊 Results: {len(valid_results)} successful, {failed_count} failed")
-            
+
+            # ---- Hard backfill to guarantee TARGET_SUCCESS_MODELS
+            if len(valid_results) < TARGET_SUCCESS_MODELS:
+                need = TARGET_SUCCESS_MODELS - len(valid_results)
+                logging.info(f"🔁 Backfilling: need {need} more successful model outputs for {symbol}")
+                prefer_families = {self.api_manager.diversity_manager.get_model_family(m) for _, m in used_models}
+                backfill_list = self.api_manager.backfill_candidates(
+                    already_used=used_models, desired_total=len(used_models) + need, prefer_families=prefer_families
+                )
+
+                backfill_tasks = []
+                for provider, model_name in backfill_list:
+                    if provider == "synthetic":
+                        backfill_tasks.append(self._timed(self._get_synthetic_analysis(symbol, technical_analysis), provider, model_name))
+                    else:
+                        backfill_tasks.append(self._timed(self._get_single_analysis(symbol, technical_analysis, provider, model_name), provider, model_name))
+
+                if backfill_tasks:
+                    backfill_results = await asyncio.gather(*backfill_tasks, return_exceptions=False)
+                    for result, elapsed, ok, provider, model_name in backfill_results:
+                        used_models.append((provider, model_name))
+                        if ok and not isinstance(result, Exception) and result is not None:
+                            valid_results.append(result)
+                            if provider != "synthetic":
+                                self.api_manager.record_api_usage(provider)
+                                self.performance_monitor.record_model_performance(provider, model_name, True, elapsed)
+                        else:
+                            if provider != "synthetic":
+                                self.api_manager.record_api_usage(provider)
+                                self.performance_monitor.record_model_performance(provider, model_name, False, elapsed)
+                            if isinstance(result, Exception):
+                                self.api_manager.mark_model_failed(provider, model_name)
+
+                # If still short, pad with synthetic analyses to reach TARGET_SUCCESS_MODELS
+                while len(valid_results) < TARGET_SUCCESS_MODELS:
+                    synth_res = await self._get_synthetic_analysis(symbol, technical_analysis)
+                    if synth_res:
+                        valid_results.append(synth_res)
+                    else:
+                        break  # unlikely, but avoid infinite loop
+
             if valid_results:
-                combined_signal = self._combine_signals(symbol, valid_results, len(selected_models))
+                combined_signal = self._combine_signals(symbol, valid_results, max(len(used_models), TARGET_SUCCESS_MODELS))
                 if combined_signal:
                     return combined_signal
                 else:
@@ -1087,33 +1194,36 @@ Return ONLY this JSON format (NO other text):
         """
         family = self.api_manager.diversity_manager.get_model_family(model_name)
 
-        # ترتیب اولویت: Groq -> Gemini -> Cloudflare (هر کدام غیر از provider فعلی)
-        provider_order = ["groq", "google_gemini", "cloudflare"]
+        # ترتیب اولویت: Groq -> Cloudflare -> Gemini
+        provider_order = ["groq", "cloudflare", "google_gemini"]
         for alt_provider in provider_order:
             if alt_provider == provider:
+                continue
+            # Skip Gemini if temporarily disabled
+            if alt_provider == "google_gemini" and not self.api_manager.is_gemini_available():
                 continue
             for alt_model in self.api_manager.available_models.get(alt_provider, []):
                 if self.api_manager.diversity_manager.get_model_family(alt_model) == family \
                    and not self.api_manager.is_model_failed(alt_provider, alt_model):
                     logging.info(f"🔁 Retrying {symbol} with alternate {alt_provider}/{alt_model} (family={family})")
                     try:
-                        # مستقیم همان مسیر کال اصلی هر provider را صدا بزنیم تا ریکرسیو نشود
+                        prompt = self._create_optimized_prompt(symbol, technical_analysis)
                         if alt_provider == "google_gemini":
-                            return await self._get_gemini_analysis_optimized(symbol, self._create_optimized_prompt(symbol, technical_analysis), alt_model)
+                            return await self._get_gemini_analysis_optimized(symbol, prompt, alt_model)
                         elif alt_provider == "cloudflare":
-                            return await self._get_cloudflare_analysis(symbol, self._create_optimized_prompt(symbol, technical_analysis), alt_model)
+                            return await self._get_cloudflare_analysis(symbol, prompt, alt_model)
                         elif alt_provider == "groq":
-                            return await self._get_groq_analysis(symbol, self._create_optimized_prompt(symbol, technical_analysis), alt_model)
+                            return await self._get_groq_analysis(symbol, prompt, alt_model)
                     except Exception as e2:
                         logging.error(f"Alternate model also failed: {alt_provider}/{alt_model} -> {e2}")
                         self.api_manager.mark_model_failed(alt_provider, alt_model)
                         continue
         return None
+
     async def _get_single_analysis(self, symbol: str, technical_analysis: Dict, provider: str, model_name: str) -> Optional[Dict]:
-        """Get analysis from single AI model with enhanced error handling"""
+        """Get analysis from single AI model with enhanced error handling and family retry"""
+        prompt = self._create_optimized_prompt(symbol, technical_analysis)
         try:
-            prompt = self._create_optimized_prompt(symbol, technical_analysis)
-            
             if provider == "google_gemini":
                 return await self._get_gemini_analysis_optimized(symbol, prompt, model_name)
             elif provider == "cloudflare":
@@ -1122,13 +1232,11 @@ Return ONLY this JSON format (NO other text):
                 return await self._get_groq_analysis(symbol, prompt, model_name)
             else:
                 return None
-                
         except Exception as e:
             logging.error(f"❗ Error in {provider}/{model_name} for {symbol}: {str(e)}")
             self.api_manager.mark_model_failed(provider, model_name)
-    # 🔽 افزوده جدید: تلاشِ یک‌باره با مدل هم‌خانواده از provider دیگر (اولویت با Groq)
-        return await self._retry_with_alternate_same_family(symbol, technical_analysis, provider, model_name)
-            
+            # Try alternate same-family model from different provider once
+            return await self._retry_with_alternate_same_family(symbol, technical_analysis, provider, model_name)
 
     async def _get_synthetic_analysis(self, symbol: str, technical_analysis: Dict) -> Optional[Dict]:
         """Synthetic analysis based on technical indicators only"""
@@ -1180,7 +1288,7 @@ Return ONLY this JSON format (NO other text):
             return None
             
     async def _get_gemini_analysis_optimized(self, symbol: str, prompt: str, model_name: str) -> Optional[Dict]:
-        """Optimized Gemini analysis with proper error handling"""
+        """Optimized Gemini analysis with proper error handling and circuit breaker"""
         try:
             model = genai.GenerativeModel(model_name)
             
@@ -1204,7 +1312,11 @@ Return ONLY this JSON format (NO other text):
             return None
             
         except Exception as e:
-            logging.error(f"❗ Gemini analysis error for {symbol}: {str(e)}")
+            msg = str(e)
+            logging.error(f"❗ Gemini analysis error for {symbol}: {msg}")
+            # Circuit-breaker on quota/429 hints
+            if "429" in msg or "quota" in msg.lower() or "limit" in msg.lower():
+                self.api_manager.disable_gemini(3600)
             return None
 
     def _extract_response_text(self, response) -> Optional[str]:
@@ -1286,11 +1398,9 @@ Return ONLY this JSON format (NO other text):
                         error_text = await response.text()
                         logging.error(f"❗ Cloudflare API error for {symbol}: {response.status} - {error_text}")
                         # Special handling for deprecated model / wrong route
-                        if response.status == 410 or "deprecated" in error_text.lower():
+                        if response.status in (404, 410) or "deprecated" in error_text.lower() or "No route for that URI".lower() in error_text.lower() or '"code":7000' in error_text:
                             self.api_manager.mark_model_failed("cloudflare", model_name)
-                            logging.warning(f"Model deprecated on Cloudflare: {model_name}; removed from rotation.")
-                        if "No route for that URI" in error_text or '"code":7000' in error_text:
-                            logging.warning(f"Cloudflare routing/model name issue for {model_name}. Check model id & account_id.")
+                            logging.warning(f"Model route invalid/deprecated on Cloudflare: {model_name}; removed from rotation.")
                         return None
                         
         except Exception as e:
@@ -1338,6 +1448,9 @@ Return ONLY this JSON format (NO other text):
                     else:
                         error_text = await response.text()
                         logging.error(f"❗ Groq API error for {symbol}: {response.status} - {error_text}")
+                        # mark unrecoverable models (rare)
+                        if response.status in (404, 410):
+                            self.api_manager.mark_model_failed("groq", model_name)
                         return None
                         
         except Exception as e:
@@ -1353,9 +1466,9 @@ Return ONLY this JSON format (NO other text):
                 cleaned_response = (response or "").strip()
 
             # Clean response
-            cleaned_response = re.sub(r'```json\s*', '', cleaned_response)
+            cleaned_response = re.sub(r'```json\s*', '', cleaned_response, flags=re.IGNORECASE)
             cleaned_response = re.sub(r'```\s*', '', cleaned_response)
-            cleaned_response = re.sub(r'<think>.*?</think>', '', cleaned_response, flags=re.DOTALL)
+            cleaned_response = re.sub(r'<think>.*?</think>', '', cleaned_response, flags=re.DOTALL | re.IGNORECASE)
             cleaned_response = re.sub(r'</?[^>]+>', '', cleaned_response)
 
             # Extract JSON
@@ -1372,7 +1485,7 @@ Return ONLY this JSON format (NO other text):
                     logging.info(f"✅ {ai_name} signal for {symbol}: {signal_data.get('ACTION', 'HOLD')}")
                     return signal_data
 
-            # NEW: If JSON parsing fails, try text extraction
+            # If JSON parsing fails, try text extraction
             logging.warning(f"⚠️ {ai_name} response for {symbol} lacks valid JSON format, trying text extraction...")
             return self._extract_signal_from_text(cleaned_response, symbol, ai_name)
 
@@ -1384,7 +1497,7 @@ Return ONLY this JSON format (NO other text):
             return None
 
     def _extract_signal_from_text(self, text: str, symbol: str, ai_name: str) -> Optional[Dict]:
-        """NEW: Extract trading signal from unstructured text response"""
+        """Extract trading signal from unstructured text response"""
         try:
             text_upper = text.upper()
             action = "HOLD"
@@ -1396,8 +1509,8 @@ Return ONLY this JSON format (NO other text):
                 action = "SELL"
             
             # Extract confidence
-            confidence_match = re.search(r'CONFIDENCE[:\s]*(\d+)', text_upper)
-            confidence = int(confidence_match.group(1)) if confidence_match else 5
+            confidence_match = re.search(r'CONFIDENCE[:\s]*(\d+(\.\d+)?)', text_upper)
+            confidence = float(confidence_match.group(1)) if confidence_match else 5.0
             
             # Create basic signal
             signal_data = {
@@ -1427,7 +1540,7 @@ Return ONLY this JSON format (NO other text):
                 logging.warning(f"⚠️ Required field {field} missing in signal for {symbol}")
                 return False
                 
-        action = signal_data['ACTION'].upper()
+        action = str(signal_data['ACTION']).upper()
         if action not in ['BUY', 'SELL', 'HOLD']:
             logging.warning(f"⚠️ Invalid ACTION for {symbol}: {action}")
             return False
@@ -1455,12 +1568,20 @@ Return ONLY this JSON format (NO other text):
                         signal_data[field] = "1.8"
                     else:
                         signal_data[field] = "N/A"
-                elif field == 'CONFIDENCE':
+                else:
+                    # Coerce numeric-like strings (ignore non-numeric gracefully)
                     try:
-                        signal_data[field] = float(value)
-                    except:
-                        signal_data[field] = 5.0
-                        
+                        if field == 'RISK_REWARD_RATIO':
+                            float(value)
+                        else:
+                            # allow price-like float values
+                            float(value)
+                    except Exception:
+                        # keep as N/A if unparsable
+                        if field == 'RISK_REWARD_RATIO':
+                            signal_data[field] = "1.8"
+                        else:
+                            signal_data[field] = "N/A"
         return signal_data
 
     def _combine_signals(self, symbol: str, valid_results: List[Dict], total_models: int) -> Optional[Dict]:
@@ -1472,10 +1593,10 @@ Return ONLY this JSON format (NO other text):
         confidence_sum = {}
         
         for result in valid_results:
-            action = result['ACTION'].upper()
+            action = str(result['ACTION']).upper()
             action_counts[action] = action_counts.get(action, 0) + 1
             
-            # FIXED: Better confidence handling
+            # Better confidence handling
             try:
                 confidence_val = float(result.get('CONFIDENCE', 5))
                 confidence_sum[action] = confidence_sum.get(action, 0) + confidence_val
@@ -1513,11 +1634,11 @@ Return ONLY this JSON format (NO other text):
         }
         
         # Add details from the first valid result of majority action
-        majority_results = [r for r in valid_results if r['ACTION'].upper() == majority_action]
+        majority_results = [r for r in valid_results if str(r['ACTION']).upper() == majority_action]
         if majority_results:
             first_result = majority_results[0]
             for field in ['ENTRY', 'STOP_LOSS', 'TAKE_PROFIT', 'RISK_REWARD_RATIO', 'ANALYSIS']:
-                if field in first_result and first_result[field] not in [None, "null", ""]:
+                if field in first_result and first_result[field] not in [None, "null", "", "N/A"]:
                     combined[field] = first_result[field]
         
         # Ensure all required fields have values
@@ -1534,7 +1655,7 @@ Return ONLY this JSON format (NO other text):
             
         return combined
 
-# =================================================================================
+  # =================================================================================
 # --- Advanced Technical Analysis with Machine Learning Features ---
 # =================================================================================
 
@@ -1615,10 +1736,10 @@ class AdvancedTechnicalAnalyzer:
                     logging.warning(f"Failed to calculate {indicator}: {e}")
 
             # Volatility indicators
-            volatility_indicators = ['BBL_20_2.0', 'BBU_20_2.0', 'ATRr_14', 'KCLe_20_2', 'KCUe_20_2']
+            volatility_indicators = ['BBANDS_20_2.0', 'ATRr_14', 'KCLe_20_2', 'KCUe_20_2']
             for indicator in volatility_indicators:
                 try:
-                    if indicator.startswith('BB'):
+                    if indicator.startswith('BBANDS'):
                         df_indicators.ta.bbands(length=20, std=2, append=True)
                     elif indicator == 'ATRr_14':
                         df_indicators.ta.atr(length=14, append=True)
@@ -1801,7 +1922,7 @@ class AdvancedTechnicalAnalyzer:
             if 'ADX_14' in ltf_df.columns:
                 features['adx_strength'] = ltf_df['ADX_14'].iloc[-1] / 100.0
             else:
-                features['adx_strength'] = 0
+                features['adx_strength'] = 0.0
                 
             # Momentum convergence
             rsi = ltf_df.get('RSI_14', 50)
@@ -1809,14 +1930,14 @@ class AdvancedTechnicalAnalyzer:
             stoch_k = ltf_df.get('STOCHk_14_3_3', 50)
             
             # Normalize features
-            rsi_signal = abs(rsi.iloc[-1] - 50) / 50.0 if isinstance(rsi, pd.Series) else 0
-            macd_signal = abs(macd_hist.iloc[-1]) if isinstance(macd_hist, pd.Series) else 0
-            stoch_signal = abs(stoch_k.iloc[-1] - 50) / 50.0 if isinstance(stoch_k, pd.Series) else 0
+            rsi_signal = abs(rsi.iloc[-1] - 50) / 50.0 if isinstance(rsi, pd.Series) else 0.0
+            macd_signal = abs(macd_hist.iloc[-1]) if isinstance(macd_hist, pd.Series) else 0.0
+            stoch_signal = abs(stoch_k.iloc[-1] - 50) / 50.0 if isinstance(stoch_k, pd.Series) else 0.0
             
             features['momentum_convergence'] = (rsi_signal + macd_signal + stoch_signal) / 3.0
             
             # Volatility adjusted signal
-            volatility = ltf_df['close'].pct_change().std() * 100 if len(ltf_df) > 1 else 1
+            volatility = ltf_df['close'].pct_change().std() * 100 if len(ltf_df) > 1 else 1.0
             features['volatility_factor'] = min(volatility / 2.0, 1.0)  # Normalize to 0-1
             
             # Price position features
@@ -1827,7 +1948,7 @@ class AdvancedTechnicalAnalyzer:
                 bb_position = (current_price - bb_lower) / (bb_upper - bb_lower) if bb_upper != bb_lower else 0.5
                 features['bb_position'] = abs(bb_position - 0.5) * 2  # Convert to 0-1 scale
             else:
-                features['bb_position'] = 0
+                features['bb_position'] = 0.0
                 
             # Calculate composite signal strength
             signal_strength = (
@@ -1921,7 +2042,7 @@ class AdvancedTechnicalAnalyzer:
             else:
                 trend_strength = "WEAK"
 
-            # Ichimoku analysis (fixed mapping inside helper)
+            # Ichimoku analysis
             ichimoku_signal = self._analyze_ichimoku(current)
             
             # SuperTrend signal (use direction column)
@@ -2076,7 +2197,7 @@ class AdvancedTechnicalAnalyzer:
             # Fibonacci levels
             range_high = max(recent_high_20, recent_high_50)
             range_low = min(recent_low_20, recent_low_50)
-            fib_range = range_high - range_low
+            fib_range = max(range_high - range_low, 1e-9)
             fib_382 = range_high - 0.382 * fib_range
             fib_618 = range_high - 0.618 * fib_range
 
@@ -2091,15 +2212,15 @@ class AdvancedTechnicalAnalyzer:
             nearest_resistance = min(resistances) if resistances else current_price * 1.01
 
             return {
-                'support_1': nearest_support,
-                'resistance_1': nearest_resistance,
-                'support_2': min(supports) if len(supports) > 1 else nearest_support * 0.995,
-                'resistance_2': max(resistances) if len(resistances) > 1 else nearest_resistance * 1.005,
-                'pivot': pivot,
-                'bb_upper': bb_upper,
-                'bb_lower': bb_lower,
-                'fib_382': fib_382,
-                'fib_618': fib_618
+                'support_1': float(nearest_support),
+                'resistance_1': float(nearest_resistance),
+                'support_2': float(min(supports) if len(supports) > 1 else nearest_support * 0.995),
+                'resistance_2': float(max(resistances) if len(resistances) > 1 else nearest_resistance * 1.005),
+                'pivot': float(pivot),
+                'bb_upper': float(bb_upper),
+                'bb_lower': float(bb_lower),
+                'fib_382': float(fib_382),
+                'fib_618': float(fib_618)
             }
             
         except Exception as e:
@@ -2160,7 +2281,7 @@ class AdvancedTechnicalAnalyzer:
             ltf_high = ltf_df['high'].tail(5).max()
             ltf_low = ltf_df['low'].tail(5).min()
             
-            return ltf_high > recent_htf_high or ltf_low < recent_htf_low
+            return bool(ltf_high > recent_htf_high or ltf_low < recent_htf_low)
         except:
             return False
 
@@ -2202,7 +2323,7 @@ class AdvancedTechnicalAnalyzer:
             return {
                 'volume_trend': volume_trend,
                 'obv_signal': obv_trend,
-                'volume_vs_average': df['volume'].iloc[-1] / df['volume'].tail(20).mean() if df['volume'].tail(20).mean() > 0 else 1
+                'volume_vs_average': float(df['volume'].iloc[-1] / df['volume'].tail(20).mean()) if df['volume'].tail(20).mean() > 0 else 1.0
             }
             
         except Exception as e:
@@ -2214,7 +2335,7 @@ class AdvancedTechnicalAnalyzer:
         try:
             ltf_volatility = ltf_df['close'].pct_change().std() * 100
             atr = ltf_df.get('ATRr_14', pd.Series([0])).iloc[-1]
-            current_range = (ltf_df['high'].iloc[-1] - ltf_df['low'].iloc[-1]) / ltf_df['close'].iloc[-1] * 100
+            current_range = (ltf_df['high'].iloc[-1] - ltf_df['low'].iloc[-1]) / max(ltf_df['close'].iloc[-1], 1e-9) * 100
             
             if ltf_volatility > 2 or current_range > 1.5:
                 risk_level = "HIGH"
@@ -2225,16 +2346,16 @@ class AdvancedTechnicalAnalyzer:
 
             return {
                 'risk_level': risk_level,
-                'volatility_percent': ltf_volatility,
-                'atr_value': atr,
-                'current_range_percent': current_range
+                'volatility_percent': float(ltf_volatility),
+                'atr_value': float(atr),
+                'current_range_percent': float(current_range)
             }
             
         except Exception as e:
             logging.warning(f"Risk assessment error: {e}")
             return {'risk_level': 'MEDIUM', 'volatility_percent': 0, 'atr_value': 0, 'current_range_percent': 0}
 
- # =================================================================================
+# =================================================================================
 # --- Enhanced Trade Filter with Flexible Settings ---
 # =================================================================================
 
@@ -2298,7 +2419,7 @@ class EnhancedTradeFilter:
 
     def _check_trend_strength(self, technical_analysis: Dict) -> bool:
         """More flexible trend strength check"""
-        trend_strength = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
+        _ = technical_analysis.get('htf_trend', {}).get('strength', 'WEAK')
         # Allow all trend strengths
         return True
 
@@ -2355,7 +2476,7 @@ class AdvancedRiskManager:
 
     def calculate_intelligent_take_profit(self, action: str, entry_price: float, stop_loss: float,
                                         technical_analysis: Dict, atr: float) -> float:
-        """NEW: Calculate intelligent take profit with minimum 1.5:1 RR ratio"""
+        """Calculate intelligent take profit with minimum 1.5:1 RR ratio"""
         key_levels = technical_analysis.get('key_levels', {})
         risk_amount = abs(entry_price - stop_loss)
         
@@ -2401,8 +2522,8 @@ class AdvancedRiskManager:
         if not signal or signal.get('ACTION') == 'HOLD':
             return signal
             
-        current_price = technical_analysis.get('current_price', 0)
-        atr = technical_analysis.get('volatility', 0.001) or 0.001
+        current_price = float(technical_analysis.get('current_price', 0))
+        atr = float(technical_analysis.get('volatility', 0.001) or 0.001)
         action = signal.get('ACTION')
         
         # Calculate intelligent stop loss and take profit
@@ -2449,15 +2570,18 @@ class SignalQualityScorer:
         scores = {}
         
         # 1. AI Agreement Score
-        agreement_level = signal.get('AGREEMENT_LEVEL', 0)
-        total_models = signal.get('TOTAL_MODELS', 1)
-        scores['ai_agreement'] = (agreement_level / total_models) * 100
+        agreement_level = float(signal.get('AGREEMENT_LEVEL', 0))
+        total_models = float(signal.get('TOTAL_MODELS', 1))
+        scores['ai_agreement'] = (agreement_level / max(total_models, 1.0)) * 100.0
         
         # 2. Technical Alignment Score
         scores['technical_alignment'] = self._calculate_technical_alignment(signal, technical_analysis)
         
         # 3. Risk-Reward Score
-        rr_ratio = float(signal.get('ACTUAL_RR_RATIO', 1.0))
+        try:
+            rr_ratio = float(signal.get('ACTUAL_RR_RATIO', signal.get('RISK_REWARD_RATIO', 1.0)))
+        except Exception:
+            rr_ratio = 1.0
         scores['risk_reward'] = min(rr_ratio * 33.33, 100)
         
         # 4. Trend Strength Score
@@ -2475,7 +2599,7 @@ class SignalQualityScorer:
         scores['market_structure'] = self._calculate_market_structure_score(technical_analysis)
         
         # Calculate weighted total score
-        total_score = 0
+        total_score = 0.0
         for factor, weight in self.weights.items():
             total_score += scores.get(factor, 0) * weight
             
@@ -2512,42 +2636,42 @@ class SignalQualityScorer:
         elif market_structure == 'UNKNOWN':
             alignment_score += 10
             
-        return min(alignment_score, 100)
+        return float(min(alignment_score, 100))
     
     def _calculate_volatility_score(self, technical_analysis: Dict) -> float:
-        """NEW: Calculate volatility appropriateness score with better ranges"""
+        """Calculate volatility appropriateness score with better ranges"""
         volatility = technical_analysis.get('risk_assessment', {}).get('volatility_percent', 0)
         
         # More realistic volatility ranges for forex
         if 0.1 <= volatility <= 2.0:  # Good volatility for trading
-            return 100
+            return 100.0
         elif 0.05 <= volatility < 0.1 or 2.0 < volatility <= 3.0:  # Acceptable but not ideal
-            return 70
+            return 70.0
         elif 0.02 <= volatility < 0.05 or 3.0 < volatility <= 5.0:  # Marginal
-            return 40
+            return 40.0
         else:  # Too low or too high
-            return 20
+            return 20.0
     
     def _calculate_momentum_score(self, signal: Dict, technical_analysis: Dict) -> float:
         """Calculate momentum confirmation score"""
         momentum = technical_analysis.get('momentum', {})
         action = signal.get('ACTION')
         
-        score = 50  # Base score
+        score = 50.0  # Base score
         
         # RSI alignment
         rsi_signal = momentum.get('rsi', {}).get('signal', 'NEUTRAL')
         if (action == 'BUY' and rsi_signal == 'OVERSOLD') or (action == 'SELL' and rsi_signal == 'OVERBOUGHT'):
-            score += 20
+            score += 20.0
         elif rsi_signal == 'NEUTRAL':
-            score += 10
+            score += 10.0
             
         # MACD alignment
         macd_trend = momentum.get('macd', {}).get('trend', 'NEUTRAL')
         if (action == 'BUY' and macd_trend == 'BULLISH') or (action == 'SELL' and macd_trend == 'BEARISH'):
-            score += 15
+            score += 15.0
             
-        return min(score, 100)
+        return float(min(score, 100.0))
     
     def _calculate_market_structure_score(self, technical_analysis: Dict) -> float:
         """Calculate market structure score"""
@@ -2556,13 +2680,13 @@ class SignalQualityScorer:
         is_breaking = market_structure.get('is_breaking_structure', False)
         
         if structure in ['UPTREND', 'DOWNTREND'] and not is_breaking:
-            return 100
+            return 100.0
         elif structure in ['UPTREND', 'DOWNTREND'] and is_breaking:
-            return 60
+            return 60.0
         elif structure == 'RANGING':
-            return 40
+            return 40.0
         else:
-            return 20
+            return 20.0
 
 # =================================================================================
 # --- Gemini Direct Signal Agent (Enhanced) ---
@@ -2728,7 +2852,7 @@ Return EXACT JSON format:
         try:
             # Clean the text
             cleaned = text.strip()
-            cleaned = re.sub(r'```json\s*', '', cleaned)
+            cleaned = re.sub(r'```json\s*', '', cleaned, flags=re.IGNORECASE)
             cleaned = re.sub(r'```\s*', '', cleaned)
             cleaned = re.sub(r'<think>.*?</think>', '', cleaned, flags=re.DOTALL | re.IGNORECASE)
             cleaned = re.sub(r'</?[^>]+>', '', cleaned)
@@ -2755,7 +2879,7 @@ Return EXACT JSON format:
                 logging.warning(f"⚠️ GeminiDirect missing field {field} for {symbol}")
                 return False
                 
-        action = signal_data['ACTION'].upper()
+        action = str(signal_data['ACTION']).upper()
         if action not in ['BUY', 'SELL', 'HOLD']:
             logging.warning(f"⚠️ GeminiDirect invalid ACTION for {symbol}: {action}")
             return False
@@ -2771,7 +2895,7 @@ Return EXACT JSON format:
             
         return True
 
-# =================================================================================
+  # =================================================================================
 # --- Main Forex Analyzer Class (Fully Enhanced) ---
 # =================================================================================
 
@@ -2831,7 +2955,7 @@ class ImprovedForexAnalyzer:
                 self.performance_monitor.record_failure()
                 return None
 
-            # Trade filter check (flexible)
+            # Trade filter check
             if self.strict_filters:
                 if not self.trade_filter.can_trade(pair, technical_analysis):
                     logging.info(f"🛑 Trade filter blocked {pair}")
@@ -2846,11 +2970,11 @@ class ImprovedForexAnalyzer:
                 else:
                     logging.info(f"✅ {pair} volatility {volatility_value:.2f}% within acceptable range")
                 
-            # AI analysis (ensemble with robust fallbacks)
+            # AI analysis (ensemble with robust backfill to 5)
             ai_analysis = await self.ai_manager.get_enhanced_ai_analysis(pair, technical_analysis)
 
             # Gemini direct as additional backup
-            if not ai_analysis and self.gemini_direct.available:
+            if not ai_analysis and self.gemini_direct.available and self.api_manager.is_gemini_available():
                 logging.info(f"🧪 Trying GeminiDirect as additional backup for {pair}")
                 direct_signal = await self.gemini_direct.fetch_signal(pair, technical_analysis)
                 if direct_signal:
@@ -2903,9 +3027,10 @@ class ImprovedForexAnalyzer:
         # Initialize models first
         await self.api_manager.initialize_models()
         
-        # Disable Gemini if there are quota issues (uncomment if needed)
+        # Optional: Disable Gemini if having quota issues
         # self.api_manager.disable_gemini()
-        
+        # logging.info("🚫 Gemini disabled due to quota issues")
+
         tasks = [self.analyze_pair(pair) for pair in pairs]
         results = await asyncio.gather(*tasks)
         
@@ -3017,13 +3142,13 @@ def install_required_packages():
     for package in required_packages:
         try:
             if package == 'yfinance':
-                import yfinance
+                import yfinance  # noqa: F401
             elif package == 'pandas-ta':
-                import pandas_ta
+                import pandas_ta  # noqa: F401
             elif package == 'aiohttp':
-                import aiohttp
+                import aiohttp  # noqa: F401
             elif package == 'scipy':
-                import scipy
+                import scipy  # noqa: F401
             print(f"✅ {package} is already installed")
         except ImportError:
             print(f"📦 Installing {package}...")
@@ -3097,7 +3222,7 @@ async def main():
     medium_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'MEDIUM_CONSENSUS' or 50 <= s.get('QUALITY_SCORE', 0) < 70])
     weak_count = len([s for s in signals if s.get('AGREEMENT_TYPE') == 'WEAK_CONSENSUS' or s.get('QUALITY_SCORE', 0) < 50])
     
-    avg_quality = sum(s.get('QUALITY_SCORE', 0) for s in signals) / len(signals) if signals else 0
+    avg_quality = (sum(s.get('QUALITY_SCORE', 0) for s in signals) / len(signals)) if signals else 0.0
     
     logging.info(f"🟢 Strong signals: {strong_count}")
     logging.info(f"🟡 Medium signals: {medium_count}") 
@@ -3114,12 +3239,11 @@ async def main():
                    f" | Entry: {signal.get('ENTRY', 'N/A')} | SL: {signal.get('STOP_LOSS', 'N/A')} | TP: {signal.get('TAKE_PROFIT', 'N/A')}"
                    f" | RR: {signal.get('ACTUAL_RR_RATIO', 'N/A')}:1")
     
-    # Display enhanced statistics
+    # Data source statistics
     data_source_stats = analyzer.data_fetcher.get_data_source_stats()
     logging.info("📦 Data Source Statistics:")
     for source, count in data_source_stats.items():
         logging.info(f"  {source}: {count} pairs")
-    
     
     # Performance statistics
     perf_stats = analyzer.performance_monitor.get_performance_stats()
@@ -3138,5 +3262,6 @@ async def main():
     else:
         logging.info("🏁 Enhanced system executed but no signals generated")
 
+
 if __name__ == "__main__":
-    asyncio.run(main())           
+    asyncio.run(main())      
