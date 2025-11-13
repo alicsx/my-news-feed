@@ -7,7 +7,7 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2025-11-13T12:59:01.293975+00:00",
+    "timestamp": "2025-11-13T14:27:36.846065+00:00",
     "RISK_REWARD_RATIO": "1.8",
     "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold GBP/USD based on the given data. Le...",
     "ENTRY": "N/A",
@@ -16,10 +16,10 @@
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 65.55273678958994,
-      "key_support": 1.31679,
-      "key_resistance": 1.31784,
-      "volatility": 0.08243576240292642,
+      "rsi": 60.23206277316112,
+      "key_support": 1.3164366666666667,
+      "key_resistance": 1.3170833333333334,
+      "volatility": 0.08223848082751085,
       "volatility_status": "OPTIMAL"
     }
   }
