@@ -7,12 +7,12 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-11-14T22:27:54.080545+00:00",
+    "timestamp": "2025-11-15T02:02:33.346571+00:00",
     "ENTRY": "0.79375",
     "STOP_LOSS": "0.79378",
     "TAKE_PROFIT": "0.79318",
     "RISK_REWARD_RATIO": "18.99",
-    "ANALYSIS": "The strong bearish trend and low RSI value indicate a potential selling opportunity. The price is close to the resistance level, and a sell could trigger a short-term movement to the support level.",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential selling opportunity. As the price is close to resistance, a sell order can be placed with a stop loss below support and a take profit at the resistance level.",
     "ACTUAL_RR_RATIO": 18.99,
     "QUALITY_SCORE": 85.0,
     "TECHNICAL_CONTEXT": {
@@ -21,31 +21,6 @@
       "key_support": 0.7931800099999999,
       "key_resistance": 0.79378001,
       "volatility": 0.08270961875258095,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.2,
-    "AGREEMENT_LEVEL": 5,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-11-14T22:28:02.442993+00:00",
-    "ENTRY": "179.52800",
-    "STOP_LOSS": "179.46232",
-    "TAKE_PROFIT": "179.62652",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential buying opportunity. Risk level is low, making it a favorable trade.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 74.5,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 47.11565304425665,
-      "key_support": 179.4623233333333,
-      "key_resistance": 179.55166666666665,
-      "volatility": 0.07714228460775391,
       "volatility_status": "OPTIMAL"
     }
   }
