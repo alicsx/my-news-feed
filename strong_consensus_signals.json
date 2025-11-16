@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-16T04:34:17.289070+00:00",
+    "ENTRY": "0.79375",
+    "STOP_LOSS": "0.79378",
+    "TAKE_PROFIT": "0.79318",
+    "RISK_REWARD_RATIO": "18.99",
+    "ANALYSIS": "The strong bearish trend and low RSI indicate a potential selling opportunity. The price is near the resistance level, and a pullback is expected. A sell trade with a stop loss at 0.79415 and a take profit at 0.79318 provides a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 18.99,
+    "QUALITY_SCORE": 80.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.10162321768581,
+      "key_support": 0.7931800099999999,
+      "key_resistance": 0.79378001,
+      "volatility": 0.08270961875258095,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-16T04:34:24.815898+00:00",
+    "ENTRY": "179.52800",
+    "STOP_LOSS": "179.46232",
+    "TAKE_PROFIT": "179.62652",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, suggesting a continued upward movement. Low risk level and volatility support this decision.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 74.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 47.11565304425665,
+      "key_support": 179.4623233333333,
+      "key_resistance": 179.55166666666665,
+      "volatility": 0.07714228460775391,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
