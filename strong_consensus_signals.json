@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-11-17T14:29:36.235112+00:00",
+    "ENTRY": "0.79546",
+    "STOP_LOSS": "0.79558",
+    "TAKE_PROFIT": "0.79237",
+    "RISK_REWARD_RATIO": "25.75",
+    "ANALYSIS": "The USD/CHF is in a strong bearish trend with a neutral RSI level, indicating a potential selling opportunity. The price is near the resistance level, and a sell order can be placed with a stop loss slightly above the resistance and a take profit slightly below the support level.",
+    "ACTUAL_RR_RATIO": 25.75,
+    "QUALITY_SCORE": 80.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 57.3669852039694,
+      "key_support": 0.79528,
+      "key_resistance": 0.79558001,
+      "volatility": 0.08336136436471513,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
     "CONFIDENCE": 7.2,
@@ -7,20 +32,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2025-11-17T12:58:23.375198+00:00",
-    "ENTRY": "179.59399",
+    "timestamp": "2025-11-17T14:29:43.256845+00:00",
+    "ENTRY": "179.59801",
     "STOP_LOSS": "179.58747",
-    "TAKE_PROFIT": "179.60377",
+    "TAKE_PROFIT": "179.61382",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, suggesting a potential upward momentum. Price is near support level, making it a good entry point.",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, low risk level, and clear support and resistance levels. Risk-reward ratio is acceptable at 2.0.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 71.8,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 52.73682396666732,
+      "rsi": 52.79006636933909,
       "key_support": 179.58746582,
-      "key_resistance": 179.63198999999997,
-      "volatility": 0.07622441491804789,
+      "key_resistance": 179.64800333333332,
+      "volatility": 0.07601709785245582,
       "volatility_status": "OPTIMAL"
     }
   }
