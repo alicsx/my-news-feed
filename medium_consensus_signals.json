@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-11-18T02:06:26.269654+00:00",
+    "ENTRY": "1.31508",
+    "STOP_LOSS": "1.31507",
+    "TAKE_PROFIT": "1.31510",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The bullish trend with weak strength and neutral RSI (45.4) suggests a potential buying opportunity. The price is at the support level, and a small increase in price can trigger a take-profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 61.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 45.439051198648684,
+      "key_support": 1.3150733333333333,
+      "key_resistance": 1.3151366666666666,
+      "volatility": 0.08376757529968326,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
