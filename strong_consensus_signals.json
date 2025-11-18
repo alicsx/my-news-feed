@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-18T08:37:54.158001+00:00",
+    "ENTRY": "0.79505",
+    "STOP_LOSS": "0.79542",
+    "TAKE_PROFIT": "0.79219",
+    "RISK_REWARD_RATIO": "7.73",
+    "ANALYSIS": "The strong bearish trend and low RSI value indicate a potential selling opportunity. Given the low risk level and reasonable entry point, a sell decision is made with a risk-reward ratio of approximately 1.92.",
+    "ACTUAL_RR_RATIO": 7.73,
+    "QUALITY_SCORE": 86.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 49.185870044688485,
+      "key_support": 0.7947933466666667,
+      "key_resistance": 0.7954166733333333,
+      "volatility": 0.0825618203817619,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
