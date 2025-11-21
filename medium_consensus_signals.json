@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 6.0,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-11-21T08:31:49.154415+00:00",
-    "ENTRY": "1.30974",
-    "STOP_LOSS": "1.31053",
-    "TAKE_PROFIT": "1.30855",
-    "RISK_REWARD_RATIO": "1.51",
-    "ANALYSIS": "Strong bearish trend confirmed, despite RSI being neutral. Risk-reward ratio is acceptable.",
-    "ACTUAL_RR_RATIO": 1.51,
-    "QUALITY_SCORE": 62.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 56.86783734527581,
-      "key_support": 1.3089533333333332,
-      "key_resistance": 1.3105266666666664,
-      "volatility": 0.0856612514972199,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "SELL",
     "CONFIDENCE": 7.2,
@@ -32,20 +7,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-11-21T08:31:42.320932+00:00",
-    "ENTRY": "1.15499",
+    "timestamp": "2025-11-21T08:38:21.124225+00:00",
+    "ENTRY": "1.15470",
     "STOP_LOSS": "1.15520",
-    "TAKE_PROFIT": "1.15467",
-    "RISK_REWARD_RATIO": "1.52",
-    "ANALYSIS": "The strong bearish trend and neutral RSI level (61.4) indicate a potential selling opportunity. The price is close to the resistance level, and a sell stop-loss at 1.15520 can be set to limit potential losses. A take-profit at 1.15379 can be set to target a 2.0 risk-reward ratio.",
-    "ACTUAL_RR_RATIO": 1.52,
-    "QUALITY_SCORE": 60.9,
+    "TAKE_PROFIT": "1.15395",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bearish trend and moderate strength suggest a potential sell opportunity. Although the RSI is not oversold, it's not overbought either, which aligns with the bearish trend. A sell decision is taken with a moderate level of confidence.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 60.8,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 61.418555250049636,
-      "key_support": 1.1545433333333335,
+      "rsi": 59.639617026231726,
+      "key_support": 1.1544466666666666,
       "key_resistance": 1.1552,
-      "volatility": 0.06515887725158889,
+      "volatility": 0.06510587633337879,
       "volatility_status": "OPTIMAL"
     }
   }
