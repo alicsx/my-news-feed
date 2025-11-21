@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-21T22:27:45.909329+00:00",
+    "ENTRY": "1.30991",
+    "STOP_LOSS": "1.30960",
+    "TAKE_PROFIT": "1.31037",
+    "RISK_REWARD_RATIO": "1.48",
+    "ANALYSIS": "STRONG_BEARISH trend is weakening, RSI is neutral, and volatility is low, making it a good opportunity to buy with a relatively low risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.48,
+    "QUALITY_SCORE": 47.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.82074001202007,
+      "key_support": 1.3095999999999999,
+      "key_resistance": 1.31022,
+      "volatility": 0.08615441601772356,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
