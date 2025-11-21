@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-21T18:36:48.699671+00:00",
+    "ENTRY": "0.80879",
+    "STOP_LOSS": "0.80870",
+    "TAKE_PROFIT": "0.80914",
+    "RISK_REWARD_RATIO": "3.89",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a buying opportunity. Low risk level and volatility support this decision.",
+    "ACTUAL_RR_RATIO": 3.89,
+    "QUALITY_SCORE": 83.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 67.08725736433377,
+      "key_support": 0.8087000233333334,
+      "key_resistance": 0.8091400266666667,
+      "volatility": 0.08533486483894172,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-21T18:36:56.482613+00:00",
+    "ENTRY": "180.11900",
+    "STOP_LOSS": "180.10300",
+    "TAKE_PROFIT": "180.18800",
+    "RISK_REWARD_RATIO": "4.31",
+    "ANALYSIS": "Strong bullish trend with RSI in oversold territory, indicating a potential buying opportunity with a moderate risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 4.31,
+    "QUALITY_SCORE": 78.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 29.617435512378353,
+      "key_support": 180.10300166666664,
+      "key_resistance": 180.1879983333333,
+      "volatility": 0.0784634472261201,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-11-21T18:36:39.217485+00:00",
+    "ENTRY": "1.15064",
+    "STOP_LOSS": "1.15085",
+    "TAKE_PROFIT": "1.14681",
+    "RISK_REWARD_RATIO": "18.24",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential selling opportunity. Risk level is low, making it a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 18.24,
+    "QUALITY_SCORE": 76.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 38.400665128197566,
+      "key_support": 1.1505366666666668,
+      "key_resistance": 1.1508533333333335,
+      "volatility": 0.06561937216187075,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
