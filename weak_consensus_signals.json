@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-22T18:37:01.525502+00:00",
+    "ENTRY": "1.30991",
+    "STOP_LOSS": "1.31022",
+    "TAKE_PROFIT": "1.30944",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "Strong bearish trend confirmed, despite RSI being neutral. Entering a short position with a stop loss slightly above the recent resistance and a take profit target below the support level, yielding a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 57.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.82074001202007,
+      "key_support": 1.3095999999999999,
+      "key_resistance": 1.31022,
+      "volatility": 0.08615441601772356,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
