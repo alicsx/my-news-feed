@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-11-26T18:36:51.945314+00:00",
+    "ENTRY": "1.32254",
+    "STOP_LOSS": "1.32218",
+    "TAKE_PROFIT": "1.32308",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The bullish trend with moderate strength and neutral RSI level indicate a potential buying opportunity. The low risk level and clear support/resistance levels further support this decision.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 68.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 68.48831927227727,
+      "key_support": 1.32218,
+      "key_resistance": 1.32277,
+      "volatility": 0.0845675441061119,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-11-26T18:36:44.762255+00:00",
+    "ENTRY": "1.15925",
+    "STOP_LOSS": "1.15906",
+    "TAKE_PROFIT": "1.15953",
+    "RISK_REWARD_RATIO": "1.47",
+    "ANALYSIS": "The EUR/USD is in a moderate bullish trend with a neutral RSI reading. The price is near the support level, making it a good entry point for a buy position.",
+    "ACTUAL_RR_RATIO": 1.47,
+    "QUALITY_SCORE": 65.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 60.176338459268194,
+      "key_support": 1.1590599999999998,
+      "key_resistance": 1.1593799999999999,
+      "volatility": 0.06604107249442465,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
