@@ -1,25 +1,50 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-11-28T04:33:58.193193+00:00",
+    "ENTRY": "1.15897",
+    "STOP_LOSS": "1.15892",
+    "TAKE_PROFIT": "1.15905",
+    "RISK_REWARD_RATIO": "1.6",
+    "ANALYSIS": "Trend is bullish with weak strength, RSI is neutral at 48.8, and volatility is low. This setup suggests a moderate risk-reward opportunity.",
+    "ACTUAL_RR_RATIO": 1.6,
+    "QUALITY_SCORE": 53.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 48.786460925501956,
+      "key_support": 1.15892,
+      "key_resistance": 1.15916,
+      "volatility": 0.06334279237255523,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-11-28T02:05:07.351417+00:00",
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-11-28T04:34:12.983850+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out what trading decision to make for USD/CHF based on the given mark...",
+    "ANALYSIS": "Extracted from text: \nAlright, so I'm looking at the USD/CHF pair and trying to figure out whether to buy, sell, or hold....",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 53.199970219719674,
-      "key_support": 0.8052999999999999,
-      "key_resistance": 0.8054399999999999,
-      "volatility": 0.0823392970613477,
+      "rsi": 47.87914608403312,
+      "key_support": 0.80482358,
+      "key_resistance": 0.80498,
+      "volatility": 0.08230122400667117,
       "volatility_status": "OPTIMAL"
     }
   }
