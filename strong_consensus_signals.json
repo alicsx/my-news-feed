@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-11-29T08:36:04.422957+00:00",
+    "ENTRY": "181.14436",
+    "STOP_LOSS": "181.13577",
+    "TAKE_PROFIT": "181.17271",
+    "RISK_REWARD_RATIO": "3.3",
+    "ANALYSIS": "The trend is STRONG_BULLISH, but RSI is not overbought at 54.1. Volatility is LOW, and risk level is also LOW. This setup is suitable for a BUY trade with a moderate risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 3.3,
+    "QUALITY_SCORE": 71.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.13877946284723,
+      "key_support": 181.13576666666665,
+      "key_resistance": 181.17270632,
+      "volatility": 0.07245807615448928,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
