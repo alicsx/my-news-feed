@@ -1,25 +1,49 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-12-01T18:47:05.959422+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze EUR/USD based on the given data and decide on a trading action. Let's br...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 50.72785095513059,
+      "key_support": 1.1610366666666667,
+      "key_resistance": 1.1615037,
+      "volatility": 0.0636408297499824,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2025-12-01T16:40:10.326070+00:00",
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-01T18:47:17.290428+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I'm trying to help the user by analyzing the EUR/JPY pair and making a trading decision. L...",
+    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to figure out whether to buy, sell, or hold the EUR/JPY pair based on the gi...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 46.25631430836883,
-      "key_support": 180.4664733333333,
-      "key_resistance": 180.58161666666663,
-      "volatility": 0.07269111222480848,
+      "rsi": 48.86363706455082,
+      "key_support": 180.56404333333333,
+      "key_resistance": 180.61466666666666,
+      "volatility": 0.07265227996885876,
       "volatility_status": "OPTIMAL"
     }
   }
