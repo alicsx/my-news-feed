@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-01T02:34:08.862977+00:00",
+    "ENTRY": "1.32297",
+    "STOP_LOSS": "1.32279",
+    "TAKE_PROFIT": "1.32324",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The bullish trend with moderate strength and neutral RSI reading (48.1) suggest a buying opportunity. The risk level is low, and the price is near the support level, making it a relatively safe entry point.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 73.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 48.14038247402051,
+      "key_support": 1.32278614,
+      "key_resistance": 1.3231966666666668,
+      "volatility": 0.08270068430266757,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
