@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-02T16:40:54.562427+00:00",
+    "ENTRY": "180.87512",
+    "STOP_LOSS": "180.76935",
+    "TAKE_PROFIT": "181.03378",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is weak bullish, but considering the RSI is neutral and volatility is low, it's a good opportunity to buy with a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 63.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 50.654233661439065,
+      "key_support": 180.7693466666667,
+      "key_resistance": 180.87895333333336,
+      "volatility": 0.07107097557702803,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-02T16:40:46.816433+00:00",
+    "ENTRY": "0.80434",
+    "STOP_LOSS": "0.80434",
+    "TAKE_PROFIT": "0.80434",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Bearish trend confirmed, RSI neutral. Risk-reward ratio exceeds 1.5.",
+    "ACTUAL_RR_RATIO": 1.8,
+    "QUALITY_SCORE": 60.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 50.60784663542276,
+      "key_support": 0.8040600000000003,
+      "key_resistance": 0.8043400000000002,
+      "volatility": 0.08319617761192391,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
