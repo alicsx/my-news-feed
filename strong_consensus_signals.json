@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-03T04:37:06.896040+00:00",
+    "ENTRY": "0.80210",
+    "STOP_LOSS": "0.80211",
+    "TAKE_PROFIT": "0.80197",
+    "RISK_REWARD_RATIO": "13.0",
+    "ANALYSIS": "Bearish trend confirmed, RSI approaching oversold but not there yet. A SELL with a tight stop-loss and reasonable risk-reward ratio is justified.",
+    "ACTUAL_RR_RATIO": 13.0,
+    "QUALITY_SCORE": 71.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 32.31714293237951,
+      "key_support": 0.80197,
+      "key_resistance": 0.80211,
+      "volatility": 0.08288934435324631,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
