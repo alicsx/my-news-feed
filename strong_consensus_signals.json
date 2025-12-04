@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-04T13:02:14.743655+00:00",
+    "ENTRY": "1.33501",
+    "STOP_LOSS": "1.33497",
+    "TAKE_PROFIT": "1.33866",
+    "RISK_REWARD_RATIO": "91.25",
+    "ANALYSIS": "The strong bullish trend and neutral RSI reading (66.5) suggest a potential buying opportunity in GBP/USD. The risk level is low, making this trade relatively safe.",
+    "ACTUAL_RR_RATIO": 91.25,
+    "QUALITY_SCORE": 77.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 66.5121334013054,
+      "key_support": 1.3349700000000002,
+      "key_resistance": 1.3350500000000005,
+      "volatility": 0.08171564956335041,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-12-04T13:02:06.868781+00:00",
+    "ENTRY": "1.16697",
+    "STOP_LOSS": "1.16693",
+    "TAKE_PROFIT": "1.16966",
+    "RISK_REWARD_RATIO": "67.25",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. Low risk level and volatility support the buy decision.",
+    "ACTUAL_RR_RATIO": 67.25,
+    "QUALITY_SCORE": 74.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.90541994457975,
+      "key_support": 1.1669266666666667,
+      "key_resistance": 1.1669933333333333,
+      "volatility": 0.06319922294454917,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-04T13:02:21.928663+00:00",
+    "ENTRY": "0.80038",
+    "STOP_LOSS": "0.80039",
+    "TAKE_PROFIT": "0.80036",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential selling opportunity.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 72.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 47.81450280508756,
+      "key_support": 0.8003666666666668,
+      "key_resistance": 0.8003933333333334,
+      "volatility": 0.08290991297794585,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
