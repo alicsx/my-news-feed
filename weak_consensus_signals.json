@@ -6,20 +6,20 @@
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-04T22:28:47.475991+00:00",
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-05T02:11:00.578546+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to figure out whether to buy, sell, or hold the EUR/JPY pair based on the gi...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out what trading decision to make for EUR/JPY based on the given data...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 38.49149072621036,
-      "key_support": 180.50629333333328,
-      "key_resistance": 180.57544666666664,
-      "volatility": 0.06981996033250513,
+      "rsi": 46.52016614046975,
+      "key_support": 180.6691966666667,
+      "key_resistance": 180.6876133333334,
+      "volatility": 0.06979239150398418,
       "volatility_status": "OPTIMAL"
     }
   }
