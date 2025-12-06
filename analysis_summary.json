@@ -1,31 +1,31 @@
 {
-  "timestamp": "2025-12-06T20:30:16.208980+00:00",
+  "timestamp": "2025-12-06T22:27:18.903340+00:00",
   "total_signals": 4,
-  "strong_signals": 1,
-  "medium_signals": 1,
+  "strong_signals": 0,
+  "medium_signals": 2,
   "weak_signals": 2,
   "performance_stats": {
     "total_analyses": 4,
     "success_rate": 100.0,
-    "avg_analysis_time_sec": 48.95,
+    "avg_analysis_time_sec": 48.59,
     "avg_api_response_time_sec": 0,
     "model_performance": {},
     "recent_analysis_times": [
       [
         "EUR/USD",
-        39.47581481933594
+        38.31101369857788
       ],
       [
         "GBP/USD",
-        44.46530318260193
+        44.44364643096924
       ],
       [
         "USD/CHF",
-        52.239453077316284
+        51.985835313797
       ],
       [
         "EUR/JPY",
-        59.626351833343506
+        59.60054159164429
       ]
     ],
     "recent_api_times": []

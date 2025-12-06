@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-06T22:27:03.744784+00:00",
+    "ENTRY": "1.33329",
+    "STOP_LOSS": "1.33327",
+    "TAKE_PROFIT": "1.33332",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the STRONG_BULLISH trend and neutral RSI (46.7), the market conditions are favorable for a BUY. The risk level is LOW, and the price is near the support level, making it a reasonable entry point.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 69.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 46.73109191605507,
+      "key_support": 1.3332666666666666,
+      "key_resistance": 1.3337733333333333,
+      "volatility": 0.08092616533356779,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
     "CONFIDENCE": 6.4,
@@ -7,12 +32,12 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-06T20:29:56.055513+00:00",
+    "timestamp": "2025-12-06T22:26:57.611705+00:00",
     "ENTRY": "1.16431",
     "STOP_LOSS": "1.16399",
     "TAKE_PROFIT": "1.16479",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a potential upward movement. The price is near the support level, making it a good entry point.",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a potential upward movement. Buying at the current price with a stop loss at the support level and a take profit at the resistance level.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 64.4,
     "TECHNICAL_CONTEXT": {
