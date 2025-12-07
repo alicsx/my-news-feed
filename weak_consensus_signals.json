@@ -1,15 +1,40 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2025-12-07T08:34:51.794368+00:00",
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-07T10:28:19.245383+00:00",
+    "ENTRY": "180.89495",
+    "STOP_LOSS": "180.86797",
+    "TAKE_PROFIT": "180.93542",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Medium confidence buy due to neutral trend and RSI value not indicating overbought conditions. ",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 54.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 58.29748659608982,
+      "key_support": 180.86797333333334,
+      "key_resistance": 180.92364666666668,
+      "volatility": 0.06868973249918289,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-07T10:28:11.882652+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I'm analyzing the USD/CHF forex pair based on the provided data. The price is currently 0....",
+    "ANALYSIS": "Extracted from text: \nAlright, let's dive into analyzing the USD/CHF pair based on the provided data. The price is curren...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
@@ -20,30 +45,6 @@
       "key_support": 0.8045266666666667,
       "key_resistance": 0.8049033333333334,
       "volatility": 0.08181168910983533,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2025-12-07T08:34:58.985714+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to figure out what to do with the EUR/JPY pair based on the given data. Let ...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 58.29748659608982,
-      "key_support": 180.86797333333334,
-      "key_resistance": 180.92364666666668,
-      "volatility": 0.06868973249918289,
       "volatility_status": "OPTIMAL"
     }
   }
