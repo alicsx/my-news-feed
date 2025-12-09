@@ -2,24 +2,24 @@
   {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.3,
-    "AGREEMENT_LEVEL": 3,
+    "CONFIDENCE": 4.8,
+    "AGREEMENT_LEVEL": 5,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-09T10:34:48.072291+00:00",
+    "timestamp": "2025-12-09T13:02:19.411422+00:00",
+    "ENTRY": "1.16385",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/USD pair based on the given data and make a trading decision. Le...",
-    "ENTRY": "N/A",
+    "ANALYSIS": "The trend is neutral and RSI is in a neutral zone, indicating unclear market conditions. A HOLD decision is made to avoid potential losses due to the weak trend and low volatility.",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 49.36768170427273,
-      "key_support": 1.164133333333333,
-      "key_resistance": 1.1647366666666665,
-      "volatility": 0.06175942491905296,
+      "rsi": 44.201139447589114,
+      "key_support": 1.1638492,
+      "key_resistance": 1.1638533333333332,
+      "volatility": 0.06059136629977712,
       "volatility_status": "OPTIMAL"
     }
   }
