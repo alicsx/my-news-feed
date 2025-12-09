@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-12-09T08:41:10.149793+00:00",
+    "ENTRY": "1.16440",
+    "STOP_LOSS": "1.16422",
+    "TAKE_PROFIT": "1.16510",
+    "RISK_REWARD_RATIO": "3.89",
+    "ANALYSIS": "The trend is neutral with weak strength, but the RSI is 49.6, which is near the neutral zone. Given the low risk level and the proximity to support, a buy decision is reasonable.",
+    "ACTUAL_RR_RATIO": 3.89,
+    "QUALITY_SCORE": 61.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 49.55884055082797,
+      "key_support": 1.1642166666666667,
+      "key_resistance": 1.1651033333333334,
+      "volatility": 0.06163579663912734,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
