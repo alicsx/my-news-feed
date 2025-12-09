@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.8,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2025-12-09T04:38:23.842211+00:00",
-    "ENTRY": "181.58555",
-    "STOP_LOSS": "181.54809",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The EUR/JPY is in a weak bullish trend with a neutral RSI reading, indicating a potentially favorable buying opportunity. The low risk level and volatility support this decision.",
-    "TAKE_PROFIT": "181.64174",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 58.7,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 65.32719972903283,
-      "key_support": 181.54809,
-      "key_resistance": 181.59706,
-      "volatility": 0.06751151595358106,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -32,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-09T04:38:00.424490+00:00",
+    "timestamp": "2025-12-09T06:44:24.138081+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, let's break this down. The user has given me a query where they want a trading decision fo...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out the trading decision for EUR/USD based on the given data. Let me ...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 51.180202949511944,
-      "key_support": 1.1644233333333336,
-      "key_resistance": 1.1645666666666667,
-      "volatility": 0.06193434749195046,
+      "rsi": 50.32516918344252,
+      "key_support": 1.164176666666667,
+      "key_resistance": 1.1645833333333335,
+      "volatility": 0.06178405007426677,
       "volatility_status": "OPTIMAL"
     }
   }
