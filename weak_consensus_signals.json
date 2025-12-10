@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-10T20:35:34.043499+00:00",
+    "ENTRY": "0.80013",
+    "STOP_LOSS": "0.79912",
+    "TAKE_PROFIT": "0.80164",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The RSI is oversold and the trend is neutral, indicating a potential bounce. A moderate risk-reward ratio is expected with a stop-loss at the support level and a take-profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 57.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 20.830386858586277,
+      "key_support": 0.79912,
+      "key_resistance": 0.8002333333333334,
+      "volatility": 0.08075001858454478,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-10T20:35:26.939489+00:00",
+    "ENTRY": "1.33791",
+    "STOP_LOSS": "1.33885",
+    "TAKE_PROFIT": "1.33650",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bullish trend is conflicting with the overbought RSI, indicating a potential reversal. Selling at the current price with a stop loss at the resistance level and a take profit at the support level could be a reasonable trading decision.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 54.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 71.6434222504956,
+      "key_support": 1.33762,
+      "key_resistance": 1.33885,
+      "volatility": 0.07829834912432163,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-12-10T20:35:19.248007+00:00",
+    "ENTRY": "1.16924",
+    "STOP_LOSS": "1.17011",
+    "TAKE_PROFIT": "1.16794",
+    "RISK_REWARD_RATIO": "1.49",
+    "ANALYSIS": "The strong bullish trend is weakening, and the RSI is overbought, indicating a potential reversal. Given the low risk level, it's a good opportunity to sell the pair at the current price.",
+    "ACTUAL_RR_RATIO": 1.49,
+    "QUALITY_SCORE": 44.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 77.68317119190017,
+      "key_support": 1.1689966666666667,
+      "key_resistance": 1.17011,
+      "volatility": 0.06177950578272749,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
