@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-10T22:32:15.686587+00:00",
+    "ENTRY": "0.79985",
+    "STOP_LOSS": "0.79941",
+    "TAKE_PROFIT": "0.80051",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the neutral trend and oversold RSI, a buy signal is detected. The risk level is low, and the reward potential is high, making this a reasonable trade with a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 60.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 19.98075098238021,
+      "key_support": 0.7994100000000003,
+      "key_resistance": 0.8000000000000002,
+      "volatility": 0.08072482943509475,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
