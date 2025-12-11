@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-12-11T04:41:19.613245+00:00",
+    "ENTRY": "1.16882",
+    "STOP_LOSS": "1.16844",
+    "TAKE_PROFIT": "1.17196",
+    "RISK_REWARD_RATIO": "8.26",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a potential upward movement. The price is near the support level, making it a good entry point.",
+    "ACTUAL_RR_RATIO": 8.26,
+    "QUALITY_SCORE": 69.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 65.118934183824,
+      "key_support": 1.1684433333333333,
+      "key_resistance": 1.1688266666666667,
+      "volatility": 0.06164955887413623,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-11T04:41:33.906641+00:00",
+    "ENTRY": "0.79949",
+    "STOP_LOSS": "0.79932",
+    "TAKE_PROFIT": "0.79975",
+    "RISK_REWARD_RATIO": "1.53",
+    "ANALYSIS": "The bearish trend is weakening with an RSI of 28.2, indicating oversold conditions. This presents a buying opportunity with a moderate risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.53,
+    "QUALITY_SCORE": 61.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 28.174574158202404,
+      "key_support": 0.7993233333333333,
+      "key_resistance": 0.7997166666666665,
+      "volatility": 0.0808410890736206,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
