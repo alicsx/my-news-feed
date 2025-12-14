@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-14T04:42:26.217763+00:00",
+    "ENTRY": "1.33717",
+    "STOP_LOSS": "1.33693",
+    "TAKE_PROFIT": "1.33753",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI indicates a potential buying opportunity. Low risk level and volatility support this decision.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 74.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 47.92135505544003,
+      "key_support": 1.3369333333333333,
+      "key_resistance": 1.3374266666666665,
+      "volatility": 0.07447926175249499,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
     "CONFIDENCE": 7.2,
@@ -7,12 +32,12 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-12-14T02:26:59.153421+00:00",
+    "timestamp": "2025-12-14T04:42:41.235713+00:00",
     "ENTRY": "182.94387",
     "STOP_LOSS": "182.91487",
     "TAKE_PROFIT": "182.98737",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, making it a good opportunity to buy. Volatility is low, and risk level is low.",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI. Low risk level and volatility suggest a buying opportunity.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 71.5,
     "TECHNICAL_CONTEXT": {
