@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-15T04:49:50.749980+00:00",
+    "ENTRY": "0.79608",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The STRONG_BEARISH trend and LOW risk level suggest caution, while the NEUTRAL RSI does not provide a clear direction. Holding is the most suitable option given the unclear market conditions.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 51.84180200759004,
+      "key_support": 0.7959566666666666,
+      "key_resistance": 0.7961133333333333,
+      "volatility": 0.07417885127168906,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
