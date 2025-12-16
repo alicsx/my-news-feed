@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-16T22:28:29.434213+00:00",
+    "ENTRY": "181.84153",
+    "STOP_LOSS": "181.80731",
+    "TAKE_PROFIT": "181.89286",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral but with moderate strength, and the RSI is not overbought. Given the low risk level, it's a good opportunity to buy EUR/JPY.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 55.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 40.60785314648057,
+      "key_support": 181.80730666666668,
+      "key_resistance": 181.89347333333336,
+      "volatility": 0.06950101072651252,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-16T22:28:21.755061+00:00",
+    "ENTRY": "0.79503",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The STRONG_BEARISH trend and LOW risk level suggest caution, while the NEUTRAL RSI and unclear market conditions justify a HOLD decision.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 47.30143179795629,
+      "key_support": 0.7948666666666667,
+      "key_resistance": 0.7950633333333333,
+      "volatility": 0.07444951735694846,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
