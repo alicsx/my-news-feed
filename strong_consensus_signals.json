@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-16T08:42:26.939789+00:00",
+    "ENTRY": "0.79694",
+    "STOP_LOSS": "0.79730",
+    "TAKE_PROFIT": "0.79490",
+    "RISK_REWARD_RATIO": "5.67",
+    "ANALYSIS": "Strong bearish trend confirmed. RSI is neutral, not oversold. Targeting support with a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 5.67,
+    "QUALITY_SCORE": 73.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 58.371266474876315,
+      "key_support": 0.7966966666666666,
+      "key_resistance": 0.7973033333333333,
+      "volatility": 0.07405670607538883,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
     "CONFIDENCE": 7.0,
@@ -7,20 +32,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-16T08:34:16.943204+00:00",
-    "ENTRY": "1.17550",
-    "STOP_LOSS": "1.17501",
-    "TAKE_PROFIT": "1.17801",
-    "RISK_REWARD_RATIO": "5.12",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. The price is near the support level, making it a good entry point.",
-    "ACTUAL_RR_RATIO": 5.12,
+    "timestamp": "2025-12-16T08:42:11.574829+00:00",
+    "ENTRY": "1.17479",
+    "STOP_LOSS": "1.17427",
+    "TAKE_PROFIT": "1.17735",
+    "RISK_REWARD_RATIO": "4.92",
+    "ANALYSIS": "Given the STRONG_BULLISH trend and neutral RSI (49.2), the market conditions are favorable for a BUY action. The risk level is LOW, and the calculated risk-reward ratio is 2.0, which is above the acceptable threshold of 1.5.",
+    "ACTUAL_RR_RATIO": 4.92,
     "QUALITY_SCORE": 71.3,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 56.238219923633714,
-      "key_support": 1.1750076399999998,
-      "key_resistance": 1.1756233333333335,
-      "volatility": 0.05859466130903347,
+      "rsi": 49.223487982869415,
+      "key_support": 1.1742666666666663,
+      "key_resistance": 1.1750076399999998,
+      "volatility": 0.05859085097567898,
       "volatility_status": "OPTIMAL"
     }
   }
