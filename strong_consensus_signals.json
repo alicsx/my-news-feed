@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-12-16T08:34:16.943204+00:00",
+    "ENTRY": "1.17550",
+    "STOP_LOSS": "1.17501",
+    "TAKE_PROFIT": "1.17801",
+    "RISK_REWARD_RATIO": "5.12",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. The price is near the support level, making it a good entry point.",
+    "ACTUAL_RR_RATIO": 5.12,
+    "QUALITY_SCORE": 71.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 56.238219923633714,
+      "key_support": 1.1750076399999998,
+      "key_resistance": 1.1756233333333335,
+      "volatility": 0.05859466130903347,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
