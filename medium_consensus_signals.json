@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-17T14:33:18.844253+00:00",
+    "ENTRY": "0.79611",
+    "STOP_LOSS": "0.79661",
+    "TAKE_PROFIT": "0.79536",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI is neutral. Risk-reward ratio is favorable for a short position. Stop loss placed above recent resistance.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 49.31883950093831,
+      "key_support": 0.7959733333333333,
+      "key_resistance": 0.7966146199999999,
+      "volatility": 0.07396424716437795,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-17T14:33:10.633476+00:00",
+    "ENTRY": "1.33503",
+    "STOP_LOSS": "1.33453",
+    "TAKE_PROFIT": "1.34011",
+    "RISK_REWARD_RATIO": "10.16",
+    "ANALYSIS": "The trend is neutral with moderate strength, but RSI is at 40.1, indicating a potential buying opportunity. Volatility is low, and risk level is low, making this a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 10.16,
+    "QUALITY_SCORE": 65.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 40.12864786884986,
+      "key_support": 1.3345266666666666,
+      "key_resistance": 1.3354833333333334,
+      "volatility": 0.07553100012495488,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
