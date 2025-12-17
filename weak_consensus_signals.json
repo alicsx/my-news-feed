@@ -7,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2025-12-17T20:35:16.603454+00:00",
+    "timestamp": "2025-12-17T22:29:50.437729+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"GBP/USD\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 7,\n  \"ENTRY\": \"1...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze GBP/USD based on the given data and provide a trading decision. Let me g...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 50.06330225638238,
-      "key_support": 1.3377800000000002,
-      "key_resistance": 1.3380700000000003,
-      "volatility": 0.07556718644912,
+      "rsi": 50.09532143935924,
+      "key_support": 1.3377100000000002,
+      "key_resistance": 1.3381100000000004,
+      "volatility": 0.07557888155103691,
       "volatility_status": "OPTIMAL"
     }
   }
