@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-17T18:45:14.379855+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nAlright, I need to analyze GBP/USD based on the given data and decide the trading action. Let me st...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 50.473247313350846,
+      "key_support": 1.3374200000000003,
+      "key_resistance": 1.3384500000000001,
+      "volatility": 0.0755842894919531,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
