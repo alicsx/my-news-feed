@@ -2,24 +2,24 @@
   {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.3,
+    "CONFIDENCE": 5.3,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-18T14:32:26.976178+00:00",
+    "timestamp": "2025-12-18T16:41:31.112626+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, let's break down the analysis for the EUR/USD pair. The price is currently at 1.17387, and...",
+    "ANALYSIS": "Extracted from text: \nAlright, so I need to analyze the EUR/USD pair based on the given market data and come up with a tr...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 51.10937886343693,
-      "key_support": 1.1732399999999998,
-      "key_resistance": 1.17416922,
-      "volatility": 0.06164143417137203,
+      "rsi": 49.57765109249777,
+      "key_support": 1.1726200000000002,
+      "key_resistance": 1.17358,
+      "volatility": 0.061832217814642904,
       "volatility_status": "OPTIMAL"
     }
   }
