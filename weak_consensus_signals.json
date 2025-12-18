@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-18T08:40:41.648605+00:00",
+    "ENTRY": "0.79563",
+    "STOP_LOSS": "0.79574",
+    "TAKE_PROFIT": "0.79546",
+    "RISK_REWARD_RATIO": "1.55",
+    "ANALYSIS": "Strong bearish trend confirmed by market data. RSI is neutral, not oversold. Setting a sell order with a stop loss slightly above resistance and a take profit targeting a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.55,
+    "QUALITY_SCORE": 59.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 51.310978852060316,
+      "key_support": 0.7956066666666667,
+      "key_resistance": 0.7957433333333334,
+      "volatility": 0.0731751471159878,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "GBP/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +32,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2025-12-18T08:33:41.971186+00:00",
+    "timestamp": "2025-12-18T08:40:34.335906+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to help the user by providing a trading decision for GBP/USD based on the given dat...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze GBP/USD and make a trading decision. Let me start by looking at the mark...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 49.39278283216519,
-      "key_support": 1.3370566666666666,
-      "key_resistance": 1.3374933333333332,
-      "volatility": 0.07518050498374397,
+      "rsi": 45.91564726824826,
+      "key_support": 1.3365347399999998,
+      "key_resistance": 1.3368899999999997,
+      "volatility": 0.07517052273643299,
       "volatility_status": "OPTIMAL"
     }
   }
