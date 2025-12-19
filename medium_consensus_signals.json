@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-12-19T08:40:00.791407+00:00",
+    "ENTRY": "1.17101",
+    "STOP_LOSS": "1.17054",
+    "TAKE_PROFIT": "1.17385",
+    "RISK_REWARD_RATIO": "6.04",
+    "ANALYSIS": "The trend is neutral with moderate strength, but the RSI is at 38.0, indicating a potential buying opportunity. The price is close to the resistance level, and a breakout could lead to a bullish trend.",
+    "ACTUAL_RR_RATIO": 6.04,
+    "QUALITY_SCORE": 60.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 37.96055527550293,
+      "key_support": 1.1705366666666666,
+      "key_resistance": 1.1710933333333333,
+      "volatility": 0.06152771160009539,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-19T08:40:07.945151+00:00",
+    "ENTRY": "1.33731",
+    "STOP_LOSS": "1.33729",
+    "TAKE_PROFIT": "1.33806",
+    "RISK_REWARD_RATIO": "37.5",
+    "ANALYSIS": "The trend is neutral with weak strength, but the RSI is at 47.0, which is not overbought. Considering the low risk level and the price is near support, a buy signal is identified.",
+    "ACTUAL_RR_RATIO": 37.5,
+    "QUALITY_SCORE": 60.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 46.994406491175276,
+      "key_support": 1.3372866666666667,
+      "key_resistance": 1.3380633333333334,
+      "volatility": 0.07471440621700391,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
