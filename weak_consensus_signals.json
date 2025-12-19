@@ -1,53 +1,5 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-19T12:59:25.357694+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold EUR/USD based on the given data. Le...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 40.118482227167604,
-      "key_support": 1.17083,
-      "key_resistance": 1.17117,
-      "volatility": 0.0608950169321505,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-12-19T12:59:32.020108+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold GBP/USD right now. Let me go throug...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 47.288076422082476,
-      "key_support": 1.3369533333333337,
-      "key_resistance": 1.3373966666666668,
-      "volatility": 0.07295955241080322,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 4.3,
@@ -55,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-12-19T12:59:47.072644+00:00",
-    "ENTRY": "184.13885",
-    "STOP_LOSS": "184.09773",
-    "TAKE_PROFIT": "184.23583",
-    "RISK_REWARD_RATIO": "1.73",
-    "ANALYSIS": "Strong bullish trend is slightly weakened by overbought RSI. Risk-reward ratio is acceptable, but caution advised due to overbought condition. Awaiting confirmation before initiating a buy.",
+    "timestamp": "2025-12-19T14:31:30.403888+00:00",
+    "ENTRY": "184.46665",
+    "STOP_LOSS": "184.39715",
+    "TAKE_PROFIT": "184.50260",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend is present, but RSI is significantly overbought. While a buy signal would typically be triggered, the overbought condition suggests a potential pullback or consolidation. Risk-reward ratio is acceptable, but the high RSI warrants caution. Holding with a tight stop-loss is prudent.",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 75.79765990414762,
-      "key_support": 184.06773333333334,
-      "key_resistance": 184.16582666666667,
-      "volatility": 0.06827353500518006,
+      "rsi": 79.13708855702545,
+      "key_support": 184.39714666666666,
+      "key_resistance": 184.5026,
+      "volatility": 0.06844325399952267,
       "volatility_status": "OPTIMAL"
     }
   }
