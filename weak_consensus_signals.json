@@ -1,5 +1,55 @@
 [
   {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-22T10:33:21.529467+00:00",
+    "ENTRY": "0.79354",
+    "STOP_LOSS": "0.79378",
+    "TAKE_PROFIT": "0.79318",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed despite a neutral RSI. Risk-reward ratio is acceptable for a short position.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 58.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 38.107993323579684,
+      "key_support": 0.7934766666666667,
+      "key_resistance": 0.7937833333333334,
+      "volatility": 0.07083235859248203,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-22T10:33:13.802435+00:00",
+    "ENTRY": "1.34311",
+    "STOP_LOSS": "1.34357",
+    "TAKE_PROFIT": "1.34242",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bullish trend is weakening, and the RSI is overbought, indicating a potential reversal. A sell order can be placed with a stop loss at the support level and a take profit at a price below the current level to capture the potential decline.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 52.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 72.35860760203562,
+      "key_support": 1.3429966666666668,
+      "key_resistance": 1.34357,
+      "volatility": 0.0735163207562249,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +57,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-22T08:41:30.367178+00:00",
+    "timestamp": "2025-12-22T10:33:08.054176+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/USD pair based on the given market data and guidelines to come u...",
+    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to figure out whether to buy, sell, or hold the EUR/USD pair based on the gi...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 58.358794674126266,
-      "key_support": 1.1728399999999999,
-      "key_resistance": 1.1732399999999998,
-      "volatility": 0.06108426010348121,
+      "rsi": 60.21753790674133,
+      "key_support": 1.1734866666666666,
+      "key_resistance": 1.1738399,
+      "volatility": 0.0610576973079391,
       "volatility_status": "OPTIMAL"
     }
   }
