@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.2,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2025-12-24T08:40:54.659749+00:00",
-    "ENTRY": "0.78764",
-    "STOP_LOSS": "0.78776",
-    "TAKE_PROFIT": "0.78731",
-    "RISK_REWARD_RATIO": "2.75",
-    "ANALYSIS": "Strong bearish trend confirmed by VERY_STRONG strength. RSI is neutral, not oversold. Risk is low. Targeting support level with a risk-reward ratio above 1.5.",
-    "ACTUAL_RR_RATIO": 2.75,
-    "QUALITY_SCORE": 78.7,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 43.30755336313649,
-      "key_support": 0.7873100000000001,
-      "key_resistance": 0.78776,
-      "volatility": 0.06965148303663403,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "GBP/USD",
     "ACTION": "BUY",
     "CONFIDENCE": 7.2,
@@ -32,20 +7,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "timestamp": "2025-12-24T08:40:47.130237+00:00",
-    "ENTRY": "1.35106",
-    "STOP_LOSS": "1.35096",
-    "TAKE_PROFIT": "1.35121",
+    "timestamp": "2025-12-24T10:32:31.505085+00:00",
+    "ENTRY": "1.35214",
+    "STOP_LOSS": "1.35210",
+    "TAKE_PROFIT": "1.35220",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. Low risk level and volatile market conditions support a buy decision.",
+    "ANALYSIS": "Strong bullish trend with RSI at 59.8. Price is near support level, providing a good entry point. Risk level is low, making this trade attractive.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 74.5,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 55.22061336512696,
-      "key_support": 1.35096,
-      "key_resistance": 1.3515599999999999,
-      "volatility": 0.06920246208244868,
+      "rsi": 59.76725630270845,
+      "key_support": 1.3521,
+      "key_resistance": 1.3523800000000001,
+      "volatility": 0.06896177578005007,
       "volatility_status": "OPTIMAL"
     }
   }
