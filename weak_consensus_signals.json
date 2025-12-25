@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-25T18:41:57.274179+00:00",
+    "ENTRY": "183.59132",
+    "STOP_LOSS": "183.46408",
+    "TAKE_PROFIT": "184.33095",
+    "RISK_REWARD_RATIO": "5.81",
+    "ANALYSIS": "Trend is neutral but weak, RSI is at 35.7 indicating oversold conditions. A bounce from the support level (183.46408) suggests a potential buying opportunity. Risk-reward ratio is acceptable.",
+    "ACTUAL_RR_RATIO": 5.81,
+    "QUALITY_SCORE": 58.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 35.7338380264867,
+      "key_support": 183.46408,
+      "key_resistance": 183.72484333333333,
+      "volatility": 0.06828128813114538,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
