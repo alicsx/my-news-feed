@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-26T04:41:29.139999+00:00",
+    "ENTRY": "0.78813",
+    "STOP_LOSS": "0.78822",
+    "TAKE_PROFIT": "0.78513",
+    "RISK_REWARD_RATIO": "33.33",
+    "ANALYSIS": "The strong bearish trend and neutral RSI indicate a potential selling opportunity in USD/CHF. As the price is near the resistance level, a sell trade can be executed with a stop loss at the resistance level and a take profit target set below the support level to capture the bearish momentum.",
+    "ACTUAL_RR_RATIO": 33.33,
+    "QUALITY_SCORE": 80.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 51.33791072168024,
+      "key_support": 0.78800102,
+      "key_resistance": 0.7882166666666667,
+      "volatility": 0.07066014111008284,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-26T04:41:20.420231+00:00",
+    "ENTRY": "1.35057",
+    "STOP_LOSS": "1.35056",
+    "TAKE_PROFIT": "1.35059",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bullish trend with neutral RSI indicates a potential upward movement. Low risk level and volatility support this decision.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 71.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 46.55239520087573,
+      "key_support": 1.3505566666666668,
+      "key_resistance": 1.3507833333333337,
+      "volatility": 0.06874942981522565,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
