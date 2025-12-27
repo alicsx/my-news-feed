@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-27T18:39:31.581817+00:00",
+    "ENTRY": "0.78943",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The STRONG_BEARISH trend and RSI of 54.6 indicate a neutral market condition, with neither clear buying nor selling signals. Hence, the decision is to HOLD the position.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.598368023392666,
+      "key_support": 0.7894033333333333,
+      "key_resistance": 0.7897466666666667,
+      "volatility": 0.07106671414062515,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
