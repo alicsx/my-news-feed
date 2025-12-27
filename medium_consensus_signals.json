@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.5,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2025-12-27T14:27:36.703189+00:00",
-    "ENTRY": "1.34990",
-    "STOP_LOSS": "1.34922",
-    "TAKE_PROFIT": "1.35092",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, suitable for a buy entry. Risk level is low, and the price is near support.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 67.7,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 48.555425568138865,
-      "key_support": 1.349216666666667,
-      "key_resistance": 1.3499333333333334,
-      "volatility": 0.0687979958462039,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
     "CONFIDENCE": 7.8,
@@ -32,12 +7,12 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-27T14:27:29.200401+00:00",
+    "timestamp": "2025-12-27T16:34:45.540613+00:00",
     "ENTRY": "1.17718",
     "STOP_LOSS": "1.17670",
     "TAKE_PROFIT": "1.17790",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. The price is near the support level, making it a good entry point.",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, entering a long position with a stop loss at the support level and a take profit at the resistance level, maintaining a risk-reward ratio of 2.0.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 63.8,
     "TECHNICAL_CONTEXT": {
@@ -46,6 +21,31 @@
       "key_support": 1.1766999999999999,
       "key_resistance": 1.1776599999999997,
       "volatility": 0.0573266505973776,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-27T16:34:55.399041+00:00",
+    "ENTRY": "184.31621",
+    "STOP_LOSS": "184.29860",
+    "TAKE_PROFIT": "184.34263",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is STRONG_BULLISH, but with WEAK strength, and RSI is NEUTRAL at 58.5. Volatility is LOW, and risk level is also LOW. Considering these factors, it's reasonable to expect a slight price increase.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 62.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 58.46478165448416,
+      "key_support": 184.29860333333332,
+      "key_resistance": 184.35304666666664,
+      "volatility": 0.06911233569456507,
       "volatility_status": "OPTIMAL"
     }
   }
