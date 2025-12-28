@@ -2,17 +2,17 @@
   {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.8,
+    "CONFIDENCE": 6.5,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2025-12-28T02:32:59.006094+00:00",
+    "timestamp": "2025-12-28T04:52:25.854890+00:00",
     "ENTRY": "184.31621",
     "STOP_LOSS": "184.29860",
     "TAKE_PROFIT": "184.34263",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The STRONG_BULLISH trend with WEAK strength is still present, and the RSI is at 58.5, which is not overbought. Although the trend strength is weak, the overall market conditions support a BUY decision with a calculated risk-reward ratio of 2.0.",
+    "ANALYSIS": "Strong bullish trend with weak strength and neutral RSI, indicating a potential continuation of the upward movement. Low risk level and volatility support the trade.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 58.7,
     "TECHNICAL_CONTEXT": {
@@ -21,6 +21,30 @@
       "key_support": 184.29860333333332,
       "key_resistance": 184.35304666666664,
       "volatility": 0.06911233569456507,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-28T04:52:18.565326+00:00",
+    "ENTRY": "0.78943",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The STRONG_BEARISH trend and RSI of 54.6 indicate a neutral market condition, as the trend is bearish but the RSI is not oversold. Considering the LOW risk level, it's best to hold for now.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.598368023392666,
+      "key_support": 0.7894033333333333,
+      "key_resistance": 0.7897466666666667,
+      "volatility": 0.07106671414062515,
       "volatility_status": "OPTIMAL"
     }
   }
