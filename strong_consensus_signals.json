@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2025-12-30T04:46:40.598887+00:00",
+    "ENTRY": "1.17773",
+    "STOP_LOSS": "1.17757",
+    "TAKE_PROFIT": "1.18034",
+    "RISK_REWARD_RATIO": "16.31",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a potential buying opportunity with a moderate risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 16.31,
+    "QUALITY_SCORE": 73.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.38400316688606,
+      "key_support": 1.1775666666666667,
+      "key_resistance": 1.1778933333333332,
+      "volatility": 0.0574935828619033,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2025-12-30T04:46:48.093168+00:00",
+    "ENTRY": "1.35101",
+    "STOP_LOSS": "1.35082",
+    "TAKE_PROFIT": "1.35130",
+    "RISK_REWARD_RATIO": "1.53",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, low risk level, and suitable risk-reward ratio for a buy position.",
+    "ACTUAL_RR_RATIO": 1.53,
+    "QUALITY_SCORE": 72.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 55.09314185397184,
+      "key_support": 1.3508166666666668,
+      "key_resistance": 1.3512233333333334,
+      "volatility": 0.0686229585554383,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
