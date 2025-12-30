@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-30T10:34:23.635994+00:00",
+    "ENTRY": "0.78796",
+    "STOP_LOSS": "0.78821",
+    "TAKE_PROFIT": "0.78758",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI at neutral level. Risk-reward ratio is acceptable. Selling with a stop-loss above resistance and take profit near support.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 63.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 40.571825336989725,
+      "key_support": 0.78787,
+      "key_resistance": 0.7882066666666666,
+      "volatility": 0.07149395039254074,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
