@@ -2,17 +2,17 @@
   {
     "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.7,
+    "CONFIDENCE": 6.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2025-12-31T16:36:46.809837+00:00",
+    "timestamp": "2025-12-31T18:41:03.065599+00:00",
     "ENTRY": "1.17566",
     "STOP_LOSS": "1.17540",
     "TAKE_PROFIT": "1.17605",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The trend is neutral with weak strength, but the RSI is at 55.9, which is not overbought. Given the low risk level and reasonable volatility, a buy decision is made with a stop loss at the support level and a take profit at the resistance level.",
+    "ANALYSIS": "Weak trend and neutral RSI suggest a potential buying opportunity. Low risk level and volatility indicate a relatively safe entry point.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 50.2,
     "TECHNICAL_CONTEXT": {
@@ -21,6 +21,54 @@
       "key_support": 1.1754033333333334,
       "key_resistance": 1.1760866666666667,
       "volatility": 0.057052475777907376,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-31T18:41:09.700922+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"GBP/USD\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 8,\n  \"ENTRY\": \"1.34669\",\n  \"STOP_LOSS...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 50.568548593726305,
+      "key_support": 1.34659516,
+      "key_resistance": 1.3474199999999996,
+      "volatility": 0.06736312901158946,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2025-12-31T18:41:16.902080+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the USD/CHF forex pair based on the given market data and trading guidel...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 53.494951736539996,
+      "key_support": 0.79225,
+      "key_resistance": 0.7925300000000001,
+      "volatility": 0.06962661186972312,
       "volatility_status": "OPTIMAL"
     }
   }
