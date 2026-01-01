@@ -2,17 +2,17 @@
   {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.8,
+    "CONFIDENCE": 6.6,
     "AGREEMENT_LEVEL": 5,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2026-01-01T02:33:47.594606+00:00",
+    "timestamp": "2026-01-01T04:54:51.357238+00:00",
     "ENTRY": "184.12033",
     "STOP_LOSS": "184.07480",
     "TAKE_PROFIT": "184.18862",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The EUR/JPY is in a weak bullish trend with a neutral RSI reading, indicating a potential buying opportunity. The price is near the support level, and a calculated risk-reward ratio is above 2.0.",
+    "ANALYSIS": "The trend is weakly bullish, which is still considered bullish. The RSI is at 65.1, which is not overbought. Given the low risk level and acceptable risk-reward ratio, a buy decision is reasonable.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 64.3,
     "TECHNICAL_CONTEXT": {
@@ -21,6 +21,31 @@
       "key_support": 184.07480333333334,
       "key_resistance": 184.15161,
       "volatility": 0.06916832787818139,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-01T04:54:40.847930+00:00",
+    "ENTRY": "0.79226",
+    "STOP_LOSS": "0.79225",
+    "TAKE_PROFIT": "0.79253",
+    "RISK_REWARD_RATIO": "27.0",
+    "ANALYSIS": "Moderate trend strength and neutral RSI indicate a potential buy opportunity. Volatility is low, and risk level is acceptable.",
+    "ACTUAL_RR_RATIO": 27.0,
+    "QUALITY_SCORE": 62.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 53.494951736539996,
+      "key_support": 0.79225,
+      "key_resistance": 0.7925300000000001,
+      "volatility": 0.06962661186972312,
       "volatility_status": "OPTIMAL"
     }
   }
