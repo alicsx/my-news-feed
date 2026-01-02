@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-02T08:40:58.702001+00:00",
+    "ENTRY": "184.06252",
+    "STOP_LOSS": "184.03697",
+    "TAKE_PROFIT": "184.10085",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential long opportunity. Low risk level and weak trend strength suggest a cautious approach.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 62.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 47.69924648017793,
+      "key_support": 184.0369698,
+      "key_resistance": 184.11947333333333,
+      "volatility": 0.06907216362231174,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-02T08:40:38.501399+00:00",
+    "ENTRY": "1.17288",
+    "STOP_LOSS": "1.17252",
+    "TAKE_PROFIT": "1.17538",
+    "RISK_REWARD_RATIO": "6.94",
+    "ANALYSIS": "The trend is bearish but weak, and the RSI is neutral. Considering the low risk level and the proximity of the price to the support level, a buy decision is made with a moderate level of confidence.",
+    "ACTUAL_RR_RATIO": 6.94,
+    "QUALITY_SCORE": 50.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 34.73087772200701,
+      "key_support": 1.17252,
+      "key_resistance": 1.1730600000000002,
+      "volatility": 0.05674271975137597,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
