@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-05T08:38:20.294222+00:00",
+    "ENTRY": "1.34326",
+    "STOP_LOSS": "1.34424",
+    "TAKE_PROFIT": "1.34179",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The bearish trend with strong strength and neutral RSI (44.1) indicates a possible continuation of the downtrend. Given the low risk level and relatively neutral RSI, a sell opportunity arises with a calculated stop-loss and take-profit.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 71.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 44.12836723921069,
+      "key_support": 1.3431299999999997,
+      "key_resistance": 1.3442399999999994,
+      "volatility": 0.07263688725067936,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
