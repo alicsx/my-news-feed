@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-07T22:30:44.001448+00:00",
+    "ENTRY": "1.34608",
+    "STOP_LOSS": "1.34605",
+    "TAKE_PROFIT": "1.34631",
+    "RISK_REWARD_RATIO": "7.67",
+    "ANALYSIS": "The trend is neutral with weak strength, but the RSI is at 31.2, which indicates a potential buying opportunity. The price is near the support level, and a slight increase could push it towards the resistance level, making it a reasonable buy.",
+    "ACTUAL_RR_RATIO": 7.67,
+    "QUALITY_SCORE": 62.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 31.23512729151931,
+      "key_support": 1.3460466666666664,
+      "key_resistance": 1.3463133333333328,
+      "volatility": 0.07465303554149465,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-07T22:31:02.727993+00:00",
+    "ENTRY": "1.16782",
+    "STOP_LOSS": "1.16807",
+    "TAKE_PROFIT": "1.16745",
+    "RISK_REWARD_RATIO": "1.48",
+    "ANALYSIS": "The bearish trend with strong strength indicates a sell opportunity. Although the RSI is at 38.3, which is considered neutral, the bearish trend takes precedence. A sell action at the current price with a stop loss at the resistance level and a take profit at the support level would provide a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.48,
+    "QUALITY_SCORE": 61.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 38.280874081727454,
+      "key_support": 1.1676433333333334,
+      "key_resistance": 1.1680666666666668,
+      "volatility": 0.058856988500605924,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-07T22:30:58.954928+00:00",
+    "ENTRY": "183.02345",
+    "STOP_LOSS": "182.99205",
+    "TAKE_PROFIT": "183.43434",
+    "RISK_REWARD_RATIO": "13.09",
+    "ANALYSIS": "The bearish trend is weakening, and the RSI is in a neutral zone. This creates a potential opportunity to buy as the trend may be reversing.",
+    "ACTUAL_RR_RATIO": 13.09,
+    "QUALITY_SCORE": 59.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 47.11571500387258,
+      "key_support": 182.9920466666667,
+      "key_resistance": 183.02713333333335,
+      "volatility": 0.06836118910344237,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
