@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-07T16:42:09.287225+00:00",
+    "ENTRY": "1.34717",
+    "STOP_LOSS": "1.34705",
+    "TAKE_PROFIT": "1.34735",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Based on the neutral trend and low RSI value, there's a reasonable chance for a bullish reversal. A buy signal is given with a stop loss below the support level and a take profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 53.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 33.00980320752972,
+      "key_support": 1.34705,
+      "key_resistance": 1.3475666666666666,
+      "volatility": 0.07462604198050571,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
