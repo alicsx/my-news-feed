@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-07T10:35:36.101081+00:00",
+    "ENTRY": "182.99077",
+    "STOP_LOSS": "183.05353",
+    "TAKE_PROFIT": "182.50482",
+    "RISK_REWARD_RATIO": "7.74",
+    "ANALYSIS": "The EUR/JPY is in a strong bearish trend with a neutral RSI reading. Although the RSI is not oversold, the bearish trend and low risk level indicate a potential selling opportunity.",
+    "ACTUAL_RR_RATIO": 7.74,
+    "QUALITY_SCORE": 78.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 44.77401198284291,
+      "key_support": 182.94070333333332,
+      "key_resistance": 183.05352666666664,
+      "volatility": 0.06857119470006727,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-07T10:35:30.048885+00:00",
+    "ENTRY": "0.79589",
+    "STOP_LOSS": "0.79579",
+    "TAKE_PROFIT": "0.79604",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the bullish trend with moderate strength and neutral RSI, the risk level is low, making it a good opportunity to buy USD/CHF.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 71.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 59.40228513418281,
+      "key_support": 0.7957899999999999,
+      "key_resistance": 0.7960499999999998,
+      "volatility": 0.0738391306070096,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
