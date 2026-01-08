@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-08T02:23:23.039134+00:00",
+    "ENTRY": "1.34518",
+    "STOP_LOSS": "1.34512",
+    "TAKE_PROFIT": "1.34527",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The RSI is burgeoning from an oversold position, indicating a potential rebound. The weak trend suggests a lack of strong momentum, but the price is near support, making a BUY decision reasonable.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 56.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 27.35186267704219,
+      "key_support": 1.34512,
+      "key_resistance": 1.34533,
+      "volatility": 0.07457817687663088,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
