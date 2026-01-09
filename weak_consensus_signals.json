@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-09T16:40:03.026704+00:00",
+    "ENTRY": "183.94972",
+    "STOP_LOSS": "183.95519",
+    "TAKE_PROFIT": "183.94152",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral, but RSI is overbought, indicating a potential reversal. A sell signal is triggered based on the current market conditions.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 58.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 72.08473278008093,
+      "key_support": 183.88938,
+      "key_resistance": 183.95519,
+      "volatility": 0.06822533829529688,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]

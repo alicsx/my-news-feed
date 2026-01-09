@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.4,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-09T16:39:57.729140+00:00",
+    "ENTRY": "0.80126",
+    "STOP_LOSS": "0.80081",
+    "TAKE_PROFIT": "0.80370",
+    "RISK_REWARD_RATIO": "5.42",
+    "ANALYSIS": "The bullish trend with a VERY_STRONG strength, along with a neutral RSI reading, suggests a potential buying opportunity. The low risk level and volatility further support this decision.",
+    "ACTUAL_RR_RATIO": 5.42,
+    "QUALITY_SCORE": 86.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 68.6753268284299,
+      "key_support": 0.8008100000000001,
+      "key_resistance": 0.8012600000000001,
+      "volatility": 0.07303909638627729,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-09T16:39:42.070072+00:00",
+    "ENTRY": "1.16339",
+    "STOP_LOSS": "1.16351",
+    "TAKE_PROFIT": "1.16282",
+    "RISK_REWARD_RATIO": "4.75",
+    "ANALYSIS": "The current trend is bearish with a VERY_STRONG strength, which indicates a strong downward momentum. The RSI is at 31.7, which is not oversold, but considering the strong bearish trend, it's a good opportunity to sell. The risk level is LOW, which makes it a good time to enter the trade.",
+    "ACTUAL_RR_RATIO": 4.75,
+    "QUALITY_SCORE": 75.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 31.65465625671486,
+      "key_support": 1.1628166666666668,
+      "key_resistance": 1.1635133333333334,
+      "volatility": 0.058014879080269185,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
