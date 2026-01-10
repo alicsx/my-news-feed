@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-10T12:56:51.878308+00:00",
+    "ENTRY": "1.16361",
+    "STOP_LOSS": "1.16364",
+    "TAKE_PROFIT": "1.16356",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "The strong bearish trend and low RSI value indicate a potential selling opportunity. Given the low risk level and reasonable price movement, a sell trade with a calculated stop-loss and take-profit price seems reasonable.",
+    "ACTUAL_RR_RATIO": 1.67,
+    "QUALITY_SCORE": 64.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 36.026228959017395,
+      "key_support": 1.16356,
+      "key_resistance": 1.16364,
+      "volatility": 0.05634887079929009,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-10T12:57:24.144395+00:00",
+    "ENTRY": "183.74336",
+    "STOP_LOSS": "183.73010",
+    "TAKE_PROFIT": "183.76325",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is STRONG_BULLISH, but RSI is not overbought, providing a reasonable opportunity to enter a long position with a moderate risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 62.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.24138428752738,
+      "key_support": 183.73010333333332,
+      "key_resistance": 183.75048666666666,
+      "volatility": 0.06700498604426852,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
