@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-12T16:38:30.013941+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/USD\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 5,...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 58.77731185599703,
+      "key_support": 1.16782,
+      "key_resistance": 1.1683100000000002,
+      "volatility": 0.057837719585148384,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-12T16:38:37.902194+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out what trading decision to make for GBP/USD based on the given data. Le...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 66.6722987106342,
+      "key_support": 1.3465533333333333,
+      "key_resistance": 1.3470966666666666,
+      "volatility": 0.07145894299327986,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
