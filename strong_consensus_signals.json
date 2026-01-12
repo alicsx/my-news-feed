@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-12T02:29:55.631292+00:00",
+    "ENTRY": "1.16588",
+    "STOP_LOSS": "1.16592",
+    "TAKE_PROFIT": "1.16558",
+    "RISK_REWARD_RATIO": "7.5",
+    "ANALYSIS": "The strong bearish trend, combined with a neutral RSI, suggests a potential short opportunity. The price is near resistance, and a decline is likely.",
+    "ACTUAL_RR_RATIO": 7.5,
+    "QUALITY_SCORE": 74.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 62.76782714014074,
+      "key_support": 1.16558,
+      "key_resistance": 1.16592,
+      "volatility": 0.057387008398774815,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-12T02:30:02.935522+00:00",
+    "ENTRY": "1.34277",
+    "STOP_LOSS": "1.34293",
+    "TAKE_PROFIT": "1.34253",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The bearish trend and strong trend strength indicate a potential downward movement. Although the RSI is not oversold, the risk-reward ratio is favorable for a sell trade.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 70.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 65.67494185475252,
+      "key_support": 1.3424733333333336,
+      "key_resistance": 1.3429266666666668,
+      "volatility": 0.07140199362480038,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
