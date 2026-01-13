@@ -1,1 +1,102 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-13T08:35:23.568021+00:00",
+    "ENTRY": "1.34647",
+    "STOP_LOSS": "1.34610",
+    "TAKE_PROFIT": "1.34943",
+    "RISK_REWARD_RATIO": "8.0",
+    "ANALYSIS": "The trend is neutral but with strong strength, indicating a potential shift. RSI is at 53.8, which is not overbought. Volatility is low, and risk level is low. Considering these factors, a buy decision seems reasonable.",
+    "ACTUAL_RR_RATIO": 8.0,
+    "QUALITY_SCORE": 68.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 53.80568777020422,
+      "key_support": 1.3460966666666672,
+      "key_resistance": 1.3467333333333336,
+      "volatility": 0.07096313070256705,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-13T08:35:16.480601+00:00",
+    "ENTRY": "1.16602",
+    "STOP_LOSS": "1.16572",
+    "TAKE_PROFIT": "1.16855",
+    "RISK_REWARD_RATIO": "8.43",
+    "ANALYSIS": "Neutral trend with a strong strength and RSI at 46.7, indicating a potential buying opportunity with a relatively low risk level.",
+    "ACTUAL_RR_RATIO": 8.43,
+    "QUALITY_SCORE": 63.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 46.66192398292401,
+      "key_support": 1.16572,
+      "key_resistance": 1.16629,
+      "volatility": 0.05804696245400787,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-13T08:35:31.377346+00:00",
+    "ENTRY": "0.79768",
+    "STOP_LOSS": "0.79744",
+    "TAKE_PROFIT": "0.79804",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral but with strong strength, indicating a potential shift in trend. The RSI is at 48.8, which is neutral. The support and resistance levels are close, suggesting a potential breakout. With low risk level, a buy decision is made with a risk-reward ratio of 2.3.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 62.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 48.78989621414435,
+      "key_support": 0.7974366666666667,
+      "key_resistance": 0.7980133333333334,
+      "volatility": 0.07410265458777823,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-13T08:35:38.775141+00:00",
+    "ENTRY": "185.37182",
+    "STOP_LOSS": "185.37722",
+    "TAKE_PROFIT": "185.32504",
+    "RISK_REWARD_RATIO": "8.66",
+    "ANALYSIS": "The EUR/JPY is strongly bullish, but the RSI is overbought, indicating a potential reversal. A sell decision is made to capitalize on this potentially bearish trend.",
+    "ACTUAL_RR_RATIO": 8.66,
+    "QUALITY_SCORE": 54.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 73.25791550906611,
+      "key_support": 185.32504333333333,
+      "key_resistance": 185.37721666666667,
+      "volatility": 0.07089106592884184,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
