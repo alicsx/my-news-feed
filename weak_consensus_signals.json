@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-14T02:28:36.895374+00:00",
+    "ENTRY": "1.34282",
+    "STOP_LOSS": "1.34262",
+    "TAKE_PROFIT": "1.34312",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Moderate trend strength with neutral RSI, indicating a potential buying opportunity. Volatility is low, and risk level is low.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 57.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 38.72432947811208,
+      "key_support": 1.34262,
+      "key_resistance": 1.34309,
+      "volatility": 0.07022657687332004,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-14T02:28:44.402038+00:00",
+    "ENTRY": "0.80160",
+    "STOP_LOSS": "0.80080",
+    "TAKE_PROFIT": "0.80240",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Strong bullish trend is present, but RSI is overbought (70.9). A BUY signal is not warranted. A small HOLD position with a tight stop-loss is appropriate to avoid missing a potential continuation of the trend, but with caution due to overbought conditions.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 70.94495030186397,
+      "key_support": 0.8014999999999999,
+      "key_resistance": 0.80163,
+      "volatility": 0.07251323750632753,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
