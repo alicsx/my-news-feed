@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-14T08:35:25.512803+00:00",
+    "ENTRY": "185.17795",
+    "STOP_LOSS": "185.11054",
+    "TAKE_PROFIT": "185.27907",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a potential upward movement. BUY at current price.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 59.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 46.89965609002294,
+      "key_support": 185.11054,
+      "key_resistance": 185.24418,
+      "volatility": 0.0694887294897406,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-14T08:35:10.434972+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out whether to buy, sell, or hold GBP/USD based on the given market data....",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 48.54603311698606,
+      "key_support": 1.343606666666667,
+      "key_resistance": 1.3441533333333335,
+      "volatility": 0.06793220446002877,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
