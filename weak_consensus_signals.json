@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-18T22:29:50.487903+00:00",
+    "ENTRY": "182.83234",
+    "STOP_LOSS": "182.76537",
+    "TAKE_PROFIT": "182.93279",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a strong bearish trend but the RSI is oversold, indicating a potential reversal. Given the low risk level, a buy order is recommended with a stop loss at the support level and a take profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 59.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 26.790192544166068,
+      "key_support": 182.76536666666667,
+      "key_resistance": 182.87099333333333,
+      "volatility": 0.0651356606477836,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
