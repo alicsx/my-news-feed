@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-19T14:37:58.252933+00:00",
+    "ENTRY": "1.34170",
+    "STOP_LOSS": "1.34156",
+    "TAKE_PROFIT": "1.34576",
+    "RISK_REWARD_RATIO": "29.0",
+    "ANALYSIS": "BUY due to neutral trend and RSI at 63.7, which is not overbought. The risk level is low, and the volatility is 0.07%.",
+    "ACTUAL_RR_RATIO": 29.0,
+    "QUALITY_SCORE": 75.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 63.67483695865393,
+      "key_support": 1.3415633333333332,
+      "key_resistance": 1.34188,
+      "volatility": 0.06888931300390258,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
