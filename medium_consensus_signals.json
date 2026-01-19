@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-19T22:31:29.565429+00:00",
+    "ENTRY": "0.79729",
+    "STOP_LOSS": "0.79745",
+    "TAKE_PROFIT": "0.79705",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed by price action. RSI is neutral, not oversold. Setting a sell order with a stop loss slightly above the recent resistance and a take profit targeting a previous support level, yielding a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 69.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 31.689573059765795,
+      "key_support": 0.7970833333333333,
+      "key_resistance": 0.7974466666666666,
+      "volatility": 0.06904249666027047,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-19T22:31:36.330232+00:00",
+    "ENTRY": "184.12030",
+    "STOP_LOSS": "184.11346",
+    "TAKE_PROFIT": "184.17126",
+    "RISK_REWARD_RATIO": "7.45",
+    "ANALYSIS": "Neutral trend with RSI at 67.9, slightly above middle, and price is near support. BUY with caution.",
+    "ACTUAL_RR_RATIO": 7.45,
+    "QUALITY_SCORE": 69.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 67.85572951990802,
+      "key_support": 184.11346333333336,
+      "key_resistance": 184.17126,
+      "volatility": 0.06493975926599063,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
