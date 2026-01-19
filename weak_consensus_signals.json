@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.3,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2026-01-19T08:37:29.051023+00:00",
-    "ENTRY": "0.79902",
-    "STOP_LOSS": "0.79869",
-    "TAKE_PROFIT": "0.79951",
-    "RISK_REWARD_RATIO": "1.48",
-    "ANALYSIS": "Given the neutral trend and low RSI, this is a low-risk opportunity to buy, as the market is not overbought and the price is near support.",
-    "ACTUAL_RR_RATIO": 1.48,
-    "QUALITY_SCORE": 57.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 34.97102985175752,
-      "key_support": 0.7986933333333333,
-      "key_resistance": 0.7993266666666666,
-      "volatility": 0.07073287073218469,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -32,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-01-19T08:37:14.049241+00:00",
+    "timestamp": "2026-01-19T08:45:23.256748+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to figure out whether to buy, sell, or hold EUR/USD based on the given data....",
+    "ANALYSIS": "Extracted from text: \nAlright, let's tackle this query step by step. The user has provided specific instructions for anal...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 59.10866192701327,
-      "key_support": 1.1618233333333334,
-      "key_resistance": 1.1623266666666667,
-      "volatility": 0.05307268061565481,
+      "rsi": 61.0914778414583,
+      "key_support": 1.1624033333333335,
+      "key_resistance": 1.162896666666667,
+      "volatility": 0.053057356678346164,
       "volatility_status": "OPTIMAL"
     }
   }
