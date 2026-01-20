@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-20T13:09:20.367847+00:00",
+    "ENTRY": "1.34451",
+    "STOP_LOSS": "1.34449",
+    "TAKE_PROFIT": "1.34454",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential for further price increase.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 53.6635811499796,
+      "key_support": 1.3444933333333335,
+      "key_resistance": 1.344826666666667,
+      "volatility": 0.07003701360325841,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-20T13:09:28.095400+00:00",
+    "ENTRY": "0.79017",
+    "STOP_LOSS": "0.79016",
+    "TAKE_PROFIT": "0.79019",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The bearish trend is very strong, but the RSI is oversold, indicating a potential reversal. Given the low risk level and acceptable risk-reward ratio, a buy decision is made.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 62.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 20.30347257711638,
+      "key_support": 0.7901599999999999,
+      "key_resistance": 0.7905499999999998,
+      "volatility": 0.07235015224433977,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-20T13:09:35.368057+00:00",
+    "ENTRY": "185.12026",
+    "STOP_LOSS": "185.12721",
+    "TAKE_PROFIT": "185.09973",
+    "RISK_REWARD_RATIO": "2.95",
+    "ANALYSIS": "The EUR/JPY is in a strong bullish trend but RSI is overbought. This is a classic sign of a potential reversal. Selling at the current price with a stop loss at the support level and a take profit at a price below the current price to limit potential losses.",
+    "ACTUAL_RR_RATIO": 2.95,
+    "QUALITY_SCORE": 60.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 74.7069123570139,
+      "key_support": 185.0997266666667,
+      "key_resistance": 185.12721333333334,
+      "volatility": 0.06573451793858236,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
