@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-20T20:47:16.476474+00:00",
+    "ENTRY": "0.79014",
+    "STOP_LOSS": "0.79020",
+    "TAKE_PROFIT": "0.78982",
+    "RISK_REWARD_RATIO": "5.33",
+    "ANALYSIS": "Very strong bearish trend confirmed, RSI is neutral, suggesting potential for further downside. Risk-reward ratio is favorable for a short position.",
+    "ACTUAL_RR_RATIO": 5.33,
+    "QUALITY_SCORE": 75.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 33.78942790034164,
+      "key_support": 0.7898166666666667,
+      "key_resistance": 0.7902033333333334,
+      "volatility": 0.07364150937780047,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-20T20:47:09.539217+00:00",
+    "ENTRY": "1.34351",
+    "STOP_LOSS": "1.34325",
+    "TAKE_PROFIT": "1.34390",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, suggesting a potential upward movement. Low risk level also supports a buy decision.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 74.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 46.983407470795235,
+      "key_support": 1.3432454,
+      "key_resistance": 1.3438666666666668,
+      "volatility": 0.07026924583470705,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
