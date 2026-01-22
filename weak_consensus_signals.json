@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-22T13:09:38.639707+00:00",
+    "ENTRY": "1.34210",
+    "STOP_LOSS": "1.34187",
+    "TAKE_PROFIT": "1.34245",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "The trend is weakly bullish, which is still considered bullish. The RSI is at 45.8, indicating a neutral condition. Based on the provided guidelines, a buy signal is generated. The stop-loss is set at the support level, and the take-profit is set at the resistance level.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 54.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 45.76600506417968,
+      "key_support": 1.3418700000000001,
+      "key_resistance": 1.34227,
+      "volatility": 0.07190219867969389,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-22T13:09:53.328078+00:00",
+    "ENTRY": "185.88184",
+    "STOP_LOSS": "185.82836",
+    "TAKE_PROFIT": "186.09164",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Strong bullish trend, but RSI is overbought. Risk of pullback exists. Holding with a stop-loss below support and a target slightly above recent resistance.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 71.88611049929654,
+      "key_support": 185.8283633333333,
+      "key_resistance": 185.88487666666666,
+      "volatility": 0.06468004464684492,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
