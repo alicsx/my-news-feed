@@ -1,25 +1,25 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.7,
+    "CONFIDENCE": 4.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2026-01-23T18:48:26.855649+00:00",
-    "ENTRY": "1.36067",
-    "STOP_LOSS": "1.36004",
-    "TAKE_PROFIT": "1.36204",
-    "RISK_REWARD_RATIO": "1.72",
-    "ANALYSIS": "Strong bullish trend is present, however, the RSI is significantly overbought (80.1). While a pullback could offer a better entry, a short-term hold with a tight stop-loss is warranted, acknowledging the risk of a correction.",
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-23T20:36:27.965409+00:00",
+    "ENTRY": "1.18146",
+    "STOP_LOSS": "1.18083",
+    "TAKE_PROFIT": "1.18271",
+    "RISK_REWARD_RATIO": "1.65",
+    "ANALYSIS": "Strong bullish trend is present, however, RSI is significantly overbought (79.6). While a pullback is possible, initiating a BUY position at this level carries elevated risk. A HOLD position is advised, awaiting a potential RSI correction or a break above resistance with reduced overbought conditions.",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 80.07050611962883,
-      "key_support": 1.3603399999999999,
-      "key_resistance": 1.3613399999999998,
-      "volatility": 0.07084040041186022,
+      "rsi": 79.60630241625472,
+      "key_support": 1.18083,
+      "key_resistance": 1.18171,
+      "volatility": 0.05791573601043932,
       "volatility_status": "OPTIMAL"
     }
   }
