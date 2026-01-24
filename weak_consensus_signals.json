@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-24T22:28:55.900685+00:00",
+    "ENTRY": "1.18238",
+    "STOP_LOSS": "1.18188",
+    "TAKE_PROFIT": "1.18338",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Strong bullish trend is present, but RSI is overbought (70.9). A BUY signal is not warranted due to overbought conditions. A HOLD with a tight stop-loss and modest take-profit is appropriate to observe market reaction.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 70.89025657311852,
+      "key_support": 1.1823666666666668,
+      "key_resistance": 1.1824333333333337,
+      "volatility": 0.056066592266144334,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-24T22:29:17.701277+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nAlright, I need to analyze the EUR/JPY pair based on the given data and provide a trading decision....",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 59.80626619876182,
+      "key_support": 184.64201333333335,
+      "key_resistance": 184.98463666666672,
+      "volatility": 0.07427709538990426,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
