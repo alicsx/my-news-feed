@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-25T13:00:16.931962+00:00",
+    "ENTRY": "1.36249",
+    "STOP_LOSS": "1.36245",
+    "TAKE_PROFIT": "1.36255",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI levels, indicating a potential continuation of the upward movement.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 74.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 38.00228342173749,
+      "key_support": 1.3624533333333333,
+      "key_resistance": 1.3624966666666667,
+      "volatility": 0.06793081774865706,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-25T13:00:24.340375+00:00",
+    "ENTRY": "0.78430",
+    "STOP_LOSS": "0.78468",
+    "TAKE_PROFIT": "0.78373",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend with overbought RSI, indicating a potential reversal opportunity. Selling at current price with a stop loss at resistance and take profit at support.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 73.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 71.79106627006352,
+      "key_support": 0.7839499999999999,
+      "key_resistance": 0.7846799999999998,
+      "volatility": 0.07875200111387473,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
