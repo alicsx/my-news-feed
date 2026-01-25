@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-25T20:34:11.384616+00:00",
+    "ENTRY": "1.36712",
+    "STOP_LOSS": "1.36620",
+    "TAKE_PROFIT": "1.36850",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential buying opportunity. Risk level is low, making this trade relatively safe.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 76.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 65.7478285062297,
+      "key_support": 1.3662033333333332,
+      "key_resistance": 1.36789,
+      "volatility": 0.06806521937344474,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-25T20:34:26.145300+00:00",
+    "ENTRY": "183.57648",
+    "STOP_LOSS": "183.83341",
+    "TAKE_PROFIT": "182.22108",
+    "RISK_REWARD_RATIO": "5.28",
+    "ANALYSIS": "Bearish trend with RSI in neutral territory suggests a potential downward move. Risk is low and a stop loss above resistance is reasonable. Target is set below support to allow for minor fluctuations.",
+    "ACTUAL_RR_RATIO": 5.28,
+    "QUALITY_SCORE": 70.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 35.76134235436281,
+      "key_support": 183.5428866666667,
+      "key_resistance": 183.8334133333334,
+      "volatility": 0.07457021598259062,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]

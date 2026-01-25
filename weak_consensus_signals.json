@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-25T20:34:04.288819+00:00",
+    "ENTRY": "1.18776",
+    "STOP_LOSS": "1.18830",
+    "TAKE_PROFIT": "1.18695",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bullish trend is contradicted by the overbought RSI, indicating a potential reversal. Selling at the current price provides a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 58.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 83.19282118456913,
+      "key_support": 1.1866333333333332,
+      "key_resistance": 1.1883,
+      "volatility": 0.055958615957055625,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
