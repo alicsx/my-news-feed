@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-25T08:31:41.250856+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, I'm trying to figure out the trading decision for EUR/JPY based on the given data. Let me go ...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 40.700693060796276,
+      "key_support": 184.11871,
+      "key_resistance": 184.12756,
+      "volatility": 0.07347916719836167,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
