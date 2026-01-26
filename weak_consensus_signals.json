@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-26T10:37:46.135257+00:00",
+    "ENTRY": "182.35233",
+    "STOP_LOSS": "182.22323",
+    "TAKE_PROFIT": "182.54598",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The bearish trend is weak, and the RSI is oversold, indicating a potential reversal. The price is also near the support level, making it a good entry point.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 54.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 29.580594480372234,
+      "key_support": 182.22323333333333,
+      "key_resistance": 182.36019666666667,
+      "volatility": 0.07815766032328789,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
