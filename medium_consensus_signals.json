@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-26T14:38:58.435753+00:00",
+    "ENTRY": "1.36793",
+    "STOP_LOSS": "1.36726",
+    "TAKE_PROFIT": "1.36894",
+    "RISK_REWARD_RATIO": "1.51",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, suggesting a potential upward movement. The price is near the support level, making it a good entry point.",
+    "ACTUAL_RR_RATIO": 1.51,
+    "QUALITY_SCORE": 69.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 59.79002753403253,
+      "key_support": 1.36726,
+      "key_resistance": 1.3686399999999999,
+      "volatility": 0.067620504370204,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-26T14:38:52.421510+00:00",
+    "ENTRY": "1.18688",
+    "STOP_LOSS": "1.18647",
+    "TAKE_PROFIT": "1.18749",
+    "RISK_REWARD_RATIO": "1.49",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. Low risk level and volatility support a buy decision.",
+    "ACTUAL_RR_RATIO": 1.49,
+    "QUALITY_SCORE": 66.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 57.92488468028702,
+      "key_support": 1.1864733333333333,
+      "key_resistance": 1.1876166666666665,
+      "volatility": 0.058319781482334146,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-26T14:39:12.521477+00:00",
+    "ENTRY": "182.63193",
+    "STOP_LOSS": "182.69121",
+    "TAKE_PROFIT": "182.54301",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is bearish, albeit weakly, and the RSI is neutral. A short position with a stop loss just above the resistance and target below the support provides a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 62.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 40.207120605533085,
+      "key_support": 182.63000666666667,
+      "key_resistance": 182.69121333333334,
+      "volatility": 0.07879574907762861,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
