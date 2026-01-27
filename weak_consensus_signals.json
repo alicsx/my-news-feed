@@ -1,1 +1,75 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-27T16:41:39.096424+00:00",
+    "ENTRY": "183.35120",
+    "STOP_LOSS": "183.41965",
+    "TAKE_PROFIT": "183.24853",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Bearish trend confirmed, RSI neutral. Targeting support level with a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 56.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 55.320590829961866,
+      "key_support": 183.28511666666668,
+      "key_resistance": 183.41965333333337,
+      "volatility": 0.08187880166291317,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-27T16:41:12.111765+00:00",
+    "ENTRY": "1.19850",
+    "STOP_LOSS": "1.19740",
+    "TAKE_PROFIT": "1.20100",
+    "RISK_REWARD_RATIO": "1.59",
+    "ANALYSIS": "Strong bullish trend, but RSI is significantly overbought. A potential pullback is likely before further upside. A HOLD with a stop loss just below support is prudent, allowing for a small profit if the bullish trend continues.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 79.06617317141524,
+      "key_support": 1.1974033333333332,
+      "key_resistance": 1.19857,
+      "volatility": 0.0632026002056706,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-01-27T16:41:19.822738+00:00",
+    "ENTRY": "1.37862",
+    "STOP_LOSS": "1.37746",
+    "TAKE_PROFIT": "1.37904",
+    "RISK_REWARD_RATIO": "0.85",
+    "ANALYSIS": "Strong bullish trend countered by overbought RSI. Risk-reward ratio is not acceptable for a BUY. A SELL is not indicated due to the strong bullish trend.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 73.22544668487485,
+      "key_support": 1.3774566666666666,
+      "key_resistance": 1.37904,
+      "volatility": 0.07137340570369258,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
