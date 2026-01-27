@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-27T18:53:47.618829+00:00",
+    "ENTRY": "0.76623",
+    "STOP_LOSS": "0.76588",
+    "TAKE_PROFIT": "0.77150",
+    "RISK_REWARD_RATIO": "15.06",
+    "ANALYSIS": "Strong bearish trend with VERY_STRONG strength and RSI at 18.9 (OVERSOLD) suggests a potential reversal. Given the LOW risk level and acceptable risk-reward ratio, a BUY decision is made.",
+    "ACTUAL_RR_RATIO": 15.06,
+    "QUALITY_SCORE": 70.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 18.938298387285172,
+      "key_support": 0.76588,
+      "key_resistance": 0.7664433333333335,
+      "volatility": 0.09375837790201899,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
