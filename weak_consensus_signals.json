@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-27T10:39:47.486418+00:00",
+    "ENTRY": "182.86754",
+    "STOP_LOSS": "182.73750",
+    "TAKE_PROFIT": "183.06260",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Weak bearish trend and neutral RSI suggest a potential reversal. Buying near the support level with a stop-loss below it and a take-profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 46.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 41.73273957203784,
+      "key_support": 182.7374966666667,
+      "key_resistance": 182.88706333333334,
+      "volatility": 0.08153821770777937,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
