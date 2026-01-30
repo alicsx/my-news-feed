@@ -1,5 +1,29 @@
 [
   {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-30T10:47:03.869000+00:00",
+    "ENTRY": "0.76903",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The strong bearish trend and neutral RSI indicate unclear market conditions, thus a HOLD decision is made.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 56.80754603970538,
+      "key_support": 0.7684033333333332,
+      "key_resistance": 0.76910716,
+      "volatility": 0.10740358233696327,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +31,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "timestamp": "2026-01-30T08:53:30.240276+00:00",
+    "timestamp": "2026-01-30T10:47:11.195910+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I need to analyze the EUR/JPY pair based on the given data and provide a trading decision....",
+    "ANALYSIS": "Extracted from text: ...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 59.98862851098331,
-      "key_support": 183.58732,
-      "key_resistance": 183.74002,
-      "volatility": 0.08798515845841251,
+      "rsi": 63.30194843720247,
+      "key_support": 183.77229,
+      "key_resistance": 183.85931,
+      "volatility": 0.08812389147199848,
       "volatility_status": "OPTIMAL"
     }
   }

@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-01-30T10:46:56.286840+00:00",
+    "ENTRY": "1.37424",
+    "STOP_LOSS": "1.37416",
+    "TAKE_PROFIT": "1.37436",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. The risk level is low, making it a suitable trade.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 69.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 38.961865430244586,
+      "key_support": 1.3741599999999998,
+      "key_resistance": 1.3748899999999997,
+      "volatility": 0.08189452248477161,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-30T10:46:49.486976+00:00",
+    "ENTRY": "1.19182",
+    "STOP_LOSS": "1.19148",
+    "TAKE_PROFIT": "1.19233",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. Low risk level and reasonable volatility support a buy decision.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 60.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 42.321566583163296,
+      "key_support": 1.19148,
+      "key_resistance": 1.1922900000000003,
+      "volatility": 0.0762439699658697,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
