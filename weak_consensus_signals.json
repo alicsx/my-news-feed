@@ -1,25 +1,50 @@
 [
   {
     "SYMBOL": "EUR/JPY",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
+    "ACTION": "BUY",
+    "CONFIDENCE": 5.7,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "timestamp": "2026-01-30T14:44:17.596364+00:00",
+    "timestamp": "2026-01-30T16:52:59.713764+00:00",
+    "ENTRY": "183.37027",
+    "STOP_LOSS": "183.33274",
+    "TAKE_PROFIT": "183.42657",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral with weak strength, but the RSI is at 47.2, which is not overbought. Given the low risk level, a buy decision is made with a stop loss at the support level and a take profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 53.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 47.242485013901096,
+      "key_support": 183.3327387,
+      "key_resistance": 183.3820033333333,
+      "volatility": 0.089239148019566,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-30T16:52:38.309913+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/JPY currency pair based on the given market data and guidelines. Le...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out whether to buy, sell, or hold EUR/USD based on the given data. Let me...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 62.472669362559394,
-      "key_support": 183.89664000000002,
-      "key_resistance": 183.96772,
-      "volatility": 0.08859636327821518,
+      "rsi": 35.079953518336126,
+      "key_support": 1.18742,
+      "key_resistance": 1.1883766666666666,
+      "volatility": 0.07841528106188128,
       "volatility_status": "OPTIMAL"
     }
   }
