@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-31T20:36:04.109099+00:00",
+    "ENTRY": "1.18546",
+    "STOP_LOSS": "1.18544",
+    "TAKE_PROFIT": "1.18552",
+    "RISK_REWARD_RATIO": "3.0",
+    "ANALYSIS": "Buy signal due to neutral trend and RSI below 50, expecting a potential bullish move.",
+    "ACTUAL_RR_RATIO": 3.0,
+    "QUALITY_SCORE": 65.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 34.613520736602986,
+      "key_support": 1.1854366666666667,
+      "key_resistance": 1.1855233333333335,
+      "volatility": 0.07858139085557789,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
