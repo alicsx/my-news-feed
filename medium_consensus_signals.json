@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-01-31T16:40:40.867492+00:00",
+    "ENTRY": "1.18537",
+    "STOP_LOSS": "1.18536",
+    "TAKE_PROFIT": "1.18539",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The trend is neutral but has strong strength, indicating a potential shift in direction. The RSI is at 32.6, which is not overbought, making it a good time to enter a long position.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 63.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 32.60101965111968,
+      "key_support": 1.1853566666666666,
+      "key_resistance": 1.1854033333333331,
+      "volatility": 0.07871656390144022,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
