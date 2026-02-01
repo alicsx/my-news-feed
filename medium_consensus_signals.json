@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-02-01T05:26:46.082152+00:00",
+    "ENTRY": "1.18547",
+    "STOP_LOSS": "1.18543",
+    "TAKE_PROFIT": "1.18665",
+    "RISK_REWARD_RATIO": "29.5",
+    "ANALYSIS": "The trend is neutral but has strong strength, indicating a potential breakout. The RSI is at 36.8, which is not overbought. The low risk level and volatility also support a buy decision.",
+    "ACTUAL_RR_RATIO": 29.5,
+    "QUALITY_SCORE": 65.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 36.816138933302916,
+      "key_support": 1.1854333333333336,
+      "key_resistance": 1.1854766666666667,
+      "volatility": 0.07650233069181413,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
