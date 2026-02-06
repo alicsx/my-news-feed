@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-06T08:46:32.715563+00:00",
+    "ENTRY": "1.35638",
+    "RISK_REWARD_RATIO": "26.74",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, supporting a sell decision immensely.",
+    "STOP_LOSS": "1.35657",
+    "TAKE_PROFIT": "1.35130",
+    "ACTUAL_RR_RATIO": 26.74,
+    "QUALITY_SCORE": 82.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 47.472765855488305,
+      "key_support": 1.3560966666666667,
+      "key_resistance": 1.3565733333333334,
+      "volatility": 0.09055891995384009,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-06T08:46:40.153790+00:00",
+    "ENTRY": "0.77840",
+    "STOP_LOSS": "0.77806",
+    "TAKE_PROFIT": "0.77891",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the bullish trend and neutral RSI, the market conditions are favorable for a buy. The risk level is low, making this a relatively safe trade with a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 71.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 58.922090968257464,
+      "key_support": 0.7780566666666666,
+      "key_resistance": 0.77871,
+      "volatility": 0.11499121737943148,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
