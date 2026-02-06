@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-06T02:49:01.607752+00:00",
+    "ENTRY": "0.77723",
+    "STOP_LOSS": "0.77719",
+    "TAKE_PROFIT": "0.77746",
+    "RISK_REWARD_RATIO": "5.75",
+    "ANALYSIS": "Bullish trend with weak strength and neutral RSI, indicating a potential buying opportunity with a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 5.75,
+    "QUALITY_SCORE": 77.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 49.19191860499198,
+      "key_support": 0.7771866666666667,
+      "key_resistance": 0.7774633333333334,
+      "volatility": 0.11451774814497025,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-06T02:48:54.089180+00:00",
+    "ENTRY": "1.35447",
+    "STOP_LOSS": "1.35447",
+    "TAKE_PROFIT": "1.35447",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Strong bearish trend with neutral RSI (40.4), indicating a potential selling opportunity. Risk level is low, making it a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 1.8,
+    "QUALITY_SCORE": 76.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 40.37501307885524,
+      "key_support": 1.3539366666666663,
+      "key_resistance": 1.3544733333333332,
+      "volatility": 0.0912307551022745,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-06T02:49:09.050641+00:00",
+    "ENTRY": "184.81221",
+    "STOP_LOSS": "184.78389",
+    "TAKE_PROFIT": "184.93447",
+    "RISK_REWARD_RATIO": "4.32",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential buying opportunity despite weak trend strength.",
+    "ACTUAL_RR_RATIO": 4.32,
+    "QUALITY_SCORE": 74.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 44.9849552340825,
+      "key_support": 184.7838907,
+      "key_resistance": 184.9344666666666,
+      "volatility": 0.08570500200788887,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
