@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-07T16:42:15.646339+00:00",
+    "ENTRY": "1.36127",
+    "STOP_LOSS": "1.36128",
+    "TAKE_PROFIT": "1.36125",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Bearish trend with moderate strength and neutral RSI, indicating a potential sell opportunity. Support level at 1.36123 provides a logical entry point.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 75.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 59.421464499865216,
+      "key_support": 1.3612266666666668,
+      "key_resistance": 1.3612833333333334,
+      "volatility": 0.09008178662175668,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
