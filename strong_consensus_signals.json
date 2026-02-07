@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-07T08:36:05.897654+00:00",
+    "ENTRY": "1.36100",
+    "STOP_LOSS": "1.36105",
+    "TAKE_PROFIT": "1.35838",
+    "RISK_REWARD_RATIO": "52.4",
+    "ANALYSIS": "The bearish trend with moderate strength and neutral RSI indicate a potential selling opportunity. The price is near resistance, and a sell order would allow for a risk-reward ratio of 1.9.",
+    "ACTUAL_RR_RATIO": 52.4,
+    "QUALITY_SCORE": 76.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 56.86621132014864,
+      "key_support": 1.3609366666666665,
+      "key_resistance": 1.3610533333333332,
+      "volatility": 0.09101336855215174,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
