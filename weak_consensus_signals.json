@@ -1,5 +1,55 @@
 [
   {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-08T08:37:08.427961+00:00",
+    "ENTRY": "185.69175",
+    "STOP_LOSS": "185.64078",
+    "TAKE_PROFIT": "185.76821",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "STRONG_BULLISH trend with neutral RSI, indicating a favorable buying opportunity with a risk-reward ratio of 2.0",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 58.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.43850949501415,
+      "key_support": 185.64077666666662,
+      "key_resistance": 185.6951633333333,
+      "volatility": 0.08523588625949267,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-08T08:36:53.299700+00:00",
+    "ENTRY": "1.36132",
+    "STOP_LOSS": "1.36133",
+    "TAKE_PROFIT": "1.36131",
+    "RISK_REWARD_RATIO": "1.0",
+    "ANALYSIS": "Bearish trend (moderate strength) confirmed with RSI in neutral territory. Entry at current price, stop-loss slightly above resistance, and take-profit targeting support level. Risk-reward ratio exceeds 1.5.",
+    "ACTUAL_RR_RATIO": 1.0,
+    "QUALITY_SCORE": 58.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 59.547688023513736,
+      "key_support": 1.3612733333333336,
+      "key_resistance": 1.3613266666666668,
+      "volatility": 0.087768757426977,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,12 +57,12 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-02-08T07:03:24.803191+00:00",
+    "timestamp": "2026-02-08T08:36:45.684193+00:00",
     "ENTRY": "1.18188",
     "STOP_LOSS": "1.18181",
     "TAKE_PROFIT": "1.18191",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Neutral trend and RSI at 60.5, no clear direction. Volatility is low, risk level is low.",
+    "ANALYSIS": "Neutral trend and RSI at 60.5, indicating indecision in the market. Support and resistance levels are close, further analysis is required before making a trading decision.",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
@@ -20,30 +70,6 @@
       "key_support": 1.1818133333333334,
       "key_resistance": 1.1819066666666667,
       "volatility": 0.08011771390210073,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 5,
-    "timestamp": "2026-02-08T07:03:39.016327+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I need to analyze the USD/CHF pair based on the provided data and make a trading decision....",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 47.59587158515027,
-      "key_support": 0.7757166666666667,
-      "key_resistance": 0.7758433333333334,
-      "volatility": 0.11381848513521542,
       "volatility_status": "OPTIMAL"
     }
   }
