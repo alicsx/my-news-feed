@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-08T10:38:46.078367+00:00",
+    "ENTRY": "0.77577",
+    "STOP_LOSS": "0.77572",
+    "TAKE_PROFIT": "0.77670",
+    "RISK_REWARD_RATIO": "18.6",
+    "ANALYSIS": "The trend is neutral with weak strength, but the RSI is at 47.6, which is not overbought. The price is near the support level, making it a good entry point for a BUY position.",
+    "ACTUAL_RR_RATIO": 18.6,
+    "QUALITY_SCORE": 65.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 47.59587158515027,
+      "key_support": 0.7757166666666667,
+      "key_resistance": 0.7758433333333334,
+      "volatility": 0.11381848513521542,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-08T10:38:53.528577+00:00",
+    "ENTRY": "185.69175",
+    "STOP_LOSS": "185.64078",
+    "TAKE_PROFIT": "185.76821",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential buying opportunity. Risk level is low, making this trade more manageable.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 62.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.43850949501415,
+      "key_support": 185.64077666666662,
+      "key_resistance": 185.6951633333333,
+      "volatility": 0.08523588625949267,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
