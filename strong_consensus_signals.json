@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-02-10T13:45:21.460408+00:00",
+    "ENTRY": "1.19025",
+    "STOP_LOSS": "1.19015",
+    "TAKE_PROFIT": "1.19126",
+    "RISK_REWARD_RATIO": "10.1",
+    "ANALYSIS": "Given the STRONG_BULLISH trend and RSI at 54.1 (NEUTRAL), the market conditions are favorable for a BUY. The risk level is LOW, and the price is near the support level, making it a reasonable entry point with a potential take profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 10.1,
+    "QUALITY_SCORE": 74.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.142538515132024,
+      "key_support": 1.1901466666666665,
+      "key_resistance": 1.191263333333333,
+      "volatility": 0.0798618080798487,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-10T13:46:13.882941+00:00",
+    "ENTRY": "0.76583",
+    "STOP_LOSS": "0.76612",
+    "TAKE_PROFIT": "0.76520",
+    "RISK_REWARD_RATIO": "2.17",
+    "ANALYSIS": "Strong bearish trend confirmed by RSI not being oversold. Setting a stop-loss above resistance and aiming for a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 2.17,
+    "QUALITY_SCORE": 72.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 35.31292343263601,
+      "key_support": 0.7652,
+      "key_resistance": 0.7661233333333334,
+      "volatility": 0.11386212783796448,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
