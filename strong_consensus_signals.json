@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-11T19:16:24.399956+00:00",
+    "ENTRY": "0.77045",
+    "STOP_LOSS": "0.77046",
+    "TAKE_PROFIT": "0.77043",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI neutral. Shorting with a stop loss above resistance and take profit near support, yielding a favorable risk-reward.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 71.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 60.44786508216317,
+      "key_support": 0.7702166666666665,
+      "key_resistance": 0.7704633333333333,
+      "volatility": 0.11489542000935908,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
