@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-11T07:16:11.687231+00:00",
+    "ENTRY": "1.36658",
+    "STOP_LOSS": "1.36630",
+    "TAKE_PROFIT": "1.37061",
+    "RISK_REWARD_RATIO": "14.39",
+    "ANALYSIS": "Strong bullish trend with neutral RSI reading, indicating a potential buying opportunity. Support and resistance levels are close, suggesting a possible breakout.",
+    "ACTUAL_RR_RATIO": 14.39,
+    "QUALITY_SCORE": 76.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 53.533741908989306,
+      "key_support": 1.3662999999999996,
+      "key_resistance": 1.3666999999999998,
+      "volatility": 0.08828023872029897,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
