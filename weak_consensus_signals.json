@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-11T11:00:32.810368+00:00",
+    "ENTRY": "1.37082",
+    "STOP_LOSS": "1.37135",
+    "TAKE_PROFIT": "1.37002",
+    "RISK_REWARD_RATIO": "1.51",
+    "ANALYSIS": "The strong bullish trend is weakening, and the RSI is overbought, indicating a potential reversal. A sell order is placed at the current price with a stop-loss at the resistance level and a take-profit at a price that would provide a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.51,
+    "QUALITY_SCORE": 52.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 70.62617296579603,
+      "key_support": 1.3703166666666666,
+      "key_resistance": 1.37135,
+      "volatility": 0.08826512341953772,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
