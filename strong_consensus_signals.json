@@ -1,1 +1,102 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-12T14:58:08.044952+00:00",
+    "ENTRY": "0.76889",
+    "STOP_LOSS": "0.76889",
+    "TAKE_PROFIT": "0.76889",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential sell opportunity. Prices are near resistance, increasing the likelihood of a downward move.",
+    "ACTUAL_RR_RATIO": 1.8,
+    "QUALITY_SCORE": 80.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 46.8892140150859,
+      "key_support": 0.7680866666666666,
+      "key_resistance": 0.7688933333333333,
+      "volatility": 0.11680298098381457,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-12T14:58:16.949821+00:00",
+    "ENTRY": "181.91727",
+    "STOP_LOSS": "181.98266",
+    "TAKE_PROFIT": "181.76507",
+    "RISK_REWARD_RATIO": "2.33",
+    "ANALYSIS": "The EUR/JPY is in a very strong bearish trend with a neutral RSI, indicating a potential sell opportunity. The price is currently above the support level, but below the resistance level, making it a reasonable entry point.",
+    "ACTUAL_RR_RATIO": 2.33,
+    "QUALITY_SCORE": 76.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 47.07893299129842,
+      "key_support": 181.76507333333336,
+      "key_resistance": 181.98265666666668,
+      "volatility": 0.0917772724371605,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-02-12T14:57:59.690171+00:00",
+    "ENTRY": "1.18826",
+    "STOP_LOSS": "1.18787",
+    "TAKE_PROFIT": "1.19183",
+    "RISK_REWARD_RATIO": "9.15",
+    "ANALYSIS": "STRONG_BULLISH trend with neutral RSI, indicating momentum to continue. Low risk level supports a buy decision.",
+    "ACTUAL_RR_RATIO": 9.15,
+    "QUALITY_SCORE": 76.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 51.19015831495604,
+      "key_support": 1.1878666666666666,
+      "key_resistance": 1.1882833333333334,
+      "volatility": 0.08070162444906516,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-12T14:58:00.255016+00:00",
+    "ENTRY": "1.36636",
+    "STOP_LOSS": "1.36591",
+    "TAKE_PROFIT": "1.37163",
+    "RISK_REWARD_RATIO": "11.71",
+    "ANALYSIS": "The STRONG_BULLISH trend and neutral RSI (57.5) suggest a buying opportunity. The price is near the support level, providing a relatively safe entry point. The risk level is LOW, and the risk-reward ratio is acceptable.",
+    "ACTUAL_RR_RATIO": 11.71,
+    "QUALITY_SCORE": 76.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 57.522944762384384,
+      "key_support": 1.3659133333333333,
+      "key_resistance": 1.36685,
+      "volatility": 0.08836190966536715,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
