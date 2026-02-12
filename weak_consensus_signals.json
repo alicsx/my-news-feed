@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-12T17:08:47.009016+00:00",
+    "ENTRY": "1.36303",
+    "STOP_LOSS": "1.36283",
+    "TAKE_PROFIT": "1.36333",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "BUY due to weak bearish trend and neutral RSI, with potential for price to bounce back to resistance at 1.36324.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 47.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 45.75607350886267,
+      "key_support": 1.36283,
+      "key_resistance": 1.36324,
+      "volatility": 0.08870797248145669,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-12T17:08:54.814654+00:00",
+    "ENTRY": "0.76964",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "STRONG_BEARISH trend with neutral RSI, no clear buy or sell signal",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 51.16085020253121,
+      "key_support": 0.76933,
+      "key_resistance": 0.76993344,
+      "volatility": 0.11722316218336021,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
