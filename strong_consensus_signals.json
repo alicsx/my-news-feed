@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-12T05:39:29.296564+00:00",
+    "ENTRY": "181.60685",
+    "STOP_LOSS": "181.71977",
+    "TAKE_PROFIT": "180.57549",
+    "RISK_REWARD_RATIO": "9.13",
+    "ANALYSIS": "The EUR/JPY is in a VERY_STRONG BEARISH trend with a neutral RSI reading. This indicates a potential selling opportunity with a risk-reward ratio of 1.8.",
+    "ACTUAL_RR_RATIO": 9.13,
+    "QUALITY_SCORE": 80.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 39.260845658946714,
+      "key_support": 181.5086533333333,
+      "key_resistance": 181.71976666666663,
+      "volatility": 0.09052870518543582,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-12T05:39:22.594637+00:00",
+    "ENTRY": "0.77176",
+    "STOP_LOSS": "0.77197",
+    "TAKE_PROFIT": "0.77144",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential sell opportunity. Support level at 0.77167 and resistance at 0.77197 provide clear price targets for stop-loss and take-profit.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 72.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 63.28398478367924,
+      "key_support": 0.77167,
+      "key_resistance": 0.7719699999999999,
+      "volatility": 0.11484623126492284,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
