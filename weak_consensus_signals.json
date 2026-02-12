@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-12T07:14:35.753648+00:00",
+    "ENTRY": "1.36193",
+    "STOP_LOSS": "1.36179",
+    "TAKE_PROFIT": "1.36214",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is bearish but weak, and the RSI is neutral. This presents a buying opportunity with a relatively low risk level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 51.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 39.41791780159671,
+      "key_support": 1.3617933333333336,
+      "key_resistance": 1.3621366666666672,
+      "volatility": 0.08896757263523095,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
