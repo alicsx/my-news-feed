@@ -1,26 +1,26 @@
 [
   {
-    "SYMBOL": "USD/CHF",
+    "SYMBOL": "EUR/JPY",
     "ACTION": "SELL",
     "CONFIDENCE": 6.6,
     "AGREEMENT_LEVEL": 5,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2026-02-13T10:53:06.186522+00:00",
-    "ENTRY": "0.76986",
-    "STOP_LOSS": "0.76992",
-    "TAKE_PROFIT": "0.76977",
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-13T13:21:15.723955+00:00",
+    "ENTRY": "181.78552",
+    "STOP_LOSS": "181.81303",
+    "TAKE_PROFIT": "181.74425",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The strong bearish trend and moderate strength support a sell decision. Although the RSI is neutral, the bearish trend takes precedence. A calculated stop-loss and take-profit are set to manage risk and potential reward.",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential short opportunity.",
     "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 70.3,
+    "QUALITY_SCORE": 77.5,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 51.61051379792413,
-      "key_support": 0.7696199999999999,
-      "key_resistance": 0.7699199999999999,
-      "volatility": 0.1170920567691863,
+      "rsi": 49.410255835225776,
+      "key_support": 181.75801333333334,
+      "key_resistance": 181.81302666666667,
+      "volatility": 0.09236665713491965,
       "volatility_status": "OPTIMAL"
     }
   }
