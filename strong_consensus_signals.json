@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-14T22:34:39.448457+00:00",
+    "ENTRY": "181.47858",
+    "STOP_LOSS": "181.51131",
+    "TAKE_PROFIT": "181.42948",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bearish trend and low RSI suggest a potential sell opportunity. The price is near the resistance level, and a sell could be triggered if the price breaks below the support level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 77.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 59.84265762724043,
+      "key_support": 181.40985999999995,
+      "key_resistance": 181.51130999999998,
+      "volatility": 0.0880111614398475,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
