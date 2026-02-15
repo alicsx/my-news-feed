@@ -7,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-02-15T14:37:06.522594+00:00",
+    "timestamp": "2026-02-15T16:42:04.063097+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, let me try to figure out the trading decision for EUR/USD based on the given data. So, the cu...",
+    "ANALYSIS": "Extracted from text: \nAlright, let's break this down. The user is a professional forex trader asking for a trading decisi...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 56.17537777061351,
-      "key_support": 1.18712,
-      "key_resistance": 1.18716,
-      "volatility": 0.08095451346410365,
+      "rsi": 42.80612020141304,
+      "key_support": 1.1863433333333333,
+      "key_resistance": 1.1863866666666667,
+      "volatility": 0.08050866949852006,
       "volatility_status": "OPTIMAL"
     }
   }
