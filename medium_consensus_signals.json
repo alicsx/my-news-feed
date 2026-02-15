@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-15T03:15:52.828481+00:00",
+    "ENTRY": "181.27998",
+    "STOP_LOSS": "181.28411",
+    "TAKE_PROFIT": "181.27378",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bearish trend and low RSI (50.7) indicate a potential sell opportunity. The price is near the resistance level, which could provide a temporary barrier for the bearish trend. A calculated stop-loss and take-profit will be set to minimize risk and maximize potential returns.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 69.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 50.7382150360845,
+      "key_support": 181.27584000000004,
+      "key_resistance": 181.28411000000003,
+      "volatility": 0.0878953471172992,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-15T03:15:46.930216+00:00",
+    "ENTRY": "0.76803",
+    "STOP_LOSS": "0.76804",
+    "TAKE_PROFIT": "0.76796",
+    "RISK_REWARD_RATIO": "7.0",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI neutral. Risk-reward ratio is acceptable for a short position.",
+    "ACTUAL_RR_RATIO": 7.0,
+    "QUALITY_SCORE": 69.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 40.231905294311545,
+      "key_support": 0.7679566666666666,
+      "key_resistance": 0.7680433333333333,
+      "volatility": 0.1151101734522037,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
