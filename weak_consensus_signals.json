@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-15T18:50:47.363188+00:00",
+    "ENTRY": "1.36501",
+    "STOP_LOSS": "1.36472",
+    "TAKE_PROFIT": "1.36545",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "Weak bullish trend and neutral RSI indicate a potential buying opportunity. The risk level is low, and the price is near the support level.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 58.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 53.457550571844926,
+      "key_support": 1.36472172,
+      "key_resistance": 1.3654699999999997,
+      "volatility": 0.08683293616010453,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +32,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-02-15T16:42:04.063097+00:00",
+    "timestamp": "2026-02-15T18:50:36.196401+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, let's break this down. The user is a professional forex trader asking for a trading decisi...",
+    "ANALYSIS": "Extracted from text: \nOkay, let's try to figure out what to do with EUR/USD based on the given data. So, the current pric...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 42.80612020141304,
-      "key_support": 1.1863433333333333,
-      "key_resistance": 1.1863866666666667,
-      "volatility": 0.08050866949852006,
+      "rsi": 57.45622570146026,
+      "key_support": 1.1869633333333331,
+      "key_resistance": 1.18735,
+      "volatility": 0.07957436039381639,
       "volatility_status": "OPTIMAL"
     }
   }
