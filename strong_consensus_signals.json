@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-16T22:39:24.536390+00:00",
+    "ENTRY": "1.36307",
+    "STOP_LOSS": "1.36318",
+    "TAKE_PROFIT": "1.36068",
+    "RISK_REWARD_RATIO": "21.73",
+    "ANALYSIS": "Bearish trend confirmed, RSI neutral, suggesting potential for further downside. Risk-reward ratio is favorable for a short position.",
+    "ACTUAL_RR_RATIO": 21.73,
+    "QUALITY_SCORE": 71.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 38.57956991539845,
+      "key_support": 1.3629299999999998,
+      "key_resistance": 1.36317828,
+      "volatility": 0.0851281085022983,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
