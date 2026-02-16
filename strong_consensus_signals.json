@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-16T07:17:38.583364+00:00",
+    "ENTRY": "181.86624",
+    "STOP_LOSS": "181.87429",
+    "TAKE_PROFIT": "181.81772",
+    "RISK_REWARD_RATIO": "6.03",
+    "ANALYSIS": "Strong bearish trend confirmed. RSI is neutral, not oversold, allowing for a SELL position. Risk-reward ratio is favorable.",
+    "ACTUAL_RR_RATIO": 6.03,
+    "QUALITY_SCORE": 72.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 68.99352826855475,
+      "key_support": 181.81772,
+      "key_resistance": 181.87429,
+      "volatility": 0.08415810348313736,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
