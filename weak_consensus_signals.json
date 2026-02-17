@@ -1,25 +1,50 @@
 [
   {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-17T13:24:10.946269+00:00",
+    "ENTRY": "1.35387",
+    "STOP_LOSS": "1.35343",
+    "TAKE_PROFIT": "1.35453",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bearish trend is likely to reverse due to the RSI being oversold, providing a reasonable opportunity to buy at the current price.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 59.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 23.75481022938147,
+      "key_support": 1.35343,
+      "key_resistance": 1.35408,
+      "volatility": 0.08509166190059453,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2026-02-17T10:57:03.619127+00:00",
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-17T13:24:18.878044+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"USD/CHF\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 5,\n  \"ENTRY\": \"0.76939\",\n  \"STOP_LOSS...",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the USD/CHF pair based on the given market data and provide a trading decis...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 49.931636903328375,
-      "key_support": 0.7692766666666667,
-      "key_resistance": 0.76954524,
-      "volatility": 0.10351320002009136,
+      "rsi": 62.769843261124855,
+      "key_support": 0.7704966666666667,
+      "key_resistance": 0.7708333333333334,
+      "volatility": 0.10178085408438173,
       "volatility_status": "OPTIMAL"
     }
   }
