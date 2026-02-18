@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-18T14:55:55.978051+00:00",
+    "ENTRY": "0.77142",
+    "STOP_LOSS": "0.77111",
+    "TAKE_PROFIT": "0.77189",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicates a potential upward movement. LOW risk level confirms the trade.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 71.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 54.421859217137666,
+      "key_support": 0.7711099999999999,
+      "key_resistance": 0.7716099999999999,
+      "volatility": 0.09541368292032562,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]

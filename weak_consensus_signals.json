@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-18T14:56:02.887368+00:00",
+    "ENTRY": "182.42893",
+    "STOP_LOSS": "182.32920",
+    "TAKE_PROFIT": "182.53456",
+    "RISK_REWARD_RATIO": "1.51",
+    "ANALYSIS": "Neutral trend with strong strength, coupled with an overbought RSI suggests caution. While support is nearby, the conflicting signals warrant a hold to observe further price action.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 73.5201428831557,
+      "key_support": 182.32920333333334,
+      "key_resistance": 182.53456,
+      "volatility": 0.08155771892379551,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
