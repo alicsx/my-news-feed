@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-19T20:42:59.521336+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/JPY\",...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 53.562161501087836,
+      "key_support": 182.48760106,
+      "key_resistance": 182.54684999999998,
+      "volatility": 0.0775177892872753,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
