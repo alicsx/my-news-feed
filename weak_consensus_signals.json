@@ -1,25 +1,49 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
+    "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
-    "CONFIDENCE": 5.3,
+    "CONFIDENCE": 4.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "timestamp": "2026-02-19T14:57:49.964507+00:00",
+    "timestamp": "2026-02-19T17:05:15.480778+00:00",
+    "ENTRY": "0.77599",
+    "STOP_LOSS": "0.77597",
+    "TAKE_PROFIT": "0.77613",
+    "RISK_REWARD_RATIO": "1.25",
+    "ANALYSIS": "Very strong bullish trend, but RSI is overbought. Risk of a pullback. Waiting for RSI to cool off before considering a buy.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 71.7494800611267,
+      "key_support": 0.7759666666666666,
+      "key_resistance": 0.7761333333333331,
+      "volatility": 0.09096536948486483,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-19T17:05:23.579956+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/JPY pair based on the given data and make a trading decision. Le...",
+    "ANALYSIS": "Extracted from text: \nAlright, let me try to figure out the trading decision for EUR/JPY based on the data provided. So, ...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 47.606230968254096,
-      "key_support": 182.3385332,
-      "key_resistance": 182.45569,
-      "volatility": 0.08124886944587091,
+      "rsi": 43.86912032713942,
+      "key_support": 182.21102333333332,
+      "key_resistance": 182.24009666666666,
+      "volatility": 0.07763919091734293,
       "volatility_status": "OPTIMAL"
     }
   }
