@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-20T05:20:59.739403+00:00",
+    "ENTRY": "1.34388",
+    "STOP_LOSS": "1.34398",
+    "TAKE_PROFIT": "1.34373",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the STRONG_BEARISH trend and RSI of 33.9, which is not oversold, we have a strong indication to SELL. The current price is at 1.34388, and we can set a stop loss at 1.34402 and a take profit at 1.34364, resulting in a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 70.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 33.851212125910244,
+      "key_support": 1.3437566666666667,
+      "key_resistance": 1.3439833333333333,
+      "volatility": 0.07821875145469509,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
