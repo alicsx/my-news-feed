@@ -2,15 +2,15 @@
     "last_reset_date": "2026-02-21",
     "providers": {
         "google_gemini": {
-            "used_today": 5,
+            "used_today": 6,
             "limit": 1500
         },
         "cloudflare": {
-            "used_today": 80,
+            "used_today": 96,
             "limit": 10000
         },
         "groq": {
-            "used_today": 25,
+            "used_today": 30,
             "limit": 10000
         }
     }
