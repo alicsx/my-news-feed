@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-22T08:43:30.900177+00:00",
+    "ENTRY": "1.34860",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The trend is STRONG_BEARISH but RSI is NEUTRAL, indicating a potential reversal. Risk Level is LOW, but market conditions are unclear.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 53.71483185419492,
+      "key_support": 1.3485666666666667,
+      "key_resistance": 1.3486033333333334,
+      "volatility": 0.07673986302070876,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
