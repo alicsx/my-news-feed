@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-02-22T18:50:23.495150+00:00",
+    "ENTRY": "1.17894",
+    "STOP_LOSS": "1.17949",
+    "TAKE_PROFIT": "1.17811",
+    "RISK_REWARD_RATIO": "1.51",
+    "ANALYSIS": "The strong bearish trend and overbought RSI (81.9) indicate a potential reversal. Selling at the current price with a stop loss at the resistance level and a take profit at the support level is a reasonable decision.",
+    "ACTUAL_RR_RATIO": 1.51,
+    "QUALITY_SCORE": 58.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 81.9221937054707,
+      "key_support": 1.1786666666666665,
+      "key_resistance": 1.17954,
+      "volatility": 0.05873799618754356,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
