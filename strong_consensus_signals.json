@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-23T05:40:23.455338+00:00",
+    "ENTRY": "182.52709",
+    "STOP_LOSS": "182.49406",
+    "TAKE_PROFIT": "182.57663",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a moderate bullish trend with a neutral RSI. Given the low risk level and moderate trend strength, we can consider a buy position with a stop loss at the support level and a take profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 71.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 45.73654254976368,
+      "key_support": 182.49405666666667,
+      "key_resistance": 182.53038333333333,
+      "volatility": 0.07517852290848238,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
