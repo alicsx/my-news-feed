@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-23T02:55:26.489629+00:00",
+    "ENTRY": "1.35215",
+    "STOP_LOSS": "1.35165",
+    "TAKE_PROFIT": "1.35290",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral with moderate strength, but the RSI is at 68.8, which is not overbought. The price is near the resistance level, and the volatility is low. The risk level is also low, making this a relatively safe buy opportunity.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 56.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 68.75926596285169,
+      "key_support": 1.3516533333333334,
+      "key_resistance": 1.3522266666666667,
+      "volatility": 0.07656688033196615,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-02-23T02:54:56.175260+00:00",
+    "ENTRY": "1.18254",
+    "STOP_LOSS": "1.18229",
+    "TAKE_PROFIT": "1.18315",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Trend is neutral, and RSI is overbought, suggesting a potential pullback. While a slight BUY could be considered, the overbought RSI and neutral trend warrant a HOLD with a potential entry on a pullback to support.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 78.82770970334224,
+      "key_support": 1.1822866666666667,
+      "key_resistance": 1.1826633333333334,
+      "volatility": 0.0600917209603088,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
