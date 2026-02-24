@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-24T05:25:58.532851+00:00",
+    "ENTRY": "0.77647",
+    "STOP_LOSS": "0.77634",
+    "TAKE_PROFIT": "0.77666",
+    "RISK_REWARD_RATIO": "1.46",
+    "ANALYSIS": "The strong bullish trend and neutral RSI indicate a potential buying opportunity. The low risk level also supports this decision.",
+    "ACTUAL_RR_RATIO": 1.46,
+    "QUALITY_SCORE": 67.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 64.4270311563471,
+      "key_support": 0.7763400000000003,
+      "key_resistance": 0.7764700000000001,
+      "volatility": 0.07975193772625858,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-24T05:25:49.645257+00:00",
+    "ENTRY": "1.34819",
+    "STOP_LOSS": "1.34828",
+    "TAKE_PROFIT": "1.34806",
+    "RISK_REWARD_RATIO": "1.44",
+    "ANALYSIS": "The STRONG_BEARISH trend and LOW RSI value indicate a potential selling opportunity. The price is near the resistance level, suggesting a possible reversal.",
+    "ACTUAL_RR_RATIO": 1.44,
+    "QUALITY_SCORE": 64.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 41.352090811229594,
+      "key_support": 1.348066666666667,
+      "key_resistance": 1.3482833333333335,
+      "volatility": 0.07435015555183275,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-24T05:26:06.967049+00:00",
+    "ENTRY": "182.74430",
+    "STOP_LOSS": "182.73858",
+    "TAKE_PROFIT": "182.75288",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is bullish, but RSI is not overbought, indicating a potential buying opportunity. Volatility is low, and risk level is low, making this a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 64.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 61.36723508361468,
+      "key_support": 182.73857666666666,
+      "key_resistance": 182.77299333333332,
+      "volatility": 0.07486397807739595,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
