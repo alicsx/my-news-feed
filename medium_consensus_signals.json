@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-02-25T10:59:26.731180+00:00",
+    "ENTRY": "1.17811",
+    "STOP_LOSS": "1.17828",
+    "TAKE_PROFIT": "1.17768",
+    "RISK_REWARD_RATIO": "2.53",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI is neutral, and price is near resistance. Short position with tight stop-loss and reasonable risk-reward.",
+    "ACTUAL_RR_RATIO": 2.53,
+    "QUALITY_SCORE": 54.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 45.33203270282941,
+      "key_support": 1.1776833333333336,
+      "key_resistance": 1.1782766666666669,
+      "volatility": 0.0561238097417785,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
