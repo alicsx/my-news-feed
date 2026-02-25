@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-02-25T19:17:47.749654+00:00",
+    "ENTRY": "184.68801",
+    "STOP_LOSS": "184.71688",
+    "TAKE_PROFIT": "184.08329",
+    "RISK_REWARD_RATIO": "20.95",
+    "ANALYSIS": "The EUR/JPY is overbought with a strong bullish trend, indicating a potential reversal. Selling at the current price with a stop loss at the resistance level and a take profit at the support level provides a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 20.95,
+    "QUALITY_SCORE": 64.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 71.13118092962256,
+      "key_support": 184.66114000000002,
+      "key_resistance": 184.71688000000003,
+      "volatility": 0.08223969594252489,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
