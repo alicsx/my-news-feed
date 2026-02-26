@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-02-26T22:43:01.542212+00:00",
+    "ENTRY": "1.34814",
+    "STOP_LOSS": "1.34832",
+    "TAKE_PROFIT": "1.34281",
+    "RISK_REWARD_RATIO": "29.61",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI is neutral, presenting a selling opportunity. Stop loss placed above recent resistance, take profit targeting a nearby support level.",
+    "ACTUAL_RR_RATIO": 29.61,
+    "QUALITY_SCORE": 61.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 38.927868070738505,
+      "key_support": 1.3479033333333332,
+      "key_resistance": 1.3483166666666666,
+      "volatility": 0.07095754216810797,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
