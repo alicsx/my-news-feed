@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-02-27T22:34:21.235202+00:00",
+    "ENTRY": "1.18164",
+    "STOP_LOSS": "1.18156",
+    "TAKE_PROFIT": "1.18176",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The bullish trend is weak, but the RSI is neutral. The price is near the support level, making it a good entry point for a buy trade.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 61.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 56.445362103015626,
+      "key_support": 1.1815566666666666,
+      "key_resistance": 1.1819533333333332,
+      "volatility": 0.05610187742344861,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
