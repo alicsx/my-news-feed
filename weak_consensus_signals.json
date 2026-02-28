@@ -1,26 +1,26 @@
 [
   {
-    "SYMBOL": "USD/CHF",
+    "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
-    "CONFIDENCE": 6.7,
+    "CONFIDENCE": 7.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2026-02-27T22:34:36.028559+00:00",
-    "ENTRY": "0.76931",
-    "STOP_LOSS": "0.76943",
-    "TAKE_PROFIT": "0.76913",
+    "timestamp": "2026-02-28T02:35:28.875130+00:00",
+    "ENTRY": "1.34884",
+    "STOP_LOSS": "1.34894",
+    "TAKE_PROFIT": "1.34869",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bearish trend confirmed, RSI indicates neutral conditions, suggesting potential for further downside. Risk-reward ratio is favorable.",
+    "ANALYSIS": "The STRONG_BEARISH trend and LOW risk level suggest a potential selling opportunity. Although the RSI is neutral, the bearish trend takes precedence.",
     "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 56.0,
+    "QUALITY_SCORE": 59.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 34.89645367734745,
-      "key_support": 0.7689299999999999,
-      "key_resistance": 0.76943,
-      "volatility": 0.07850868953581651,
+      "rsi": 53.34436074340765,
+      "key_support": 1.34881,
+      "key_resistance": 1.34894,
+      "volatility": 0.07185734856118131,
       "volatility_status": "OPTIMAL"
     }
   }
