@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-03-02T07:10:45.595063+00:00",
+    "ENTRY": "0.77149",
+    "STOP_LOSS": "0.77151",
+    "TAKE_PROFIT": "0.77112",
+    "RISK_REWARD_RATIO": "18.5",
+    "ANALYSIS": "The strong bearish trend and moderate strength suggest a downward movement. Although the RSI is not oversold, the risk level is low, making a sell decision reasonable.",
+    "ACTUAL_RR_RATIO": 18.5,
+    "QUALITY_SCORE": 79.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 67.19587905784698,
+      "key_support": 0.7711166666666666,
+      "key_resistance": 0.77151,
+      "volatility": 0.07745705514695914,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
