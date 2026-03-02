@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-02T13:19:36.967766+00:00",
+    "ENTRY": "0.77828",
+    "STOP_LOSS": "0.77838",
+    "TAKE_PROFIT": "0.77813",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The market is overbought with a moderate neutral trend and low risk level, indicating a potential reversal. Selling at the current price with a stop loss at the resistance level and a take profit at the support level provides a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 57.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 82.37497464712803,
+      "key_support": 0.7773699999999999,
+      "key_resistance": 0.77838,
+      "volatility": 0.0796943531139355,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-02T13:19:22.294827+00:00",
+    "ENTRY": "1.17073",
+    "STOP_LOSS": "1.17055",
+    "TAKE_PROFIT": "1.17100",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend is currently oversold, indicating a potential reversal. BUY at 1.17073 with stop loss at 1.17055 and take profit at 1.17138.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 55.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 28.636829403144365,
+      "key_support": 1.1705533333333333,
+      "key_resistance": 1.1713766666666667,
+      "volatility": 0.060760142726187856,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
