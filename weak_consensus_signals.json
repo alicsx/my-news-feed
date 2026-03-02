@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-03-02T19:01:52.656815+00:00",
+    "ENTRY": "0.77920",
+    "STOP_LOSS": "0.77870",
+    "TAKE_PROFIT": "0.78020",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Trend is bullish but RSI is overbought (73.2). While a bullish trend suggests a potential buy, the overbought RSI indicates a possible pullback or consolidation. A HOLD is warranted until the RSI cools off or a clear breakout occurs.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 73.21363712246281,
+      "key_support": 0.7791866666666666,
+      "key_resistance": 0.7792133333333332,
+      "volatility": 0.07970030072662766,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-03-02T19:02:00.391100+00:00",
+    "ENTRY": "184.04833",
+    "STOP_LOSS": "184.04498",
+    "TAKE_PROFIT": "184.04919",
+    "RISK_REWARD_RATIO": "1.15",
+    "ANALYSIS": "Trend is neutral and weak, RSI is neutral. Volatility is low. No strong signal for a BUY or SELL, so HOLD with a tight risk-reward.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 46.31666118727984,
+      "key_support": 184.0449833333333,
+      "key_resistance": 184.04918666666666,
+      "volatility": 0.08291909614663125,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
