@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-03-05T07:04:59.938901+00:00",
+    "ENTRY": "1.33393",
+    "STOP_LOSS": "1.33422",
+    "TAKE_PROFIT": "1.33350",
+    "RISK_REWARD_RATIO": "1.48",
+    "ANALYSIS": "Strong bearish trend with RSI at 45.5, indicating a potential opportunity to sell, given the low risk level and reasonable distance between support and resistance levels.",
+    "ACTUAL_RR_RATIO": 1.48,
+    "QUALITY_SCORE": 68.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 45.505250212163276,
+      "key_support": 1.3336366666666668,
+      "key_resistance": 1.3342233333333335,
+      "volatility": 0.08175534092009315,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-03-05T07:05:12.610464+00:00",
+    "ENTRY": "182.31984",
+    "STOP_LOSS": "182.34069",
+    "TAKE_PROFIT": "182.28857",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed by price action. RSI is neutral, not oversold, allowing for a sell opportunity. Stop loss placed just above resistance, take profit targeting a reasonable retracement below support.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 39.449379837237046,
+      "key_support": 182.30664000000002,
+      "key_resistance": 182.34069000000002,
+      "volatility": 0.07880960486643719,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
