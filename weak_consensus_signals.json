@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 5,
+    "timestamp": "2026-03-06T18:59:40.818152+00:00",
+    "ENTRY": "183.07570",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The trend is STRONG_BEARISH, but RSI is NEUTRAL. This is a clear indication of a neutral market condition, hence HOLD is the best decision.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 59.10590261794372,
+      "key_support": 182.97552333333334,
+      "key_resistance": 183.09041666666667,
+      "volatility": 0.08086341108891223,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
