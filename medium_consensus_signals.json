@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-08T13:07:21.801741+00:00",
+    "ENTRY": "1.16174",
+    "STOP_LOSS": "1.16177",
+    "TAKE_PROFIT": "1.16169",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential sell opportunity.",
+    "ACTUAL_RR_RATIO": 1.67,
+    "QUALITY_SCORE": 66.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 49.237482459173066,
+      "key_support": 1.16173,
+      "key_resistance": 1.16177,
+      "volatility": 0.0731547413450309,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
