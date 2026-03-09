@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-09T08:57:21.232099+00:00",
+    "ENTRY": "1.15268",
+    "STOP_LOSS": "1.15358",
+    "TAKE_PROFIT": "1.15133",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend with RSI at 37.9, indicating a potential selling opportunity.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 37.92348349453679,
+      "key_support": 1.15085,
+      "key_resistance": 1.15358,
+      "volatility": 0.07910850185077951,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
     "CONFIDENCE": 7.7,
@@ -7,20 +32,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2026-03-09T08:50:52.126064+00:00",
-    "ENTRY": "1.33132",
-    "STOP_LOSS": "1.33218",
-    "TAKE_PROFIT": "1.33003",
+    "timestamp": "2026-03-09T08:57:29.003554+00:00",
+    "ENTRY": "1.33153",
+    "STOP_LOSS": "1.33225",
+    "TAKE_PROFIT": "1.33045",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bearish trend confirmed by market data. RSI is neutral, not oversold, allowing for a sell decision. Risk-reward ratio is favorable.",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI is neutral, providing a good opportunity to sell with a clear support level to target and a reasonable risk-reward ratio.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 62.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 39.554119783228614,
-      "key_support": 1.3295666666666666,
-      "key_resistance": 1.3321833333333333,
-      "volatility": 0.08938707315729957,
+      "rsi": 40.01732585788569,
+      "key_support": 1.3297066666666666,
+      "key_resistance": 1.3322533333333333,
+      "volatility": 0.08930594349068598,
       "volatility_status": "OPTIMAL"
     }
   }
