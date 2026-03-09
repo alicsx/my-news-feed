@@ -1,5 +1,29 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-09T19:04:49.043444+00:00",
+    "ENTRY": "1.15808",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The trend is STRONG_BEARISH, but RSI is NEUTRAL at 54.1, indicating a neutral reading. Due to the unclear market conditions, a HOLD decision is made.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.09463292959501,
+      "key_support": 1.1579300000000001,
+      "key_resistance": 1.1582300000000003,
+      "volatility": 0.0793648069032997,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +31,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 5,
-    "timestamp": "2026-03-09T17:04:22.394541+00:00",
+    "timestamp": "2026-03-09T19:05:10.863047+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/JPY\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 2,\n  \"ENTRY\": \"183.24555\",\n  \"STOP_LO...",
+    "ANALYSIS": "Extracted from text: \nAlright, let me try to figure out what the correct trading decision should be for EUR/JPY based on ...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 55.26677245809426,
-      "key_support": 183.23724333333334,
-      "key_resistance": 183.25104666666667,
-      "volatility": 0.0775171249838099,
+      "rsi": 60.87168070638167,
+      "key_support": 183.39830666666668,
+      "key_resistance": 183.41654333333338,
+      "volatility": 0.07748393172302938,
       "volatility_status": "OPTIMAL"
     }
   }
