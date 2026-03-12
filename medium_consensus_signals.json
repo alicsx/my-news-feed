@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.4,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-12T08:56:52.418647+00:00",
+    "ENTRY": "183.46105",
+    "STOP_LOSS": "183.44665",
+    "TAKE_PROFIT": "183.53303",
+    "RISK_REWARD_RATIO": "5.0",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, suitable for a BUY entry given the low risk level and acceptable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 5.0,
+    "QUALITY_SCORE": 67.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 40.64996084245857,
+      "key_support": 183.44664666666668,
+      "key_resistance": 183.53303333333335,
+      "volatility": 0.07552018442185941,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-12T08:56:47.572035+00:00",
+    "ENTRY": "0.78220",
+    "STOP_LOSS": "0.78217",
+    "TAKE_PROFIT": "0.78224",
+    "RISK_REWARD_RATIO": "1.33",
+    "ANALYSIS": "Although the trend is weak, the RSI is neutral and the price is near support. This presents a buying opportunity with a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.33,
+    "QUALITY_SCORE": 62.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 66.65135377384037,
+      "key_support": 0.7821699999999999,
+      "key_resistance": 0.78277,
+      "volatility": 0.08891529316262771,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-12T08:56:32.411326+00:00",
+    "ENTRY": "1.15445",
+    "STOP_LOSS": "1.15484",
+    "TAKE_PROFIT": "1.15386",
+    "RISK_REWARD_RATIO": "1.51",
+    "ANALYSIS": "The EUR/USD is in a strong bearish trend with a moderate strength, and the RSI is at 36.8, indicating a neutral condition. The price is close to the resistance level of 1.15484, and a sell signal is triggered. The risk level is low, making this trade a reasonable opportunity.",
+    "ACTUAL_RR_RATIO": 1.51,
+    "QUALITY_SCORE": 60.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 36.816225066622565,
+      "key_support": 1.15406,
+      "key_resistance": 1.15484,
+      "volatility": 0.08425103329024407,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
