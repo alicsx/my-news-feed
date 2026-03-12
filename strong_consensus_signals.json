@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-12T10:53:04.051089+00:00",
+    "ENTRY": "1.15565",
+    "STOP_LOSS": "1.15567",
+    "TAKE_PROFIT": "1.15503",
+    "RISK_REWARD_RATIO": "31.0",
+    "ANALYSIS": "The EUR/USD is in a strong bearish trend with moderate strength, and the RSI is at 44.5, indicating a neutral level. Given the bearish trend and low risk level, it's a good opportunity to sell.",
+    "ACTUAL_RR_RATIO": 31.0,
+    "QUALITY_SCORE": 71.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 44.47678828655906,
+      "key_support": 1.15503,
+      "key_resistance": 1.15567,
+      "volatility": 0.08435506331012191,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
