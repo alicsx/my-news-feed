@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-14T02:45:38.259386+00:00",
+    "ENTRY": "1.14676",
+    "STOP_LOSS": "1.14699",
+    "TAKE_PROFIT": "1.14598",
+    "RISK_REWARD_RATIO": "3.39",
+    "ANALYSIS": "The strong bearish trend with a low RSI of 48.3 indicates a potential selling opportunity. The price is near the resistance level, so a sell order with a stop loss at the resistance and a take profit at the support level seems reasonable.",
+    "ACTUAL_RR_RATIO": 3.39,
+    "QUALITY_SCORE": 71.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 48.315244340268265,
+      "key_support": 1.14598,
+      "key_resistance": 1.14698988,
+      "volatility": 0.0880936177053607,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
