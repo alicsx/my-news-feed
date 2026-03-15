@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-15T14:39:57.620287+00:00",
+    "ENTRY": "1.32383",
+    "STOP_LOSS": "1.32387",
+    "TAKE_PROFIT": "1.32148",
+    "RISK_REWARD_RATIO": "58.75",
+    "ANALYSIS": "Strong bearish trend with moderate strength and neutral RSI, indicating a potential selling opportunity. Given the low risk level and short distance between support and resistance, the risk-reward ratio is acceptable.",
+    "ACTUAL_RR_RATIO": 58.75,
+    "QUALITY_SCORE": 70.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 48.03291801547321,
+      "key_support": 1.3238233333333334,
+      "key_resistance": 1.3238666666666667,
+      "volatility": 0.09745489198129614,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
