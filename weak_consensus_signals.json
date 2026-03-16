@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-16T03:27:09.841810+00:00",
+    "ENTRY": "1.32586",
+    "STOP_LOSS": "1.32608",
+    "TAKE_PROFIT": "1.32553",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend with moderate strength and neutral RSI (56.3) indicate a potential selling opportunity. The price is near resistance (1.32608), and a sell would allow for a risk-reward ratio of 1.5-2.0.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 59.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 56.270305190045256,
+      "key_support": 1.3256966666666667,
+      "key_resistance": 1.3260833333333335,
+      "volatility": 0.09929486757344953,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-16T03:27:03.703740+00:00",
+    "ENTRY": "1.14499",
+    "STOP_LOSS": "1.14493",
+    "TAKE_PROFIT": "1.14518",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The trend is STRONG_BEARISH, but RSI is NEUTRAL at 54.8, indicating a possible reversal. Market conditions are unclear, so HOLD is the best decision.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.83206839253397,
+      "key_support": 1.1449299999999998,
+      "key_resistance": 1.1451799999999996,
+      "volatility": 0.09055408521577471,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
