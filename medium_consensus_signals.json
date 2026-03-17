@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-17T07:16:28.605363+00:00",
+    "ENTRY": "1.32963",
+    "STOP_LOSS": "1.32939",
+    "TAKE_PROFIT": "1.33405",
+    "RISK_REWARD_RATIO": "18.42",
+    "ANALYSIS": "The trend is neutral with weak strength, but RSI is at 51.7, which is not overbought. Volatility is low, and risk level is low. Considering the weak trend and low risk, a buy decision is made with a stop loss at the support level and a take profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 18.42,
+    "QUALITY_SCORE": 65.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 51.74604870763044,
+      "key_support": 1.3293933333333332,
+      "key_resistance": 1.3298766666666664,
+      "volatility": 0.10028811258896685,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-17T07:16:46.646424+00:00",
+    "ENTRY": "183.04740",
+    "STOP_LOSS": "183.03038",
+    "TAKE_PROFIT": "183.07293",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral with strong strength, but since the RSI is not overbought, it's a good opportunity to buy. Given the low risk level, we can consider a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 62.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 55.69422867942846,
+      "key_support": 183.03038,
+      "key_resistance": 183.11032000000003,
+      "volatility": 0.07623467891724325,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-17T07:16:40.454917+00:00",
+    "ENTRY": "0.78857",
+    "STOP_LOSS": "0.78836",
+    "TAKE_PROFIT": "0.78889",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "The trend is neutral with moderate strength, but the RSI is at 47.0, indicating a potential buying opportunity. The price is near the support level, making it a good entry point.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 60.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 47.00034768495885,
+      "key_support": 0.7883600000000001,
+      "key_resistance": 0.78873,
+      "volatility": 0.09856063099299084,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
