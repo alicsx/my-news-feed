@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-18T19:15:42.404070+00:00",
+    "ENTRY": "183.36147",
+    "STOP_LOSS": "183.36068",
+    "TAKE_PROFIT": "183.36265",
+    "RISK_REWARD_RATIO": "1.49",
+    "ANALYSIS": "The trend is bullish, but weak, and RSI is neutral, indicating a potential buying opportunity with a moderate risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.49,
+    "QUALITY_SCORE": 62.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 48.612792991350204,
+      "key_support": 183.36067666666668,
+      "key_resistance": 183.39153333333334,
+      "volatility": 0.07634629390526682,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-18T19:15:29.698534+00:00",
+    "ENTRY": "0.79216",
+    "STOP_LOSS": "0.79238",
+    "TAKE_PROFIT": "0.78904",
+    "RISK_REWARD_RATIO": "14.18",
+    "ANALYSIS": "The trend is neutral but RSI is overbought, indicating a potential reversal. Selling at the current price with a stop loss slightly above the resistance and a take profit slightly below the support could be a reasonable strategy.",
+    "ACTUAL_RR_RATIO": 14.18,
+    "QUALITY_SCORE": 60.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 81.77591687753532,
+      "key_support": 0.7921566666666666,
+      "key_resistance": 0.79238,
+      "volatility": 0.09857970329397786,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
