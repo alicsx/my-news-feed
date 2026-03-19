@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-19T14:58:27.997954+00:00",
+    "ENTRY": "1.33560",
+    "STOP_LOSS": "1.33486",
+    "TAKE_PROFIT": "1.33671",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral with weak strength, but the RSI is not overbought. This suggests a potential buying opportunity with a relatively low risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 55.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 66.8805195495499,
+      "key_support": 1.3348566666666664,
+      "key_resistance": 1.33693,
+      "volatility": 0.10139668611215695,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-19T14:58:20.335552+00:00",
+    "ENTRY": "1.15157",
+    "STOP_LOSS": "1.15266",
+    "TAKE_PROFIT": "1.14993",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed, despite RSI being neutral. Risk-reward ratio is favorable for a short position. Stop loss placed slightly above recent resistance.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 52.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 61.59569414203149,
+      "key_support": 1.1512533333333332,
+      "key_resistance": 1.15266,
+      "volatility": 0.09637382890873405,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
