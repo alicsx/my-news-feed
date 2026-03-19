@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-19T08:47:12.630583+00:00",
+    "ENTRY": "1.14470",
+    "STOP_LOSS": "1.14499",
+    "TAKE_PROFIT": "1.14030",
+    "RISK_REWARD_RATIO": "15.17",
+    "ANALYSIS": "The strong bearish trend and moderate strength, combined with the RSI being in a neutral zone, suggest a potential selling opportunity. The price is slightly above the support level, making it a reasonable entry point.",
+    "ACTUAL_RR_RATIO": 15.17,
+    "QUALITY_SCORE": 73.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 32.19280409660196,
+      "key_support": 1.14437,
+      "key_resistance": 1.1449933333333335,
+      "volatility": 0.09524939234934408,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
