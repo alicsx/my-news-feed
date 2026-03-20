@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-20T19:03:06.314772+00:00",
+    "ENTRY": "184.07335",
+    "STOP_LOSS": "184.07348",
+    "TAKE_PROFIT": "184.04754",
+    "RISK_REWARD_RATIO": "198.54",
+    "ANALYSIS": "Sell due to overbought RSI in a bullish trend, indicating potential reversal. Stop loss at support level and take profit at 1.5% below current price.",
+    "ACTUAL_RR_RATIO": 198.54,
+    "QUALITY_SCORE": 58.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 76.8802786780572,
+      "key_support": 184.04754333333338,
+      "key_resistance": 184.0734766666667,
+      "volatility": 0.07981984558682527,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
     "CONFIDENCE": 6.2,
@@ -7,20 +32,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-03-20T16:56:38.509438+00:00",
-    "ENTRY": "1.15626",
-    "STOP_LOSS": "1.15572",
-    "TAKE_PROFIT": "1.15707",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Weak bullish trend with neutral RSI, and low risk level. Considering the market conditions, it's a good opportunity to enter a long position.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 56.3,
+    "timestamp": "2026-03-20T19:02:46.680579+00:00",
+    "ENTRY": "1.15532",
+    "STOP_LOSS": "1.15521",
+    "TAKE_PROFIT": "1.15548",
+    "RISK_REWARD_RATIO": "1.45",
+    "ANALYSIS": "Given the bullish trend and neutral RSI, the market conditions favor a buy position. The weak trend strength and low risk level also support this decision.",
+    "ACTUAL_RR_RATIO": 1.45,
+    "QUALITY_SCORE": 56.0,
     "TECHNICAL_CONTEXT": {
       "trend": "BULLISH",
-      "rsi": 55.400637582192715,
-      "key_support": 1.1557166666666667,
-      "key_resistance": 1.1571733333333334,
-      "volatility": 0.09952600845732007,
+      "rsi": 51.71348539727602,
+      "key_support": 1.1552133333333332,
+      "key_resistance": 1.1554266666666664,
+      "volatility": 0.09951499045648027,
       "volatility_status": "OPTIMAL"
     }
   }
