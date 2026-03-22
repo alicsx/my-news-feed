@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-22T10:38:23.467056+00:00",
+    "ENTRY": "1.15922",
+    "STOP_LOSS": "1.15921",
+    "TAKE_PROFIT": "1.15923",
+    "RISK_REWARD_RATIO": "1.0",
+    "ANALYSIS": "The bullish trend has a weak strength, but the RSI is neutral, indicating a potential buying opportunity. Risk level is low, making this a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 1.0,
+    "QUALITY_SCORE": 50.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 56.505601714344955,
+      "key_support": 1.1592133333333334,
+      "key_resistance": 1.1592466666666668,
+      "volatility": 0.09628812318174526,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-22T10:38:42.164229+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nAlright, let's analyze the USD/CHF market data provided. The price is currently at 0.78807, and the...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 48.01593902131518,
+      "key_support": 0.7880266666666668,
+      "key_resistance": 0.7881233333333335,
+      "volatility": 0.09915257213996888,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
