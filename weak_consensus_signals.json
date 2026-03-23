@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.2,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-03-23T20:50:03.064155+00:00",
-    "ENTRY": "1.16132",
-    "STOP_LOSS": "1.16129",
-    "TAKE_PROFIT": "1.16136",
-    "RISK_REWARD_RATIO": "1.33",
-    "ANALYSIS": "Bullish trend with weak strength and neutral RSI. Price is near support level, making it a good entry point for a buy position.",
-    "ACTUAL_RR_RATIO": 1.33,
-    "QUALITY_SCORE": 59.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "BULLISH",
-      "rsi": 58.458072140975304,
-      "key_support": 1.16129,
-      "key_resistance": 1.1616499999999998,
-      "volatility": 0.10122682265345005,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -32,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2026-03-23T20:50:31.260408+00:00",
+    "timestamp": "2026-03-23T22:42:41.207404+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold the USD/CHF pair based on the given...",
+    "ANALYSIS": "Extracted from text: \nAlright, I need to analyze the USD/CHF pair based on the provided data and determine a trading deci...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 44.92393865216197,
-      "key_support": 0.7863933333333334,
-      "key_resistance": 0.7866366666666668,
-      "volatility": 0.10279129974502343,
+      "rsi": 45.56564571648277,
+      "key_support": 0.7864633333333333,
+      "key_resistance": 0.7867266666666666,
+      "volatility": 0.1028034997057668,
       "volatility_status": "OPTIMAL"
     }
   }
