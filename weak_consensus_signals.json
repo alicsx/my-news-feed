@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-23T19:07:32.272198+00:00",
+    "ENTRY": "1.34502",
+    "STOP_LOSS": "1.34445",
+    "TAKE_PROFIT": "1.34588",
+    "RISK_REWARD_RATIO": "1.51",
+    "ANALYSIS": "The trend is bullish, but the RSI is not overbought, indicating a potential buying opportunity. Volatility is low, and the risk level is low, making this a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 1.51,
+    "QUALITY_SCORE": 59.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 64.51107010052824,
+      "key_support": 1.3444533333333337,
+      "key_resistance": 1.3450366666666669,
+      "volatility": 0.1093296913218238,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +32,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2026-03-23T17:04:15.736370+00:00",
+    "timestamp": "2026-03-23T19:07:38.618704+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the USD/CHF pair and make a trading decision based on the given data. Le...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the USD/CHF forex pair and make a trading decision based on the given da...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 46.52388913470569,
-      "key_support": 0.78747,
-      "key_resistance": 0.78756,
-      "volatility": 0.10171988358673884,
+      "rsi": 40.92434389021966,
+      "key_support": 0.7851366666666667,
+      "key_resistance": 0.7855633333333334,
+      "volatility": 0.1026025808622662,
       "volatility_status": "OPTIMAL"
     }
   }
