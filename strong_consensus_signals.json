@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-24T17:11:56.998703+00:00",
+    "ENTRY": "183.99317",
+    "STOP_LOSS": "183.89517",
+    "TAKE_PROFIT": "184.65285",
+    "RISK_REWARD_RATIO": "6.73",
+    "ANALYSIS": "The trend is neutral but has strong strength, indicating a potential shift in the market. The RSI is in the neutral zone, suggesting that the market is not overbought or oversold. The low risk level and volatility further support a buy decision.",
+    "ACTUAL_RR_RATIO": 6.73,
+    "QUALITY_SCORE": 71.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 51.63578383941516,
+      "key_support": 183.89517333333328,
+      "key_resistance": 184.00353666666663,
+      "volatility": 0.07319250201876586,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
