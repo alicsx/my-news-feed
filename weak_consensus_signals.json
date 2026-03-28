@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-28T13:14:49.629680+00:00",
+    "ENTRY": "1.32658",
+    "STOP_LOSS": "1.32658",
+    "TAKE_PROFIT": "1.32658",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The STRONG_BEARISH trend is weakening, with RSI at 37.7, indicating a potential reversal. The price is at support, and a buy signal is triggered.",
+    "ACTUAL_RR_RATIO": 1.8,
+    "QUALITY_SCORE": 49.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 37.74679632308073,
+      "key_support": 1.3265799999999999,
+      "key_resistance": 1.3266199999999997,
+      "volatility": 0.1090167846385917,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-28T13:14:40.644873+00:00",
+    "ENTRY": "1.15276",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The trend is weak bearish, but RSI is neutral. There's no clear indication of a strong trend or overbought/oversold conditions, making it hard to make a decisive decision.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 51.50220436596542,
+      "key_support": 1.1527266666666667,
+      "key_resistance": 1.1527633333333334,
+      "volatility": 0.10189308689908322,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
