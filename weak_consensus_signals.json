@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-30T22:48:56.060900+00:00",
+    "ENTRY": "1.31817",
+    "STOP_LOSS": "1.31796",
+    "TAKE_PROFIT": "1.31849",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "The STRONG_BEARISH trend is weakening (Strength: WEAK), and the RSI is in a neutral zone (30.6). This creates a favorable environment for a potential reversal. Given the LOW risk level, a BUY decision is made with a moderate level of confidence.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 51.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 30.628069463275327,
+      "key_support": 1.3179566666666669,
+      "key_resistance": 1.3183133333333334,
+      "volatility": 0.11522075563253407,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
