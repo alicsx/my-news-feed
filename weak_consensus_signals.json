@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-30T17:07:39.591367+00:00",
+    "ENTRY": "182.78441",
+    "STOP_LOSS": "182.75996",
+    "TAKE_PROFIT": "182.82109",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a VERY_STRONG BEARISH trend, but the RSI is OVERSOLD at 24.7. This creates a potential buying opportunity as the price may bounce back from the support level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 55.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 24.720726936582075,
+      "key_support": 182.75995666666665,
+      "key_resistance": 182.8109333333333,
+      "volatility": 0.08164256606591308,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
     "CONFIDENCE": 7.3,
@@ -7,20 +32,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-03-30T15:14:12.135145+00:00",
-    "ENTRY": "1.14525",
-    "STOP_LOSS": "1.14516",
-    "TAKE_PROFIT": "1.14539",
-    "RISK_REWARD_RATIO": "1.56",
-    "ANALYSIS": "Strong bearish trend is present, but RSI is oversold, indicating a potential reversal. BUY at current price to take advantage of the low RSI and potential trend reversal.",
-    "ACTUAL_RR_RATIO": 1.56,
-    "QUALITY_SCORE": 52.5,
+    "timestamp": "2026-03-30T17:07:26.219339+00:00",
+    "ENTRY": "1.14621",
+    "STOP_LOSS": "1.14615",
+    "TAKE_PROFIT": "1.14630",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend is currently in place, but RSI is oversold. This presents a buying opportunity as the price is likely to bounce back. Risk-reward ratio is acceptable at 1.8.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 52.2,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 21.52782059021829,
-      "key_support": 1.14516,
-      "key_resistance": 1.14567,
-      "volatility": 0.09467602596372292,
+      "rsi": 29.367698614616046,
+      "key_support": 1.1461533333333334,
+      "key_resistance": 1.1463466666666666,
+      "volatility": 0.0943371622052543,
       "volatility_status": "OPTIMAL"
     }
   }
