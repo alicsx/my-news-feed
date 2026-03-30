@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-03-30T19:13:38.958329+00:00",
+    "ENTRY": "182.93464",
+    "STOP_LOSS": "182.94218",
+    "TAKE_PROFIT": "182.92333",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a VERY_STRONG BEARISH trend with RSI at 31.9, indicating a potential selling opportunity. Although the RSI is not oversold, the trend strength suggests a bearish bias.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 73.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 31.93021919668754,
+      "key_support": 182.90858666666668,
+      "key_resistance": 182.94218333333333,
+      "volatility": 0.08173797144664276,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
