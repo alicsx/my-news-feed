@@ -1,25 +1,25 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.7,
+    "CONFIDENCE": 4.3,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-03-31T19:15:03.635133+00:00",
-    "ENTRY": "1.32259",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "The trend is weak bearish, but RSI is neutral. Market conditions are unclear, so holding is the best option.",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
+    "timestamp": "2026-03-31T20:53:46.939710+00:00",
+    "ENTRY": "1.15543",
+    "STOP_LOSS": "1.15473",
+    "TAKE_PROFIT": "1.15673",
+    "RISK_REWARD_RATIO": "1.83",
+    "ANALYSIS": "Trend is neutral with strong strength, but RSI is overbought. A short-term pullback is possible, warranting a hold with a tight stop-loss.",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 52.860870061153875,
-      "key_support": 1.3222666666666665,
-      "key_resistance": 1.3226833333333332,
-      "volatility": 0.11823634929201576,
+      "trend": "NEUTRAL",
+      "rsi": 71.26932003263256,
+      "key_support": 1.1550700000000003,
+      "key_resistance": 1.1557000000000002,
+      "volatility": 0.09572683800901091,
       "volatility_status": "OPTIMAL"
     }
   }
