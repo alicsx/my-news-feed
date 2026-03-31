@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-31T22:43:40.331402+00:00",
+    "ENTRY": "1.32300",
+    "STOP_LOSS": "1.32332",
+    "TAKE_PROFIT": "1.31624",
+    "RISK_REWARD_RATIO": "21.12",
+    "ANALYSIS": "Given the STRONG_BEARISH trend and RSI of 53.6, which is not oversold, a SELL decision is reasonable. The risk level is LOW, and the risk-reward ratio is acceptable.",
+    "ACTUAL_RR_RATIO": 21.12,
+    "QUALITY_SCORE": 77.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 53.62380573101531,
+      "key_support": 1.32284,
+      "key_resistance": 1.32332,
+      "volatility": 0.11798928608559031,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-03-31T22:43:56.888762+00:00",
+    "ENTRY": "183.44811",
+    "STOP_LOSS": "183.46881",
+    "TAKE_PROFIT": "183.41706",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a VERY_STRONG BEARISH trend with a neutral RSI, indicating a potential sell opportunity. The price is near the resistance level, and a sell could trigger a price drop to the support level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 73.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 54.05885644128456,
+      "key_support": 183.38844666666674,
+      "key_resistance": 183.46881333333337,
+      "volatility": 0.08234718473913828,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
