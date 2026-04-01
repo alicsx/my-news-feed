@@ -7,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-04-01T03:34:55.439666+00:00",
+    "timestamp": "2026-04-01T06:02:15.447118+00:00",
+    "ENTRY": "1.15701",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/USD\",\n  \"ACTION\": \"HOLD\",\n  \"CONFID...",
-    "ENTRY": "N/A",
+    "ANALYSIS": "Market conditions are neutral with a strong trend, RSI is neutral, and volatility is low. There is no clear indication of a bullish or bearish trend, therefore a HOLD decision is made.",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 65.64589797114861,
-      "key_support": 1.1560699999999997,
-      "key_resistance": 1.15654,
-      "volatility": 0.09557102054013542,
+      "rsi": 67.18940227060928,
+      "key_support": 1.1569966666666667,
+      "key_resistance": 1.1570233333333333,
+      "volatility": 0.09553566675727897,
       "volatility_status": "OPTIMAL"
     }
   }
