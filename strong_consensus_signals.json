@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-02T19:08:46.726972+00:00",
+    "ENTRY": "1.32271",
+    "STOP_LOSS": "1.32272",
+    "TAKE_PROFIT": "1.32252",
+    "RISK_REWARD_RATIO": "19.0",
+    "ANALYSIS": "The STRONG_BEARISH trend with MODERATE strength and RSI of 45.0 (NEUTRAL) suggests a bearish bias. Given the LOW risk level, selling at the current price with a stop-loss slightly above the current price and a take-profit at the nearest support level is a reasonable decision.",
+    "ACTUAL_RR_RATIO": 19.0,
+    "QUALITY_SCORE": 74.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 45.025527073508314,
+      "key_support": 1.3225166666666666,
+      "key_resistance": 1.3227233333333333,
+      "volatility": 0.12045271145167583,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
