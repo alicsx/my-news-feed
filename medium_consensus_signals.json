@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 5.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-04-03T07:24:18.185038+00:00",
+    "ENTRY": "1.32355",
+    "STOP_LOSS": "1.32366",
+    "TAKE_PROFIT": "1.32020",
+    "RISK_REWARD_RATIO": "30.45",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI is neutral, indicating potential for further downward movement. Risk-reward ratio is favorable.",
+    "ACTUAL_RR_RATIO": 30.45,
+    "QUALITY_SCORE": 65.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 50.99841881113115,
+      "key_support": 1.3235299999999999,
+      "key_resistance": 1.3236599999999998,
+      "volatility": 0.12015927666417234,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-04-03T07:24:25.253386+00:00",
+    "ENTRY": "0.79812",
+    "STOP_LOSS": "0.79799",
+    "TAKE_PROFIT": "0.80014",
+    "RISK_REWARD_RATIO": "15.54",
+    "ANALYSIS": "Strong bullish trend, RSI neutral, and low risk level indicate a buying opportunity. Targeting resistance with a stop-loss just below support.",
+    "ACTUAL_RR_RATIO": 15.54,
+    "QUALITY_SCORE": 65.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 47.04895312829899,
+      "key_support": 0.7979933333333333,
+      "key_resistance": 0.7981966666666667,
+      "volatility": 0.10295246830996004,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-04-03T07:24:11.024385+00:00",
+    "ENTRY": "1.15419",
+    "STOP_LOSS": "1.15414",
+    "TAKE_PROFIT": "1.15676",
+    "RISK_REWARD_RATIO": "51.4",
+    "ANALYSIS": "Bullish trend confirmed, RSI neutral. Low volatility and proximity to support suggests a potential entry point. Targeting a conservative take profit with a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 51.4,
+    "QUALITY_SCORE": 63.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 50.01808762028295,
+      "key_support": 1.1541366666666668,
+      "key_resistance": 1.1542633333333336,
+      "volatility": 0.09422597586860346,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
