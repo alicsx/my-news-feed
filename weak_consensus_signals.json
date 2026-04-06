@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-04-06T03:34:28.100617+00:00",
+    "ENTRY": "1.15214",
+    "STOP_LOSS": "1.15235",
+    "TAKE_PROFIT": "1.15182",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "Strong bearish trend confirmed, though RSI is neutral. Shorting with a tight stop-loss above recent resistance and a take-profit targeting a recent support level yields a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 59.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 52.57659274234332,
+      "key_support": 1.1521133333333333,
+      "key_resistance": 1.1523466666666666,
+      "volatility": 0.08929388993771865,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-04-06T03:34:38.876648+00:00",
+    "ENTRY": "1.32097",
+    "STOP_LOSS": "1.32099",
+    "TAKE_PROFIT": "1.32094",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed, although RSI is neutral. Targeting initial support level with a risk-reward ratio exceeding 1.5.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 57.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 59.07149602471017,
+      "key_support": 1.3206366666666665,
+      "key_resistance": 1.3209933333333332,
+      "volatility": 0.11426621620483896,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-04-06T03:34:49.729863+00:00",
+    "ENTRY": "0.80070",
+    "STOP_LOSS": "0.80057",
+    "TAKE_PROFIT": "0.80089",
+    "RISK_REWARD_RATIO": "1.46",
+    "ANALYSIS": "Strong bullish trend confirmed, RSI neutral. Risk-reward ratio exceeds 1.5. Small stop loss placed just below support.",
+    "ACTUAL_RR_RATIO": 1.46,
+    "QUALITY_SCORE": 55.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 55.95556144837074,
+      "key_support": 0.8005699999999999,
+      "key_resistance": 0.8007099999999999,
+      "volatility": 0.09507401672895233,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
