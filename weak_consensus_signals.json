@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-08T17:16:29.713564+00:00",
+    "ENTRY": "0.78990",
+    "STOP_LOSS": "0.78975",
+    "TAKE_PROFIT": "0.79013",
+    "RISK_REWARD_RATIO": "1.53",
+    "ANALYSIS": "Given the moderate bearish trend, but neutral RSI and low risk level, a BUY decision is made with a moderate level of confidence. The stop-loss is set at the support level of 0.78975, and the take-profit is set at the resistance level of 0.79001, with a risk-reward ratio of 1.5-3.0.",
+    "ACTUAL_RR_RATIO": 1.53,
+    "QUALITY_SCORE": 49.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 41.51984332030471,
+      "key_support": 0.78975,
+      "key_resistance": 0.79001,
+      "volatility": 0.09959357933820938,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
