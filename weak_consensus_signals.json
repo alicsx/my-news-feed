@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-09T09:12:33.122086+00:00",
+    "ENTRY": "185.60792",
+    "STOP_LOSS": "185.54792",
+    "TAKE_PROFIT": "185.72792",
+    "RISK_REWARD_RATIO": "1.80",
+    "ANALYSIS": "Strong bullish trend is present, but RSI is overbought (73.9). While a BUY signal would normally be warranted, the overbought RSI suggests a potential pullback or consolidation. A HOLD position is justified while monitoring for confirmation of continued bullish momentum and a potential RSI correction.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 73.87737800074396,
+      "key_support": 185.60697333333334,
+      "key_resistance": 185.63904,
+      "volatility": 0.0692284581703188,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
