@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-10T20:51:40.426362+00:00",
+    "ENTRY": "0.78917",
+    "STOP_LOSS": "0.78927",
+    "TAKE_PROFIT": "0.78902",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The bearish trend with strong strength indicates a potential downward movement. Although the RSI is neutral, the bearish trend takes precedence.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 46.18406805968392,
+      "key_support": 0.7891566666666666,
+      "key_resistance": 0.7892733333333333,
+      "volatility": 0.10057432129281084,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-10T20:51:50.097454+00:00",
+    "ENTRY": "186.82534",
+    "STOP_LOSS": "186.83805",
+    "TAKE_PROFIT": "186.40793",
+    "RISK_REWARD_RATIO": "32.84",
+    "ANALYSIS": "The EUR/JPY is in a strong bullish trend but the RSI is overbought, indicating a potential reversal. Given the low risk level, it's reasonable to consider a sell trade to take advantage of the potential correction.",
+    "ACTUAL_RR_RATIO": 32.84,
+    "QUALITY_SCORE": 62.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 80.03408622363159,
+      "key_support": 186.80642666666662,
+      "key_resistance": 186.8380533333333,
+      "volatility": 0.06912464431939391,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
