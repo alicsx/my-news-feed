@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-11T16:50:21.781493+00:00",
+    "ENTRY": "0.78934",
+    "STOP_LOSS": "0.78948",
+    "TAKE_PROFIT": "0.78913",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed by market data. RSI is neutral, not oversold. Targeting immediate support with a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 68.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 43.38287123505245,
+      "key_support": 0.7893066666666667,
+      "key_resistance": 0.7894833333333334,
+      "volatility": 0.10063766673615347,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-11T16:50:24.176645+00:00",
+    "ENTRY": "186.71203",
+    "STOP_LOSS": "186.69800",
+    "TAKE_PROFIT": "186.73307",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a strong bullish trend with a neutral RSI. This suggests a continued upward momentum. Buying at the current price with a stop loss at the support level and a take profit at the resistance level is a reasonable strategy.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 65.8822076829847,
+      "key_support": 186.69799999999998,
+      "key_resistance": 186.72433999999998,
+      "volatility": 0.06884181954556397,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-11T16:50:00.847981+00:00",
+    "ENTRY": "1.17250",
+    "STOP_LOSS": "1.17246",
+    "TAKE_PROFIT": "1.17256",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential continuation of the upward movement. BUY at 1.17250 with a stop loss at 1.17246 and a take profit at 1.17300.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 63.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 63.75743893034864,
+      "key_support": 1.172456666666667,
+      "key_resistance": 1.1725033333333335,
+      "volatility": 0.08977937746023562,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
