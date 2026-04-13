@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-13T17:15:47.539727+00:00",
+    "ENTRY": "0.78520",
+    "STOP_LOSS": "0.78516",
+    "TAKE_PROFIT": "0.78526",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bearish trend is weakening due to oversold RSI (23.1), suggesting a potential reversal. Buying at the current price (0.78520) with a stop loss at the support level (0.78516) and a take profit at the resistance level (0.78547) could yield a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 52.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 23.125751033955005,
+      "key_support": 0.78516,
+      "key_resistance": 0.7854666666666666,
+      "volatility": 0.08899311439920711,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
