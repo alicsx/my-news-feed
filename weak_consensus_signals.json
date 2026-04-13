@@ -1,25 +1,25 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-04-12T22:46:53.564957+00:00",
+    "timestamp": "2026-04-13T03:44:47.037268+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold GBP/USD based on the given market d...",
+    "ANALYSIS": "Extracted from text: \nAlright, let me try to figure out the trading decision for USD/CHF based on the given data. So, the...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 13.34536579390963,
-      "key_support": 1.3380833333333333,
-      "key_resistance": 1.3395166666666667,
-      "volatility": 0.10266066465301972,
+      "trend": "NEUTRAL",
+      "rsi": 67.31004932855849,
+      "key_support": 0.7918366666666666,
+      "key_resistance": 0.7919733333333333,
+      "volatility": 0.08935176968806875,
       "volatility_status": "OPTIMAL"
     }
   }
