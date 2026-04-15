@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-15T11:09:59.977607+00:00",
+    "ENTRY": "1.17792",
+    "STOP_LOSS": "1.17780",
+    "TAKE_PROFIT": "1.18081",
+    "RISK_REWARD_RATIO": "24.08",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential buying opportunity. Risk level is low, and the price is near support.",
+    "ACTUAL_RR_RATIO": 24.08,
+    "QUALITY_SCORE": 74.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 46.38478481395482,
+      "key_support": 1.1777966666666666,
+      "key_resistance": 1.1780933333333332,
+      "volatility": 0.07358085446951343,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
