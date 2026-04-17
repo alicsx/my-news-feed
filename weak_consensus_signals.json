@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-17T09:27:57.257002+00:00",
+    "ENTRY": "187.75186",
+    "STOP_LOSS": "187.72774",
+    "TAKE_PROFIT": "187.78804",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is weak but still bullish, and the RSI is in a neutral zone. This indicates a potential for a short-term upward movement. Given the low risk level, it's a good opportunity to buy with a reasonable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 57.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 59.11474512039532,
+      "key_support": 187.72773666666663,
+      "key_resistance": 187.77614333333327,
+      "volatility": 0.06283286892452102,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
