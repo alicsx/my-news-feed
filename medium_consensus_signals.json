@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 5.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-20T17:16:24.959820+00:00",
+    "ENTRY": "1.17876",
+    "STOP_LOSS": "1.17871",
+    "TAKE_PROFIT": "1.17884",
+    "RISK_REWARD_RATIO": "1.6",
+    "ANALYSIS": "The trend is weakly bullish, and the RSI is at 64.3, which is not overbought. This suggests a buying opportunity with a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.6,
+    "QUALITY_SCORE": 61.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 64.3055293443777,
+      "key_support": 1.1787066666666666,
+      "key_resistance": 1.178923333333333,
+      "volatility": 0.07161269508206353,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
