@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-21T19:24:27.250693+00:00",
+    "ENTRY": "0.78036",
+    "STOP_LOSS": "0.78023",
+    "TAKE_PROFIT": "0.78343",
+    "RISK_REWARD_RATIO": "23.62",
+    "ANALYSIS": "The STRONG_BEARISH trend is weakening (Strength: WEAK), and the RSI is in a neutral zone (53.3). Considering the LOW risk level and the proximity of the price to the support level, a BUY decision is reasonable.",
+    "ACTUAL_RR_RATIO": 23.62,
+    "QUALITY_SCORE": 53.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 53.31203015056519,
+      "key_support": 0.78023086,
+      "key_resistance": 0.7804666666666668,
+      "volatility": 0.08013376883152959,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
