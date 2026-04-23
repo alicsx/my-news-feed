@@ -1,25 +1,50 @@
 [
   {
     "SYMBOL": "GBP/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.3,
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2026-04-23T19:26:03.348429+00:00",
+    "timestamp": "2026-04-23T21:01:19.746784+00:00",
+    "ENTRY": "1.34667",
+    "STOP_LOSS": "1.34698",
+    "TAKE_PROFIT": "1.34620",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "Bearish trend confirmed, RSI neutral. Risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 56.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 38.14039362633079,
+      "key_support": 1.3465966666666667,
+      "key_resistance": 1.3469833333333334,
+      "volatility": 0.07265928219507152,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-23T21:01:34.460298+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze GBP/USD and make a trading decision based on the given data. Let me go t...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/JPY pair based on the given data and provide a trading decision....",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 38.930981590848766,
-      "key_support": 1.346606666666667,
-      "key_resistance": 1.3470633333333335,
-      "volatility": 0.07270164591064515,
+      "rsi": 44.11743325552958,
+      "key_support": 186.60802333333336,
+      "key_resistance": 186.62269666666668,
+      "volatility": 0.05270050192578193,
       "volatility_status": "OPTIMAL"
     }
   }
