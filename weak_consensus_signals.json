@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-24T17:09:38.885548+00:00",
+    "ENTRY": "1.35194",
+    "STOP_LOSS": "1.35200",
+    "TAKE_PROFIT": "1.35180",
+    "RISK_REWARD_RATIO": "2.33",
+    "ANALYSIS": "Bearish trend confirmed, RSI neutral. Targeting support with a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 2.33,
+    "QUALITY_SCORE": 56.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 67.48124538733703,
+      "key_support": 1.351803333333333,
+      "key_resistance": 1.3519966666666665,
+      "volatility": 0.07314068666028874,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
