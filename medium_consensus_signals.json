@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.4,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-26T09:11:01.011595+00:00",
+    "ENTRY": "0.78493",
+    "STOP_LOSS": "0.78491",
+    "TAKE_PROFIT": "0.78496",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "USDCHF is in a moderate bullish trend with neutral RSI, indicating a potential buying opportunity. Price is near support level, making it a good entry point.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 68.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 40.97075340748607,
+      "key_support": 0.7849133333333335,
+      "key_resistance": 0.7849366666666667,
+      "volatility": 0.07846755409677156,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-26T09:10:53.643075+00:00",
+    "ENTRY": "1.35324",
+    "STOP_LOSS": "1.35320",
+    "TAKE_PROFIT": "1.35427",
+    "RISK_REWARD_RATIO": "25.75",
+    "ANALYSIS": "The trend is STRONG_BULLISH, but RSI is not overbought. This indicates a potential opportunity to buy. Although the trend strength is WEAK, the overall trend direction is still bullish.",
+    "ACTUAL_RR_RATIO": 25.75,
+    "QUALITY_SCORE": 60.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 63.04362985841131,
+      "key_support": 1.3531966666666666,
+      "key_resistance": 1.3532433333333334,
+      "volatility": 0.07135371499379306,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
