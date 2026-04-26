@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-26T20:52:21.280528+00:00",
+    "ENTRY": "0.78708",
+    "STOP_LOSS": "0.78695",
+    "TAKE_PROFIT": "0.78727",
+    "RISK_REWARD_RATIO": "1.46",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential long opportunity with a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.46,
+    "QUALITY_SCORE": 67.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 62.161775241302585,
+      "key_support": 0.7869466666666667,
+      "key_resistance": 0.78721,
+      "volatility": 0.0795905765480978,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-26T20:52:28.727594+00:00",
+    "ENTRY": "186.76708",
+    "STOP_LOSS": "186.88977",
+    "TAKE_PROFIT": "186.58304",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Bearish trend confirmed, RSI neutral. Targeting support level with a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 50.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 53.276211489584036,
+      "key_support": 186.72606999999996,
+      "key_resistance": 186.88976999999994,
+      "volatility": 0.05582926763567405,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
