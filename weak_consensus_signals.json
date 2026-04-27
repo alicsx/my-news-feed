@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-27T06:38:13.607947+00:00",
+    "ENTRY": "186.82186",
+    "STOP_LOSS": "186.84920",
+    "TAKE_PROFIT": "186.77776",
+    "RISK_REWARD_RATIO": "1.61",
+    "ANALYSIS": "Bearish trend confirmed with moderate strength. RSI is neutral, not oversold, supporting a sell decision. Risk-reward ratio is acceptable.",
+    "ACTUAL_RR_RATIO": 1.61,
+    "QUALITY_SCORE": 59.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 53.64818494371348,
+      "key_support": 186.77776,
+      "key_resistance": 186.8492,
+      "volatility": 0.055862682875568476,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +32,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-04-27T03:53:03.383924+00:00",
+    "timestamp": "2026-04-27T06:37:52.613622+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/USD pair based on the given market data and trading guidelines. Let...",
+    "ANALYSIS": "Extracted from text: \nAlright, I'm trying to figure out whether to buy, sell, or hold the EUR/USD pair based on the given...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 61.42764970333954,
-      "key_support": 1.1729633333333334,
-      "key_resistance": 1.17319,
-      "volatility": 0.06730733242405659,
+      "rsi": 52.58578092053644,
+      "key_support": 1.1720566666666665,
+      "key_resistance": 1.1724233333333332,
+      "volatility": 0.06723611188701122,
       "volatility_status": "OPTIMAL"
     }
   }
