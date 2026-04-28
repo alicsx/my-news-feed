@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-28T10:17:05.404771+00:00",
+    "ENTRY": "186.57207",
+    "STOP_LOSS": "186.57342",
+    "TAKE_PROFIT": "186.57004",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed by price action. RSI is neutral, not oversold, allowing for a sell decision. Risk-reward ratio is acceptable.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 63.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 44.925724350405986,
+      "key_support": 186.55064000000004,
+      "key_resistance": 186.57342000000003,
+      "volatility": 0.055823945793448244,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 5.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-28T10:16:42.306356+00:00",
+    "ENTRY": "1.16915",
+    "STOP_LOSS": "1.16920",
+    "TAKE_PROFIT": "1.16901",
+    "RISK_REWARD_RATIO": "2.8",
+    "ANALYSIS": "Bearish trend confirmed, RSI approaching oversold but not yet there. Risk-reward ratio is favorable for a short position.",
+    "ACTUAL_RR_RATIO": 2.8,
+    "QUALITY_SCORE": 60.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 33.908884663091484,
+      "key_support": 1.1690066666666663,
+      "key_resistance": 1.1692033333333332,
+      "volatility": 0.0591119975300676,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
