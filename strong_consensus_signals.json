@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-28T10:24:21.887922+00:00",
+    "ENTRY": "186.60659",
+    "STOP_LOSS": "186.62871",
+    "TAKE_PROFIT": "186.11449",
+    "RISK_REWARD_RATIO": "22.25",
+    "ANALYSIS": "The EUR/JPY is in a strong bearish trend, and the RSI is not oversold. The risk level is low, making it a good opportunity to sell.",
+    "ACTUAL_RR_RATIO": 22.25,
+    "QUALITY_SCORE": 72.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 46.33189783863278,
+      "key_support": 186.59034999999997,
+      "key_resistance": 186.62870999999996,
+      "volatility": 0.05582117313863142,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
