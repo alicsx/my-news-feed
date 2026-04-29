@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-29T19:48:34.539090+00:00",
+    "ENTRY": "1.16717",
+    "STOP_LOSS": "1.16728",
+    "TAKE_PROFIT": "1.16660",
+    "RISK_REWARD_RATIO": "5.18",
+    "ANALYSIS": "The EUR/USD is in a strong bearish trend and the RSI is not oversold, indicating a potential selling opportunity. Given the low risk level and the risk-reward ratio, a sell trade is the most reasonable decision.",
+    "ACTUAL_RR_RATIO": 5.18,
+    "QUALITY_SCORE": 76.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 32.74443242950017,
+      "key_support": 1.1666033333333334,
+      "key_resistance": 1.1672766666666667,
+      "volatility": 0.05724037803884947,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
