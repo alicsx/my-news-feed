@@ -6,20 +6,20 @@
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-04-30T10:17:14.907434+00:00",
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-30T14:20:42.701449+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I'm looking at the EUR/JPY pair right now. The price is 186.17561, and the trend is neutra...",
+    "ANALYSIS": "Extracted from text: \nAlright, so I'm looking at the EUR/JPY pair right now. The price is 183.54418. The trend is bearish...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 27.38395384010184,
-      "key_support": 186.07634333333334,
-      "key_resistance": 186.24908666666667,
-      "volatility": 0.059266124563430986,
+      "trend": "BEARISH",
+      "rsi": 20.592731341788667,
+      "key_support": 183.47154999999998,
+      "key_resistance": 183.64163999999997,
+      "volatility": 0.08646665594120115,
       "volatility_status": "OPTIMAL"
     }
   }
