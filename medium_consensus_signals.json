@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-30T21:11:43.777175+00:00",
+    "ENTRY": "0.78204",
+    "STOP_LOSS": "0.78186",
+    "TAKE_PROFIT": "0.78250",
+    "RISK_REWARD_RATIO": "2.56",
+    "ANALYSIS": "The RSI is oversold, indicating a potential buying opportunity. The neutral trend and low risk level support this buy decision.",
+    "ACTUAL_RR_RATIO": 2.56,
+    "QUALITY_SCORE": 64.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 26.73583226682742,
+      "key_support": 0.7818633333333334,
+      "key_resistance": 0.7824966666666667,
+      "volatility": 0.07391817573798819,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-04-30T21:11:29.338527+00:00",
+    "ENTRY": "1.17314",
+    "STOP_LOSS": "1.17312",
+    "TAKE_PROFIT": "1.17317",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral, but RSI is not overbought, indicating a potential buying opportunity. Volatility is low, and risk level is low, making this a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 60.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 63.56312314923214,
+      "key_support": 1.17312,
+      "key_resistance": 1.17326,
+      "volatility": 0.05960363968274191,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-04-30T21:11:51.694286+00:00",
+    "ENTRY": "183.66564",
+    "STOP_LOSS": "183.59091",
+    "TAKE_PROFIT": "183.77773",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Despite the bearish trend, the RSI is oversold at 27.4, indicating a potential reversal. The risk level is low, and the price is close to support, making a buy decision reasonable.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 60.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 27.44209209064355,
+      "key_support": 183.59090666666665,
+      "key_resistance": 183.68543333333332,
+      "volatility": 0.08695247981487486,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
