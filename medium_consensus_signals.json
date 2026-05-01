@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-01T09:48:51.251965+00:00",
+    "ENTRY": "183.80988",
+    "STOP_LOSS": "183.94058",
+    "TAKE_PROFIT": "183.61383",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The BEARISH trend with VERY_STRONG strength and a low RSI of 41.3 indicates a potential selling opportunity. The price is currently near the support level of 183.80080, which increases the likelihood of a downward movement.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 41.28948894160656,
+      "key_support": 183.80079666666666,
+      "key_resistance": 183.9405833333333,
+      "volatility": 0.0979418322995262,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-01T09:48:44.571388+00:00",
+    "ENTRY": "0.78139",
+    "STOP_LOSS": "0.78186",
+    "TAKE_PROFIT": "0.78069",
+    "RISK_REWARD_RATIO": "1.49",
+    "ANALYSIS": "Strong bearish trend confirmed. RSI is neutral, not oversold. Setting a sell order with a stop loss slightly above resistance and a take profit targeting a reasonable support level, providing a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.49,
+    "QUALITY_SCORE": 60.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 38.4060833463085,
+      "key_support": 0.7813566666666668,
+      "key_resistance": 0.7818633333333336,
+      "volatility": 0.07586685539368396,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
