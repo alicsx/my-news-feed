@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-01T08:23:43.771187+00:00",
+    "ENTRY": "1.36048",
+    "STOP_LOSS": "1.36046",
+    "TAKE_PROFIT": "1.36082",
+    "RISK_REWARD_RATIO": "17.0",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, suggesting a potential upward movement. Low risk level and volatility support a buy decision.",
+    "ACTUAL_RR_RATIO": 17.0,
+    "QUALITY_SCORE": 77.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 63.82150872802895,
+      "key_support": 1.3604633333333334,
+      "key_resistance": 1.3608166666666668,
+      "volatility": 0.06528029604503222,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-01T08:23:58.729363+00:00",
+    "ENTRY": "183.60983",
+    "STOP_LOSS": "183.69023",
+    "TAKE_PROFIT": "182.28300",
+    "RISK_REWARD_RATIO": "16.5",
+    "ANALYSIS": "Given the VERY_STRONG BEARISH trend and RSI of 39.4 (NEUTRAL), the market conditions are favorable for a SELL trade. The risk level is LOW, and the potential reward is significant.",
+    "ACTUAL_RR_RATIO": 16.5,
+    "QUALITY_SCORE": 74.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 39.407626154101,
+      "key_support": 183.50165333333337,
+      "key_resistance": 183.6902266666667,
+      "volatility": 0.09811202937752231,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
