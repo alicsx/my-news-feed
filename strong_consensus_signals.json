@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-03T17:01:32.079016+00:00",
+    "ENTRY": "1.17204",
+    "STOP_LOSS": "1.17202",
+    "TAKE_PROFIT": "1.17370",
+    "RISK_REWARD_RATIO": "83.0",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a possible upward momentum. Support at 1.17202 confirms the buying opportunity.",
+    "ACTUAL_RR_RATIO": 83.0,
+    "QUALITY_SCORE": 74.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 43.95280300849138,
+      "key_support": 1.172023333333333,
+      "key_resistance": 1.1720566666666665,
+      "volatility": 0.05752183105115898,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-03T17:01:50.313370+00:00",
+    "ENTRY": "0.78244",
+    "STOP_LOSS": "0.78245",
+    "TAKE_PROFIT": "0.78106",
+    "RISK_REWARD_RATIO": "138.0",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, selling opportunity with low risk",
+    "ACTUAL_RR_RATIO": 138.0,
+    "QUALITY_SCORE": 74.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 57.26269640879978,
+      "key_support": 0.78243,
+      "key_resistance": 0.78245,
+      "volatility": 0.07210253395324277,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-03T17:01:58.089716+00:00",
+    "ENTRY": "184.10264",
+    "STOP_LOSS": "184.10576",
+    "TAKE_PROFIT": "184.09796",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential selling opportunity.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 71.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 51.809416222123076,
+      "key_support": 184.09951666666666,
+      "key_resistance": 184.10576333333333,
+      "volatility": 0.09753632718279491,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
