@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-04T21:15:49.467514+00:00",
+    "ENTRY": "1.16915",
+    "STOP_LOSS": "1.16924",
+    "TAKE_PROFIT": "1.16901",
+    "RISK_REWARD_RATIO": "1.56",
+    "ANALYSIS": "The EUR/USD is in a VERY_STRONG BEARISH trend with a neutral RSI of 38.7. Given these conditions, a SELL trade is the most reasonable decision.",
+    "ACTUAL_RR_RATIO": 1.56,
+    "QUALITY_SCORE": 68.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 38.72689019311606,
+      "key_support": 1.1689766666666668,
+      "key_resistance": 1.1692433333333334,
+      "volatility": 0.059401071120154414,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-04T21:15:56.147108+00:00",
+    "ENTRY": "1.35339",
+    "STOP_LOSS": "1.35291",
+    "TAKE_PROFIT": "1.35411",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral but has strong strength, indicating a potential reversal. The RSI is at 38.8, which is not overbought. This suggests a buying opportunity with a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 56.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 38.82759031112034,
+      "key_support": 1.3529066666666667,
+      "key_resistance": 1.3534833333333334,
+      "volatility": 0.06424286358152691,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]

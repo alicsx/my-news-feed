@@ -1,49 +1,25 @@
 [
   {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-05-04T19:52:03.274824+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, let me analyze the GBP/USD pair based on the given data. So, the price is 1.35397. The tre...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 40.75660894826484,
-      "key_support": 1.35365,
-      "key_resistance": 1.35445,
-      "volatility": 0.06426039168818092,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-05-04T19:52:10.266478+00:00",
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-04T21:16:03.702180+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, so I need to analyze the USD/CHF pair based on the given data and provide a trading decisi...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out whether to buy, sell, or hold the USD/CHF pair based on the given mar...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 55.993724540400876,
-      "key_support": 0.7834666666666666,
-      "key_resistance": 0.7838433333333333,
-      "volatility": 0.07339900752436994,
+      "rsi": 61.49927812713106,
+      "key_support": 0.7839666666666666,
+      "key_resistance": 0.7847233333333332,
+      "volatility": 0.07343644707236573,
       "volatility_status": "OPTIMAL"
     }
   }
