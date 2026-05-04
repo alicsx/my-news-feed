@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-04T10:17:05.264448+00:00",
+    "ENTRY": "1.16956",
+    "STOP_LOSS": "1.16951",
+    "TAKE_PROFIT": "1.16963",
+    "RISK_REWARD_RATIO": "1.4",
+    "ANALYSIS": "The neutral trend and low RSI value of 31.1 indicate a potential buying opportunity. The risk level is low, and the price is close to support, making it a reasonable entry point.",
+    "ACTUAL_RR_RATIO": 1.4,
+    "QUALITY_SCORE": 58.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 31.118245204409344,
+      "key_support": 1.16951,
+      "key_resistance": 1.1703033333333333,
+      "volatility": 0.05922175737215362,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
