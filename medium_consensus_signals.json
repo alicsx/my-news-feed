@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-05T10:05:29.732461+00:00",
+    "ENTRY": "1.16879",
+    "STOP_LOSS": "1.16888",
+    "TAKE_PROFIT": "1.16599",
+    "RISK_REWARD_RATIO": "31.11",
+    "ANALYSIS": "Bearish trend confirmed, RSI neutral. Risk-reward ratio exceeds 1.5. Selling near support with a tight stop-loss above resistance.",
+    "ACTUAL_RR_RATIO": 31.11,
+    "QUALITY_SCORE": 60.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 43.102195697504186,
+      "key_support": 1.1686966666666665,
+      "key_resistance": 1.1688833333333333,
+      "volatility": 0.05919688155446503,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
