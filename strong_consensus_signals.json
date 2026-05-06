@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-06T21:19:02.235711+00:00",
+    "ENTRY": "1.17484",
+    "STOP_LOSS": "1.17457",
+    "TAKE_PROFIT": "1.17852",
+    "RISK_REWARD_RATIO": "13.63",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential buying opportunity with a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 13.63,
+    "QUALITY_SCORE": 74.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 55.417420951443965,
+      "key_support": 1.17457,
+      "key_resistance": 1.17492,
+      "volatility": 0.061625180055999304,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-06T21:19:16.759417+00:00",
+    "ENTRY": "0.77898",
+    "STOP_LOSS": "0.77940",
+    "TAKE_PROFIT": "0.77598",
+    "RISK_REWARD_RATIO": "7.14",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential selling opportunity. Risk level is low, making it a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 7.14,
+    "QUALITY_SCORE": 74.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 42.098998696975,
+      "key_support": 0.7788566666666666,
+      "key_resistance": 0.7794033333333333,
+      "volatility": 0.07551969509584894,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
