@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-08T09:47:49.099299+00:00",
+    "ENTRY": "1.36169",
+    "STOP_LOSS": "1.36112",
+    "TAKE_PROFIT": "1.36605",
+    "RISK_REWARD_RATIO": "7.65",
+    "ANALYSIS": "The strong bullish trend and moderate strength justify a buy position. Although the RSI is neutral at 65.1, it's not overbought, providing a reasonable entry point.",
+    "ACTUAL_RR_RATIO": 7.65,
+    "QUALITY_SCORE": 76.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 65.12569816051221,
+      "key_support": 1.3611166666666668,
+      "key_resistance": 1.3616933333333334,
+      "volatility": 0.06538092984911982,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
