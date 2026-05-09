@@ -7,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-05-09T20:56:19.440168+00:00",
+    "timestamp": "2026-05-09T22:57:34.365822+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold the EUR/JPY pair based on the given...",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/JPY pair based on the given data and make a trading decision. Let's...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 57.12373646615352,
-      "key_support": 184.6553233333333,
-      "key_resistance": 184.70483666666664,
-      "volatility": 0.11564522013171932,
+      "rsi": 53.44509984452335,
+      "key_support": 184.61401,
+      "key_resistance": 184.63869,
+      "volatility": 0.11540555058504832,
       "volatility_status": "OPTIMAL"
     }
   }
