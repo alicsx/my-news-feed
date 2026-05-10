@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-10T04:04:03.599885+00:00",
+    "ENTRY": "1.36299",
+    "STOP_LOSS": "1.36298",
+    "TAKE_PROFIT": "1.36300",
+    "RISK_REWARD_RATIO": "1.0",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a good entry point for a buy position.",
+    "ACTUAL_RR_RATIO": 1.0,
+    "QUALITY_SCORE": 58.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 58.12206213754043,
+      "key_support": 1.3629833333333332,
+      "key_resistance": 1.3630266666666664,
+      "volatility": 0.06425246542405655,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +32,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-05-09T22:57:34.365822+00:00",
+    "timestamp": "2026-05-10T04:04:19.370584+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/JPY pair based on the given data and make a trading decision. Let's...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out the trading decision for EUR/JPY based on the given data. Let's b...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 53.44509984452335,
-      "key_support": 184.61401,
-      "key_resistance": 184.63869,
-      "volatility": 0.11540555058504832,
+      "rsi": 53.01883672682638,
+      "key_support": 184.64700333333334,
+      "key_resistance": 184.6725966666667,
+      "volatility": 0.11538853142008855,
       "volatility_status": "OPTIMAL"
     }
   }
