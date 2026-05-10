@@ -1,5 +1,29 @@
 [
   {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-10T11:06:57.035590+00:00",
+    "ENTRY": "0.77708",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The STRONG_BEARISH trend conflicts with the NEUTRAL RSI reading, making it difficult to determine a clear trading decision. Therefore, I'm advising to HOLD the position.",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 50.91125998867717,
+      "key_support": 0.7770633333333337,
+      "key_resistance": 0.7770866666666668,
+      "volatility": 0.07178506819377681,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +31,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2026-05-10T09:41:20.487858+00:00",
+    "timestamp": "2026-05-10T11:07:04.979607+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I'm looking at the EUR/JPY pair right now. The price is 184.75837. The trend is neutral wi...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/JPY pair and make a trading decision based on the given market d...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 62.05483616383045,
-      "key_support": 184.75285666666667,
-      "key_resistance": 184.76007333333334,
-      "volatility": 0.11535119025834487,
+      "rsi": 46.79841215357053,
+      "key_support": 184.62878999999998,
+      "key_resistance": 184.63537,
+      "volatility": 0.11533637034533062,
       "volatility_status": "OPTIMAL"
     }
   }
