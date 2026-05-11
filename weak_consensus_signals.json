@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-11T19:59:55.315556+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the USD/CHF forex pair based on the given data and provide a trading dec...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 54.4348632797132,
+      "key_support": 0.7782766666666667,
+      "key_resistance": 0.77846692,
+      "volatility": 0.07034209886267172,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
