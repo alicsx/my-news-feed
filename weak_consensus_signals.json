@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-12T03:59:00.296644+00:00",
+    "ENTRY": "0.77989",
+    "STOP_LOSS": "0.77977",
+    "TAKE_PROFIT": "0.78007",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The trend is neutral, but since the RSI is 68.0, it's not overbought. The price is near the support level, making it a good entry point for a buy trade.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 57.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 68.0113170418086,
+      "key_support": 0.7797666666666667,
+      "key_resistance": 0.7799,
+      "volatility": 0.07048751499010672,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-12T03:58:52.053086+00:00",
+    "ENTRY": "1.35833",
+    "STOP_LOSS": "1.35816",
+    "TAKE_PROFIT": "1.35859",
+    "RISK_REWARD_RATIO": "1.53",
+    "ANALYSIS": "The trend is neutral with moderate strength, but the RSI is at 37.3, indicating a potential buying opportunity. The risk level is low, making this a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 1.53,
+    "QUALITY_SCORE": 53.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 37.338128112067416,
+      "key_support": 1.35816,
+      "key_resistance": 1.3586200000000002,
+      "volatility": 0.06545812334575607,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-12T03:58:43.771427+00:00",
+    "ENTRY": "1.17567",
+    "STOP_LOSS": "1.17565",
+    "TAKE_PROFIT": "1.17570",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the neutral trend with weak strength, RSI at 36.9 is not indicating overbought conditions. The low risk level and volatility also support a buy decision.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 48.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 36.91459743750421,
+      "key_support": 1.17565,
+      "key_resistance": 1.17589,
+      "volatility": 0.05729580360835104,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
