@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-12T23:10:24.961586+00:00",
+    "ENTRY": "1.35410",
+    "STOP_LOSS": "1.35427",
+    "TAKE_PROFIT": "1.34968",
+    "RISK_REWARD_RATIO": "26.0",
+    "ANALYSIS": "The bearish trend and low RSI level indicate a potential selling opportunity. The price is near the resistance level, and a sell order can be placed with a stop loss above the resistance and a take profit below the support level.",
+    "ACTUAL_RR_RATIO": 26.0,
+    "QUALITY_SCORE": 71.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 44.575506564532155,
+      "key_support": 1.3540566666666667,
+      "key_resistance": 1.3542733333333334,
+      "volatility": 0.06683766425320464,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
