@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-15T10:27:12.577440+00:00",
+    "ENTRY": "0.78495",
+    "STOP_LOSS": "0.78449",
+    "TAKE_PROFIT": "0.78564",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Bullish trend with neutral RSI, low risk level, and clear support and resistance levels suggest a buy opportunity.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 76.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 55.68234794242763,
+      "key_support": 0.7844933333333336,
+      "key_resistance": 0.7853366666666668,
+      "volatility": 0.0690182683109608,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-15T10:27:05.177896+00:00",
+    "ENTRY": "1.33677",
+    "STOP_LOSS": "1.33749",
+    "TAKE_PROFIT": "1.33127",
+    "RISK_REWARD_RATIO": "7.64",
+    "ANALYSIS": "The trend is bearish with a very strong strength, which indicates a high probability of further price decline. The RSI is at 35.7, which is neutral and does not indicate overbought conditions. Therefore, a sell decision with a stop loss at the resistance level and a take profit at the support level is recommended.",
+    "ACTUAL_RR_RATIO": 7.64,
+    "QUALITY_SCORE": 75.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 35.7201209151545,
+      "key_support": 1.33607,
+      "key_resistance": 1.3374900000000003,
+      "volatility": 0.07032876966815707,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-15T10:26:58.696558+00:00",
+    "ENTRY": "1.16400",
+    "STOP_LOSS": "1.16441",
+    "TAKE_PROFIT": "1.16338",
+    "RISK_REWARD_RATIO": "1.51",
+    "ANALYSIS": "The EUR/USD is trading in a BEARISH trend with a VERY_STRONG strength, and the RSI is at 32.7, which is considered NEUTRAL. Given the bearish trend and neutral RSI, the trading decision is to SELL. The stop-loss will be set at the resistance level of 1.16441, and the take-profit will be set at the support level of 1.16360, resulting in a risk-reward ratio of 2.33.",
+    "ACTUAL_RR_RATIO": 1.51,
+    "QUALITY_SCORE": 71.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 32.66642935524977,
+      "key_support": 1.1636033333333333,
+      "key_resistance": 1.1644066666666666,
+      "volatility": 0.05643896906782432,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
