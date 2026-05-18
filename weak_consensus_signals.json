@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-18T18:06:59.017389+00:00",
+    "ENTRY": "1.34194",
+    "STOP_LOSS": "1.34165",
+    "TAKE_PROFIT": "1.34320",
+    "RISK_REWARD_RATIO": "1.64",
+    "ANALYSIS": "Despite a very strong neutral trend, the RSI is significantly overbought. A BUY signal is not warranted. A SELL signal is also not warranted due to the neutral trend. A short-term HOLD with a tight stop-loss is recommended, awaiting a clearer signal.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 70.92918090660775,
+      "key_support": 1.3416533333333336,
+      "key_resistance": 1.3420666666666667,
+      "volatility": 0.07260000160132297,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-18T18:07:08.140398+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to figure out what trading decision to make for USD/CHF based on the given d...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 39.77564586898429,
+      "key_support": 0.7848933333333333,
+      "key_resistance": 0.7850666666666667,
+      "volatility": 0.06640508808088143,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
