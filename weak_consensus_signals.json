@@ -1,50 +1,25 @@
 [
   {
     "SYMBOL": "GBP/USD",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.3,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2026-05-19T23:14:21.476019+00:00",
-    "ENTRY": "1.33994",
-    "STOP_LOSS": "1.33988",
-    "TAKE_PROFIT": "1.34003",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The trend is neutral but has strong strength, indicating a potential shift in direction. The RSI is at 49.7, which is in the neutral zone. Given the low risk level, it's a good opportunity to buy with a stop loss at the support level and a take profit at the resistance level.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 58.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 49.68982700078718,
-      "key_support": 1.3398800000000002,
-      "key_resistance": 1.3400300000000003,
-      "volatility": 0.07293823513510965,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2026-05-19T23:14:36.715179+00:00",
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-20T04:20:08.719063+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, let's tackle this query step by step. The user is a professional forex trader looking for ...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze GBP/USD and make a trading decision. Let's see. The market data shows th...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 43.99906645301218,
-      "key_support": 184.63540584,
-      "key_resistance": 184.63921333333334,
-      "volatility": 0.11380013406502318,
+      "rsi": 52.57661647880462,
+      "key_support": 1.3398966666666665,
+      "key_resistance": 1.3402533333333333,
+      "volatility": 0.07283738260428839,
       "volatility_status": "OPTIMAL"
     }
   }
