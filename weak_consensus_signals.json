@@ -2,12 +2,12 @@
   {
     "SYMBOL": "GBP/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
+    "CONFIDENCE": 5.3,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 6,
-    "timestamp": "2026-05-21T16:43:07.292618+00:00",
+    "timestamp": "2026-05-21T20:05:06.212148+00:00",
     "RISK_REWARD_RATIO": "1.8",
     "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold GBP/USD based on the given data. Le...",
     "ENTRY": "N/A",
@@ -16,10 +16,10 @@
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 39.64439573737535,
-      "key_support": 1.3406066666666667,
-      "key_resistance": 1.3410333333333335,
-      "volatility": 0.06802634785286896,
+      "rsi": 56.58123504551903,
+      "key_support": 1.3438166666666664,
+      "key_resistance": 1.3439833333333329,
+      "volatility": 0.06956450206140273,
       "volatility_status": "OPTIMAL"
     }
   }
