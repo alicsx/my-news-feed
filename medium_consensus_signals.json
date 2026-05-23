@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-23T15:11:52.027666+00:00",
+    "ENTRY": "0.78451",
+    "STOP_LOSS": "0.78442",
+    "TAKE_PROFIT": "0.78589",
+    "RISK_REWARD_RATIO": "15.33",
+    "ANALYSIS": "With a neutral trend and moderate strength, the RSI level of 34.1 is not overbought. Given the low risk level and volatility, a buy decision is reasonable.",
+    "ACTUAL_RR_RATIO": 15.33,
+    "QUALITY_SCORE": 62.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 34.08995700789952,
+      "key_support": 0.78442,
+      "key_resistance": 0.7845599999999999,
+      "volatility": 0.06855814052907955,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 5.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-23T15:11:51.334677+00:00",
+    "ENTRY": "184.78197",
+    "STOP_LOSS": "184.77471",
+    "TAKE_PROFIT": "184.79286",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Trend is bullish, RSI is neutral (not overbought), and volatility is low. Risk-reward ratio is acceptable.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 61.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 58.37459525591775,
+      "key_support": 184.77471,
+      "key_resistance": 184.80366,
+      "volatility": 0.07951507665752183,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
