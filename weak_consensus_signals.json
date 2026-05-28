@@ -1,52 +1,27 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.3,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2026-05-27T23:23:58.196242+00:00",
-    "ENTRY": "1.34239",
-    "STOP_LOSS": "1.34214",
-    "TAKE_PROFIT": "1.34276",
-    "RISK_REWARD_RATIO": "1.48",
-    "ANALYSIS": "The trend is neutral but has strong strength, indicating a potential shift in direction. The RSI is at 35.7, which is not overbought. The low risk level and volatility support a buy decision.",
-    "ACTUAL_RR_RATIO": 1.48,
-    "QUALITY_SCORE": 57.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 35.729289053141464,
-      "key_support": 1.3421433333333335,
-      "key_resistance": 1.3425366666666667,
-      "volatility": 0.06633771545666874,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.2,
+    "CONFIDENCE": 7.8,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2026-05-27T23:24:13.021849+00:00",
-    "ENTRY": "185.41839",
-    "STOP_LOSS": "185.38154",
-    "TAKE_PROFIT": "185.47366",
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-05-28T04:21:50.346128+00:00",
+    "ENTRY": "1.15885",
+    "STOP_LOSS": "1.15865",
+    "TAKE_PROFIT": "1.15915",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The trend is weakly bullish, and the RSI is neutral, indicating a potential buying opportunity. The risk level is low, and the volatility is minimal, making this a relatively safe trade.",
+    "ANALYSIS": "The EUR/USD is in a strong bearish trend but the RSI is oversold, indicating a potential reversal. The price is near the support level, making it a good entry point for a buy trade.",
     "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 55.7,
+    "QUALITY_SCORE": 48.3,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 48.78184190833282,
-      "key_support": 185.38153666666665,
-      "key_resistance": 185.43516333333332,
-      "volatility": 0.04259708206198721,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "STRONG_BEARISH",
+      "rsi": 25.33940331721478,
+      "key_support": 1.15865,
+      "key_resistance": 1.1589166666666666,
+      "volatility": 0.05248225642875257,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
