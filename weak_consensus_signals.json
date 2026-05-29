@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
     "CONFIDENCE": 6.0,
-    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-05-29T10:10:23.218077+00:00",
-    "ENTRY": "185.44546",
-    "STOP_LOSS": "185.43726",
-    "TAKE_PROFIT": "185.45776",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with RSI in neutral zone, suggesting an opportunity to go long with a relatively low risk level and a potential reward that is 2 times the risk.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 53.3,
+    "timestamp": "2026-05-29T11:32:27.392012+00:00",
+    "ENTRY": "0.78281",
+    "STOP_LOSS": "0.78304",
+    "TAKE_PROFIT": "0.78247",
+    "RISK_REWARD_RATIO": "1.48",
+    "ANALYSIS": "Bearish trend with RSI in neutral territory suggests potential for further downside. Stop loss placed above resistance, take profit at a level offering a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.48,
+    "QUALITY_SCORE": 58.6,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 50.27136278537675,
-      "key_support": 185.43726,
-      "key_resistance": 185.4553709,
-      "volatility": 0.04492529495993957,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "BEARISH",
+      "rsi": 35.06881280814866,
+      "key_support": 0.7827500000000001,
+      "key_resistance": 0.7830400000000001,
+      "volatility": 0.06834840224290248,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
