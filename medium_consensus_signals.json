@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-30T11:28:18.836582+00:00",
+    "ENTRY": "0.78100",
+    "STOP_LOSS": "0.78105",
+    "TAKE_PROFIT": "0.77955",
+    "RISK_REWARD_RATIO": "29.0",
+    "ANALYSIS": "Strong bearish trend confirmed. RSI is neutral, not oversold, allowing for a sell decision. Stop loss placed above recent resistance, take profit targeting a support level, resulting in a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 29.0,
+    "QUALITY_SCORE": 66.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 36.29353696690843,
+      "key_support": 0.7809933333333333,
+      "key_resistance": 0.7810466666666667,
+      "volatility": 0.06945109236004637,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-05-30T11:28:11.322019+00:00",
+    "ENTRY": "1.34575",
+    "STOP_LOSS": "1.34574",
+    "TAKE_PROFIT": "1.34577",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The bullish trend is weak, but the RSI is neutral, indicating a potentially good entry point. We will buy at the current price and set a stop loss below the support level. Our take profit will be just above the resistance level, aiming for a risk-reward ratio of 1.8.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 65.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 56.085708196035924,
+      "key_support": 1.3457433333333333,
+      "key_resistance": 1.3457966666666665,
+      "volatility": 0.06973506578943996,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
