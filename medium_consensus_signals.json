@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.8,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-06-02T12:06:26.296354+00:00",
-    "ENTRY": "0.78529",
-    "STOP_LOSS": "0.78522",
-    "TAKE_PROFIT": "0.78540",
-    "RISK_REWARD_RATIO": "1.57",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, suggesting a potential buying opportunity with a risk-reward ratio of 2.17.",
-    "ACTUAL_RR_RATIO": 1.57,
-    "QUALITY_SCORE": 64.1,
-    "TECHNICAL_CONTEXT": {
-      "trend": "BULLISH",
-      "rsi": 48.46635489461987,
-      "key_support": 0.7852166666666666,
-      "key_resistance": 0.7853933333333332,
-      "volatility": 0.0693298570182671,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
     "CONFIDENCE": 6.6,
@@ -32,20 +7,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-06-02T12:06:32.138323+00:00",
-    "ENTRY": "186.09334",
-    "STOP_LOSS": "186.07888",
-    "TAKE_PROFIT": "186.11503",
+    "timestamp": "2026-06-02T16:50:51.072547+00:00",
+    "ENTRY": "185.98311",
+    "STOP_LOSS": "185.92444",
+    "TAKE_PROFIT": "186.07112",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, making it a good opportunity to buy with a moderate risk-reward ratio.",
+    "ANALYSIS": "STRONG_BULLISH trend with a moderate strength and neutral RSI, indicating a potential upward movement.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 62.9,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 67.98066243797128,
-      "key_support": 186.07887666666667,
-      "key_resistance": 186.10013333333333,
-      "volatility": 0.04147149562813429,
+      "rsi": 53.32288964998999,
+      "key_support": 185.92444,
+      "key_resistance": 186.03063,
+      "volatility": 0.041691387184732,
       "volatility_status": "EXTENDED_RANGE"
     }
   }
