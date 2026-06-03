@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 6.5,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-06-02T23:55:47.661566+00:00",
-    "ENTRY": "1.16211",
-    "STOP_LOSS": "1.16230",
-    "TAKE_PROFIT": "1.16179",
-    "RISK_REWARD_RATIO": "1.68",
-    "ANALYSIS": "Strong bearish trend confirmed, RSI is neutral, suggesting potential for further downside. Risk-reward ratio is favorable for a short position.",
-    "ACTUAL_RR_RATIO": 1.68,
-    "QUALITY_SCORE": 58.7,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 35.86900140233128,
-      "key_support": 1.1617866666666665,
-      "key_resistance": 1.1623033333333332,
-      "volatility": 0.05320318483726576,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
     "CONFIDENCE": 7.0,
@@ -32,21 +7,46 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-06-02T23:56:12.795975+00:00",
-    "ENTRY": "185.92914",
-    "STOP_LOSS": "185.90839",
-    "TAKE_PROFIT": "185.96026",
+    "timestamp": "2026-06-03T05:04:14.087416+00:00",
+    "ENTRY": "185.87162",
+    "STOP_LOSS": "185.85987",
+    "TAKE_PROFIT": "185.88925",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI (48.1) indicate a potential buying opportunity. The price is near the support level, but the risk level is low, making it a relatively safe trade.",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a potential upward movement. Low risk level and volatility also support a buy decision.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 57.8,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 48.139943723216696,
-      "key_support": 185.9083939,
-      "key_resistance": 185.94460666666666,
-      "volatility": 0.041789157917309916,
+      "rsi": 44.127053690319215,
+      "key_support": 185.85986666666665,
+      "key_resistance": 185.87695333333332,
+      "volatility": 0.04175464995863292,
       "volatility_status": "EXTENDED_RANGE"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-06-03T05:03:50.267478+00:00",
+    "ENTRY": "1.16250",
+    "STOP_LOSS": "1.16254",
+    "TAKE_PROFIT": "1.16244",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI is neutral, suggesting potential for further downside. Risk-reward ratio is favorable for a short position.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 54.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 40.43929644150824,
+      "key_support": 1.1624300000000003,
+      "key_resistance": 1.1625400000000001,
+      "volatility": 0.05315882369426286,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
