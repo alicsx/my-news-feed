@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-06-05T10:06:49.807777+00:00",
+    "ENTRY": "1.16401",
+    "STOP_LOSS": "1.16408",
+    "TAKE_PROFIT": "1.16390",
+    "RISK_REWARD_RATIO": "1.57",
+    "ANALYSIS": "The trend is neutral with weak strength, but the RSI is overbought, indicating a potential reversal. Given the low risk level, a sell decision is made with moderate confidence.",
+    "ACTUAL_RR_RATIO": 1.57,
+    "QUALITY_SCORE": 50.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 70.1783950422948,
+      "key_support": 1.16397,
+      "key_resistance": 1.16408,
+      "volatility": 0.05247203597265055,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 6,
+    "timestamp": "2026-06-05T10:07:12.925175+00:00",
+    "ENTRY": "186.18314",
+    "STOP_LOSS": "186.17607",
+    "TAKE_PROFIT": "186.19485",
+    "RISK_REWARD_RATIO": "1.15",
+    "ANALYSIS": "Strong bullish trend is slightly weakened by overbought RSI. Risk-reward ratio is not ideal for a buy. Awaiting RSI correction or trend confirmation.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 73.00876477179297,
+      "key_support": 186.17607333333333,
+      "key_resistance": 186.19484666666668,
+      "volatility": 0.042066732608963466,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  }
+]
