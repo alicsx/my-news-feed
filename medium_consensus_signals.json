@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-06-06T11:40:23.083634+00:00",
+    "ENTRY": "1.15216",
+    "STOP_LOSS": "1.15211",
+    "TAKE_PROFIT": "1.15390",
+    "RISK_REWARD_RATIO": "34.8",
+    "ANALYSIS": "Strong bearish trend is in place, but RSI is oversold. This indicates a potential reversal opportunity. Buying at the current price with a stop loss below the support level and a take profit above the resistance level.",
+    "ACTUAL_RR_RATIO": 34.8,
+    "QUALITY_SCORE": 67.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 19.404446342612754,
+      "key_support": 1.1521133333333335,
+      "key_resistance": 1.1521666666666668,
+      "volatility": 0.05769710315505488,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
