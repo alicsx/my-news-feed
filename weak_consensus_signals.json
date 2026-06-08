@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
+    "SYMBOL": "GBP/USD",
     "ACTION": "SELL",
-    "CONFIDENCE": 7.3,
+    "CONFIDENCE": 6.3,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 6,
-    "timestamp": "2026-06-08T04:55:24.384116+00:00",
-    "ENTRY": "184.90934",
-    "STOP_LOSS": "184.94087",
-    "TAKE_PROFIT": "184.86204",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The EUR/JPY is in a strong bearish trend with a neutral RSI, indicating a potential selling opportunity. The price is near the resistance level, providing a clear entry point.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 59.0,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-06-08T11:14:37.069528+00:00",
+    "ENTRY": "1.33535",
+    "STOP_LOSS": "1.33596",
+    "TAKE_PROFIT": "1.33444",
+    "RISK_REWARD_RATIO": "1.49",
+    "ANALYSIS": "Strong bearish trend confirmed, RSI is neutral, suggesting potential for further downside. Risk-reward ratio is favorable.",
+    "ACTUAL_RR_RATIO": 1.49,
+    "QUALITY_SCORE": 52.7,
     "TECHNICAL_CONTEXT": {
-      "trend": "BEARISH",
-      "rsi": 58.0477082620303,
-      "key_support": 184.89746666666665,
-      "key_resistance": 184.9408733333333,
-      "volatility": 0.04747796069735369,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "STRONG_BEARISH",
+      "rsi": 58.84744565653751,
+      "key_support": 1.3350433333333334,
+      "key_resistance": 1.3359566666666667,
+      "volatility": 0.0600743939242239,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
