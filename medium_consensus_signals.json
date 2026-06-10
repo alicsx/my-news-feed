@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
+    "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.3,
-    "AGREEMENT_LEVEL": 3,
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-06-10T10:17:53.646576+00:00",
-    "ENTRY": "185.43951",
-    "STOP_LOSS": "185.40839",
-    "TAKE_PROFIT": "185.85379",
-    "RISK_REWARD_RATIO": "13.31",
-    "ANALYSIS": "The trend is neutral but shows a strong strength, indicating a potential shift in direction. The RSI is not overbought, and the volatility is low, making it a suitable time to enter a long position.",
-    "ACTUAL_RR_RATIO": 13.31,
-    "QUALITY_SCORE": 62.2,
+    "timestamp": "2026-06-10T11:40:47.961915+00:00",
+    "ENTRY": "0.79933",
+    "STOP_LOSS": "0.79908",
+    "TAKE_PROFIT": "0.80184",
+    "RISK_REWARD_RATIO": "10.04",
+    "ANALYSIS": "The trend is weakly bullish, and the RSI is neutral, indicating a potential buying opportunity. The price is near the support level, and the volatility is low, making it a relatively safe trade.",
+    "ACTUAL_RR_RATIO": 10.04,
+    "QUALITY_SCORE": 63.8,
     "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 65.80179376049348,
-      "key_support": 185.40838666666667,
-      "key_resistance": 185.44345333333334,
-      "volatility": 0.047979588504028683,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "STRONG_BULLISH",
+      "rsi": 58.71679595577595,
+      "key_support": 0.79908,
+      "key_resistance": 0.7995,
+      "volatility": 0.07337425309703306,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
