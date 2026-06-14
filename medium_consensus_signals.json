@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
+    "SYMBOL": "GBP/USD",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.5,
-    "AGREEMENT_LEVEL": 4,
+    "CONFIDENCE": 6.6,
+    "AGREEMENT_LEVEL": 5,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-06-14T09:51:36.857377+00:00",
-    "ENTRY": "185.45728",
-    "STOP_LOSS": "185.44389",
-    "TAKE_PROFIT": "185.88794",
-    "RISK_REWARD_RATIO": "32.16",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, low volatility and low risk level",
-    "ACTUAL_RR_RATIO": 32.16,
-    "QUALITY_SCORE": 62.3,
+    "TOTAL_MODELS": 9,
+    "timestamp": "2026-06-14T10:51:28.210344+00:00",
+    "ENTRY": "1.34077",
+    "STOP_LOSS": "1.34073",
+    "TAKE_PROFIT": "1.34163",
+    "RISK_REWARD_RATIO": "21.5",
+    "ANALYSIS": "Weak bullish trend with neutral RSI, low volatility, and low risk level supports a buy decision",
+    "ACTUAL_RR_RATIO": 21.5,
+    "QUALITY_SCORE": 64.9,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 55.02459137846365,
-      "key_support": 185.44389000000004,
-      "key_resistance": 185.45788000000002,
-      "volatility": 0.04820318977920843,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "BULLISH",
+      "rsi": 55.27549255427985,
+      "key_support": 1.34073,
+      "key_resistance": 1.34081,
+      "volatility": 0.06213357439011037,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
