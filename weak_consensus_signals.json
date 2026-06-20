@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-06-20T04:25:18.638827+00:00",
+    "ENTRY": "185.07087",
+    "STOP_LOSS": "185.09159",
+    "TAKE_PROFIT": "185.03979",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the bearish trend and RSI of 57.3, which is not oversold, we have reasonable evidence to initiate a sell position in EUR/JPY. The stop-loss will be set just above the resistance level, and the take-profit will be set at a price that maintains a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 58.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 57.31485397269896,
+      "key_support": 185.04459,
+      "key_resistance": 185.09159,
+      "volatility": 0.05843234333597514,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
