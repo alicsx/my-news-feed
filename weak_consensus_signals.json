@@ -1,29 +1,5 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-06-22T05:21:01.096809+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/USD pair based on the given data and decide whether to buy, sell, o...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 38.094075336447816,
-      "key_support": 1.14568,
-      "key_resistance": 1.1458300000000001,
-      "volatility": 0.06705878436192773,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -31,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-06-22T05:21:26.645517+00:00",
+    "timestamp": "2026-06-22T12:22:11.983014+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/JPY pair and make a trading decision based on the given data. Le...",
+    "ANALYSIS": "Extracted from text: \nOkay, I'm looking at the EUR/JPY pair. The price is 185.32733. The trend is neutral with moderate s...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 59.8119291432202,
-      "key_support": 185.21867999999998,
-      "key_resistance": 185.25313999999995,
-      "volatility": 0.05795497130442421,
+      "rsi": 59.700901485270585,
+      "key_support": 185.29322333333334,
+      "key_resistance": 185.38894,
+      "volatility": 0.05809920418453174,
       "volatility_status": "OPTIMAL"
     }
   }
