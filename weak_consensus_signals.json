@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-06-23T04:14:19.727290+00:00",
+    "ENTRY": "1.32469",
+    "STOP_LOSS": "1.32458",
+    "TAKE_PROFIT": "1.32477",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Market is in a strong bearish trend but RSI is neutral. Volatility is low, and risk level is low. Due to the unclear situation, it's better to hold for now.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.41109344040088,
+      "key_support": 1.3245766666666667,
+      "key_resistance": 1.3247733333333334,
+      "volatility": 0.07563051693988623,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
