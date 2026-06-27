@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-06-27T08:47:55.716643+00:00",
-    "ENTRY": "1.31947",
-    "STOP_LOSS": "1.31956",
-    "TAKE_PROFIT": "1.31933",
-    "RISK_REWARD_RATIO": "1.56",
-    "ANALYSIS": "Strong bearish trend and moderate volatility indicate a potential sell opportunity. RSI is neutral, suggesting a possible reversal. Given the low risk level, a calculated stop loss and take profit can be set.",
-    "ACTUAL_RR_RATIO": 1.56,
-    "QUALITY_SCORE": 57.7,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 45.564250919233025,
-      "key_support": 1.3193566666666663,
-      "key_resistance": 1.3195633333333332,
-      "volatility": 0.07629223739388295,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -32,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-06-27T08:48:03.371833+00:00",
+    "timestamp": "2026-06-27T10:11:45.664167+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to figure out whether to buy, sell, or hold USD/CHF based on the given data....",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the USD/CHF currency pair based on the given data and provide a trading ...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 50.2052307123982,
-      "key_support": 0.8094266666666668,
-      "key_resistance": 0.8094833333333334,
-      "volatility": 0.08036929362330132,
+      "rsi": 50.205230712398205,
+      "key_support": 0.8094199999999999,
+      "key_resistance": 0.8094899999999999,
+      "volatility": 0.08010281458336417,
       "volatility_status": "OPTIMAL"
     }
   },
@@ -56,19 +31,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-06-27T08:48:10.417208+00:00",
+    "timestamp": "2026-06-27T10:11:52.534628+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I'm trying to analyze the EUR/JPY pair based on the given data. Let me go through each pie...",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/JPY\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 5,\n  \"ENTRY\": \"1...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 50.30742657655689,
-      "key_support": 184.1173466666667,
-      "key_resistance": 184.21211333333335,
-      "volatility": 0.061505898561233896,
+      "rsi": 51.1017878832657,
+      "key_support": 184.1226266666667,
+      "key_resistance": 184.21873333333335,
+      "volatility": 0.06150694362270893,
       "volatility_status": "OPTIMAL"
     }
   }
