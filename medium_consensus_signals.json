@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-06-27T21:13:43.447589+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/USD\",\n  \"ACTION\": \"SELL\",\n  \"CONFIDENCE\": 8,\n  \"ENTRY\": \"1.13...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "1.13891",
+    "TAKE_PROFIT": "1.13891",
+    "ACTUAL_RR_RATIO": 1.8,
+    "QUALITY_SCORE": 61.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 50.88607913336824,
+      "key_support": 1.1388766666666665,
+      "key_resistance": 1.1389133333333332,
+      "volatility": 0.06933875081716831,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
