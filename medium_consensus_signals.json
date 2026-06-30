@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-06-30T23:21:10.766163+00:00",
+    "ENTRY": "185.63779",
+    "STOP_LOSS": "185.61072",
+    "TAKE_PROFIT": "185.67840",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with neutral RSI (64.2) suggests a buying opportunity. Given the low risk level and acceptable risk-reward ratio, a buy order is recommended.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 65.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 64.21268263920409,
+      "key_support": 185.61072333333334,
+      "key_resistance": 185.65875666666668,
+      "volatility": 0.05980300932308497,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-06-30T23:20:56.502508+00:00",
+    "ENTRY": "1.32568",
+    "STOP_LOSS": "1.32548",
+    "TAKE_PROFIT": "1.32598",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Bullish trend with moderate strength and neutral RSI indicate a potential upward movement. Buying at current price with a stop-loss below support and a take-profit above resistance.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 62.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 56.19159873298598,
+      "key_support": 1.32548,
+      "key_resistance": 1.32588,
+      "volatility": 0.07562487380789357,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
