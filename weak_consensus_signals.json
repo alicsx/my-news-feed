@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-01T21:44:16.793067+00:00",
+    "ENTRY": "0.80915",
+    "STOP_LOSS": "0.80872",
+    "TAKE_PROFIT": "0.81190",
+    "RISK_REWARD_RATIO": "6.4",
+    "ANALYSIS": "Strong bullish trend with weak strength and neutral RSI, indicating a potential upward movement with a relatively safe risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 6.4,
+    "QUALITY_SCORE": 58.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 49.40104052390918,
+      "key_support": 0.8087199999999998,
+      "key_resistance": 0.8092799999999999,
+      "volatility": 0.07667298461264185,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-01T21:44:01.604219+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/USD pair based on the provided market data and guidelines. Let me g...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 40.33145859854059,
+      "key_support": 1.1378466666666667,
+      "key_resistance": 1.1381033333333332,
+      "volatility": 0.06858327360367877,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
