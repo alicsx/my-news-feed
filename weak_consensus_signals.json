@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-03T21:17:29.963684+00:00",
+    "ENTRY": "184.62372",
+    "STOP_LOSS": "184.62645",
+    "TAKE_PROFIT": "184.61939",
+    "RISK_REWARD_RATIO": "1.59",
+    "ANALYSIS": "Strong bearish trend with moderate strength, RSI is neutral, and volatility is low. Given the bearish trend and low volatility, it's a good opportunity to sell with a calculated risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.59,
+    "QUALITY_SCORE": 57.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 58.4033504292361,
+      "key_support": 184.6193933333333,
+      "key_resistance": 184.62645026,
+      "volatility": 0.06159929967413438,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
