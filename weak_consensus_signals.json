@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-05T13:59:52.533608+00:00",
+    "ENTRY": "183.96654",
+    "STOP_LOSS": "183.75946",
+    "TAKE_PROFIT": "184.27716",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend but RSI is oversold, indicating a potential reversal. Volatility is low, and risk level is low, making this trade relatively safe.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 53.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 15.597732924387198,
+      "key_support": 183.75946,
+      "key_resistance": 184.09331,
+      "volatility": 0.059110279171675,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,43 +32,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-05T11:42:08.329368+00:00",
+    "timestamp": "2026-07-05T13:59:49.895691+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, let's tackle this USD/CHF analysis. The user wants a trading decision based on the given data...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold the USD/CHF pair based on the given...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "BEARISH",
-      "rsi": 21.736332919781226,
-      "key_support": 0.80195,
-      "key_resistance": 0.80214,
-      "volatility": 0.07831805036709855,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 4.7,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-05T11:42:17.006126+00:00",
-    "ENTRY": "184.63814",
-    "STOP_LOSS": "184.63758",
-    "TAKE_PROFIT": "184.64340",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "The EUR/JPY is in a strong bearish trend, but the RSI is neutral. The risk level is low, but there's no clear indication of a bullish or bearish reversal. Therefore, holding is the best option for now.",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 54.997880439294555,
-      "key_support": 184.6375833333333,
-      "key_resistance": 184.64339666666663,
-      "volatility": 0.05769298587771787,
+      "rsi": 23.229855493419006,
+      "key_support": 0.8016533333333333,
+      "key_resistance": 0.80214218,
+      "volatility": 0.07831859371940443,
       "volatility_status": "OPTIMAL"
     }
   }
