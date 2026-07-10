@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-10T04:04:42.844041+00:00",
+    "ENTRY": "184.96043",
+    "STOP_LOSS": "184.95704",
+    "TAKE_PROFIT": "184.98025",
+    "RISK_REWARD_RATIO": "5.85",
+    "ANALYSIS": "The EUR/JPY is in a strong bullish trend with a moderate strength and RSI of 23.2, indicating it's oversold. This creates a buying opportunity with a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 5.85,
+    "QUALITY_SCORE": 72.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 23.183122591874067,
+      "key_support": 184.95704333333333,
+      "key_resistance": 184.98024666666666,
+      "volatility": 0.058845144583765385,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
