@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-12T13:46:35.814489+00:00",
+    "RISK_REWARD_RATIO": "3.31",
+    "ANALYSIS": "Extracted from text: {\n  \"SYMBOL\": \"EUR/JPY\",\n  \"ACTION\": \"SELL\",\n  \"CONFIDENCE\": 8,\n  \"ENTRY\": \"185.07959\",\n  \"STOP_LOSS...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "185.28783",
+    "TAKE_PROFIT": "184.39110",
+    "ACTUAL_RR_RATIO": 3.31,
+    "QUALITY_SCORE": 70.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 79.57433675314908,
+      "key_support": 184.87401704,
+      "key_resistance": 185.28783,
+      "volatility": 0.058415109680073525,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
