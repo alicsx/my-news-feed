@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.8,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-14T23:04:00.056521+00:00",
-    "ENTRY": "0.80951",
-    "STOP_LOSS": "0.80948",
-    "TAKE_PROFIT": "0.80955",
-    "RISK_REWARD_RATIO": "1.33",
-    "ANALYSIS": "STRONG_BULLISH trend with weak strength and neutral RSI, indicating a potential buying opportunity with low risk.",
-    "ACTUAL_RR_RATIO": 1.33,
-    "QUALITY_SCORE": 53.6,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 42.81736199242645,
-      "key_support": 0.8094833333333332,
-      "key_resistance": 0.8095471,
-      "volatility": 0.07218094957817983,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 4.4,
@@ -32,43 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-14T23:03:47.237928+00:00",
-    "ENTRY": "1.14202",
+    "timestamp": "2026-07-15T03:19:22.636083+00:00",
+    "ENTRY": "1.14359",
+    "STOP_LOSS": "1.14336",
+    "TAKE_PROFIT": "1.14381",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Neutral trend with weak strength and RSI at 53.7, indicating unclear market conditions.",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
+    "ANALYSIS": "The trend is neutral with weak strength, and RSI is at 60.1, indicating a neutral condition. Since the trend is not clearly bullish or bearish, we will hold for now.",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 53.69390913742254,
-      "key_support": 1.14198,
-      "key_resistance": 1.14204,
-      "volatility": 0.061174420544470295,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-14T23:03:52.929779+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"GBP/USD\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 5,\n  \"ENTRY\": \"1....",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 54.962215624980956,
-      "key_support": 1.33913,
-      "key_resistance": 1.3391799999999998,
-      "volatility": 0.06109860647314263,
+      "rsi": 60.106056553399036,
+      "key_support": 1.1433633333333333,
+      "key_resistance": 1.1438066666666666,
+      "volatility": 0.06131129445940156,
       "volatility_status": "OPTIMAL"
     }
   }
