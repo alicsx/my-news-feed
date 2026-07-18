@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-18T03:18:30.493387+00:00",
+    "ENTRY": "0.80783",
+    "STOP_LOSS": "0.80784",
+    "TAKE_PROFIT": "0.80781",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The bearish trend with moderate strength and neutral RSI indicate a potential selling opportunity. The price is near the resistance level, which may trigger a downward movement.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 58.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 51.85906510951291,
+      "key_support": 0.80781,
+      "key_resistance": 0.80784,
+      "volatility": 0.0740798138383126,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-18T03:18:19.432249+00:00",
+    "ENTRY": "1.14385",
+    "STOP_LOSS": "1.14382",
+    "TAKE_PROFIT": "1.14390",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Bullish trend with weak strength and neutral RSI indicate a potential upward movement, thus a buy decision is taken with a stop loss at the support level and take profit slightly above the current price.",
+    "ACTUAL_RR_RATIO": 1.67,
+    "QUALITY_SCORE": 53.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 48.769940396105376,
+      "key_support": 1.1438233333333334,
+      "key_resistance": 1.1439066666666668,
+      "volatility": 0.05962904504596781,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
