@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-22T10:27:18.932430+00:00",
+    "ENTRY": "186.01129",
+    "STOP_LOSS": "185.97219",
+    "TAKE_PROFIT": "186.40836",
+    "RISK_REWARD_RATIO": "10.16",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, suggesting a buying opportunity with a moderate risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 10.16,
+    "QUALITY_SCORE": 68.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.2678866107084,
+      "key_support": 185.9721933333333,
+      "key_resistance": 186.05141666666663,
+      "volatility": 0.0544326544645896,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-22T10:27:04.116060+00:00",
+    "ENTRY": "1.33722",
+    "STOP_LOSS": "1.33746",
+    "TAKE_PROFIT": "1.33386",
+    "RISK_REWARD_RATIO": "14.0",
+    "ANALYSIS": "The bearish trend and moderate strength in the market indicate a potential downward movement. The RSI is neutral, but considering the trend, a sell action is more reasonable. Risk level is low, making this a relatively safe trade with a calculated risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 14.0,
+    "QUALITY_SCORE": 61.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 36.89465242799581,
+      "key_support": 1.3370666666666668,
+      "key_resistance": 1.3374633333333337,
+      "volatility": 0.058493480768029835,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
