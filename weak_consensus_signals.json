@@ -1,5 +1,80 @@
 [
   {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-22T14:15:36.667823+00:00",
+    "ENTRY": "186.17303",
+    "STOP_LOSS": "186.14892",
+    "TAKE_PROFIT": "186.20920",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, making a BUY opportunity with a risk-reward ratio of 2.0",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 59.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 63.88732902811204,
+      "key_support": 186.14891666666668,
+      "key_resistance": 186.22474333333335,
+      "volatility": 0.05427247635123327,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-22T14:15:44.086871+00:00",
+    "ENTRY": "0.81250",
+    "STOP_LOSS": "0.81248",
+    "TAKE_PROFIT": "0.81278",
+    "RISK_REWARD_RATIO": "14.0",
+    "ANALYSIS": "The STRONG_BULLISH trend and neutral RSI value of 54.9 indicate a potential buying opportunity. Although the trend strength is weak, the risk level is LOW, making this trade relatively safe.",
+    "ACTUAL_RR_RATIO": 14.0,
+    "QUALITY_SCORE": 58.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.92524040529771,
+      "key_support": 0.8124766666666666,
+      "key_resistance": 0.8127833333333333,
+      "volatility": 0.06343670957267074,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-22T14:15:26.344440+00:00",
+    "ENTRY": "1.33854",
+    "STOP_LOSS": "1.33857",
+    "TAKE_PROFIT": "1.33849",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Bearish trend with moderate strength and RSI is neutral, suggesting potential sell opportunity. Entry at current price, stop loss at 1.33905 (above resistance), and take profit at 1.33799 (near support).",
+    "ACTUAL_RR_RATIO": 1.67,
+    "QUALITY_SCORE": 56.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 49.83530007631363,
+      "key_support": 1.3383166666666668,
+      "key_resistance": 1.3385733333333334,
+      "volatility": 0.05587761323629534,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 4.7,
@@ -7,20 +82,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-22T10:32:52.301560+00:00",
-    "ENTRY": "1.14052",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "The strong bearish trend and low volatility indicate a potential reversal, but the neutral RSI and unclear market conditions make it difficult to make a decisive decision. Holding is the safest option for now.",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
+    "timestamp": "2026-07-22T14:15:22.226130+00:00",
+    "ENTRY": "1.14147",
+    "STOP_LOSS": "1.14139",
+    "TAKE_PROFIT": "1.14167",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The strong bearish trend and neutral RSI indicate unclear market conditions, hence holding the position is the most suitable option.",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 43.62471543933867,
-      "key_support": 1.1404666666666665,
-      "key_resistance": 1.140823333333333,
-      "volatility": 0.053773647202207814,
-      "volatility_status": "OPTIMAL"
+      "rsi": 58.1629596862727,
+      "key_support": 1.1413900000000001,
+      "key_resistance": 1.1416700000000002,
+      "volatility": 0.04992800418357575,
+      "volatility_status": "EXTENDED_RANGE"
     }
   }
 ]
