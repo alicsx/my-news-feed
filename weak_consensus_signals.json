@@ -1,26 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 4.7,
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-23T06:37:03.879331+00:00",
-    "ENTRY": "1.14274",
-    "STOP_LOSS": "1.14251",
-    "TAKE_PROFIT": "1.14290",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "The trend is STRONG_BEARISH, but RSI is NEUTRAL. Given the strong bearish trend, it's difficult to initiate a trade with neutral RSI. Holding is the best option until market conditions become clearer.",
-    "QUALITY_SCORE": 0.0,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-23T10:25:34.941857+00:00",
+    "ENTRY": "0.81503",
+    "STOP_LOSS": "0.81488",
+    "TAKE_PROFIT": "0.81526",
+    "RISK_REWARD_RATIO": "1.53",
+    "ANALYSIS": "The strong bullish trend with moderate strength, combined with a neutral RSI reading, suggests a buying opportunity. The risk level is low, and the price is near the support level, making it a relatively safe entry point.",
+    "ACTUAL_RR_RATIO": 1.53,
+    "QUALITY_SCORE": 58.9,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 64.49293579303722,
-      "key_support": 1.1425100000000001,
-      "key_resistance": 1.1429,
-      "volatility": 0.04969247235422015,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "STRONG_BULLISH",
+      "rsi": 67.0836270868349,
+      "key_support": 0.81488,
+      "key_resistance": 0.8152200000000001,
+      "volatility": 0.0631716949883463,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
