@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-26T10:03:50.481534+00:00",
+    "ENTRY": "1.33224",
+    "STOP_LOSS": "1.33226",
+    "TAKE_PROFIT": "1.33147",
+    "RISK_REWARD_RATIO": "38.5",
+    "ANALYSIS": "The STRONG_BEARISH trend and LOW risk level indicate a potential selling opportunity. Although the RSI is not oversold, it's not overbought either, making it a relatively safe trade. A stop-loss at 1.33334 and a take-profit at 1.33114 provide a risk-reward ratio of 2.0, which is acceptable.",
+    "ACTUAL_RR_RATIO": 38.5,
+    "QUALITY_SCORE": 66.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 46.529264563685786,
+      "key_support": 1.3322200000000002,
+      "key_resistance": 1.3322600000000002,
+      "volatility": 0.0564279708091687,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-26T10:04:04.469428+00:00",
+    "ENTRY": "186.38858",
+    "STOP_LOSS": "186.38561",
+    "TAKE_PROFIT": "186.62045",
+    "RISK_REWARD_RATIO": "78.07",
+    "ANALYSIS": "The EUR/JPY is in a strong bullish trend with a moderate strength. The RSI is neutral at 50.7, indicating a possible buying opportunity. Given the low risk level and moderate volatility, a BUY decision is made with a confidence level of 8 out of 10.",
+    "ACTUAL_RR_RATIO": 78.07,
+    "QUALITY_SCORE": 65.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 50.65343888959749,
+      "key_support": 186.38560999999999,
+      "key_resistance": 186.38887,
+      "volatility": 0.04695242305497253,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-26T10:03:57.315787+00:00",
+    "ENTRY": "0.81837",
+    "STOP_LOSS": "0.81837",
+    "TAKE_PROFIT": "0.81837",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Strong bullish trend and neutral RSI (54.9) suggest a buying opportunity. Given the low risk level and volatility (0.06%), a calculated stop loss and take profit are set to ensure a favorable risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 1.8,
+    "QUALITY_SCORE": 60.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.86195177314771,
+      "key_support": 0.8183666666666666,
+      "key_resistance": 0.8183833333333331,
+      "volatility": 0.062480857761447996,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
