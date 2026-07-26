@@ -1,52 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-26T15:12:50.273465+00:00",
-    "ENTRY": "1.13681",
-    "STOP_LOSS": "1.13695",
-    "TAKE_PROFIT": "1.13550",
-    "RISK_REWARD_RATIO": "9.36",
-    "ANALYSIS": "Strong bearish trend with moderate strength and RSI of 33.7, indicating a potential continuation of the downtrend. Given the low risk level and moderate volatility, a sell decision is reasonable with a stop-loss at 1.13725 and a take-profit at 1.13640, resulting in a risk-reward ratio of 2.2.",
-    "ACTUAL_RR_RATIO": 9.36,
-    "QUALITY_SCORE": 64.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 33.68835092367173,
-      "key_support": 1.13675,
-      "key_resistance": 1.1369533333333333,
-      "volatility": 0.05027861486626586,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "USD/CHF",
+    "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
     "CONFIDENCE": 7.2,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-07-26T15:13:05.411956+00:00",
-    "ENTRY": "0.81843",
-    "STOP_LOSS": "0.81840",
-    "TAKE_PROFIT": "0.81847",
-    "RISK_REWARD_RATIO": "1.33",
-    "ANALYSIS": "Strong bullish trend and neutral RSI (55.3) suggest a buy opportunity. The price is currently at support level, and a risk-reward ratio of 2.26 is acceptable.",
-    "ACTUAL_RR_RATIO": 1.33,
-    "QUALITY_SCORE": 62.9,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-26T17:11:29.835971+00:00",
+    "ENTRY": "186.34188",
+    "STOP_LOSS": "186.32339",
+    "TAKE_PROFIT": "186.41156",
+    "RISK_REWARD_RATIO": "3.77",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a potential buying opportunity with a calculated risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 3.77,
+    "QUALITY_SCORE": 65.0,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 55.27205121182182,
-      "key_support": 0.8184033333333334,
-      "key_resistance": 0.8184966666666668,
-      "volatility": 0.06225445988157826,
-      "volatility_status": "OPTIMAL"
+      "rsi": 51.40923873780612,
+      "key_support": 186.32339064,
+      "key_resistance": 186.41155666666668,
+      "volatility": 0.04785972870672303,
+      "volatility_status": "EXTENDED_RANGE"
     }
   }
 ]
