@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-27T19:47:24.053814+00:00",
+    "ENTRY": "1.32958",
+    "STOP_LOSS": "1.32992",
+    "TAKE_PROFIT": "1.32907",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The STRONG_BEARISH trend with MODERATE strength indicates a bearish market. Although the RSI is at 32.2, which is considered neutral, the trend strength is strong enough to justify a sell trade. The risk level is LOW, which further supports this decision.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 61.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 32.19440666329286,
+      "key_support": 1.3293266666666665,
+      "key_resistance": 1.3299233333333331,
+      "volatility": 0.05593481811025495,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-27T19:47:16.489626+00:00",
+    "ENTRY": "1.13724",
+    "STOP_LOSS": "1.13749",
+    "TAKE_PROFIT": "1.13687",
+    "RISK_REWARD_RATIO": "1.48",
+    "ANALYSIS": "The EUR/USD is in a strong bearish trend with moderate strength, and the RSI is at 40.0, indicating a neutral condition. Given the bearish trend and low RSI, it's reasonable to consider selling. The risk level is low, and the stop-loss and take-profit prices are set to maintain a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 1.48,
+    "QUALITY_SCORE": 60.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 39.955654337973776,
+      "key_support": 1.1370966666666666,
+      "key_resistance": 1.1374933333333332,
+      "volatility": 0.05087932335515647,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
