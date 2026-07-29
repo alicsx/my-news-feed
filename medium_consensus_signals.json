@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-29T10:41:30.777352+00:00",
+    "ENTRY": "1.32913",
+    "STOP_LOSS": "1.32930",
+    "TAKE_PROFIT": "1.32879",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The strong bearish trend and neutral RSI suggest a potential continuation of the downtrend. Given the low risk level, a sell trade with a stop loss at 1.33000 and take profit at 1.32800 is recommended, providing a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 62.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 46.18127658419596,
+      "key_support": 1.328786666666667,
+      "key_resistance": 1.3293033333333335,
+      "volatility": 0.05377677086381927,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
