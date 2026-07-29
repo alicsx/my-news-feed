@@ -1,76 +1,50 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 8.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-07-29T17:23:39.108427+00:00",
-    "ENTRY": "0.82005",
-    "STOP_LOSS": "0.81986",
-    "TAKE_PROFIT": "0.82033",
-    "RISK_REWARD_RATIO": "1.47",
-    "ANALYSIS": "The strong bullish trend with a weak strength is still favorable for a buy. The RSI is neutral at 56.3, indicating no overbought condition. The price is close to the resistance level, making it a good entry point.",
-    "ACTUAL_RR_RATIO": 1.47,
-    "QUALITY_SCORE": 54.1,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 56.31106929604371,
-      "key_support": 0.8198600000000003,
-      "key_resistance": 0.8202000000000002,
-      "volatility": 0.06461446300641008,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.3,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-07-29T17:23:46.689022+00:00",
-    "ENTRY": "186.64167",
-    "STOP_LOSS": "186.62855",
-    "TAKE_PROFIT": "186.66135",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with weak strength, neutral RSI, and low risk level. Entry at current price with stop loss at support level and take profit at resistance level.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 51.2,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 59.72368641598626,
-      "key_support": 186.62855333333334,
-      "key_resistance": 186.67099,
-      "volatility": 0.04941060460733686,
-      "volatility_status": "EXTENDED_RANGE"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-29T17:23:24.001416+00:00",
+    "timestamp": "2026-07-29T19:36:18.293491+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze EUR/USD based on the given data and decide on a trading action. Let me g...",
+    "ANALYSIS": "Extracted from text: \nAlright, let me try to work through this problem step by step. So, I'm supposed to analyze the EUR/...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 53.555224606892395,
-      "key_support": 1.1389000000000002,
-      "key_resistance": 1.1394000000000004,
-      "volatility": 0.04986031981479651,
-      "volatility_status": "EXTENDED_RANGE"
+      "rsi": 73.49946931104259,
+      "key_support": 1.143633333333333,
+      "key_resistance": 1.1451466666666665,
+      "volatility": 0.0545034024644743,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-29T19:36:40.980632+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold the EUR/JPY pair based on the given...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 74.30816387442135,
+      "key_support": 187.1124266666667,
+      "key_resistance": 187.22566,
+      "volatility": 0.050406585447045744,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
