@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-29T10:47:23.342538+00:00",
+    "ENTRY": "1.32935",
+    "RISK_REWARD_RATIO": "14.0",
+    "ANALYSIS": "Strong bearish trend with RSI at 47.7, indicating a potential sell opportunity. Price is near resistance, which could lead to a price drop.",
+    "STOP_LOSS": "1.32938",
+    "TAKE_PROFIT": "1.32893",
+    "ACTUAL_RR_RATIO": 14.0,
+    "QUALITY_SCORE": 71.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 47.698585753480494,
+      "key_support": 1.3289333333333333,
+      "key_resistance": 1.3293766666666667,
+      "volatility": 0.05375208177427341,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
