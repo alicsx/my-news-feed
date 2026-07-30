@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-30T17:43:44.385195+00:00",
+    "ENTRY": "0.80450",
+    "STOP_LOSS": "0.80413",
+    "TAKE_PROFIT": "0.80505",
+    "RISK_REWARD_RATIO": "1.49",
+    "ANALYSIS": "The strong bearish trend is weakening, and the RSI is oversold, indicating a potential reversal. The price is near support, making it a good entry point.",
+    "ACTUAL_RR_RATIO": 1.49,
+    "QUALITY_SCORE": 50.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 20.235342754365487,
+      "key_support": 0.80413,
+      "key_resistance": 0.8050266666666666,
+      "volatility": 0.07877304395870652,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
