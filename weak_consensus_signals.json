@@ -1,25 +1,25 @@
 [
   {
-    "SYMBOL": "USD/CHF",
+    "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-07-31T19:46:18.426617+00:00",
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-07-31T21:15:39.863041+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, let me try to figure out what the user is asking for. They want me to act as a professional f...",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/JPY pair based on the given data and make a trading decision. Let's...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "BEARISH",
-      "rsi": 47.366278777412155,
-      "key_support": 0.8078699999999998,
-      "key_resistance": 0.8082099999999999,
-      "volatility": 0.08471733356492867,
+      "rsi": 32.41143863840427,
+      "key_support": 181.40875,
+      "key_resistance": 181.65123000000003,
+      "volatility": 0.12362462195105477,
       "volatility_status": "OPTIMAL"
     }
   }
