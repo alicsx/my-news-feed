@@ -1,49 +1,25 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-30T23:14:36.451962+00:00",
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-07-31T03:41:29.190489+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze GBP/USD based on the given market data and guidelines. Let's start by go...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "BULLISH",
-      "rsi": 72.93592596344492,
-      "key_support": 1.3462133333333333,
-      "key_resistance": 1.3465266666666666,
-      "volatility": 0.061556334438487834,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-07-30T23:14:34.811130+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out whether to BUY, SELL, or HOLD the USD/CHF pair based on the given dat...",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/JPY pair based on the given data and provide a trading decision. Le...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "BEARISH",
-      "rsi": 27.568909678794302,
-      "key_support": 0.8054533333333334,
-      "key_resistance": 0.8057166666666667,
-      "volatility": 0.07882374662506877,
+      "rsi": 46.44597963962334,
+      "key_support": 184.71615333333332,
+      "key_resistance": 184.95795666666666,
+      "volatility": 0.09017403910295677,
       "volatility_status": "OPTIMAL"
     }
   }
