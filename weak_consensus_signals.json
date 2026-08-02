@@ -1,5 +1,53 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-02T23:01:59.333096+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, let me try to figure out the trading decision for EUR/USD based on the given data. So, the cu...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 73.67705138435454,
+      "key_support": 1.1547933333333331,
+      "key_resistance": 1.1548466666666666,
+      "volatility": 0.06038531009817877,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-02T23:02:06.574675+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nAlright, I'm trying to figure out whether to buy, sell, or hold GBP/USD based on the given data. Le...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 70.52823367379432,
+      "key_support": 1.3495166666666665,
+      "key_resistance": 1.3495933333333332,
+      "volatility": 0.06344343388127338,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
@@ -7,19 +55,43 @@
     "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-02T21:04:28.724677+00:00",
+    "timestamp": "2026-08-02T23:02:14.102979+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out what action to take for the USD/CHF pair based on the given data....",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out a trading decision for USD/CHF based on the given data. Let's break i...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "BEARISH",
-      "rsi": 33.4473647690458,
-      "key_support": 0.8068666666666666,
-      "key_resistance": 0.8070733333333332,
-      "volatility": 0.08280964554342038,
+      "rsi": 36.17068031648334,
+      "key_support": 0.8069600000000001,
+      "key_resistance": 0.8070100000000002,
+      "volatility": 0.08282804228289507,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-02T23:02:21.692481+00:00",
+    "ENTRY": "181.67231",
+    "STOP_LOSS": "181.65837",
+    "TAKE_PROFIT": "181.69301",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "The EUR/JPY is in a strong bearish trend, but the RSI is neutral at 47.7, indicating a potential reversal. However, the trend strength is VERY_STRONG, making it difficult to predict a reversal. Therefore, a HOLD decision is made until more clear market conditions emerge.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 47.70771608879787,
+      "key_support": 181.65837333333334,
+      "key_resistance": 181.6930066666667,
+      "volatility": 0.12401761392476926,
       "volatility_status": "OPTIMAL"
     }
   }
