@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-04T14:34:53.203953+00:00",
+    "ENTRY": "181.52087",
+    "STOP_LOSS": "181.60813",
+    "TAKE_PROFIT": "180.68978",
+    "RISK_REWARD_RATIO": "9.52",
+    "ANALYSIS": "Strong bearish trend with RSI at neutral level. Considering the trend strength and volatility, a sell trade with a stop loss above resistance and take profit at support seems reasonable.",
+    "ACTUAL_RR_RATIO": 9.52,
+    "QUALITY_SCORE": 72.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 56.21748014482175,
+      "key_support": 181.47365333333332,
+      "key_resistance": 181.60812666666664,
+      "volatility": 0.1332296781764815,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
