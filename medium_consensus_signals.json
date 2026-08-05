@@ -7,20 +7,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-08-05T14:27:41.421535+00:00",
-    "ENTRY": "1.15529",
-    "STOP_LOSS": "1.15505",
-    "TAKE_PROFIT": "1.15565",
+    "timestamp": "2026-08-05T17:49:51.662467+00:00",
+    "ENTRY": "1.15552",
+    "STOP_LOSS": "1.15514",
+    "TAKE_PROFIT": "1.15609",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with moderate strength, RSI is neutral at 64.3. Price is near support level, with a risk-reward ratio of 2.0. Considering the low risk level, a buy trade is recommended.",
+    "ANALYSIS": "Strong bullish trend and neutral RSI suggest a potential upward continuation. Buying at current price with stop loss at support and take profit at resistance.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 60.5,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 64.27806415583561,
-      "key_support": 1.1550533333333333,
+      "rsi": 63.09212101123557,
+      "key_support": 1.1551366666666667,
       "key_resistance": 1.15571,
-      "volatility": 0.05578323254566069,
+      "volatility": 0.05582567146736943,
       "volatility_status": "OPTIMAL"
     }
   }
