@@ -1,50 +1,25 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.0,
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-07T19:08:05.823825+00:00",
-    "ENTRY": "0.80747",
-    "STOP_LOSS": "0.80740",
-    "TAKE_PROFIT": "0.80758",
-    "RISK_REWARD_RATIO": "1.57",
-    "ANALYSIS": "The bearish trend is weakening with a moderate strength, and the RSI is in a neutral zone. This presents a buying opportunity as the market may be due for a reversal.",
-    "ACTUAL_RR_RATIO": 1.57,
-    "QUALITY_SCORE": 48.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "BEARISH",
-      "rsi": 31.85824238526806,
-      "key_support": 0.8073966666666667,
-      "key_resistance": 0.8075033333333334,
-      "volatility": 0.08318543867157617,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-07T19:08:13.630694+00:00",
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-07T20:51:56.137570+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold the EUR/JPY pair based on the given...",
+    "ANALYSIS": "Extracted from text: \n\n{...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 46.58272906286836,
-      "key_support": 182.21870333333334,
-      "key_resistance": 182.25891666666666,
-      "volatility": 0.13456467763613172,
+      "rsi": 51.53223925360971,
+      "key_support": 182.34026333333335,
+      "key_resistance": 182.39920496,
+      "volatility": 0.13466710791534522,
       "volatility_status": "OPTIMAL"
     }
   }
