@@ -1,25 +1,50 @@
 [
   {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-08T14:40:11.052951+00:00",
+    "ENTRY": "0.80792",
+    "STOP_LOSS": "0.80789",
+    "TAKE_PROFIT": "0.80796",
+    "RISK_REWARD_RATIO": "1.33",
+    "ANALYSIS": "Weak bearish trend with RSI in neutral zone, indicating potential reversal opportunity.",
+    "ACTUAL_RR_RATIO": 1.33,
+    "QUALITY_SCORE": 43.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 40.142215483057775,
+      "key_support": 0.8078933333333334,
+      "key_resistance": 0.8080366666666667,
+      "volatility": 0.08321216218473466,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-08-08T13:05:24.805046+00:00",
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-08T14:40:17.952285+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out the trading decision for EUR/JPY based on the given data. Let's g...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold EUR/JPY based on the given market d...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 52.97135830294004,
-      "key_support": 182.42546000000002,
-      "key_resistance": 182.43360000000004,
-      "volatility": 0.1346611723014667,
+      "rsi": 53.0086443353909,
+      "key_support": 182.42667333333335,
+      "key_resistance": 182.4369566666667,
+      "volatility": 0.1346612817438774,
       "volatility_status": "OPTIMAL"
     }
   }
