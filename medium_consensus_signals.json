@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-13T13:36:04.609378+00:00",
+    "ENTRY": "183.78860",
+    "STOP_LOSS": "183.76141",
+    "TAKE_PROFIT": "183.82939",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The bullish trend and neutral RSI reading suggest a potential upward movement. Given the weak trend strength and low risk level, a cautious BUY decision is made with a risk-reward ratio of approximately 1.7.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 60.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 54.506711475396585,
+      "key_support": 183.7614133333333,
+      "key_resistance": 183.82433666666662,
+      "volatility": 0.13464235700691138,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
