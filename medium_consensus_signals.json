@@ -1,26 +1,26 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
-    "CONFIDENCE": 7.2,
+    "CONFIDENCE": 6.5,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-14T22:32:00.140528+00:00",
-    "ENTRY": "1.35285",
-    "STOP_LOSS": "1.35283",
-    "TAKE_PROFIT": "1.35288",
+    "timestamp": "2026-08-15T01:43:38.927195+00:00",
+    "ENTRY": "184.31982",
+    "STOP_LOSS": "184.31914",
+    "TAKE_PROFIT": "184.32084",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "STRONG_BULLISH trend with moderate strength and neutral RSI, indicating a favorable buying opportunity with low risk.",
+    "ANALYSIS": "The EUR/JPY is in a weak bullish trend with RSI at neutral levels. Given the low risk level and market conditions, a BUY decision seems reasonable.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 60.8,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 54.58940762928444,
-      "key_support": 1.35283334,
-      "key_resistance": 1.3529666666666669,
-      "volatility": 0.06039743709105511,
+      "trend": "BULLISH",
+      "rsi": 61.70722226022387,
+      "key_support": 184.31913666666665,
+      "key_resistance": 184.3547133333333,
+      "volatility": 0.13507096668116864,
       "volatility_status": "OPTIMAL"
     }
   }
