@@ -1,5 +1,30 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-15T18:40:27.863957+00:00",
+    "ENTRY": "1.15697",
+    "STOP_LOSS": "1.15688",
+    "TAKE_PROFIT": "1.15711",
+    "RISK_REWARD_RATIO": "1.56",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating a potential upward movement. Buying at current price with stop loss at support and take profit at resistance.",
+    "ACTUAL_RR_RATIO": 1.56,
+    "QUALITY_SCORE": 62.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 58.425269975788055,
+      "key_support": 1.1568800000000001,
+      "key_resistance": 1.1571700000000003,
+      "volatility": 0.05766455692038911,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "GBP/USD",
     "ACTION": "BUY",
     "CONFIDENCE": 7.2,
@@ -7,20 +32,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-15T16:33:54.681932+00:00",
-    "ENTRY": "1.35339",
-    "STOP_LOSS": "1.35336",
-    "TAKE_PROFIT": "1.35344",
-    "RISK_REWARD_RATIO": "1.67",
-    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a favorable buying opportunity.",
-    "ACTUAL_RR_RATIO": 1.67,
-    "QUALITY_SCORE": 61.6,
+    "timestamp": "2026-08-15T18:40:35.047887+00:00",
+    "ENTRY": "1.35323",
+    "STOP_LOSS": "1.35303",
+    "TAKE_PROFIT": "1.35353",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, suggesting a potential upward movement. Entry at current price, stop loss below support at 1.35303, and take profit above resistance at 1.35334.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 60.8,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 57.194222588725765,
-      "key_support": 1.3533566666666665,
-      "key_resistance": 1.353673333333333,
-      "volatility": 0.06040552318670703,
+      "rsi": 54.37437732966842,
+      "key_support": 1.3530319800000001,
+      "key_resistance": 1.3533433333333333,
+      "volatility": 0.060390956396771465,
       "volatility_status": "OPTIMAL"
     }
   }
