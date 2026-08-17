@@ -7,7 +7,7 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-08-17T12:59:19.091507+00:00",
+    "timestamp": "2026-08-17T14:36:45.624680+00:00",
     "RISK_REWARD_RATIO": "1.8",
     "ANALYSIS": "Extracted from text: \nHere's a thinking process:\n\n1.  **Analyze User Input:**\n   - **Role:** Professional forex trader\n  ...",
     "ENTRY": "N/A",
@@ -16,10 +16,10 @@
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 33.918296627208036,
-      "key_support": 0.8092899999999998,
-      "key_resistance": 0.8097315399999999,
-      "volatility": 0.08272218626167789,
+      "rsi": 30.865127934324892,
+      "key_support": 0.8089166666666667,
+      "key_resistance": 0.8093233333333335,
+      "volatility": 0.08253249817294177,
       "volatility_status": "OPTIMAL"
     }
   }
