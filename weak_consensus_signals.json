@@ -1,49 +1,25 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 4.7,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-08-17T08:54:08.865727+00:00",
-    "ENTRY": "1.16023",
-    "STOP_LOSS": "1.15973",
-    "TAKE_PROFIT": "1.16067",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "Given a strong bullish trend but neutral RSI, and low volatility, it's difficult to make a decisive buy or sell decision. Holding is the safest option until further market signals emerge.",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 68.9706941989962,
-      "key_support": 1.1597299999999997,
-      "key_resistance": 1.1606699999999999,
-      "volatility": 0.057969034956837806,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
+    "CONFIDENCE": 5.2,
+    "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-17T08:54:24.230997+00:00",
+    "timestamp": "2026-08-17T10:40:17.505124+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I'm looking at the USD/CHF pair here. The price is currently at 0.80853. The trend is neut...",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the USD/CHF currency pair based on the provided market data and trading gui...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 13.755234440502392,
-      "key_support": 0.8081466666666666,
-      "key_resistance": 0.8090333333333332,
-      "volatility": 0.08256716628309452,
+      "rsi": 37.60630098946356,
+      "key_support": 0.8100933333333332,
+      "key_resistance": 0.8105766666666664,
+      "volatility": 0.08277280131664318,
       "volatility_status": "OPTIMAL"
     }
   }
