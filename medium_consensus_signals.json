@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.5,
-    "AGREEMENT_LEVEL": 4,
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-08-21T01:49:41.984942+00:00",
-    "ENTRY": "1.16907",
-    "STOP_LOSS": "1.16891",
-    "TAKE_PROFIT": "1.16931",
+    "timestamp": "2026-08-21T03:11:32.840023+00:00",
+    "ENTRY": "0.79887",
+    "STOP_LOSS": "0.79897",
+    "TAKE_PROFIT": "0.79872",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with neutral RSI, indicating potential for further price increase.",
+    "ANALYSIS": "Given the strong bearish trend and the RSI of 42.0, which is not oversold, the current market conditions suggest selling the USD/CHF. The stop-loss is set at 0.79915, just above the resistance level, and the take-profit is set at 0.79859, near the support level, resulting in a risk-reward ratio of 2.0.",
     "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 62.0,
+    "QUALITY_SCORE": 61.9,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 61.76023269083329,
-      "key_support": 1.1689066666666668,
-      "key_resistance": 1.1694833333333334,
-      "volatility": 0.04595291250540387,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "STRONG_BEARISH",
+      "rsi": 41.99850764374769,
+      "key_support": 0.7987300000000002,
+      "key_resistance": 0.7989700000000001,
+      "volatility": 0.07240239809159585,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
