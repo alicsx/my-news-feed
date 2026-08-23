@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-23T18:40:42.914719+00:00",
+    "ENTRY": "1.36434",
+    "STOP_LOSS": "1.36429",
+    "TAKE_PROFIT": "1.36455",
+    "RISK_REWARD_RATIO": "4.2",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, low volatility, and low risk level, making it a good opportunity to buy.",
+    "ACTUAL_RR_RATIO": 4.2,
+    "QUALITY_SCORE": 71.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 52.505602782205095,
+      "key_support": 1.3642900000000002,
+      "key_resistance": 1.3645500000000004,
+      "volatility": 0.048755186966605336,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-23T18:40:50.462625+00:00",
+    "ENTRY": "0.80118",
+    "STOP_LOSS": "0.80119",
+    "TAKE_PROFIT": "0.80112",
+    "RISK_REWARD_RATIO": "6.0",
+    "ANALYSIS": "Strong bearish trend with neutral RSI indicates a potential selling opportunity. Given the low risk level and the price is close to support, a sell order with a stop loss at 0.80112 and a take profit at 0.80105 seems reasonable.",
+    "ACTUAL_RR_RATIO": 6.0,
+    "QUALITY_SCORE": 70.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 51.59048879828166,
+      "key_support": 0.8011166666666666,
+      "key_resistance": 0.8011933333333333,
+      "volatility": 0.07015216529117689,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]

@@ -2,50 +2,26 @@
   {
     "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
-    "CONFIDENCE": 6.3,
+    "CONFIDENCE": 7.3,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-23T16:35:43.269659+00:00",
-    "ENTRY": "185.65642",
-    "STOP_LOSS": "185.59687",
-    "TAKE_PROFIT": "185.74574",
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-23T18:40:57.790298+00:00",
+    "ENTRY": "185.63304",
+    "STOP_LOSS": "185.56229",
+    "TAKE_PROFIT": "185.73917",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with weak strength and neutral RSI (46.9), indicating a potential continuation of the uptrend. Support at 185.59687 and resistance at 185.69593 provide clear levels for entry and exit.",
+    "ANALYSIS": "Strong bullish trend with weak strength and neutral RSI, indicating a potential continuation of the upward trend. The price is close to resistance, suggesting a buy opportunity with a stop loss at the support level and a take profit at the next resistance level.",
     "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 52.7,
+    "QUALITY_SCORE": 48.4,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 46.86169473048754,
-      "key_support": 185.59686666666667,
-      "key_resistance": 185.69592631999998,
-      "volatility": 0.050074414284394374,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 4.7,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-23T16:35:34.576067+00:00",
-    "ENTRY": "0.80117",
-    "STOP_LOSS": "0.80000",
-    "TAKE_PROFIT": "0.80200",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "The trend is strongly bearish, but RSI is neutral. This suggests a possible reversal or consolidation. However, the market conditions are unclear, so a HOLD decision is made.",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 51.62850100267082,
-      "key_support": 0.8011699999999999,
-      "key_resistance": 0.80124806,
-      "volatility": 0.07053145800962894,
-      "volatility_status": "OPTIMAL"
+      "rsi": 45.07564500628736,
+      "key_support": 185.56229368,
+      "key_resistance": 185.63685666666666,
+      "volatility": 0.04968356251056656,
+      "volatility_status": "EXTENDED_RANGE"
     }
   }
 ]
