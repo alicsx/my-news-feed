@@ -2,51 +2,26 @@
   {
     "SYMBOL": "USD/CHF",
     "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 4,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-24T10:44:46.791591+00:00",
-    "ENTRY": "0.80252",
-    "STOP_LOSS": "0.80266",
-    "TAKE_PROFIT": "0.80231",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bearish trend with RSI at 68.8, indicating a potential sell opportunity. Risk level is LOW, making it a relatively safe trade.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 66.8,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 68.78022772978292,
-      "key_support": 0.8024033333333334,
-      "key_resistance": 0.8026566666666667,
-      "volatility": 0.0705100550738104,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "BUY",
     "CONFIDENCE": 7.2,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-08-24T10:44:31.675316+00:00",
-    "ENTRY": "1.16634",
-    "STOP_LOSS": "1.16620",
-    "TAKE_PROFIT": "1.16655",
+    "timestamp": "2026-08-24T13:05:46.103885+00:00",
+    "ENTRY": "0.80250",
+    "STOP_LOSS": "0.80260",
+    "TAKE_PROFIT": "0.80235",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bullish trend with oversold RSI, indicating potential reversal to the upside. Buying at current price with a stop-loss at 1.16590 and a take-profit at 1.16680, targeting a risk-reward ratio of 2.0.",
+    "ANALYSIS": "Strong bearish trend with RSI at 64.7, which is not oversold. Considering the risk level is LOW, a calculated sell trade can be made.",
     "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 60.0,
+    "QUALITY_SCORE": 65.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 28.11597191510024,
-      "key_support": 1.1662033333333335,
-      "key_resistance": 1.1664566666666667,
-      "volatility": 0.045929608925548135,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "STRONG_BEARISH",
+      "rsi": 64.66646916326306,
+      "key_support": 0.8024933333333334,
+      "key_resistance": 0.8025966666666667,
+      "volatility": 0.07046023656195376,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
