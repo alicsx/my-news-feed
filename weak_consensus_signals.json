@@ -1,1 +1,99 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-24T04:55:18.463853+00:00",
+    "ENTRY": "185.61758",
+    "STOP_LOSS": "185.59604",
+    "TAKE_PROFIT": "185.64989",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI, indicating a potential upward movement. Risk level is low, making this trade a reasonable opportunity.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 55.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 48.86285528506649,
+      "key_support": 185.59603862,
+      "key_resistance": 185.66923666666665,
+      "volatility": 0.04888800952859714,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-24T04:54:57.812233+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nAlright, let's dive into the analysis of the EUR/USD pair based on the given data. The user has pro...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 50.75328584340083,
+      "key_support": 1.16799682,
+      "key_resistance": 1.1683533333333334,
+      "volatility": 0.04587974252334227,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-24T04:55:03.679420+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out whether to buy, sell, or hold GBP/USD based on the given data. Let's ...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 52.449819566148484,
+      "key_support": 1.3644666666666667,
+      "key_resistance": 1.3648733333333334,
+      "volatility": 0.04947252003243851,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-24T04:55:10.869180+00:00",
+    "ENTRY": "0.80037",
+    "STOP_LOSS": "0.80012",
+    "TAKE_PROFIT": "0.80039",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The strong bearish trend with a neutral RSI reading suggests indecision in the market. The price is near the support level, and the resistance is close, indicating a potential reversal. However, the low volatility and low risk level make it challenging to make a decisive trading decision.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 41.37008245072027,
+      "key_support": 0.80012,
+      "key_resistance": 0.80039,
+      "volatility": 0.07056488807075365,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
