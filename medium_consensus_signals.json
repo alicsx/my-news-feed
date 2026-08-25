@@ -1,26 +1,26 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "EUR/JPY",
     "ACTION": "BUY",
     "CONFIDENCE": 7.0,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-08-25T08:52:59.348076+00:00",
-    "ENTRY": "1.36391",
-    "STOP_LOSS": "1.36363",
-    "TAKE_PROFIT": "1.36433",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "STRONG_BULLISH trend with neutral RSI (54.6), suggesting a potential continuation of the upward movement.",
-    "ACTUAL_RR_RATIO": 1.5,
+    "timestamp": "2026-08-25T10:41:34.866811+00:00",
+    "ENTRY": "185.75781",
+    "STOP_LOSS": "185.69208",
+    "TAKE_PROFIT": "186.17656",
+    "RISK_REWARD_RATIO": "6.37",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, good entry point to buy with a stop loss at support and a take profit at resistance level.",
+    "ACTUAL_RR_RATIO": 6.37,
     "QUALITY_SCORE": 60.5,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BULLISH",
-      "rsi": 54.56745929741837,
-      "key_support": 1.3636266666666668,
-      "key_resistance": 1.36410784,
-      "volatility": 0.04967879920846249,
+      "rsi": 51.97918354260248,
+      "key_support": 185.69207666666665,
+      "key_resistance": 185.78306333333333,
+      "volatility": 0.047057605551659214,
       "volatility_status": "EXTENDED_RANGE"
     }
   }
