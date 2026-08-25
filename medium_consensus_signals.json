@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "SELL",
-    "CONFIDENCE": 6.5,
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-08-25T07:01:30.536029+00:00",
-    "ENTRY": "0.80419",
-    "STOP_LOSS": "0.80449",
-    "TAKE_PROFIT": "0.80219",
-    "RISK_REWARD_RATIO": "6.67",
-    "ANALYSIS": "Given the neutral trend and overbought RSI, selling at the resistance level 0.80449 and targeting the support level 0.80389 seems like a reasonable strategy. This approach offers a risk-reward ratio of approximately 2.0, which is above the acceptable threshold of 1.5.",
-    "ACTUAL_RR_RATIO": 6.67,
-    "QUALITY_SCORE": 60.2,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-25T08:44:03.440680+00:00",
+    "ENTRY": "1.36355",
+    "STOP_LOSS": "1.36351",
+    "TAKE_PROFIT": "1.36406",
+    "RISK_REWARD_RATIO": "12.75",
+    "ANALYSIS": "Strong bullish trend with neutral RSI, buying at the current price with a stop loss at the support level and a take profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 12.75,
+    "QUALITY_SCORE": 66.2,
     "TECHNICAL_CONTEXT": {
-      "trend": "NEUTRAL",
-      "rsi": 74.50137856518515,
-      "key_support": 0.8038933333333332,
-      "key_resistance": 0.8044866666666665,
-      "volatility": 0.06977446261323329,
-      "volatility_status": "OPTIMAL"
+      "trend": "STRONG_BULLISH",
+      "rsi": 51.38873689929898,
+      "key_support": 1.3635066666666666,
+      "key_resistance": 1.3640633333333332,
+      "volatility": 0.04969314388256861,
+      "volatility_status": "EXTENDED_RANGE"
     }
   }
 ]
