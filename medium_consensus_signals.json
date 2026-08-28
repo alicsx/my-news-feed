@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-08-28T06:05:01.459459+00:00",
+    "ENTRY": "1.35911",
+    "STOP_LOSS": "1.35920",
+    "TAKE_PROFIT": "1.35898",
+    "RISK_REWARD_RATIO": "1.44",
+    "ANALYSIS": "The GBP/USD is in a strong bearish trend with RSI at 48.3, indicating a neutral RSI level. Given the bearish trend and neutral RSI, the decision is to sell at the current price of 1.35911 with a stop loss at 1.35920 and a take profit at 1.35890, resulting in a risk-reward ratio of approximately 2.0.",
+    "ACTUAL_RR_RATIO": 1.44,
+    "QUALITY_SCORE": 64.1,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 48.27971894920799,
+      "key_support": 1.3590533333333334,
+      "key_resistance": 1.3591966666666668,
+      "volatility": 0.04692067139584536,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-28T06:05:21.642489+00:00",
+    "ENTRY": "185.77939",
+    "STOP_LOSS": "185.77641",
+    "TAKE_PROFIT": "185.80440",
+    "RISK_REWARD_RATIO": "8.39",
+    "ANALYSIS": "The trend is weakly bullish, and RSI is neutral, indicating a potential buying opportunity. With a low risk level and a calculated risk-reward ratio of 2.0, this trade seems reasonable.",
+    "ACTUAL_RR_RATIO": 8.39,
+    "QUALITY_SCORE": 60.5,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 56.84884654813882,
+      "key_support": 185.77641333333335,
+      "key_resistance": 185.8043966666667,
+      "volatility": 0.043388853792259395,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  }
+]
