@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.5,
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-08-29T11:00:16.422403+00:00",
-    "ENTRY": "1.35337",
-    "STOP_LOSS": "1.35338",
-    "TAKE_PROFIT": "1.35335",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "The strong bearish trend and low RSI (32.1) indicate a potential selling opportunity. Given the low risk level, a calculated stop-loss and take-profit can be set to manage the trade.",
-    "ACTUAL_RR_RATIO": 2.0,
-    "QUALITY_SCORE": 56.1,
+    "timestamp": "2026-08-29T13:41:46.061210+00:00",
+    "ENTRY": "0.80808",
+    "STOP_LOSS": "0.80777",
+    "TAKE_PROFIT": "0.80855",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "The bullish trend with moderate strength and neutral RSI (58.3) indicates a favorable market condition for buying. The price is close to resistance (0.80822), and the low volatility (0.07%) reduces the risk. A buy order with a stop-loss at support (0.80777) and a take-profit at resistance (0.80822) seems reasonable.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 60.9,
     "TECHNICAL_CONTEXT": {
-      "trend": "BEARISH",
-      "rsi": 32.14415708231292,
-      "key_support": 1.3533066666666667,
-      "key_resistance": 1.3533833333333334,
-      "volatility": 0.048305512699174755,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "BULLISH",
+      "rsi": 58.28141973345339,
+      "key_support": 0.80777,
+      "key_resistance": 0.8082199999999999,
+      "volatility": 0.06785084152418117,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
