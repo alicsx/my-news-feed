@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-31T15:56:33.282385+00:00",
+    "ENTRY": "1.16194",
+    "STOP_LOSS": "1.16206",
+    "TAKE_PROFIT": "1.16176",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend and neutral RSI suggest selling opportunity, with risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 58.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 69.67481611192214,
+      "key_support": 1.1617366666666666,
+      "key_resistance": 1.16206,
+      "volatility": 0.04958744958086998,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-08-31T15:56:57.044870+00:00",
+    "ENTRY": "0.80838",
+    "STOP_LOSS": "0.80824",
+    "TAKE_PROFIT": "0.80859",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Moderate bullish trend with neutral RSI, suggesting a potential upward movement. Given the low risk level and acceptable risk-reward ratio, a buy decision is made with caution.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 55.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 46.884367662630716,
+      "key_support": 0.8082366666666667,
+      "key_resistance": 0.8088833333333334,
+      "volatility": 0.0677805850862086,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
