@@ -1,52 +1,26 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.7,
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
     "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-09-02T12:38:02.547894+00:00",
-    "ENTRY": "1.15793",
-    "STOP_LOSS": "1.15796",
-    "TAKE_PROFIT": "1.15788",
-    "RISK_REWARD_RATIO": "1.67",
-    "ANALYSIS": "Strong bearish trend with low RSI, indicating a potential selling opportunity. Entry at current price, stop loss at resistance level, and take profit at support level.",
-    "ACTUAL_RR_RATIO": 1.67,
-    "QUALITY_SCORE": 59.7,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-02T16:29:16.176996+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nAlright, let's break down the EUR/JPY situation based on the given data. The price is currently at ...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "BEARISH",
-      "rsi": 45.80216423559783,
-      "key_support": 1.1573366666666665,
-      "key_resistance": 1.1579633333333332,
-      "volatility": 0.04922624662419625,
-      "volatility_status": "EXTENDED_RANGE"
-    }
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-09-02T12:38:07.191488+00:00",
-    "ENTRY": "1.34789",
-    "STOP_LOSS": "1.34815",
-    "TAKE_PROFIT": "1.34750",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential sell opportunity.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 57.4,
-    "TECHNICAL_CONTEXT": {
-      "trend": "BEARISH",
-      "rsi": 30.44176362356545,
-      "key_support": 1.34761,
-      "key_resistance": 1.3481466666666666,
-      "volatility": 0.044858840598460396,
-      "volatility_status": "EXTENDED_RANGE"
+      "rsi": 25.037509407806624,
+      "key_support": 184.10982333333334,
+      "key_resistance": 184.15904666666668,
+      "volatility": 0.05204077513797034,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
