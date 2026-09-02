@@ -1,26 +1,26 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
-    "CONFIDENCE": 5.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "CONFIDENCE": 3.5,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-02T04:19:03.718977+00:00",
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-09-02T11:08:27.313630+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze GBP/USD based on the given market data and trading guidelines. Let me start...",
+    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to help a user who is a professional forex trader analyze the USD/CHF pair a...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "BEARISH",
-      "rsi": 28.719379776163915,
-      "key_support": 1.34995,
-      "key_resistance": 1.3501433333333333,
-      "volatility": 0.0446776285266468,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "STRONG_BULLISH",
+      "rsi": 75.12204876766577,
+      "key_support": 0.8151666666666667,
+      "key_resistance": 0.8153233333333334,
+      "volatility": 0.06733588477660833,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
