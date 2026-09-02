@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-02T04:19:03.718977+00:00",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze GBP/USD based on the given market data and trading guidelines. Let me start...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "N/A",
+    "TAKE_PROFIT": "N/A",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 28.719379776163915,
+      "key_support": 1.34995,
+      "key_resistance": 1.3501433333333333,
+      "volatility": 0.0446776285266468,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  }
+]
