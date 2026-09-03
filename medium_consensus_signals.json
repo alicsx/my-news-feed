@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 7.2,
-    "AGREEMENT_LEVEL": 4,
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-03T12:41:12.702933+00:00",
-    "ENTRY": "0.80804",
-    "STOP_LOSS": "0.80773",
-    "TAKE_PROFIT": "0.80851",
-    "RISK_REWARD_RATIO": "1.52",
-    "ANALYSIS": "Strong bullish trend with RSI at 26.1, indicating a potential bounce from oversold levels. Risk level is low, making this a relatively safe trade.",
-    "ACTUAL_RR_RATIO": 1.52,
-    "QUALITY_SCORE": 63.9,
+    "timestamp": "2026-09-03T16:19:29.427805+00:00",
+    "ENTRY": "1.35423",
+    "STOP_LOSS": "1.35424",
+    "TAKE_PROFIT": "1.35421",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "The bearish trend with strong strength and overbought RSI (71.4) indicates a potential sell opportunity. Given the low risk level and strong trend, a sell decision is made with a confidence level of 8.",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 60.7,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 26.12187092525341,
-      "key_support": 0.80773,
-      "key_resistance": 0.8083966666666668,
-      "volatility": 0.06971460596650635,
-      "volatility_status": "OPTIMAL"
+      "trend": "BEARISH",
+      "rsi": 71.44691627173113,
+      "key_support": 1.3538466666666666,
+      "key_resistance": 1.35424,
+      "volatility": 0.04627388574017492,
+      "volatility_status": "EXTENDED_RANGE"
     }
   }
 ]
