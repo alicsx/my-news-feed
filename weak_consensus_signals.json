@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-03T04:17:10.684934+00:00",
+    "ENTRY": "1.34949",
+    "STOP_LOSS": "1.34958",
+    "TAKE_PROFIT": "1.34936",
+    "RISK_REWARD_RATIO": "1.44",
+    "ANALYSIS": "The BEARISH trend with VERY_STRONG strength and LOW risk level suggest a SELL opportunity. Although the RSI is NEUTRAL, the bearish trend takes precedence.",
+    "ACTUAL_RR_RATIO": 1.44,
+    "QUALITY_SCORE": 59.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 49.6326658269164,
+      "key_support": 1.349446666666667,
+      "key_resistance": 1.3495833333333338,
+      "volatility": 0.04624951323710986,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  }
+]
