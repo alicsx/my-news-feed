@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
+    "SYMBOL": "EUR/USD",
     "ACTION": "BUY",
-    "CONFIDENCE": 8.5,
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-07T14:04:27.295370+00:00",
-    "ENTRY": "179.76006",
-    "STOP_LOSS": "179.74205",
-    "TAKE_PROFIT": "179.78708",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bearish trend is in place, but RSI is oversold, indicating a potential reversal. Considering the low risk level, a buy decision is made with a stop loss at the nearest support and a take profit at the resistance level.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 54.6,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-09-07T18:42:08.812484+00:00",
+    "ENTRY": "1.16244",
+    "STOP_LOSS": "1.16229",
+    "TAKE_PROFIT": "1.16451",
+    "RISK_REWARD_RATIO": "13.8",
+    "ANALYSIS": "Strong bullish trend with moderate strength and neutral RSI indicates a potential buying opportunity. Low risk level and reasonable price movement confirm the trade decision.",
+    "ACTUAL_RR_RATIO": 13.8,
+    "QUALITY_SCORE": 61.9,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 27.752496884805666,
-      "key_support": 179.74204999999998,
-      "key_resistance": 179.79506999999995,
-      "volatility": 0.0726574553662315,
-      "volatility_status": "OPTIMAL"
+      "trend": "STRONG_BULLISH",
+      "rsi": 54.64712756825164,
+      "key_support": 1.1622899999999998,
+      "key_resistance": 1.16247,
+      "volatility": 0.049206291770067793,
+      "volatility_status": "EXTENDED_RANGE"
     }
   }
 ]
