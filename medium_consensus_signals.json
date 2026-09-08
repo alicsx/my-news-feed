@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-08T16:32:30.299425+00:00",
+    "ENTRY": "179.33644",
+    "STOP_LOSS": "179.35182",
+    "TAKE_PROFIT": "179.31337",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The strong bearish trend and low RSI (52.7) indicate a potential sell opportunity. Given the low risk level and clear support/resistance levels, a sell decision is made with a moderate confidence level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 52.72988628997658,
+      "key_support": 179.3345875,
+      "key_resistance": 179.35182,
+      "volatility": 0.07774035956756363,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-08T16:32:26.254066+00:00",
+    "ENTRY": "0.80929",
+    "STOP_LOSS": "0.80897",
+    "TAKE_PROFIT": "0.81224",
+    "RISK_REWARD_RATIO": "9.22",
+    "ANALYSIS": "Strong bullish trend with neutral RSI (46.5) suggests a potential upward momentum. Given the low risk level and reasonable risk-reward ratio, a BUY decision is made with a calculated stop-loss at the support level and take-profit at the resistance level.",
+    "ACTUAL_RR_RATIO": 9.22,
+    "QUALITY_SCORE": 60.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 46.47806954266812,
+      "key_support": 0.8089666666666664,
+      "key_resistance": 0.8093433333333332,
+      "volatility": 0.06823061175329806,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
