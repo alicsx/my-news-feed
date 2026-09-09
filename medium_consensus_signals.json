@@ -1,27 +1,52 @@
 [
   {
-    "SYMBOL": "GBP/USD",
+    "SYMBOL": "USD/CHF",
     "ACTION": "BUY",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-09T20:52:15.758131+00:00",
+    "ENTRY": "0.81029",
+    "STOP_LOSS": "0.81015",
+    "TAKE_PROFIT": "0.81333",
+    "RISK_REWARD_RATIO": "21.71",
+    "ANALYSIS": "The trend is weak bullish, which is not strong enough to be considered a clear buying opportunity. However, the RSI is at 56.1, indicating a neutral level. The price is at the support level, which suggests a potential bounce. Considering the low risk level and the potential for a bounce, a buy decision is made with moderate confidence.",
+    "ACTUAL_RR_RATIO": 21.71,
+    "QUALITY_SCORE": 68.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BULLISH",
+      "rsi": 56.073862140815024,
+      "key_support": 0.8101466666666666,
+      "key_resistance": 0.8103433333333333,
+      "volatility": 0.06686480239489345,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
     "CONFIDENCE": 7.2,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-09T12:55:30.382569+00:00",
-    "ENTRY": "1.35498",
-    "STOP_LOSS": "1.35439",
-    "TAKE_PROFIT": "1.35855",
-    "RISK_REWARD_RATIO": "6.05",
-    "ANALYSIS": "The strong bullish trend is still present, and the RSI is not overbought. This suggests a continued upward movement. With the risk level being low, a calculated risk-reward ratio of 2.0 can be applied for this trade.",
-    "ACTUAL_RR_RATIO": 6.05,
-    "QUALITY_SCORE": 60.8,
+    "timestamp": "2026-09-09T20:52:15.797612+00:00",
+    "ENTRY": "178.64056",
+    "STOP_LOSS": "178.65720",
+    "TAKE_PROFIT": "178.61560",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the STRONG_BEARISH trend and RSI of 48.6 (NEUTRAL), there's a reasonable chance the price will continue to fall. A sell order with a stop-loss at the resistance level (178.65720) and a take-profit at the support level (178.59509) seems like a good strategy.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.8,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 52.627296514780774,
-      "key_support": 1.3543899999999998,
-      "key_resistance": 1.3550666199999999,
-      "volatility": 0.04561421406653326,
-      "volatility_status": "EXTENDED_RANGE"
+      "trend": "STRONG_BEARISH",
+      "rsi": 48.632941592591216,
+      "key_support": 178.59509000000003,
+      "key_resistance": 178.65720000000002,
+      "volatility": 0.07974166432446436,
+      "volatility_status": "OPTIMAL"
     }
   }
 ]
