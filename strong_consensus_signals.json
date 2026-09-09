@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-09T12:55:47.129215+00:00",
+    "ENTRY": "178.58007",
+    "STOP_LOSS": "178.58514",
+    "TAKE_PROFIT": "178.57247",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Given the STRONG_BEARISH trend and RSI of 46.3 (NEUTRAL), we have reasonable evidence to initiate a SELL position. The price is near resistance, increasing the likelihood of a downward movement.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 70.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 46.26319599099754,
+      "key_support": 178.43086,
+      "key_resistance": 178.58514,
+      "volatility": 0.07970070558620737,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
