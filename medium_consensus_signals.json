@@ -1,30 +1,5 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.8,
-    "AGREEMENT_LEVEL": 5,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-09T20:52:15.758131+00:00",
-    "ENTRY": "0.81029",
-    "STOP_LOSS": "0.81015",
-    "TAKE_PROFIT": "0.81333",
-    "RISK_REWARD_RATIO": "21.71",
-    "ANALYSIS": "The trend is weak bullish, which is not strong enough to be considered a clear buying opportunity. However, the RSI is at 56.1, indicating a neutral level. The price is at the support level, which suggests a potential bounce. Considering the low risk level and the potential for a bounce, a buy decision is made with moderate confidence.",
-    "ACTUAL_RR_RATIO": 21.71,
-    "QUALITY_SCORE": 68.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 56.073862140815024,
-      "key_support": 0.8101466666666666,
-      "key_resistance": 0.8103433333333333,
-      "volatility": 0.06686480239489345,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "SELL",
     "CONFIDENCE": 7.2,
@@ -32,20 +7,20 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-09T20:52:15.797612+00:00",
-    "ENTRY": "178.64056",
-    "STOP_LOSS": "178.65720",
-    "TAKE_PROFIT": "178.61560",
+    "timestamp": "2026-09-10T00:04:07.304638+00:00",
+    "ENTRY": "178.63279",
+    "STOP_LOSS": "178.63901",
+    "TAKE_PROFIT": "178.62346",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Given the STRONG_BEARISH trend and RSI of 48.6 (NEUTRAL), there's a reasonable chance the price will continue to fall. A sell order with a stop-loss at the resistance level (178.65720) and a take-profit at the support level (178.59509) seems like a good strategy.",
+    "ANALYSIS": "Given the STRONG_BEARISH trend and RSI of 49.0, which is not oversold, it's a good opportunity to sell. The risk level is LOW and volatility is 0.08%, making it a relatively safe trade with a risk-reward ratio of 2.0.",
     "ACTUAL_RR_RATIO": 1.5,
     "QUALITY_SCORE": 66.8,
     "TECHNICAL_CONTEXT": {
       "trend": "STRONG_BEARISH",
-      "rsi": 48.632941592591216,
-      "key_support": 178.59509000000003,
-      "key_resistance": 178.65720000000002,
-      "volatility": 0.07974166432446436,
+      "rsi": 49.02909854427419,
+      "key_support": 178.60423999999998,
+      "key_resistance": 178.63900999999998,
+      "volatility": 0.07996227313772247,
       "volatility_status": "OPTIMAL"
     }
   }
