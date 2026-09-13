@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-09-13T04:34:47.599086+00:00",
+    "ENTRY": "1.16013",
+    "STOP_LOSS": "1.16063",
+    "TAKE_PROFIT": "1.15938",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/USD is in a strong bearish trend, and RSI is neutral, not indicating overbought conditions. Given the low risk level and the potential for a strong bearish move, a sell trade is recommended with a stop loss slightly above the current price and a take profit at a level that maintains a risk-reward ratio above 1.5.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 55.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 52.078355232378115,
+      "key_support": 1.1601000000000001,
+      "key_resistance": 1.1606300000000003,
+      "volatility": 0.04753478685043247,
+      "volatility_status": "EXTENDED_RANGE"
+    }
+  }
+]
