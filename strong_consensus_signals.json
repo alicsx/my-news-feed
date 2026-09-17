@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-17T13:08:52.388354+00:00",
+    "ENTRY": "1.33830",
+    "STOP_LOSS": "1.33847",
+    "TAKE_PROFIT": "1.33336",
+    "RISK_REWARD_RATIO": "29.06",
+    "ANALYSIS": "Strong bearish trend with RSI at 41.2, which is not oversold. Price is close to resistance at 1.33847.",
+    "ACTUAL_RR_RATIO": 29.06,
+    "QUALITY_SCORE": 70.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 41.217231686377964,
+      "key_support": 1.3380833333333337,
+      "key_resistance": 1.338466666666667,
+      "volatility": 0.052837189954021806,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
