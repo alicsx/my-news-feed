@@ -2,24 +2,24 @@
   {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.2,
+    "CONFIDENCE": 4.0,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-09-17T13:21:44.947522+00:00",
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-17T18:08:44.273229+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, I'm looking at the EUR/JPY pair right now. The price is 178.81853, and the trend is neutra...",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the EUR/JPY pair based on the given data and provide a trading decision. Le...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 47.669849074922546,
-      "key_support": 178.80855128,
-      "key_resistance": 178.82680666666667,
-      "volatility": 0.09384201402746589,
+      "rsi": 58.26800200141916,
+      "key_support": 179.06664,
+      "key_resistance": 179.1031,
+      "volatility": 0.09373606784501957,
       "volatility_status": "OPTIMAL"
     }
   }
