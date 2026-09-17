@@ -1,49 +1,25 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 3.5,
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-17T00:18:32.005367+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the USD/CHF pair and decide whether to buy, sell, or hold based on the g...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 77.21414728019198,
-      "key_support": 0.8252466666666667,
-      "key_resistance": 0.8255333333333333,
-      "volatility": 0.07789334223161799,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.5,
+    "CONFIDENCE": 4.2,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-17T00:18:38.917492+00:00",
+    "timestamp": "2026-09-17T07:32:50.086812+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to provide a trading decision for EUR/JPY based on the given data. Let me go throug...",
+    "ANALYSIS": "Extracted from text: \nAlright, I'm trying to figure out the trading decision for EUR/JPY based on the given data. Let's s...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 45.7246146201602,
-      "key_support": 178.89636202,
-      "key_resistance": 178.90434000000002,
-      "volatility": 0.0933556300241638,
+      "rsi": 37.90521471659879,
+      "key_support": 178.57846666666666,
+      "key_resistance": 178.65671333333333,
+      "volatility": 0.09374409906950686,
       "volatility_status": "OPTIMAL"
     }
   }
