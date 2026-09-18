@@ -1,25 +1,50 @@
 [
   {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-09-18T04:26:57.717440+00:00",
+    "ENTRY": "1.14914",
+    "STOP_LOSS": "1.14929",
+    "TAKE_PROFIT": "1.14892",
+    "RISK_REWARD_RATIO": "1.47",
+    "ANALYSIS": "Given the strong bearish trend and RSI of 56.9, which is not oversold, the market conditions favor a sell position. The risk level is low, and the volatility is 0.05%, making this a relatively safe trade. The calculated stop-loss is at the resistance level of 1.14929, and the take-profit is set at a price where the risk-reward ratio is approximately 2.0, ensuring a good balance between risk and reward.",
+    "ACTUAL_RR_RATIO": 1.47,
+    "QUALITY_SCORE": 58.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 56.86140066673612,
+      "key_support": 1.1490633333333333,
+      "key_resistance": 1.1492866666666666,
+      "volatility": 0.054361243965405474,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.2,
-    "AGREEMENT_LEVEL": 4,
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 7,
-    "timestamp": "2026-09-17T22:49:15.957824+00:00",
+    "timestamp": "2026-09-18T04:27:11.858013+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold EUR/JPY right now. Let's go through...",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze EUR/JPY and make a trading decision. Let's go through the data step by step...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 56.95318504651875,
-      "key_support": 179.04437666666664,
-      "key_resistance": 179.10027333333326,
-      "volatility": 0.09375717466541575,
+      "rsi": 82.7483086640401,
+      "key_support": 180.2970833333333,
+      "key_resistance": 180.39130666666665,
+      "volatility": 0.09589668780869218,
       "volatility_status": "OPTIMAL"
     }
   }
