@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.4,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-19T00:08:10.470849+00:00",
+    "ENTRY": "1.33935",
+    "STOP_LOSS": "1.33941",
+    "TAKE_PROFIT": "1.33926",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend with RSI at 60.3, indicating a potential reversal opportunity. Given the low risk level and reasonable RSI value, a sell trade seems justified with a calculated stop-loss and take-profit.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 70.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 60.305855623096946,
+      "key_support": 1.339266666666667,
+      "key_resistance": 1.3394133333333336,
+      "volatility": 0.05425416229584523,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-19T00:08:25.725394+00:00",
+    "ENTRY": "180.20867",
+    "STOP_LOSS": "180.14928",
+    "TAKE_PROFIT": "180.29776",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a strong bullish trend with a neutral RSI reading, indicating a potential buying opportunity.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 70.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 53.29110118876884,
+      "key_support": 180.1492833333333,
+      "key_resistance": 180.22843666666665,
+      "volatility": 0.1000048715302661,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
