@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.4,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-09-19T12:27:36.121322+00:00",
+    "ENTRY": "1.33943",
+    "RISK_REWARD_RATIO": "2.0",
+    "ANALYSIS": "Given the STRONG_BEARISH trend and RSI of 60.5, which is not oversold, the current market conditions suggest selling the GBP/USD pair. The risk level is LOW, and the calculated risk-reward ratio is 2.0, which is acceptable.",
+    "STOP_LOSS": "1.33944",
+    "TAKE_PROFIT": "1.33941",
+    "ACTUAL_RR_RATIO": 2.0,
+    "QUALITY_SCORE": 71.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 60.485314088778765,
+      "key_support": 1.3393833333333336,
+      "key_resistance": 1.3394366666666668,
+      "volatility": 0.05424248964335172,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
