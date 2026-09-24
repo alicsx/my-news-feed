@@ -1,27 +1,27 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "BUY",
-    "CONFIDENCE": 6.8,
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-09-24T13:21:48.149205+00:00",
-    "ENTRY": "180.56795",
-    "STOP_LOSS": "180.53100",
-    "TAKE_PROFIT": "180.62337",
+    "timestamp": "2026-09-24T13:30:22.452238+00:00",
+    "ENTRY": "1.13651",
+    "STOP_LOSS": "1.13693",
+    "TAKE_PROFIT": "1.13588",
     "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "The trend is bullish, but weak, and RSI is neutral, not overbought. This indicates a potential buying opportunity with a risk-reward ratio of 2.0.",
+    "ANALYSIS": "The EUR/USD is in a strong bearish trend with a neutral RSI reading, indicating a potential selling opportunity. Given the low risk level and the presence of a clear support level, a sell trade with a calculated stop-loss and take-profit can be considered.",
     "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 56.0,
+    "QUALITY_SCORE": 59.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "BULLISH",
-      "rsi": 59.9832565917961,
-      "key_support": 180.53099666666665,
-      "key_resistance": 180.6373833333333,
-      "volatility": 0.08827807178216067,
-      "volatility_status": "OPTIMAL"
+      "trend": "STRONG_BEARISH",
+      "rsi": 36.43348059159603,
+      "key_support": 1.13627,
+      "key_resistance": 1.13693,
+      "volatility": 0.04919573858478146,
+      "volatility_status": "EXTENDED_RANGE"
     }
   }
 ]
