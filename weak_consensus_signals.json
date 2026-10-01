@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-01T23:51:32.910387+00:00",
+    "ENTRY": "1.31961",
+    "STOP_LOSS": "1.31950",
+    "TAKE_PROFIT": "1.32441",
+    "RISK_REWARD_RATIO": "43.64",
+    "ANALYSIS": "The STRONG_BEARISH trend is expected to reverse due to the RSI being at 38.7, indicating a potential buying opportunity. The risk level is LOW, making it a suitable trade.",
+    "ACTUAL_RR_RATIO": 43.64,
+    "QUALITY_SCORE": 58.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 38.712548853393926,
+      "key_support": 1.3194966666666665,
+      "key_resistance": 1.3196733333333333,
+      "volatility": 0.05689432175588451,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
