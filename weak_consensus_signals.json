@@ -2,24 +2,24 @@
   {
     "SYMBOL": "GBP/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.8,
+    "CONFIDENCE": 4.2,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-09-30T23:40:03.664220+00:00",
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-01T05:35:27.730497+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out what trading decision to make for GBP/USD based on the given data...",
+    "ANALYSIS": "Extracted from text: \nAlright, I need to analyze the GBP/USD pair based on the provided data and make a trading decision....",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 54.25435522543118,
-      "key_support": 1.3264533333333335,
-      "key_resistance": 1.326686666666667,
-      "volatility": 0.053744072495825176,
+      "rsi": 42.37739169171565,
+      "key_support": 1.32463,
+      "key_resistance": 1.3248966666666666,
+      "volatility": 0.05362285733725945,
       "volatility_status": "OPTIMAL"
     }
   }
