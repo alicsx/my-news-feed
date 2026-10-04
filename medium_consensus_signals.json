@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-04T23:00:44.914472+00:00",
+    "ENTRY": "177.63587",
+    "STOP_LOSS": "177.67468",
+    "TAKE_PROFIT": "177.56720",
+    "RISK_REWARD_RATIO": "1.77",
+    "ANALYSIS": "Given the STRONG_BEARISH trend and the RSI of 45.6 (NEUTRAL), the market conditions are bearish. Therefore, it's reasonable to consider a SELL action. With a risk level of LOW, the risk-reward ratio is acceptable at 2.0.",
+    "ACTUAL_RR_RATIO": 1.77,
+    "QUALITY_SCORE": 69.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 45.58154808925656,
+      "key_support": 177.56719999999999,
+      "key_resistance": 177.67468,
+      "volatility": 0.07918696827727961,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-10-04T23:00:21.149088+00:00",
+    "RISK_REWARD_RATIO": "8.03",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/USD pair based on the given data and come up with a trading deci...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "1.12633",
+    "TAKE_PROFIT": "1.12344",
+    "ACTUAL_RR_RATIO": 8.03,
+    "QUALITY_SCORE": 66.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 55.72054654390644,
+      "key_support": 1.1259485,
+      "key_resistance": 1.1263333333333334,
+      "volatility": 0.05902585657971157,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-04T23:00:37.773718+00:00",
+    "ENTRY": "0.82809",
+    "STOP_LOSS": "0.82842",
+    "TAKE_PROFIT": "0.82759",
+    "RISK_REWARD_RATIO": "1.52",
+    "ANALYSIS": "The trend is bearish, and the RSI is not oversold, indicating a potential selling opportunity. The risk level is low, and the risk-reward ratio is acceptable.",
+    "ACTUAL_RR_RATIO": 1.52,
+    "QUALITY_SCORE": 61.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 37.35737732290105,
+      "key_support": 0.82776,
+      "key_resistance": 0.8284233333333333,
+      "volatility": 0.07573535500710532,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
