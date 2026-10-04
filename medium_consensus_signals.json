@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-10-04T08:19:18.330050+00:00",
+    "ENTRY": "1.12580",
+    "STOP_LOSS": "1.12584",
+    "TAKE_PROFIT": "1.12569",
+    "RISK_REWARD_RATIO": "2.75",
+    "ANALYSIS": "The strong bearish trend and low RSI value (53.4) indicate a potential sell opportunity. The price is also close to the support level (1.12569), increasing the likelihood of a downward movement.",
+    "ACTUAL_RR_RATIO": 2.75,
+    "QUALITY_SCORE": 68.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 53.37726251491911,
+      "key_support": 1.1256866666666667,
+      "key_resistance": 1.1258433333333333,
+      "volatility": 0.06005776209598737,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-04T08:19:29.904764+00:00",
+    "ENTRY": "177.71652",
+    "STOP_LOSS": "177.72359",
+    "TAKE_PROFIT": "177.70592",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, suggesting a continuation of the downtrend. Entry at current price, stop loss at support level, and take profit at resistance level.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 66.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 54.274383459114986,
+      "key_support": 177.69917999999996,
+      "key_resistance": 177.72358999999997,
+      "volatility": 0.07994364584272899,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
