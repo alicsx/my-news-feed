@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-10-08T05:48:53.382968+00:00",
+    "ENTRY": "1.12011",
+    "STOP_LOSS": "1.12031",
+    "TAKE_PROFIT": "1.11981",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "Strong bearish trend with neutral RSI (45.9) indicates room for further downside. Price is near resistance (1.12031), making a short entry favorable with a stop above resistance and target below support.",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 58.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 45.856002140967384,
+      "key_support": 1.1198633333333332,
+      "key_resistance": 1.1203066666666666,
+      "volatility": 0.0649011086635162,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.7,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-10-08T05:49:00.889023+00:00",
+    "ENTRY": "1.32048",
+    "STOP_LOSS": "1.32069",
+    "TAKE_PROFIT": "1.32017",
+    "RISK_REWARD_RATIO": "1.48",
+    "ANALYSIS": "Strong bearish trend with RSI at 36.7 (neutral, not oversold) supports a short position. Entry is near support, targeting a move below 1.32000. Stop loss is placed above recent resistance to manage risk.",
+    "ACTUAL_RR_RATIO": 1.48,
+    "QUALITY_SCORE": 55.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 36.68414500715329,
+      "key_support": 1.320226666666667,
+      "key_resistance": 1.3206933333333335,
+      "volatility": 0.05530628498460506,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
