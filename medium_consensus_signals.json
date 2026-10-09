@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-10-09T15:03:23.846949+00:00",
+    "ENTRY": "1.11970",
+    "STOP_LOSS": "1.11976",
+    "TAKE_PROFIT": "1.11651",
+    "RISK_REWARD_RATIO": "53.17",
+    "ANALYSIS": "Strong bearish trend with RSI at 40.5 (neutral, not oversold) supports a short position. Low volatility and low risk level allow for a tight stop loss above resistance. Targeting support below current price offers a favorable 2:1 risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 53.17,
+    "QUALITY_SCORE": 67.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 40.4766787354169,
+      "key_support": 1.11967,
+      "key_resistance": 1.1197599999999999,
+      "volatility": 0.06652124848064589,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
