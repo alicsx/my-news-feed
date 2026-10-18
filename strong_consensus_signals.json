@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "SELL",
+    "CONFIDENCE": 6.8,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-18T18:34:51.849640+00:00",
+    "ENTRY": "0.82553",
+    "STOP_LOSS": "0.82572",
+    "TAKE_PROFIT": "0.82510",
+    "RISK_REWARD_RATIO": "2.26",
+    "ANALYSIS": "The bearish trend with a strong strength supports a SELL action. Although the RSI is neutral, the bearish trend takes precedence over RSI conditions. A calculated stop-loss and take-profit are set to maintain a risk-reward ratio above 2.0.",
+    "ACTUAL_RR_RATIO": 2.26,
+    "QUALITY_SCORE": 71.2,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 61.21765018779336,
+      "key_support": 0.8251033333333333,
+      "key_resistance": 0.82572,
+      "volatility": 0.0781185234564459,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]

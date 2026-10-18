@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-10-18T18:34:40.764998+00:00",
+    "ENTRY": "1.12082",
+    "STOP_LOSS": "1.12067",
+    "TAKE_PROFIT": "1.12231",
+    "RISK_REWARD_RATIO": "9.93",
+    "ANALYSIS": "The bullish trend is weak, but the RSI is oversold. This presents a buying opportunity with a relatively low risk-reward ratio.",
+    "ACTUAL_RR_RATIO": 9.93,
+    "QUALITY_SCORE": 59.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 29.31104624189709,
+      "key_support": 1.12067,
+      "key_resistance": 1.1223066666666668,
+      "volatility": 0.07744358129005165,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "BUY",
+    "CONFIDENCE": 6.0,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-18T18:34:58.939912+00:00",
+    "ENTRY": "177.07215",
+    "RISK_REWARD_RATIO": "1.5",
+    "ANALYSIS": "The EUR/JPY is in a weak bullish trend with an RSI of 27.5, indicating oversold conditions. This presents a buying opportunity with a calculated risk-reward ratio of 2.0-2.5.",
+    "STOP_LOSS": "177.04446",
+    "TAKE_PROFIT": "177.11369",
+    "ACTUAL_RR_RATIO": 1.5,
+    "QUALITY_SCORE": 57.3,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 27.52362524653349,
+      "key_support": 177.04446,
+      "key_resistance": 177.33002333333332,
+      "volatility": 0.08030172277236182,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
