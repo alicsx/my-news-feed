@@ -1,50 +1,25 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "SELL",
-    "CONFIDENCE": 6.7,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-10-19T04:24:35.013771+00:00",
-    "ENTRY": "0.82419",
-    "STOP_LOSS": "0.82424",
-    "TAKE_PROFIT": "0.82411",
-    "RISK_REWARD_RATIO": "1.6",
-    "ANALYSIS": "Bearish trend with moderate strength and neutral RSI (45.7) supports a short position. Entry is near support, so stop loss is placed above immediate resistance (0.82424) to avoid noise. Take profit targets the next support level, offering a favorable risk-reward ratio.",
-    "ACTUAL_RR_RATIO": 1.6,
-    "QUALITY_SCORE": 57.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "BEARISH",
-      "rsi": 45.67417966375445,
-      "key_support": 0.8241099999999999,
-      "key_resistance": 0.82424,
-      "volatility": 0.07896068019048394,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
+    "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 4.2,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-10-19T04:24:43.105934+00:00",
+    "timestamp": "2026-10-19T12:53:48.230589+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out whether to buy, sell, or hold EUR/JPY based on the given data. Let me...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze EUR/USD and make a trading decision based on the given data. Let's break...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 53.86222249026243,
-      "key_support": 177.5072,
-      "key_resistance": 177.56598000000002,
-      "volatility": 0.08185660649034505,
+      "rsi": 49.89385496871514,
+      "key_support": 1.1221466666666666,
+      "key_resistance": 1.1225002,
+      "volatility": 0.08584002304679045,
       "volatility_status": "OPTIMAL"
     }
   }
