@@ -1,25 +1,49 @@
 [
   {
-    "SYMBOL": "EUR/JPY",
+    "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.5,
-    "AGREEMENT_LEVEL": 4,
+    "CONFIDENCE": 5.0,
+    "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-10-22T04:26:15.340068+00:00",
+    "timestamp": "2026-10-22T11:37:47.651641+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out the trading decision for EUR/JPY based on the given data. Let's b...",
+    "ANALYSIS": "Extracted from text: \nAlright, I need to analyze the EUR/USD pair based on the provided data and guidelines. Let's break ...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 39.949602677210315,
-      "key_support": 177.30452000000002,
-      "key_resistance": 177.36520000000004,
-      "volatility": 0.07334651027102415,
+      "rsi": 31.03236545234049,
+      "key_support": 1.11968,
+      "key_resistance": 1.1203966666666665,
+      "volatility": 0.08006739096234386,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 5.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-22T11:38:01.064356+00:00",
+    "ENTRY": "0.82201",
+    "STOP_LOSS": "0.82198",
+    "TAKE_PROFIT": "0.82246",
+    "RISK_REWARD_RATIO": "2.1",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, no clear buy or sell signals. Volatility is low, and risk level is low.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 42.855589654648476,
+      "key_support": 0.82197692,
+      "key_resistance": 0.8224600000000001,
+      "volatility": 0.0722747514798577,
       "volatility_status": "OPTIMAL"
     }
   }
