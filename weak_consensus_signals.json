@@ -7,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-10-22T21:27:35.876944+00:00",
+    "timestamp": "2026-10-23T00:32:37.844717+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/USD pair based on the given data and make a trading decision. Le...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze EUR/USD and make a trading decision based on the given data. Let me star...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 47.52090224674992,
-      "key_support": 1.1214833333333332,
-      "key_resistance": 1.1217966666666666,
-      "volatility": 0.07993735456556963,
+      "rsi": 52.46737093472922,
+      "key_support": 1.12239,
+      "key_resistance": 1.12267,
+      "volatility": 0.07994842289505781,
       "volatility_status": "OPTIMAL"
     }
   }
