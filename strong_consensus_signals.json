@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "SELL",
+    "CONFIDENCE": 8.3,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-10-25T18:57:29.298731+00:00",
+    "ENTRY": "175.99273",
+    "STOP_LOSS": "176.10605",
+    "TAKE_PROFIT": "175.65303",
+    "RISK_REWARD_RATIO": "3.0",
+    "ANALYSIS": "Strong bearish trend with VERY_STRONG strength, and RSI is overbought, indicating a potential reversal. Selling at current price with a stop-loss at resistance (176.10605) and take-profit at support (175.91117), aiming for a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 3.0,
+    "QUALITY_SCORE": 70.4,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 82.2422802138497,
+      "key_support": 175.91116666666667,
+      "key_resistance": 176.10605,
+      "volatility": 0.07133455947385366,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
