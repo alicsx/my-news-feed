@@ -1,49 +1,25 @@
 [
   {
-    "SYMBOL": "EUR/USD",
+    "SYMBOL": "GBP/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.0,
-    "AGREEMENT_LEVEL": 3,
+    "CONFIDENCE": 4.2,
+    "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-10-27T12:00:00.039968+00:00",
+    "timestamp": "2026-10-27T14:06:10.719764+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to help the user by providing a trading decision for EUR/USD based on the given dat...",
+    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold GBP/USD based on the given data. Le...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 25.99344535957216,
-      "key_support": 1.1141666666666665,
-      "key_resistance": 1.1146533333333333,
-      "volatility": 0.07204777184307605,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "GBP/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 4.7,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-10-27T12:00:05.099237+00:00",
-    "ENTRY": "1.33207",
-    "STOP_LOSS": "1.33202",
-    "TAKE_PROFIT": "1.33260",
-    "RISK_REWARD_RATIO": "10.6",
-    "ANALYSIS": "Trend is neutral and RSI is neutral; no clear bias for a directional move. Holding is the most prudent action given the current market conditions.",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 32.101982576180895,
-      "key_support": 1.3320166666666664,
-      "key_resistance": 1.332603333333333,
-      "volatility": 0.055920761224350655,
+      "rsi": 38.45996404947308,
+      "key_support": 1.3320533333333333,
+      "key_resistance": 1.3324466666666666,
+      "volatility": 0.05594322895101415,
       "volatility_status": "OPTIMAL"
     }
   }
