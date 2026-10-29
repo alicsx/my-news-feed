@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/JPY",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.6,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-10-29T12:48:37.168363+00:00",
+    "ENTRY": "176.01056",
+    "STOP_LOSS": "175.95594",
+    "TAKE_PROFIT": "176.02185",
+    "RISK_REWARD_RATIO": "1.8",
+    "ANALYSIS": "Trend is neutral, RSI is neutral, but price is near resistance. Further confirmation needed before making a decision.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 52.87964311312867,
+      "key_support": 175.95593666666662,
+      "key_resistance": 176.02184788,
+      "volatility": 0.06639875656047212,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
