@@ -931246,3 +931246,265 @@ message: "API key not valid. Please pass a valid API key."
   groq: 12/10000 (9988 remaining)
 
 2026-10-30 05:31:51,593 - INFO - 🏁 Enhanced system execution completed successfully with signals!
+2026-10-30 12:39:30,347 - INFO - 🧠 Starting Enhanced Forex Analysis System (Advanced AI Engine)
+2026-10-30 12:39:30,348 - INFO - 🧪 Using default currency pairs: EUR/USD, GBP/USD, USD/CHF, EUR/JPY
+2026-10-30 12:39:30,348 - INFO - 🧠 Currency pairs to analyze: EUR/USD, GBP/USD, USD/CHF, EUR/JPY
+2026-10-30 12:39:30,349 - INFO - ✅ GeminiDirectSignalAgent initialized with gemini-1.5-flash
+2026-10-30 12:39:30,349 - INFO - ✨ Risk Configuration: Equity=$10000, Risk=1.0%, Kelly Cap=0.5, Max Leverage=30.0x
+2026-10-30 12:39:30,349 - INFO - ✨ Filter Mode: FLEXIBLE
+2026-10-30 12:39:30,349 - INFO - 🗂️ Starting enhanced analysis for 4 currency pairs
+2026-10-30 12:39:30,461 - WARNING - ❗ Gemini model discovery failed: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-10-30 12:39:30,543 - WARNING - ❗ Cloudflare API returned status 404
+2026-10-30 12:39:30,566 - INFO - 🧠 Free tier Gemini models available: ['gemini-1.5-flash', 'gemini-2.0-flash-exp', 'gemini-1.5-pro']
+2026-10-30 12:39:30,566 - INFO - 🧭 google_gemini model diversity: {'gemini': 3}
+2026-10-30 12:39:30,566 - INFO - 🧭 cloudflare model diversity: {'llama': 3, 'gemma': 1, 'mistral': 1, 'qwen': 2}
+2026-10-30 12:39:30,567 - INFO - 🧭 groq model diversity: {'unknown': 8, 'llama': 2, 'qwen': 1}
+2026-10-30 12:39:30,567 - INFO - 🧠 Total discovered models: Gemini(3), Cloudflare(7), Groq(11)
+2026-10-30 12:39:30,567 - INFO - 🧠 AI Models initialized dynamically with diversity
+2026-10-30 12:39:30,567 - INFO - 🚀 Starting enhanced analysis for EUR/USD
+2026-10-30 12:39:30,567 - INFO - 📊 API Usage Summary:
+  google_gemini: 4/1500 (1496 remaining)
+  cloudflare: 13/10000 (9987 remaining)
+  groq: 12/10000 (9988 remaining)
+
+2026-10-30 12:39:30,567 - INFO - 🚀 Starting enhanced analysis for GBP/USD
+2026-10-30 12:39:30,567 - INFO - 📊 API Usage Summary:
+  google_gemini: 4/1500 (1496 remaining)
+  cloudflare: 13/10000 (9987 remaining)
+  groq: 12/10000 (9988 remaining)
+
+2026-10-30 12:39:30,568 - INFO - 🚀 Starting enhanced analysis for USD/CHF
+2026-10-30 12:39:30,568 - INFO - 📊 API Usage Summary:
+  google_gemini: 4/1500 (1496 remaining)
+  cloudflare: 13/10000 (9987 remaining)
+  groq: 12/10000 (9988 remaining)
+
+2026-10-30 12:39:30,568 - INFO - 🚀 Starting enhanced analysis for EUR/JPY
+2026-10-30 12:39:30,568 - INFO - 📊 API Usage Summary:
+  google_gemini: 4/1500 (1496 remaining)
+  cloudflare: 13/10000 (9987 remaining)
+  groq: 12/10000 (9988 remaining)
+
+2026-10-30 12:39:30,777 - INFO - ✅ TwelveData: 500 candles for EUR/USD (4h)
+2026-10-30 12:39:38,205 - INFO - ✅ TwelveData: 500 candles for GBP/USD (4h)
+2026-10-30 12:39:45,740 - INFO - ✅ TwelveData: 500 candles for USD/CHF (4h)
+2026-10-30 12:39:53,217 - INFO - ✅ TwelveData: 500 candles for EUR/JPY (4h)
+2026-10-30 12:40:00,724 - INFO - ✅ TwelveData: 500 candles for EUR/USD (1h)
+2026-10-30 12:40:00,724 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2026-10-30 12:40:00,794 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2026-10-30 12:40:00,855 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2026-10-30 12:40:00,858 - INFO - ✅ EUR/USD volatility 0.07% within acceptable range
+2026-10-30 12:40:00,858 - INFO - 📊 Provider capacity: Gemini=3, Cloudflare=7, Groq=11
+2026-10-30 12:40:00,858 - INFO - 🧠 Selected diverse model: google_gemini/gemini-1.5-flash (Family: gemini)
+2026-10-30 12:40:00,858 - INFO - 🧠 Selected diverse model: cloudflare/@cf/meta/llama-3.1-8b-instruct (Family: llama)
+2026-10-30 12:40:00,858 - INFO - 🧠 Selected diverse model: cloudflare/@cf/google/gemma-3-12b-it (Family: gemma)
+2026-10-30 12:40:00,859 - INFO - 🧠 Selected diverse model: cloudflare/@cf/mistral/mistral-small-3.1-24b-instruct (Family: mistral)
+2026-10-30 12:40:00,859 - INFO - 🧠 Selected diverse model: cloudflare/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b (Family: qwen)
+2026-10-30 12:40:00,859 - INFO - 🧭 Model Diversity: {'gemini': 1, 'llama': 1, 'gemma': 1, 'mistral': 1, 'qwen': 1}
+2026-10-30 12:40:00,859 - INFO - 🧠 5 diverse models selected: [('google_gemini', 'gemini-1.5-flash'), ('cloudflare', '@cf/meta/llama-3.1-8b-instruct'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('cloudflare', '@cf/mistral/mistral-small-3.1-24b-instruct'), ('cloudflare', '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b')]
+2026-10-30 12:40:00,859 - INFO - 🧠 Using 5 diverse AI models for EUR/USD
+2026-10-30 12:40:00,961 - ERROR - ❗ Gemini analysis error for EUR/USD: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-10-30 12:40:00,966 - ERROR - ❗ Cloudflare API error for EUR/USD: 403 - {"errors":[{"message":"AiError: Ai: This account is not allowed to access @cf/google/gemma-3-12b-it. (3c6fe643-b688-4116-b9c2-87654b449085)","code":5018}],"success":false,"result":{},"messages":[]}
+2026-10-30 12:40:00,968 - ERROR - ❗ Cloudflare API error for EUR/USD: 400 - {"success":false,"errors":[{"code":7000,"message":"No route for that URI"}],"messages":[],"result":null}
+2026-10-30 12:40:00,969 - WARNING - ❗ Model cloudflare/@cf/mistral/mistral-small-3.1-24b-instruct added to failed list
+2026-10-30 12:40:00,969 - WARNING - Model route invalid/deprecated on Cloudflare: @cf/mistral/mistral-small-3.1-24b-instruct; removed from rotation.
+2026-10-30 12:40:01,666 - INFO - ✅ Cloudflare-@cf/meta/llama-3.1-8b-instruct signal for EUR/USD: BUY
+2026-10-30 12:40:08,237 - INFO - ✅ TwelveData: 500 candles for GBP/USD (1h)
+2026-10-30 12:40:08,238 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2026-10-30 12:40:08,298 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2026-10-30 12:40:08,358 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2026-10-30 12:40:08,361 - INFO - ✅ GBP/USD volatility 0.06% within acceptable range
+2026-10-30 12:40:08,362 - INFO - 📊 Provider capacity: Gemini=3, Cloudflare=7, Groq=11
+2026-10-30 12:40:08,362 - INFO - 🧠 Selected diverse model: google_gemini/gemini-1.5-flash (Family: gemini)
+2026-10-30 12:40:08,362 - INFO - 🧠 Selected diverse model: cloudflare/@cf/meta/llama-3.1-8b-instruct (Family: llama)
+2026-10-30 12:40:08,362 - INFO - 🧠 Selected diverse model: cloudflare/@cf/google/gemma-3-12b-it (Family: gemma)
+2026-10-30 12:40:08,362 - INFO - 🧠 Selected diverse model: cloudflare/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b (Family: qwen)
+2026-10-30 12:40:08,362 - INFO - 🧠 Selected diverse model: groq/whisper-large-v3 (Family: unknown)
+2026-10-30 12:40:08,362 - INFO - 🧭 Model Diversity: {'gemini': 1, 'llama': 1, 'gemma': 1, 'qwen': 1, 'unknown': 1}
+2026-10-30 12:40:08,362 - INFO - 🧠 5 diverse models selected: [('google_gemini', 'gemini-1.5-flash'), ('cloudflare', '@cf/meta/llama-3.1-8b-instruct'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('cloudflare', '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'), ('groq', 'whisper-large-v3')]
+2026-10-30 12:40:08,362 - INFO - 🧠 Using 5 diverse AI models for GBP/USD
+2026-10-30 12:40:08,417 - ERROR - ❗ Groq API error for GBP/USD: 400 - {"error":{"message":"The model `whisper-large-v3` does not support chat completions","type":"invalid_request_error"}}
+
+2026-10-30 12:40:08,430 - ERROR - ❗ Gemini analysis error for GBP/USD: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-10-30 12:40:08,466 - ERROR - ❗ Cloudflare API error for GBP/USD: 403 - {"errors":[{"message":"AiError: Ai: This account is not allowed to access @cf/google/gemma-3-12b-it. (cf9046d8-21d5-44da-b8b7-e73e5fd49824)","code":5018}],"success":false,"result":{},"messages":[]}
+2026-10-30 12:40:09,157 - INFO - ✅ Cloudflare-@cf/meta/llama-3.1-8b-instruct signal for GBP/USD: BUY
+2026-10-30 12:40:10,284 - WARNING - ⚠️ Cloudflare-@cf/deepseek-ai/deepseek-r1-distill-qwen-32b response for EUR/USD lacks valid JSON format, trying text extraction...
+2026-10-30 12:40:10,284 - INFO - ✅ Cloudflare-@cf/deepseek-ai/deepseek-r1-distill-qwen-32b text-extracted signal for EUR/USD: HOLD
+2026-10-30 12:40:10,286 - INFO - 📊 Results: 2 successful, 3 failed
+2026-10-30 12:40:10,287 - INFO - 🔁 Backfilling: need 3 more successful model outputs for EUR/USD
+2026-10-30 12:40:10,331 - ERROR - ❗ Groq API error for EUR/USD: 400 - {"error":{"message":"The model `whisper-large-v3` does not support chat completions","type":"invalid_request_error"}}
+
+2026-10-30 12:40:10,338 - ERROR - ❗ Groq API error for EUR/USD: 400 - {"error":{"message":"`max_tokens` must be less than or equal to `512`, the maximum value for `max_tokens` is less than the `context_window` for this model","type":"invalid_request_error","param":"max_tokens"}}
+
+2026-10-30 12:40:10,773 - INFO - ✅ Groq-qwen/qwen3.8-27b signal for EUR/USD: HOLD
+2026-10-30 12:40:10,774 - INFO - 📊 Signal combination for EUR/USD: {'BUY': 1, 'HOLD': 4}
+2026-10-30 12:40:10,774 - INFO - ✅ Enhanced signal for EUR/USD: HOLD (Quality: 0.0/100, Agreement: 4/8)
+2026-10-30 12:40:15,736 - INFO - ✅ TwelveData: 500 candles for USD/CHF (1h)
+2026-10-30 12:40:15,737 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2026-10-30 12:40:15,798 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2026-10-30 12:40:15,859 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2026-10-30 12:40:15,862 - INFO - ✅ USD/CHF volatility 0.08% within acceptable range
+2026-10-30 12:40:15,862 - INFO - 📊 Provider capacity: Gemini=3, Cloudflare=7, Groq=11
+2026-10-30 12:40:15,863 - INFO - 🧠 Selected diverse model: google_gemini/gemini-1.5-flash (Family: gemini)
+2026-10-30 12:40:15,863 - INFO - 🧠 Selected diverse model: cloudflare/@cf/meta/llama-3.1-8b-instruct (Family: llama)
+2026-10-30 12:40:15,863 - INFO - 🧠 Selected diverse model: cloudflare/@cf/google/gemma-3-12b-it (Family: gemma)
+2026-10-30 12:40:15,863 - INFO - 🧠 Selected diverse model: cloudflare/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b (Family: qwen)
+2026-10-30 12:40:15,863 - INFO - 🧠 Selected diverse model: groq/whisper-large-v3 (Family: unknown)
+2026-10-30 12:40:15,863 - INFO - 🧭 Model Diversity: {'gemini': 1, 'llama': 1, 'gemma': 1, 'qwen': 1, 'unknown': 1}
+2026-10-30 12:40:15,863 - INFO - 🧠 5 diverse models selected: [('google_gemini', 'gemini-1.5-flash'), ('cloudflare', '@cf/meta/llama-3.1-8b-instruct'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('cloudflare', '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'), ('groq', 'whisper-large-v3')]
+2026-10-30 12:40:15,863 - INFO - 🧠 Using 5 diverse AI models for USD/CHF
+2026-10-30 12:40:15,915 - ERROR - ❗ Groq API error for USD/CHF: 400 - {"error":{"message":"The model `whisper-large-v3` does not support chat completions","type":"invalid_request_error"}}
+
+2026-10-30 12:40:15,915 - ERROR - ❗ Cloudflare API error for USD/CHF: 403 - {"errors":[{"message":"AiError: Ai: This account is not allowed to access @cf/google/gemma-3-12b-it. (74220b4b-0296-4cbc-a6ce-7124469f9cf4)","code":5018}],"success":false,"result":{},"messages":[]}
+2026-10-30 12:40:15,931 - ERROR - ❗ Gemini analysis error for USD/CHF: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-10-30 12:40:16,017 - WARNING - ⚠️ Cloudflare-@cf/deepseek-ai/deepseek-r1-distill-qwen-32b response for GBP/USD lacks valid JSON format, trying text extraction...
+2026-10-30 12:40:16,017 - INFO - ✅ Cloudflare-@cf/deepseek-ai/deepseek-r1-distill-qwen-32b text-extracted signal for GBP/USD: HOLD
+2026-10-30 12:40:16,019 - INFO - 📊 Results: 2 successful, 3 failed
+2026-10-30 12:40:16,020 - INFO - 🔁 Backfilling: need 3 more successful model outputs for GBP/USD
+2026-10-30 12:40:16,065 - ERROR - ❗ Groq API error for GBP/USD: 400 - {"error":{"message":"`max_tokens` must be less than or equal to `512`, the maximum value for `max_tokens` is less than the `context_window` for this model","type":"invalid_request_error","param":"max_tokens"}}
+
+2026-10-30 12:40:16,460 - INFO - ✅ Groq-qwen/qwen3.8-27b signal for GBP/USD: BUY
+2026-10-30 12:40:16,783 - INFO - ✅ Cloudflare-@cf/meta/llama-3.1-8b-instruct signal for USD/CHF: BUY
+2026-10-30 12:40:16,856 - INFO - ✅ Groq-openai/gpt-oss-20b signal for GBP/USD: BUY
+2026-10-30 12:40:16,857 - INFO - 📊 Signal combination for GBP/USD: {'BUY': 4, 'HOLD': 1}
+2026-10-30 12:40:16,858 - INFO - ✅ Enhanced signal for GBP/USD: BUY (Quality: 63.5/100, Agreement: 4/8)
+2026-10-30 12:40:22,695 - WARNING - ⚠️ Cloudflare-@cf/deepseek-ai/deepseek-r1-distill-qwen-32b response for USD/CHF lacks valid JSON format, trying text extraction...
+2026-10-30 12:40:22,695 - INFO - ✅ Cloudflare-@cf/deepseek-ai/deepseek-r1-distill-qwen-32b text-extracted signal for USD/CHF: SELL
+2026-10-30 12:40:22,697 - INFO - 📊 Results: 2 successful, 3 failed
+2026-10-30 12:40:22,697 - INFO - 🔁 Backfilling: need 3 more successful model outputs for USD/CHF
+2026-10-30 12:40:22,748 - ERROR - ❗ Groq API error for USD/CHF: 400 - {"error":{"message":"`max_tokens` must be less than or equal to `512`, the maximum value for `max_tokens` is less than the `context_window` for this model","type":"invalid_request_error","param":"max_tokens"}}
+
+2026-10-30 12:40:23,155 - INFO - ✅ Groq-qwen/qwen3.8-27b signal for USD/CHF: SELL
+2026-10-30 12:40:23,243 - INFO - ✅ TwelveData: 500 candles for EUR/JPY (1h)
+2026-10-30 12:40:23,244 - INFO - ✅ Retrieved data: HTF=500 rows, LTF=500 rows
+2026-10-30 12:40:23,304 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2026-10-30 12:40:23,364 - INFO - ✅ Successfully calculated 43 indicators for 480 rows
+2026-10-30 12:40:23,368 - INFO - ✅ EUR/JPY volatility 0.07% within acceptable range
+2026-10-30 12:40:23,368 - INFO - 📊 Provider capacity: Gemini=3, Cloudflare=7, Groq=11
+2026-10-30 12:40:23,368 - INFO - 🧠 Selected diverse model: google_gemini/gemini-1.5-flash (Family: gemini)
+2026-10-30 12:40:23,368 - INFO - 🧠 Selected diverse model: cloudflare/@cf/meta/llama-3.1-8b-instruct (Family: llama)
+2026-10-30 12:40:23,368 - INFO - 🧠 Selected diverse model: cloudflare/@cf/google/gemma-3-12b-it (Family: gemma)
+2026-10-30 12:40:23,368 - INFO - 🧠 Selected diverse model: cloudflare/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b (Family: qwen)
+2026-10-30 12:40:23,368 - INFO - 🧠 Selected diverse model: groq/whisper-large-v3 (Family: unknown)
+2026-10-30 12:40:23,368 - INFO - 🧭 Model Diversity: {'gemini': 1, 'llama': 1, 'gemma': 1, 'qwen': 1, 'unknown': 1}
+2026-10-30 12:40:23,368 - INFO - 🧠 5 diverse models selected: [('google_gemini', 'gemini-1.5-flash'), ('cloudflare', '@cf/meta/llama-3.1-8b-instruct'), ('cloudflare', '@cf/google/gemma-3-12b-it'), ('cloudflare', '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'), ('groq', 'whisper-large-v3')]
+2026-10-30 12:40:23,368 - INFO - 🧠 Using 5 diverse AI models for EUR/JPY
+2026-10-30 12:40:23,412 - ERROR - ❗ Groq API error for EUR/JPY: 400 - {"error":{"message":"The model `whisper-large-v3` does not support chat completions","type":"invalid_request_error"}}
+
+2026-10-30 12:40:23,439 - ERROR - ❗ Gemini analysis error for EUR/JPY: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-10-30 12:40:23,452 - ERROR - ❗ Cloudflare API error for EUR/JPY: 403 - {"errors":[{"message":"AiError: Ai: This account is not allowed to access @cf/google/gemma-3-12b-it. (04ac8433-5675-4e19-8a80-2ddb66b0d5fd)","code":5018}],"success":false,"result":{},"messages":[]}
+2026-10-30 12:40:23,636 - WARNING - ⚠️ Groq-openai/gpt-oss-20b response for USD/CHF lacks valid JSON format, trying text extraction...
+2026-10-30 12:40:23,636 - INFO - ✅ Groq-openai/gpt-oss-20b text-extracted signal for USD/CHF: HOLD
+2026-10-30 12:40:23,638 - INFO - 📊 Signal combination for USD/CHF: {'BUY': 1, 'SELL': 3, 'HOLD': 1}
+2026-10-30 12:40:23,638 - INFO - ✅ Enhanced signal for USD/CHF: SELL (Quality: 58.9/100, Agreement: 3/8)
+2026-10-30 12:40:24,126 - INFO - ✅ Cloudflare-@cf/meta/llama-3.1-8b-instruct signal for EUR/JPY: BUY
+2026-10-30 12:40:31,113 - WARNING - ⚠️ Cloudflare-@cf/deepseek-ai/deepseek-r1-distill-qwen-32b response for EUR/JPY lacks valid JSON format, trying text extraction...
+2026-10-30 12:40:31,113 - INFO - ✅ Cloudflare-@cf/deepseek-ai/deepseek-r1-distill-qwen-32b text-extracted signal for EUR/JPY: HOLD
+2026-10-30 12:40:31,116 - INFO - 📊 Results: 2 successful, 3 failed
+2026-10-30 12:40:31,116 - INFO - 🔁 Backfilling: need 3 more successful model outputs for EUR/JPY
+2026-10-30 12:40:31,158 - ERROR - ❗ Groq API error for EUR/JPY: 400 - {"error":{"message":"`max_tokens` must be less than or equal to `512`, the maximum value for `max_tokens` is less than the `context_window` for this model","type":"invalid_request_error","param":"max_tokens"}}
+
+2026-10-30 12:40:31,593 - INFO - ✅ Groq-qwen/qwen3.8-27b signal for EUR/JPY: SELL
+2026-10-30 12:40:32,509 - INFO - ✅ Groq-openai/gpt-oss-20b signal for EUR/JPY: SELL
+2026-10-30 12:40:32,511 - INFO - 📊 Signal combination for EUR/JPY: {'BUY': 1, 'HOLD': 1, 'SELL': 3}
+2026-10-30 12:40:32,511 - INFO - ✅ Enhanced signal for EUR/JPY: SELL (Quality: 52.9/100, Agreement: 3/8)
+2026-10-30 12:40:32,512 - INFO - 📊 Enhanced analysis complete. 4 valid signals
+2026-10-30 12:40:32,512 - INFO - 📈 Performance Statistics: {
+  "total_analyses": 4,
+  "success_rate": 100.0,
+  "avg_analysis_time_sec": 50.38,
+  "avg_api_response_time_sec": 0,
+  "model_performance": {},
+  "recent_analysis_times": [
+    [
+      "EUR/USD",
+      40.20725178718567
+    ],
+    [
+      "GBP/USD",
+      46.29035472869873
+    ],
+    [
+      "USD/CHF",
+      53.070589542388916
+    ],
+    [
+      "EUR/JPY",
+      61.943422079086304
+    ]
+  ],
+  "recent_api_times": []
+}
+2026-10-30 12:40:32,512 - INFO - 📁 Current directory for file saving: /home/runner/work/my-news-feed/my-news-feed
+2026-10-30 12:40:32,512 - INFO - 📝 0 strong signals saved
+2026-10-30 12:40:32,513 - INFO - 📝 1 medium signals saved
+2026-10-30 12:40:32,513 - INFO - 📝 3 weak signals saved
+2026-10-30 12:40:32,514 - INFO - 📝 Analysis summary saved
+2026-10-30 12:40:32,514 - INFO - ✅ File strong_consensus_signals.json successfully created
+2026-10-30 12:40:32,514 - INFO - ✅ File medium_consensus_signals.json successfully created
+2026-10-30 12:40:32,514 - INFO - ✅ File weak_consensus_signals.json successfully created
+2026-10-30 12:40:32,514 - INFO - ✅ File analysis_summary.json successfully created
+2026-10-30 12:40:32,514 - INFO - 📊 Enhanced Results Summary:
+2026-10-30 12:40:32,514 - INFO - 🟢 Strong signals: 4
+2026-10-30 12:40:32,514 - INFO - 🟡 Medium signals: 3
+2026-10-30 12:40:32,514 - INFO - 🔴 Weak signals: 1
+2026-10-30 12:40:32,514 - INFO - 📈 Average Quality Score: 43.8/100
+2026-10-30 12:40:32,514 - INFO -   🟢 ✅ GBP/USD: BUY (Quality: 63.5/100, Conf: 8.0/10) | Entry: 1.34176 | SL: 1.34130 | TP: 1.34245 | RR: 1.5:1
+2026-10-30 12:40:32,514 - INFO -   🔴 ⚠️ USD/CHF: SELL (Quality: 58.9/100, Conf: 7.0/10) | Entry: N/A | SL: 0.82215 | TP: 0.82105 | RR: 1.5:1
+2026-10-30 12:40:32,514 - INFO -   🔴 ⚠️ EUR/JPY: SELL (Quality: 52.9/100, Conf: 6.7/10) | Entry: 175.81455 | SL: 175.89384 | TP: 175.69561 | RR: 1.5:1
+2026-10-30 12:40:32,514 - INFO -   🟦 ⚠️ EUR/USD: HOLD (Quality: 0.0/100, Conf: 4.2/10) | Entry: N/A | SL: N/A | TP: N/A | RR: N/A:1
+2026-10-30 12:40:32,515 - INFO - 📦 Data Source Statistics:
+2026-10-30 12:40:32,515 - INFO -   twelvedata: 4 pairs
+2026-10-30 12:40:32,515 - INFO -   yahoo: 0 pairs
+2026-10-30 12:40:32,515 - INFO -   synthetic: 0 pairs
+2026-10-30 12:40:32,515 - INFO - ⚙️ Enhanced Performance Statistics:
+2026-10-30 12:40:32,515 - INFO -   Total Analyses: 4
+2026-10-30 12:40:32,515 - INFO -   Success Rate: 100.0%
+2026-10-30 12:40:32,515 - INFO -   Avg Analysis Time: 50.38s
+2026-10-30 12:40:32,515 - INFO -   Avg API Response Time: 0s
+2026-10-30 12:40:32,515 - INFO - 📊 API Usage Summary:
+  google_gemini: 8/1500 (1492 remaining)
+  cloudflare: 26/10000 (9974 remaining)
+  groq: 27/10000 (9973 remaining)
+
+2026-10-30 12:40:32,516 - INFO - 🏁 Enhanced system execution completed successfully with signals!
