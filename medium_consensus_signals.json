@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-10-30T05:31:49.220915+00:00",
+    "ENTRY": "0.82271",
+    "STOP_LOSS": "0.82254",
+    "TAKE_PROFIT": "0.82297",
+    "RISK_REWARD_RATIO": "1.53",
+    "ANALYSIS": "Given the neutral trend, strong RSI level of 36.3, and support at 0.82254, the current price is near a potential bounce point. This is a relatively low-risk trade with a risk-reward ratio of 2.0.",
+    "ACTUAL_RR_RATIO": 1.53,
+    "QUALITY_SCORE": 52.8,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 36.33957006806741,
+      "key_support": 0.8225366666666667,
+      "key_resistance": 0.8228933333333334,
+      "volatility": 0.07529052003158386,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
