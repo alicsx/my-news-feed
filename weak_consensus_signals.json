@@ -1,55 +1,5 @@
 [
   {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "SELL",
-    "CONFIDENCE": 7.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-10-30T12:40:23.638582+00:00",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the USD/CHF pair based on the given data and provide a trading decision ...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "0.82215",
-    "TAKE_PROFIT": "0.82105",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 58.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 39.13148938773926,
-      "key_support": 0.8212799999999999,
-      "key_resistance": 0.8221499999999998,
-      "volatility": 0.07638954180500493,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "EUR/JPY",
-    "ACTION": "SELL",
-    "CONFIDENCE": 6.7,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-10-30T12:40:32.511607+00:00",
-    "ENTRY": "175.81455",
-    "STOP_LOSS": "175.89384",
-    "TAKE_PROFIT": "175.69561",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Trend is STRONG_BEARISH and RSI (40.5) is not oversold, supporting a short position. Entry is near support, so stop loss is placed above resistance (175.89384) to avoid noise. Take profit targets a 1.5R move below entry.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 52.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 40.45879479455356,
-      "key_support": 175.80778333333333,
-      "key_resistance": 175.89384336,
-      "volatility": 0.06975458755162281,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
     "CONFIDENCE": 4.2,
@@ -57,19 +7,19 @@
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-10-30T12:40:10.774580+00:00",
+    "timestamp": "2026-10-30T14:54:21.581337+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/USD pair and make a trading decision based on the given data. Le...",
+    "ANALYSIS": "Extracted from text: \n\n{\n  \"SYMBOL\": \"EUR/USD\",\n  \"ACTION\": \"HOLD\",\n  \"CONFIDENCE\": 6,\n  \"ENTRY\": \"1.11533\",\n  \"STOP_LOSS...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 53.82813167732034,
-      "key_support": 1.1181566666666667,
-      "key_resistance": 1.1188933333333333,
-      "volatility": 0.07402928787574065,
+      "rsi": 39.428099651074945,
+      "key_support": 1.1150166666666668,
+      "key_resistance": 1.1163733333333334,
+      "volatility": 0.0750354516680155,
       "volatility_status": "OPTIMAL"
     }
   }
