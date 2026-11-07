@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.2,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-11-07T21:43:24.230790+00:00",
+    "RISK_REWARD_RATIO": "1.68",
+    "ANALYSIS": "Extracted from text: \nAlright, so I'm trying to figure out the trading decision for EUR/USD based on the data provided. L...",
+    "ENTRY": "N/A",
+    "STOP_LOSS": "1.11473",
+    "TAKE_PROFIT": "1.11406",
+    "ACTUAL_RR_RATIO": 1.68,
+    "QUALITY_SCORE": 62.9,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 46.11541942402615,
+      "key_support": 1.1140566666666667,
+      "key_resistance": 1.1147333333333334,
+      "volatility": 0.07207740157298115,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "GBP/USD",
+    "ACTION": "SELL",
+    "CONFIDENCE": 7.5,
+    "AGREEMENT_LEVEL": 4,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-11-07T21:43:30.715573+00:00",
+    "ENTRY": "1.33556",
+    "STOP_LOSS": "1.33567",
+    "TAKE_PROFIT": "1.33540",
+    "RISK_REWARD_RATIO": "1.45",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, indicating a potential short opportunity.",
+    "ACTUAL_RR_RATIO": 1.45,
+    "QUALITY_SCORE": 61.7,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BEARISH",
+      "rsi": 42.25136922993318,
+      "key_support": 1.3354833333333334,
+      "key_resistance": 1.33567,
+      "volatility": 0.05699797508875579,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
