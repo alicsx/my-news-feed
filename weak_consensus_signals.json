@@ -1,49 +1,25 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 4.5,
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-11-08T16:36:38.426655+00:00",
-    "ENTRY": "1.11412",
-    "STOP_LOSS": "1.11398",
-    "TAKE_PROFIT": "1.11417",
-    "RISK_REWARD_RATIO": "2.0",
-    "ANALYSIS": "The STRONG_BEARISH trend and LOW risk level suggest caution, while the NEUTRAL RSI reading and LOW volatility indicate a lack of clear direction. A HOLD decision is made to avoid potential losses, with stop-loss at support and take-profit at resistance.",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 41.76497707671886,
-      "key_support": 1.1139766666666668,
-      "key_resistance": 1.1141733333333335,
-      "volatility": 0.06901048136355233,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "USD/CHF",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.0,
-    "AGREEMENT_LEVEL": 3,
+    "CONFIDENCE": 4.2,
+    "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 7,
-    "timestamp": "2026-11-08T16:36:53.457568+00:00",
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-11-08T21:57:22.111519+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I'm trying to figure out whether to buy, sell, or hold the USD/CHF pair based on the given...",
+    "ANALYSIS": "Extracted from text: \nAlright, let me take a look at the USD/CHF pair and figure out the trading decision based on the gi...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 46.25369009418297,
-      "key_support": 0.8196166666666667,
-      "key_resistance": 0.8198733333333333,
-      "volatility": 0.07817923120918298,
+      "rsi": 40.016749777149094,
+      "key_support": 0.81882,
+      "key_resistance": 0.81939,
+      "volatility": 0.07835239397392367,
       "volatility_status": "OPTIMAL"
     }
   }
