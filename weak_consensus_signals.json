@@ -1,25 +1,49 @@
 [
   {
-    "SYMBOL": "USD/CHF",
+    "SYMBOL": "EUR/USD",
     "ACTION": "HOLD",
-    "CONFIDENCE": 4.2,
-    "AGREEMENT_LEVEL": 4,
+    "CONFIDENCE": 4.7,
+    "AGREEMENT_LEVEL": 3,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
     "TOTAL_MODELS": 8,
-    "timestamp": "2026-11-08T21:57:22.111519+00:00",
+    "timestamp": "2026-11-09T01:36:54.887076+00:00",
+    "ENTRY": "1.11539",
+    "STOP_LOSS": "1.11441",
+    "TAKE_PROFIT": "1.11637",
+    "RISK_REWARD_RATIO": "1.67",
+    "ANALYSIS": "Strong bearish trend with neutral RSI, no clear indication of buying or selling. Holding until market conditions become clearer.",
+    "QUALITY_SCORE": 0.0,
+    "TECHNICAL_CONTEXT": {
+      "trend": "STRONG_BEARISH",
+      "rsi": 59.52719578916638,
+      "key_support": 1.1153066666666667,
+      "key_resistance": 1.11583,
+      "volatility": 0.06947084149223147,
+      "volatility_status": "OPTIMAL"
+    }
+  },
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "HOLD",
+    "CONFIDENCE": 4.0,
+    "AGREEMENT_LEVEL": 3,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-11-09T01:37:09.310103+00:00",
     "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nAlright, let me take a look at the USD/CHF pair and figure out the trading decision based on the gi...",
+    "ANALYSIS": "Extracted from text: \nOkay, I need to analyze the USD/CHF pair based on the provided data and make a trading decision. Le...",
     "ENTRY": "N/A",
     "STOP_LOSS": "N/A",
     "TAKE_PROFIT": "N/A",
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 40.016749777149094,
-      "key_support": 0.81882,
-      "key_resistance": 0.81939,
-      "volatility": 0.07835239397392367,
+      "rsi": 55.634849979681654,
+      "key_support": 0.8204699999999999,
+      "key_resistance": 0.82086,
+      "volatility": 0.07845907129028212,
       "volatility_status": "OPTIMAL"
     }
   }
