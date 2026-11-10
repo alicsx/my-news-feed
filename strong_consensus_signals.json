@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "EUR/USD",
+    "ACTION": "BUY",
+    "CONFIDENCE": 7.0,
+    "AGREEMENT_LEVEL": 5,
+    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-11-10T16:11:49.477640+00:00",
+    "ENTRY": "1.11559",
+    "STOP_LOSS": "1.11541",
+    "TAKE_PROFIT": "1.11950",
+    "RISK_REWARD_RATIO": "21.72",
+    "ANALYSIS": "Strong bullish trend and oversold RSI indicate a potential reversal, making it a good entry point for a buy position.",
+    "ACTUAL_RR_RATIO": 21.72,
+    "QUALITY_SCORE": 73.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "BULLISH",
+      "rsi": 27.931010501029974,
+      "key_support": 1.11541,
+      "key_resistance": 1.11569,
+      "volatility": 0.07164880105971529,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
