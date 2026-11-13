@@ -1,62 +1,13 @@
 [
   {
-    "SYMBOL": "EUR/USD",
-    "ACTION": "SELL",
-    "CONFIDENCE": 8.0,
-    "AGREEMENT_LEVEL": 3,
-    "AGREEMENT_TYPE": "STRONG_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-11-13T01:00:21.384792+00:00",
-    "ENTRY": "1.10532",
-    "STOP_LOSS": "1.10558",
-    "TAKE_PROFIT": "1.10493",
-    "RISK_REWARD_RATIO": "1.5",
-    "ANALYSIS": "Strong bearish trend with RSI at 33.3 (not oversold) supports a short position. Entry is near support, with stop loss above resistance and take profit targeting the next support level, yielding a 2:1 risk-reward ratio.",
-    "ACTUAL_RR_RATIO": 1.5,
-    "QUALITY_SCORE": 55.9,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BEARISH",
-      "rsi": 33.266208999544,
-      "key_support": 1.1051900000000001,
-      "key_resistance": 1.1055800000000002,
-      "volatility": 0.07227455170479516,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
-    "SYMBOL": "USD/CHF",
-    "ACTION": "HOLD",
-    "CONFIDENCE": 3.5,
-    "AGREEMENT_LEVEL": 2,
-    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
-    "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-11-13T01:00:36.672331+00:00",
-    "RISK_REWARD_RATIO": "1.8",
-    "ANALYSIS": "Extracted from text: \nOkay, so I need to figure out whether to buy, sell, or hold the USD/CHF pair based on the given dat...",
-    "ENTRY": "N/A",
-    "STOP_LOSS": "N/A",
-    "TAKE_PROFIT": "N/A",
-    "QUALITY_SCORE": 0.0,
-    "TECHNICAL_CONTEXT": {
-      "trend": "STRONG_BULLISH",
-      "rsi": 70.1565619852609,
-      "key_support": 0.83572,
-      "key_resistance": 0.83609,
-      "volatility": 0.08112316753171506,
-      "volatility_status": "OPTIMAL"
-    }
-  },
-  {
     "SYMBOL": "EUR/JPY",
     "ACTION": "HOLD",
     "CONFIDENCE": 4.2,
     "AGREEMENT_LEVEL": 4,
     "AGREEMENT_TYPE": "STRONG_CONSENSUS",
     "VALID_MODELS": 5,
-    "TOTAL_MODELS": 8,
-    "timestamp": "2026-11-13T01:00:44.894550+00:00",
+    "TOTAL_MODELS": 7,
+    "timestamp": "2026-11-13T09:25:50.207668+00:00",
     "RISK_REWARD_RATIO": "1.8",
     "ANALYSIS": "Extracted from text: \nOkay, so I need to analyze the EUR/JPY pair and make a trading decision based on the given data. Le...",
     "ENTRY": "N/A",
@@ -65,10 +16,10 @@
     "QUALITY_SCORE": 0.0,
     "TECHNICAL_CONTEXT": {
       "trend": "NEUTRAL",
-      "rsi": 39.69744219263319,
-      "key_support": 176.67534666666666,
-      "key_resistance": 176.7565033333333,
-      "volatility": 0.07093520497706175,
+      "rsi": 52.1455108000256,
+      "key_support": 176.9034333333333,
+      "key_resistance": 176.96618666666663,
+      "volatility": 0.07111398523877145,
       "volatility_status": "OPTIMAL"
     }
   }
