@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "SYMBOL": "USD/CHF",
+    "ACTION": "BUY",
+    "CONFIDENCE": 8.0,
+    "AGREEMENT_LEVEL": 2,
+    "AGREEMENT_TYPE": "MEDIUM_CONSENSUS",
+    "VALID_MODELS": 5,
+    "TOTAL_MODELS": 8,
+    "timestamp": "2026-11-25T00:32:45.263592+00:00",
+    "ENTRY": "0.83605",
+    "STOP_LOSS": "0.83580",
+    "TAKE_PROFIT": "0.83642",
+    "RISK_REWARD_RATIO": "1.48",
+    "ANALYSIS": "Strong neutral trend with low RSI (32.6) indicates a potential buying opportunity. The price is near the resistance level, and a breakout could lead to a significant move.",
+    "ACTUAL_RR_RATIO": 1.48,
+    "QUALITY_SCORE": 51.6,
+    "TECHNICAL_CONTEXT": {
+      "trend": "NEUTRAL",
+      "rsi": 32.62677722548306,
+      "key_support": 0.8358033333333333,
+      "key_resistance": 0.8363066666666666,
+      "volatility": 0.07306184545741308,
+      "volatility_status": "OPTIMAL"
+    }
+  }
+]
